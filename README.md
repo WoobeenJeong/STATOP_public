@@ -75,7 +75,7 @@ Check: `statop --help` works, `pytest -q` says 949 passed.
 
 **Terminal** — `statop`
 
-<img width="1070" height="794" alt="image" src="https://github.com/user-attachments/assets/2a5fffcf-f7f4-406a-8d17-862d22055967" />
+<img width="1070" height="795" alt="image" src="https://github.com/user-attachments/assets/48d53d2a-f8a2-417b-909c-344c4a3d4209" />
 
 **Web** — `statop serve`
 
