@@ -105,15 +105,13 @@ differs."*
 
 <!-- agent-notes:end -->
 
-## Bundled examples (all synthetic)
+## Walkthroughs
 
-| file | shows |
-|---|---|
-| `demo/talk/001_group_correlation.csv` | a relation only one group bends — correlation misses it, distance correlation does not |
-| `demo/talk/002_entropy_wrong_dist.csv` | the distribution assumption decides the answer |
-| `demo/talk/003a·003b_integrity.csv` | two exports of one table — pairing reveals the drift |
+Click through them in the browser — nothing to install, all data synthetic.
 
-Open [`demo/talk/001.html`](demo/talk/001.html) in a browser to look without installing.
+- [01 · group correlation](https://woobeenjeong.github.io/STATOP_public/001.html) — a relation only one group bends
+- [02 · the distribution decides](https://woobeenjeong.github.io/STATOP_public/002.html) — one derived column splits what overlapped
+- [03 · integrity check](https://woobeenjeong.github.io/STATOP_public/003.html) — two exports of one table, paired
 
 ---
 ---
@@ -207,15 +205,13 @@ pip install -e .
 판정은 STATOP 이, 설명은 에이전트가 — 근거가 `rules/` 에 글로 적혀 있어
 지어내지 않고 인용합니다. 세션 둘을 건네며 *"달라진 단계를 짚어 줘"* 도 됩니다.
 
-## 딸려 오는 예제 (전부 합성)
+## 둘러보기
 
-| 파일 | 보여주는 것 |
-|---|---|
-| `demo/talk/001_group_correlation.csv` | 한 군만 휘는 관계 — 상관은 놓치고 거리상관은 잡는다 |
-| `demo/talk/002_entropy_wrong_dist.csv` | 분포를 무엇으로 보았는가가 답을 바꾼다 |
-| `demo/talk/003a·003b_integrity.csv` | 같은 표의 두 판본 — 짝을 지어야 차이가 보인다 |
+설치 없이 브라우저에서 클릭만으로. 자료는 전부 합성입니다.
 
-설치 없이 보려면 `demo/talk/001.html` 을 브라우저로 엽니다.
+- [01 · 군별 상관](https://woobeenjeong.github.io/STATOP_public/001.html) — 한 군만 휘는 관계
+- [02 · 분포에 맞는 공식](https://woobeenjeong.github.io/STATOP_public/002.html) — 파생 컬럼 하나로 겹쳐 있던 두 군이 갈린다
+- [03 · 무결성 검증](https://woobeenjeong.github.io/STATOP_public/003.html) — 같은 표의 두 판본, 짝을 지어야 보이는 차이
 
 ---
 
