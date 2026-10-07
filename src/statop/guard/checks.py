@@ -169,7 +169,7 @@ def srm_by_dimension(df: pd.DataFrame, group_col: str, meta_cols: list[str],
 def srm_counterfactual(kept: pd.DataFrame, lost: pd.DataFrame, group_col: str,
                        expected_ratio: dict[str, float] | None = None,
                        p_threshold: float = 0.0005) -> dict:
-    """반사실 확인 () — **손실이 없었다면** SRM이 해소되는가.
+    """반사실 확인  — **손실이 없었다면** SRM이 해소되는가.
 
     인과를 단정하지 않는다. "손실을 되돌리면 비율이 기대에 맞는다"는 사실만 보고하고,
     그래도 안 맞으면 기대 비율 설정이나 모집단 쪽을 보라고 분기한다.

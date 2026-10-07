@@ -158,7 +158,7 @@ def test_session_save_autoname_and_overwrite(tmp_path, statop_home):
     assert r1.exit_code == 0
     saved = [p for p in tmp_path.glob("*.json") if not p.name.startswith("session_")]
     assert len(saved) == 1
-    # : 날짜_프로젝트_모드_태그_n행수_시각
+    #: 날짜_프로젝트_모드_태그_n행수_시각
     assert re.fullmatch(r"\d{6}_.+_hypo_clean_n10000_(am|pm)\d{2}\.json", saved[0].name)
 
     # 같은 시간대 재저장: 단순 저장은 실패, --overwrite면 성공 + .bak
@@ -229,7 +229,7 @@ def test_load_replays_state(statop_home):
     assert doc["ops"] == orig["ops"]                # 기록은 동일
     # 재생: 중복 없이 선택 순서 유지 (label은 한 번만)
     assert state["selected"]["d1"] == ["site", "label", "cont000"]
-    # 같은 로그 2회 재생 → 동일 상태 (S030의 씨앗)
+    # 같은 로그 2회 재생 → 동일 상태 (의 씨앗)
     assert replay(doc) == replay(orig)
 
 

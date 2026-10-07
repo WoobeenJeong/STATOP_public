@@ -358,7 +358,7 @@ export const api = {
       body: JSON.stringify({ path, cols, session_file: sessionFile }),
     }),
 
-  /** 라벨 수준 목록 () — 표시 값·빈도·현재 코드 */
+  /** 라벨 수준 목록  — 표시 값·빈도·현재 코드 */
   labelLevels: (path: string, column: string, sessionFile?: string) =>
     req<{ levels: { value: string; n: number; ratio: number; code: number }[];
           groups: Record<string, { code: number; values: string[]; n: number }> }>(

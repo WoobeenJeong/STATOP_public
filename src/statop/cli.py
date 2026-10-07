@@ -72,7 +72,7 @@ def columns(
     from statop.export import inspect_file
 
     meta = open_meta(path)
-    info = inspect_file(path)      # 가공된 파일이면 열 때 알린다 ()
+    info = inspect_file(path)      # 가공된 파일이면 열 때 알린다
     view_rows = None
     transposed_view = False
     if session:
@@ -365,7 +365,7 @@ def labels(
                             help="매핑 지정 — 예: control=0,hct=0,liver=1"),
     sample_n: int = 10_000,
 ) -> None:
-    """라벨 매핑 () — 표시는 문자열, 계산은 코드. 여러 수준을 같은 코드로 묶으면 군이 바뀐다."""
+    """라벨 매핑  — 표시는 문자열, 계산은 코드. 여러 수준을 같은 코드로 묶으면 군이 바뀐다."""
     from statop.labels import groups_after, levels_of
     from statop.render.spark import bar
     from statop.session.core import append_op, load_session, main_source, replay, save_session
@@ -1598,7 +1598,7 @@ def roles_cmd(
 ) -> None:
     """S172 병기 선택 저장 — **base 관계 중 무엇을 보고할지**만 저장한다.
 
-    관계 자체는 base 고정이라 새로 만들 수 없다 ()."""
+    관계 자체는 base 고정이라 새로 만들 수 없다 ."""
     from statop.analyze.metrics import apply_choices, goal_key, save_choice, suggest
 
     try:
@@ -1630,7 +1630,7 @@ def export(
     name: str = typer.Option(None, help="파일 이름(확장자 제외)"),
     overwrite: bool = typer.Option(False, help="같은 이름이 있으면 덮어쓰기"),
 ) -> None:
-    """가공 파일 저장 () — 원본 불변. 표식 컬럼과 사이드카가 함께 남아
+    """가공 파일 저장  — 원본 불변. 표식 컬럼과 사이드카가 함께 남아
     이 파일을 다시 열면 가공 사실을 알린다."""
     from statop.export import export_trimmed
     from statop.session.core import load_session
@@ -1660,7 +1660,7 @@ def relabel(
     to: str = typer.Option(..., help="새 값"),
     note: str = typer.Option(..., help="사유 — 왜 잘못 들어갔다고 판단하는지 (필수)"),
 ) -> None:
-    """개별 샘플 라벨 수정 () — 원본은 그대로, 기록으로만 남는다.
+    """개별 샘플 라벨 수정  — 원본은 그대로, 기록으로만 남는다.
     모든 출력 맨 앞에 수정 건수가 표시되며 숨길 수 없다."""
     from statop.io.meta import estimate_rows, open_meta
     from statop.relabel import check_ratio, find_row
@@ -1768,7 +1768,7 @@ def dist(
     width: int = typer.Option(40, help="--chart 폭"),
 ) -> None:
     """분포 미리보기 (M0-3) — 히스토그램·사분위·왜도·outlier 비율.
-    기본은 한 줄 요약, --chart면 축·눈금이 있는 그림 (y축 눈금 ≤5, )."""
+    기본은 한 줄 요약, --chart면 축·눈금이 있는 그림 (y축 눈금 ≤5)."""
     from statop.io.distribution import distributions
     from statop.render.chart import boxplot, histogram
     from statop.render.spark import bar, format_distribution

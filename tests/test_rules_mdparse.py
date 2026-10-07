@@ -9,7 +9,7 @@ SCHEMA = Path(__file__).parent.parent / "schema"
 
 def test_registry_tests_key_tables():
     ts = parse_file(SCHEMA / "registry-tests.md")
-    assert len(find_table(ts, "9.1 의미 타입").rows) == 15   # S-T01~15 (DL-08로 14·15 추가)
+    assert len(find_table(ts, "9.1 의미 타입").rows) == 15   # S-T01~15 (로 14·15 추가)
     assert len(find_table(ts, "9.2 연산 적합성").rows) == 14  # S-R01~14
     assert len(find_table(ts, "10. 파생 함수").rows) == 15    # F-01~15 (F-15 arcsinh)
 

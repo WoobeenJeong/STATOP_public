@@ -1,4 +1,4 @@
-"""M1-1 의미 타입 판별 (DECISIONS ) — 순위만, 점수는 감춘다."""
+"""M1-1 의미 타입 판별 (DECISIONS) — 순위만, 점수는 감춘다."""
 
 import json
 from pathlib import Path
@@ -82,7 +82,7 @@ def test_one_sided_skew_is_not_bimodal():
 
 
 def test_scores_never_exposed(frame):
-    """점수는 의존 편향을 만든다 — 순위만 노출 ()."""
+    """점수는 의존 편향을 만든다 — 순위만 노출 ."""
     t = infer_columns(frame, ["prob_pred"])[0]
     assert all(hasattr(c, "rank") for c in t.candidates)
     assert "_score" not in repr(t.candidates[0])       # repr=False

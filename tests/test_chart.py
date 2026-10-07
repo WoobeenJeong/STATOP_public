@@ -1,4 +1,4 @@
-"""터미널 그림의 축약 규칙 (DECISIONS )."""
+"""터미널 그림의 축약 규칙 (DECISIONS)."""
 
 import re
 
@@ -21,7 +21,7 @@ def test_histogram_y_ticks_within_limit():
     edges = [float(i) for i in range(21)]
     for height in (4, 6, 10, 14):
         lines = histogram(counts, edges, width=30, height=height)
-        assert tick_count(lines) <= MAX_Y_TICKS       # y축 눈금 ≤ 5 ()
+        assert tick_count(lines) <= MAX_Y_TICKS       # y축 눈금 ≤ 5
         assert lines[-1].strip()                       # x축 끝값 표시
 
 
@@ -83,7 +83,7 @@ def test_chart_from_real_distribution():
                for ln in boxplot(d["quartiles"], (0.0, d["outlier_rate_iqr"])))
 
 
-# ── 가로축 끝값은 절대 사라지면 안 된다 () ─────────────
+# ── 가로축 끝값은 절대 사라지면 안 된다  ─────────────
 @pytest.mark.parametrize(("counts", "edges"), [
     ([5, 12, 30, 18, 6], [1.2e-6, 2.4e-6, 3.6e-6, 4.8e-6, 6.0e-6, 7.2e-6]),   # 지수표기
     ([5, 12, 30, 18, 6], [120000, 240000, 360000, 480000, 600000, 720000]),

@@ -1,4 +1,4 @@
-"""개별 샘플 라벨 수정 (DECISIONS ) — 허용하되 흔적을 지울 수 없게."""
+"""개별 샘플 라벨 수정 (DECISIONS) — 허용하되 흔적을 지울 수 없게."""
 
 import json
 from pathlib import Path

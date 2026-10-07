@@ -69,7 +69,7 @@ def stat_lines(stats: list[dict]) -> list[str]:
 
 
 def format_distribution(d: dict, with_stats: bool = True) -> list[str]:
-    """분포 요약 한 컬럼을 터미널 줄 목록으로. 과한 정보 대신 압축 ().
+    """분포 요약 한 컬럼을 터미널 줄 목록으로. 과한 정보 대신 압축 .
 
     with_stats=False 는 **상자그림을 이미 그린 자리**에서 쓴다 — 그림이 다섯 수를
     적고 오므로 여기서 또 적으면 같은 줄이 두 번 나온다.

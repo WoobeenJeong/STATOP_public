@@ -148,7 +148,7 @@ def build(session_file: str, spec: Spec, sample_n: int = 10_000) -> SpecResult:
         group_type is None and spec.group and df[spec.group].dtype.kind not in "if")
     if spec.group and group_is_grouping:
         vc = df[spec.group].dropna().astype(str).value_counts()
-        # 라벨 매핑이 있으면 코드 기준 군 구성으로 — 묶은 대로 비교된다 ()
+        # 라벨 매핑이 있으면 코드 기준 군 구성으로 — 묶은 대로 비교된다
         mapping = st["label_maps"].get(src["id"], {}).get(spec.group)
         if mapping:
             merged: dict[str, int] = {}

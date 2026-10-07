@@ -570,7 +570,7 @@ def test_c07_shift_view_overlays_before_and_after(source_sets):
 
     num = shift_view(_spec_for(sets), source_sets["path"], "sid", "x1")
     assert num["info"]["kind"] == "numeric"
-    assert any("─" in ln for ln in num["lines"])        # 축이 있다 ()
+    assert any("─" in ln for ln in num["lines"])        # 축이 있다
 
 
 def test_c06_ignores_sets_absent_from_the_plan(source_sets):
@@ -696,7 +696,7 @@ def test_set_shift_without_external_is_skipped(balance_sets):
 
 
 def test_balance_cli_reports_diag_without_blocking(balance_sets):
-    """Diag 는 막지 않는다 — 종료코드 0 ()."""
+    """Diag 는 막지 않는다 — 종료코드 0 ."""
     from typer.testing import CliRunner
 
     from statop.cli import app
@@ -1155,7 +1155,7 @@ def test_c25_seed_is_a_gate(eval_sets):
 
 
 def test_scope_is_what_evid_runs_not_what_the_user_trains():
-    """STATOP 는 모델을 돌리지 않는다 — MLP 계획에도 **조언**은 한다 ().
+    """STATOP 는 모델을 돌리지 않는다 — MLP 계획에도 **조언**은 한다 .
 
     경계는 "GPU 냐"가 아니라 "STATOP 가 그것을 돌려야 하느냐"다. 설정·데이터만 보면
     되는 것은 모델 종류와 무관하게 판정하고, **학습 중에만 보이는 것**만 로그를
@@ -1170,7 +1170,7 @@ def test_scope_is_what_evid_runs_not_what_the_user_trains():
     t1 = next(t for t in tiers() if t["id"] == "MB-M1")
     assert t1["v1"] == "full"                           # MLP 계획에 대한 조언은 v1
     # 학습곡선 로그가 있어야 판정되는 것만 등록으로 남는다
-    # 학습 루프·학습곡선 안에서 일어나는 일은 학습하는 쪽에서 판단한다 ()
+    # 학습 루프·학습곡선 안에서 일어나는 일은 학습하는 쪽에서 판단한다
     assert not ({"MB-C30", "MB-C32", "MB-C33"} & ids)
 
 

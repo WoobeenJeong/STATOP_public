@@ -320,7 +320,7 @@ def test_live_save_list_load_roundtrip(server, tmp_path_factory):
     assert list(loaded["selected"].values())[0] == ["a"]     # 선택 복원
     assert loaded["source_problems"] == []                   # 원본 그대로
 
-    # 원본을 바꾸면 경고가 함께 온다 (S029와 같은 흐름)
+    # 원본을 바꾸면 경고가 함께 온다 (와 같은 흐름)
     f.write_text("a,b\n1,2\n3,4\n5,6\n")
     loaded2 = httpx.post(f"{server}/v1/sessions/load", json={"saved": saved["saved"]},
                          timeout=60).json()

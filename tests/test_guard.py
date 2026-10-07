@@ -133,7 +133,7 @@ def test_gr02_dimensional_uses_bonferroni():
 
 
 def test_gr02_counterfactual_distinguishes_loss_from_design():
-    """손실을 되돌려 SRM이 풀리면 손실이 후보, 안 풀리면 다른 원인이다 ()."""
+    """손실을 되돌려 SRM이 풀리면 손실이 후보, 안 풀리면 다른 원인이다 ."""
     kept = pd.DataFrame({"g": ["a"] * 600 + ["b"] * 400})
     lost = pd.DataFrame({"g": ["b"] * 200})
     assert checks.srm_counterfactual(kept, lost, "g")["resolved"] is True

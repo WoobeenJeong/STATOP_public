@@ -12,13 +12,13 @@ def test_build_semantic_types_roundtrip():
     assert len(items) == 15
     ids = [i["id"] for i in items]
     assert ids == [f"S-T{n:02d}" for n in range(1, 16)]  # 누락·순서 뒤바뀜 없음
-    # [0,1] 구분 4종이 모두 등록돼 있다 (DECISIONS )
+    # [0,1] 구분 4종이 모두 등록돼 있다 (DECISIONS)
     by_type = {i["id"]: i for i in items}
     assert "proportion" in by_type["S-T02"]["type"]
     assert by_type["S-T04"]["type"] == "probability"
     assert by_type["S-T14"]["type"] == "normalized score"
     assert by_type["S-T15"]["type"] == "expression index"
-    # 컬럼명은 보조 신호로만 ()
+    # 컬럼명은 보조 신호로만
     assert "보조" in by_type["S-T04"]["infer_basis"]
 
     loaded = yaml.safe_load(path.read_text())
@@ -153,10 +153,10 @@ def test_build_assumptions():
     assert "QQ plot" in by_id["C-01"]["plot"]          # A3가 그릴 plot
     assert "Welch" in by_id["C-02"]["on_violation"]     # 위배 시 대안 제시 (#4)
     assert all(i["on_violation"] for i in items)        # 위배 규칙은 전 항목 필수
-    assert all(i["plot"] for i in items)                # plot/참조가 전 항목에 지정됨 (DECISIONS /02)
-    # C-14는 타입을 재판정하지 않고 S-T 결과를 참조한다 (Single Source of Truth, )
+    assert all(i["plot"] for i in items)                # plot/참조가 전 항목에 지정됨 (DECISIONS/02)
+    # C-14는 타입을 재판정하지 않고 S-T 결과를 참조한다 (Single Source of Truth)
     assert "S-T" in by_id["C-14"]["check"] or "S-T" in by_id["C-14"]["method"]
-    assert "판단 실패" in by_id["C-06"]["on_violation"]  # p 정상·ε 이상 시 별도 처리 ()
+    assert "판단 실패" in by_id["C-06"]["on_violation"]  # p 정상·ε 이상 시 별도 처리
     assert yaml.safe_load(path.read_text()) == items
 
 
@@ -229,7 +229,7 @@ def test_build_guardrails():
 
     # GR-03 손실은 완화 불가(override_floor=gate) — 편향적 손실은 항상 차단
     assert by_id["GR-03"]["override_floor"] == "gate"
-    assert len(by_id["GR-03"]["checks"]) == 6 and len(by_id["GR-04"]["checks"]) == 5  # DL-09로 군별 손실률 추가
+    assert len(by_id["GR-03"]["checks"]) == 6 and len(by_id["GR-04"]["checks"]) == 5  #로 군별 손실률 추가
     assert yaml.safe_load(path.read_text()) == d
 
 
@@ -252,7 +252,7 @@ def test_build_scores():
 
     path, d = build_scores()
     sc = d["scores"]
-    assert len(sc) == 112   # +SC-DIST-18/19  −SC-GEN 12종 ()
+    assert len(sc) == 112   # +SC-DIST-18/19  −SC-GEN 12종
     families = {x["family"] for x in sc}
     assert families == {"ERR", "CLS", "DIST", "DIV", "ENT", "INF", "BE", "NORM", "VAR", "CLN"}
     assert all(x["latex"] for x in sc)          # 전 점수에 수식/정의가 있다 (M3 렌더용)
@@ -264,7 +264,7 @@ def test_build_scores():
     assert mae["green"].startswith("ℝ") and mae["red"] == "순위·범주"
     assert by_id["SC-ERR-02"]["yellow"].startswith("중꼬리")   # RMSE는 outlier 지배
 
-    # 미지정(회색)은 4번째 상태 — 빈칸을 "적합"으로 해석하지 않는다 ()
+    # 미지정(회색)은 4번째 상태 — 빈칸을 "적합"으로 해석하지 않는다
     assert [g["label"] for g in d["grades"]] == ["안됨", "별로", "문제없음", "미지정"]
     assert by_id["SC-ERR-01"]["coverage"] == "full" and by_id["SC-ERR-01"]["unspecified"] == []
     #  전에는 초록·빨강이 비어 partial 이었다 — 작성자 검토로 채워져 full 이 됐다
@@ -355,7 +355,7 @@ def test_models_yaml_covers_every_mb_check():
 
     _, data = build.build_models()
     ids = [c["id"] for c in data["checks"]]
-    # C30·C32·C33 은 학습 과정 안에서 일어난다 — 4.3/4.4(later)에 등록만 (·)
+    # C30·C32·C33 은 학습 과정 안에서 일어난다 — 4.3/4.4(later)에 등록만
     assert sorted(ids) == [f"MB-C{i:02d}" for i in range(1, 35)
                            if i not in (30, 32, 33)]
     assert len(data["questions"]) == 8 and len(data["tiers"]) == 4

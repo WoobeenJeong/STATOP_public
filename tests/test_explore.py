@@ -140,7 +140,7 @@ def test_an_unknown_method_is_refused():
 def test_you_can_add_your_own_recommendation(session, tmp_path):
     """규칙표에 없어도 넣을 수 있어야 한다 — 다만 **출처가 갈려** 있다.
 
-    base 관계(무엇으로 재는가)는 그대로다 (). 내가 더한 것은 `custom` 에 따로
+    base 관계(무엇으로 재는가)는 그대로다 . 내가 더한 것은 `custom` 에 따로
     쌓이고 화면에서 "사용자 지정"으로 보인다.
     """
     from statop.analyze.explore import run

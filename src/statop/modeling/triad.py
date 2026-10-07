@@ -1,7 +1,7 @@
 """S194b MB-Q별 3-metric 트리아드 추천 (MB-C24).
 
 지표 하나만 보면 놓치는 것이 있다. **Goal 옆에 Support 와 Guardrail 을 세운다** —
-Support 는 Goal 과 비슷한 것, Guardrail 은 **Goal 의 반례가 될 수 있는 것**이다 ().
+Support 는 Goal 과 비슷한 것, Guardrail 은 **Goal 의 반례가 될 수 있는 것**이다 .
 불균형 이진에서 AUC(Goal) 옆에 PR-AUC(Guardrail)를 세우는 것이 그 예다.
 
 무엇을 세울지는 `registry-models.md` 5절 트리아드 표가 정한다 — **여기서 지어내지 않는다.**

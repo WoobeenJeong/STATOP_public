@@ -1183,7 +1183,7 @@ def test_confirming_label_opens_code_mapping(labeled):
 
 
 def test_arrow_keys_change_codes_and_merging_is_warned(labeled):
-    """←→ 로 코드를 바꾸고, 같은 코드로 묶이면 군 재정의를 경고한다 ()."""
+    """←→ 로 코드를 바꾸고, 같은 코드로 묶이면 군 재정의를 경고한다 ."""
     sc = labeled
     sc.open_labels("diagnosis")
     sc.label_row = 2                               # liver

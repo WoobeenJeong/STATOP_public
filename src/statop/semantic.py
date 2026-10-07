@@ -1,10 +1,10 @@
-"""M1-1 의미 타입 판별 (S-T01~15, DECISIONS ).
+"""M1-1 의미 타입 판별 (S-T01~15, DECISIONS).
 
 저장 타입(float64)이 아니라 **값이 실제로 무엇인가**(count·비율·확률·정규화 점수…)를 본다.
 여기가 틀리면 이후 검정 선택이 전부 틀린다.
 
 원칙:
-- **순위만 제시하고 점수는 보이지 않는다** — 유사확률 표기는 의존 편향을 만든다 ()
+- **순위만 제시하고 점수는 보이지 않는다** — 유사확률 표기는 의존 편향을 만든다
 - 동점은 공동 순위. 근거는 분포 형태를 말로 (단봉형/쌍봉형/평탄)
 - 신호가 상충하면 순위를 낮추지 말고 **"상충"으로 표시하고 확정을 요구**
 - 확정 요구는 순위 차이뿐 아니라 **오분류 비용**도 본다 (probability ↔ proportion 등)
@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 import numpy as np
 import pandas as pd
 
-# 오분류 비용이 큰 조합 — 순위가 벌어져도 확정을 요구한다 ()
+# 오분류 비용이 큰 조합 — 순위가 벌어져도 확정을 요구한다
 COSTLY_PAIRS = {
     frozenset({"probability", "proportion"}),
     frozenset({"proportion", "normalized score"}),
@@ -276,7 +276,7 @@ def infer(s: pd.Series, name: str, siblings: pd.DataFrame | None = None) -> Type
     if not score:
         add("continuous", 1, msg("ev_fallback"))
 
-    # 컬럼명은 낮은 가중치 보조 신호 ()
+    # 컬럼명은 낮은 가중치 보조 신호
     low = name.lower()
     for pat, t in ((r"\b(prob|p_|pred|score)\b|prob", "probability"),
                    (r"(frac|ratio|prop|pct_)", "proportion"),

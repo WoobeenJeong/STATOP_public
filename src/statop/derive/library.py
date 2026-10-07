@@ -3,7 +3,7 @@
 세션이 아니라 **사용자 라이브러리**에 저장한다. 이름으로 저장·검색하고(Lorentzian_Entropy 등),
 입력 슬롯으로 일반화해 다른 컬럼에 재사용한다.
 
-base(내장 점수·관계표)는 건드리지 않는다 — 사용자가 만드는 건 **입력 층**이다 ().
+base(내장 점수·관계표)는 건드리지 않는다 — 사용자가 만드는 건 **입력 층**이다 .
 """
 
 import datetime
@@ -53,7 +53,7 @@ def save_all(items: dict[str, Formula], path: str | Path | None = None) -> Path:
 
 def save(formula: Formula, path: str | Path | None = None,
          overwrite: bool = False) -> Path:
-    """이름으로 저장. 같은 이름이 있으면 overwrite 없이는 거부한다 (D-23과 같은 정신)."""
+    """이름으로 저장. 같은 이름이 있으면 overwrite 없이는 거부한다 (과 같은 정신)."""
     from statop.messages import msg
 
     items = load(path)

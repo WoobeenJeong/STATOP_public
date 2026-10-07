@@ -108,7 +108,7 @@ def run(df, types: dict[str, str], group_col: str | None = None,
         counts = df[group_col].value_counts().to_dict()
         sig = checks.srm(counts, ratio, g2["p_threshold"])
         if sig.hit:
-            # 원인 추적 () — 손실률과 연결해 **후보**만 제시한다. 인과는 단정하지 않는다
+            # 원인 추적  — 손실률과 연결해 **후보**만 제시한다. 인과는 단정하지 않는다
             links, trace = [], {}
             if loss_signal is not None and loss_signal.numbers.get("spread", 0) > 0.05:
                 links.append("GR-03:loss_by_group")

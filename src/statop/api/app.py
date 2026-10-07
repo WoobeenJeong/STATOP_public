@@ -347,7 +347,7 @@ async def view_distribution(body: DistReq) -> dict:
 @app.get("/v1/labels/levels")
 def label_levels(path: str, column: str, session_file: str | None = None,
                  sample_n: int = 10_000) -> dict:
-    """문자열 카테고리 컬럼의 수준 목록 () — 표시 값·n·코드·색.
+    """문자열 카테고리 컬럼의 수준 목록  — 표시 값·n·코드·색.
 
     여러 수준을 같은 코드로 묶으면 **군이 재정의된다** — groups에 묶은 결과를 함께 준다.
     """
@@ -419,12 +419,12 @@ class Relabel(BaseModel):
     key: str                 # 그 행의 값
     column: str              # 고칠 컬럼
     to: str                  # 새 값
-    note: str                # 사유 — 필수 ()
+    note: str                # 사유 — 필수
 
 
 @app.post("/v1/labels/relabel")
 def relabel_row(body: Relabel) -> dict:
-    """개별 샘플 라벨 수정 () — 원본은 그대로, 기록으로만 남는다.
+    """개별 샘플 라벨 수정  — 원본은 그대로, 기록으로만 남는다.
 
     사유(note)가 없으면 거부한다. 수정 비율이 임계(1%)를 넘으면 경고를 함께 돌려준다.
     """
@@ -566,7 +566,7 @@ def load_saved_api(body: LoadSession) -> dict:
         "loaded_from": doc["loaded_from"], "sources": doc["sources"],
         "selected": state["selected"], "main": state.get("main"),
         "ops": len(doc["ops"]),
-        # 원본이 바뀌었으면 UI가 빨간 경고 + 진행 여부를 묻는다 (S029와 같은 흐름)
+        # 원본이 바뀌었으면 UI가 빨간 경고 + 진행 여부를 묻는다 (와 같은 흐름)
         "source_problems": [
             {**r, "message": msg("session_load_missing" if r["status"] == "missing"
                                  else "session_load_changed", src=r["id"], path=r["path"])}
@@ -629,7 +629,7 @@ async def dataset_columns(
     res = cache.get(ck)
     cached = res is not None
     if res is None:
-        # 무거운 계산은 프로세스 풀에서 (세션별 동시 1개, )
+        # 무거운 계산은 프로세스 풀에서 (세션별 동시 1개)
         key = session_file or f"anon:{p.resolve()}"
         res = await run_isolated(key, profile_task, str(p), sample_n, transposed)
         cache.put(ck, res)
@@ -2182,7 +2182,7 @@ def metrics_custom(body: CustomRole) -> dict:
 
 @app.post("/v1/metrics/roles")
 def metrics_roles(body: RolesReq) -> dict:
-    """S172 병기 선택 저장 — base 관계 중 무엇을 보고할지만 ()."""
+    """S172 병기 선택 저장 — base 관계 중 무엇을 보고할지만 ."""
     from statop.analyze.metrics import goal_key, save_choice, suggest
 
     try:

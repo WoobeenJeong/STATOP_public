@@ -72,7 +72,7 @@ def check_ready() -> tuple[bool, str]:
 def build_prompt(session_file: str, opinion: str = "") -> tuple[str, dict]:
     """무엇이 나가는지 미리 보여 주기 위한 앞면 — 실제 조립은 `inputs.build` 이 한다.
 
-    프롬프트 문구는 `내부 규칙 명세` 가 갖는다 (, ).
+    프롬프트 문구는 `내부 규칙 명세` 가 갖는다 ().
     """
     from statop.hypothesis import inputs
 

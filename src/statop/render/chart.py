@@ -1,4 +1,4 @@
-"""터미널 그림 — 축·눈금이 있는 축약 그림 (DECISIONS ).
+"""터미널 그림 — 축·눈금이 있는 축약 그림 (DECISIONS).
 
 규칙: y축 눈금 ≤ 5개 · 가로 구간은 화면 폭에 맞춰 축약(합친 사실을 표기) · 축 끝값은 항상 표시.
 정밀 확인은 웹이 한다. 여기서는 "이상 신호를 알아채는" 수준을 목표로 한다.
@@ -25,7 +25,7 @@ def _fmt(v: float) -> str:
 
 
 def _tick_rows(height: int, max_ticks: int = MAX_Y_TICKS) -> set[int]:
-    """눈금을 표시할 행 번호 집합 — 위·아래 끝을 포함해 최대 max_ticks개 ()."""
+    """눈금을 표시할 행 번호 집합 — 위·아래 끝을 포함해 최대 max_ticks개 ."""
     n = min(max_ticks, height)
     if n <= 1:
         return {height}
@@ -33,7 +33,7 @@ def _tick_rows(height: int, max_ticks: int = MAX_Y_TICKS) -> set[int]:
 
 
 def _axis_labels(span: int, ticks: list[tuple[float, str]]) -> str:
-    """가로축 눈금 줄 — 양 끝은 **반드시** 보이고, 가운데는 자리가 남을 때만 ().
+    """가로축 눈금 줄 — 양 끝은 **반드시** 보이고, 가운데는 자리가 남을 때만 .
 
     끝값을 잘라내면 그림이 어느 범위인지 알 수 없다. 글자가 길면 줄을 늘려서라도
     남긴다 — 폭에 맞추자고 최댓값을 지우면 그림이 거짓말을 한다.
@@ -70,7 +70,7 @@ def histogram(counts: list[int], edges: list[float], width: int = 40,
         note = "  " + msg("chart_bins_merged", n=len(counts), w=width)
 
     top = max(merged) or 1
-    tick_rows = _tick_rows(height)      # y축 눈금 ≤ MAX_Y_TICKS ()
+    tick_rows = _tick_rows(height)      # y축 눈금 ≤ MAX_Y_TICKS
     lab_w = max(len(_fmt(top * r / height)) for r in tick_rows)
     lines: list[str] = []
     for row in range(height, 0, -1):  # 위에서 아래로
@@ -126,7 +126,7 @@ def boxplot(quartiles: list[float], outliers: tuple[float, float] | None = None,
 
     out += stat_lines(quartile_stats({"quartiles": list(quartiles)}))[:2]
     out.append("  " + msg("q_whisker_note"))
-    # 상자가 사실상 안 보이면 그 자체가 신호다 — 왜 좁은지 말해준다 ()
+    # 상자가 사실상 안 보이면 그 자체가 신호다 — 왜 좁은지 말해준다
     iqr_ratio = (q3 - q1) / (mx - mn) if mx > mn else 0
     if iqr_ratio < 0.10:      # IQR이 전체 범위의 10% 미만이면 상자가 사실상 안 보인다
         out.append("  " + msg("chart_box_narrow", ratio=iqr_ratio))

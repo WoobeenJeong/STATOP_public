@@ -210,7 +210,7 @@ export default function App() {
       setSaved(r.name);
     } catch (e) {
       const m = String(e instanceof Error ? e.message : e);
-      // 같은 이름이 있으면 덮어쓰기는 별도 확인을 거친다 (단순 저장과 분리, )
+      // 같은 이름이 있으면 덮어쓰기는 별도 확인을 거친다 (단순 저장과 분리)
       if (m.includes("이미 존재") && confirm(`${m}\n\n덮어쓸까요? (직전 버전은 .bak으로 보존)`)) {
         return doSave(true);
       }

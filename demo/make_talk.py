@@ -29,7 +29,7 @@ def build_group_correlation(rng) -> pd.DataFrame:  # noqa: ANN001
 
     심어 둔 것:
     - `group` 은 문자열(normal/cancer)이고 **아형이 둘씩** 있다 (eap2·eap3 / paad·lihc).
-      라벨 매핑()으로 0/1 로 묶어야 군이 둘이 된다
+      라벨 매핑으로 0/1 로 묶어야 군이 둘이 된다
     - cancer 는 **n=27** — 아슬아슬하게 쓸 만한 크기다 (Q-12 에서 확인)
     - cancer 군의 관계는 **비단조(V 자)** 다 — 양 끝에서 높고 가운데가 낮다.
       순위만 보는 Spearman ρ 는 못 보고(p>0.4), **거리상관 dCor(T-304)** 은 본다(p<0.03).

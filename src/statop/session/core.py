@@ -218,8 +218,8 @@ def replay(doc: dict) -> dict:
     selected: dict[str, list[str]] = {}
     transposed: dict[str, bool] = {}
     held: dict[str, list[str]] = {}      # 분석 제외, 시각화에는 사용 (M0-5)
-    label_maps: dict[str, dict[str, dict[str, int]]] = {}  # 소스 → 컬럼 → {값: 코드} ()
-    relabels: list[dict] = []   # 개별 샘플 수정 — 원본 불변, 기록으로만 ()
+    label_maps: dict[str, dict[str, dict[str, int]]] = {}  # 소스 → 컬럼 → {값: 코드}
+    relabels: list[dict] = []   # 개별 샘플 수정 — 원본 불변, 기록으로만
     excluded: list[dict] = []   # 개별 샘플 제외 — 사유 없이는 뺄 수 없다
     metric_goal: dict | None = None    #  사용자가 지정한 Goal 지표
     model_specs: list[dict] = []       # 모듈 B 구성  — 모듈 A 와 섞지 않는다

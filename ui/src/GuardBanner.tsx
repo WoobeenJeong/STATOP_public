@@ -87,7 +87,7 @@ export default function GuardBanner({ sessionFile, group, meta = [], metrics = [
               );
             })}
 
-            {/* 원인 후보 — 단정하지 않는다는 사실을 제목에 박아 둔다 () */}
+            {/* 원인 후보 — 단정하지 않는다는 사실을 제목에 박아 둔다  */}
             {rep.cause_trace?.candidate != null && (
               <div className="gd-cause">
                 <div className="gd-causehead">원인 후보 (단정이 아닙니다)</div>

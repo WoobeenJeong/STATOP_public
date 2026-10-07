@@ -193,7 +193,7 @@ def suggest(session_file: str, sample_n: int = 10_000) -> Panel:
 
     # 모듈 B 가 지름길 학습 위험을 찾았으면 **여기 Guardrail 로 올린다** (MB-C08).
     # 감사 화면에만 두면 지표를 고르는 자리에서는 보이지 않는다 — 정작 그때 필요한 정보다.
-    # 지어낸 id 가 아니라 규칙표에 있는 MB-C08 을 그대로 쓴다 ()
+    # 지어낸 id 가 아니라 규칙표에 있는 MB-C08 을 그대로 쓴다
     cols = _shortcut_columns(session_file, sample_n)
     if cols:
         panel.guardrail.insert(0, Suggestion(
@@ -539,7 +539,7 @@ def load_choices(path=None) -> dict:  # noqa: ANN001
 
 
 # ── 사용자가 직접 더하는 추천  ───────────────────────
-# **base 관계는 그대로 둔다** (). 사용자가 더한 것은 `custom` 에 따로 쌓고
+# **base 관계는 그대로 둔다** . 사용자가 더한 것은 `custom` 에 따로 쌓고
 # 화면에서 "사용자 지정"으로 표시한다 — 규칙표에서 온 것과 섞이지 않는다.
 CUSTOM = "custom"
 USER_PREFIX = "U-"
@@ -596,7 +596,7 @@ def save_choice(key: str, support: list[str], guardrail: list[str],
                 note: str = "", path=None) -> dict:  # noqa: ANN001
     """이 Goal 에 대해 **base 관계 중** 어떤 것을 함께 보고할지 저장한다.
 
-    base 에 없는 id 는 받지 않는다 — 여기서 새 관계를 만들 수 있으면  이 깨진다.
+    base 에 없는 id 는 받지 않는다 — 여기서 새 관계를 만들 수 있으면 이 깨진다.
     """
     import json
 

@@ -7,7 +7,7 @@
 |---|---|---|
 | 01_simulate_types | 의미 타입·함정 | M1-1 S-T 15종,  함정,  조성 감지 |
 | 02_simulate_missing | 결측 현황·대치 | M0-6b ~,  |
-| 03_simulate_correlation | 상관 전반 | S-R01/02/06/07, CLR·ALR·비례성(), VIF |
+| 03_simulate_correlation | 상관 전반 | S-R01/02/06/07, CLR·ALR·비례성, VIF |
 | 04_simulate_groupdiff | 군 비교·가정 위배 | Q-01/02, A3 정규성·등분산·소표본 |
 | 05_simulate_repeated | 반복측정·그룹 구조 | M0-7 , 반복측정 검정, C-05 독립성 |
 | 06_simulate_survival | 생존 | Q-09, Kaplan-Meier·Cox |
@@ -97,7 +97,7 @@ def build_correlation(rng) -> pd.DataFrame:
     """상관 전반 — 조성·척도 혼재·다중공선성·순위.
 
     심은 것: ①comp_a~d 4성분 조성(합=1) → **인위적인 상관(Closure effect)**,
-    CLR/ALR 로 답이 갈린다 () ②pct_scale 만 0~100 (척도 혼재, S-R07)
+    CLR/ALR 로 답이 갈린다  ②pct_scale 만 0~100 (척도 혼재, S-R07)
     ③vif_x3 = x1+x2+잡음 (다중공선성) ④monotone 쌍은 단조이지만 비선형
     (Pearson 과 Spearman 이 갈린다) ⑤indep 쌍은 무관 (거짓양성 확인용).
     """
@@ -122,7 +122,7 @@ def build_correlation(rng) -> pd.DataFrame:
 
 
 def build_groupdiff(rng) -> pd.DataFrame:
-    """군 비교와 가정 위배 — 어느 가정이 왜 깨졌는지 분기가 보여야 한다 ().
+    """군 비교와 가정 위배 — 어느 가정이 왜 깨졌는지 분기가 보여야 한다 .
 
     심은 것: ①y_normal 은 군 차이가 뚜렷(정상 경로) ②y_skewed 는 로그정규(왜도)
     ③y_outlier 는 정규지만 극단값 4개(Outlier 소수) ④y_hetero 는 군마다 분산이 다름
@@ -255,7 +255,7 @@ def build_sortbias(rng) -> pd.DataFrame:
 
 
 def build_labels(rng) -> pd.DataFrame:
-    """라벨 매핑·팔레트 — 표시 문자열과 계산 코드를 가르는 자료 ().
+    """라벨 매핑·팔레트 — 표시 문자열과 계산 코드를 가르는 자료 .
 
     심은 것: ①TCGA 코드(LUAD·BRCA)와 자유 문자열("lung adenocarcinoma")이 섞여 있다
     ②`germ-cell` 은 팔레트에서 **키워드 충돌**로 등록된 값(testis / germ_cell) —

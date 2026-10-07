@@ -1,6 +1,6 @@
 /** 의미 타입 확정 패널 (M1-1) — CLI의 [타입 확정] 화면과 같은 REST를 쓴다.
  *
- * 순위만 보여주고 점수는 보여주지 않는다 (). 추론에 없던 타입도 고를 수 있고,
+ * 순위만 보여주고 점수는 보여주지 않는다 . 추론에 없던 타입도 고를 수 있고,
  * 확정하면 그 타입으로 계산할 때의 위험(S-R 규칙)을 그 자리에서 알린다 (요구사항-7).
  */
 
@@ -251,7 +251,7 @@ export default function TypesPanel({ sessionFile, path,
           <div className="ttl" style={{ marginBottom: 6 }}>{dist.col}</div>
           {dist.d.kind === "numeric" && dist.d.bins ? (
             (() => {
-              // 축이 없으면 그림이 어느 범위인지 말해주지 않는다 — CLI와 같은 규칙()
+              // 축이 없으면 그림이 어느 범위인지 말해주지 않는다 — CLI와 같은 규칙
               const bins = dist.d.bins!;
               const edges = dist.d.edges ?? [];
               const mx = Math.max(...bins, 1);

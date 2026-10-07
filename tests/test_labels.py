@@ -1,4 +1,4 @@
-"""라벨 매핑 (DECISIONS ) — 표시는 문자열, 계산은 코드."""
+"""라벨 매핑 (DECISIONS) — 표시는 문자열, 계산은 코드."""
 
 from pathlib import Path
 

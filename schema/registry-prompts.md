@@ -170,7 +170,7 @@ Each of "hypothesis", "test" and "limit" must be a single sentence.
 
 ## 6. `PR-MODELING` — 모델 감사를 읽는 가설 3종
 
-모듈 B 는 **학습 전 방향**만 다룬다 (). 프롬프트도 학습 과정을 묻지 않는다.
+모듈 B 는 **학습 전 방향**만 다룬다 . 프롬프트도 학습 과정을 묻지 않는다.
 
 ### 6.1 입력 형식 (요약치만)
 

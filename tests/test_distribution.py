@@ -62,7 +62,7 @@ def test_sparkline_and_bar_shapes():
 
 
 def test_format_distribution_is_compact():
-    """과한 정보 대신 압축 — 문제 신호가 있을 때만 한 줄 추가 ()."""
+    """과한 정보 대신 압축 — 문제 신호가 있을 때만 한 줄 추가 ."""
     quiet = describe_series(pd.Series(np.random.default_rng(2).normal(0, 1, 500)), "q").as_dict()
     noisy = describe_series(pd.Series(np.random.default_rng(3).lognormal(0, 1.5, 500)), "n").as_dict()
     # 막대 + 다섯 수 + 울타리. 다섯 수를 한 줄에 다 넣으면 150자가 넘어 터미널에서

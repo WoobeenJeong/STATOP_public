@@ -1,5 +1,5 @@
 # 자동 생성 파일 — schema/registry-tests.md 에서 생성됨. 수기 편집 금지 (statop rules build).
-# rules_version: 72d1381d2131
+# rules_version: 1791c4674e57
 - id: R-01
   priority: 1
   condition: A1 대비 입력이 "A=B≠C" 형태

@@ -65,7 +65,7 @@ def test_build_defers_until_types_confirmed(session):
 
 
 def test_build_uses_label_mapping_for_groups(session):
-    """3수준을 2군으로 묶었으면 군 구성도 2군으로 보여야 한다 ()."""
+    """3수준을 2군으로 묶었으면 군 구성도 2군으로 보여야 한다 ."""
     from statop.session.core import append_op, load_session, main_source, save_session
 
     _confirm(session, vaf="proportion", site="label")
@@ -1620,7 +1620,7 @@ def test_compat_findings_appear_under_the_result_when_they_apply(session_metrics
     assert "적합성 판정" in body and "S-R01" in body
 
 
-# ── 조성 상관: 세 값은 서로 다른 질문 () ──────────────
+# ── 조성 상관: 세 값은 서로 다른 질문  ──────────────
 def test_ratio_correlation_offers_transformed_views(session_metrics):
     from statop.analyze.metrics import compute, suggest
     from statop.analyze.run import run_test

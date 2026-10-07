@@ -14,10 +14,10 @@ def test_known_id_counts():
     assert rep.known["tests"] == 70   # +T-1201~1204
     assert rep.known["assumptions"] == 15
     assert rep.known["semantic_types"] == 15
-    assert rep.known["scores"] == 112   # −SC-GEN 12종 ()
+    assert rep.known["scores"] == 112   # −SC-GEN 12종
     assert rep.known["errors"] == 167
     assert rep.known["model_checks"] == 31          #  registry-models
-    assert sum(rep.known.values()) == 502   # −SC-GEN 12종 ()
+    assert sum(rep.known.values()) == 502   # −SC-GEN 12종
 
 
 def test_validator_detects_broken_ref(monkeypatch):

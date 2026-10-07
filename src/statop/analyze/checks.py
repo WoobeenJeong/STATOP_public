@@ -1,7 +1,7 @@
 """A3 가정 검사 (~) — 규칙 DB(assumptions.yaml C-01~)의 방법을 그대로 따른다.
 
 각 검사는 판정만 주지 않는다:
-  정규성 — 위배면 **원인**(소수 outlier / 왜도 / 군간 형태 상이)까지 분기 ()
+  정규성 — 위배면 **원인**(소수 outlier / 왜도 / 군간 형태 상이)까지 분기
   검정력 — 부족하면 **어느 방향(어느 군) 샘플이 부족한지**까지
 p<0.05 = 위배 같은 기계적 판정으로 끝내지 않고, 규칙의 on_violation 문구로 잇는다.
 """
@@ -44,7 +44,7 @@ def _normality_p(x: np.ndarray) -> tuple[float | None, str]:
 
 
 def _violation_cause(x: np.ndarray) -> str:
-    """위배 원인 분기 (): outlier 소수 / 왜도(틸팅) / 그 외 형태."""
+    """위배 원인 분기 : outlier 소수 / 왜도(틸팅) / 그 외 형태."""
     from scipy import stats
 
     q1, q3 = np.percentile(x, [25, 75])

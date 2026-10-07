@@ -93,7 +93,7 @@ class Screen:
     type_row: int = 0
     dist_lines: list = field(default_factory=list)
     dist_col: str = ""
-    # 라벨 매핑 () — label 확정 직후 진입
+    # 라벨 매핑  — label 확정 직후 진입
     label_col: str = ""
     label_rows: list = field(default_factory=list)   # {value, n, ratio, code}
     label_row: int = 0
@@ -2702,7 +2702,7 @@ class Screen:
             out += ["  " + x for x in self.an_hypo]
         return "\n".join(out)
 
-    # ── 라벨 매핑 () — ←→ 로 수준별 코드 ────────────────
+    # ── 라벨 매핑  — ←→ 로 수준별 코드 ────────────────
     def open_labels(self, column: str) -> bool:
         from statop.labels import levels_of
         from statop.session.core import load_session, main_source, replay

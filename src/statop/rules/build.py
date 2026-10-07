@@ -259,7 +259,7 @@ def build_verdicts() -> tuple[Path, list[dict]]:
 
     A2 3색 판정 엔진의 조건식. 위에서부터 우선순위. 조건은 C 결과와 A1 입력만 사용(LLM 없음).
     판정 열은 "초록 T-103/T-105, 노랑 T-101"처럼 색↔검정이 묶여 있어 색별로 분해한다.
-    임계값(n<15 등)은 **기본값**이며 절대 기준이 아니다 (DECISIONS ) — 엔진은 이 값을
+    임계값(n<15 등)은 **기본값**이며 절대 기준이 아니다 (DECISIONS) — 엔진은 이 값을
     출발점으로 쓰되 판정 문구는 데이터 구성(군 간 n 격차·분산 이질성)을 함께 말해야 한다.
     """
     src = "registry-tests.md"
@@ -341,7 +341,7 @@ def build_guardrails() -> tuple[Path, dict]:
         "threshold": fields["임계"],
         "dimensional": fields["차원 검사"],
         "override_floor": "diagnostic" if "Diagnostic" in fields["override_floor"] else "gate",
-        # 원인 추적 (): 실행 순서는 진단 순서일 뿐 인과가 아니다
+        # 원인 추적 : 실행 순서는 진단 순서일 뿐 인과가 아니다
         "cause_trace": fields["원인 추적"],
         "counterfactual": fields["반사실 확인"],
         "unexplained_branch": fields["미설명 분기"],
@@ -400,7 +400,7 @@ def build_scores() -> tuple[Path, dict]:
             for field, aliases in _SC_ALIASES.items():
                 col = next((a for a in aliases if a in r), None)
                 item[field] = _clean(r[col]) if col else None
-            # 미지정(회색): 조건이 비어 있으면 "적합"이 아니라 "판정 불가"다 ()
+            # 미지정(회색): 조건이 비어 있으면 "적합"이 아니라 "판정 불가"다
             item["unspecified"] = [c for c in ("green", "yellow", "red") if not item[c]]
             item["coverage"] = "full" if not item["unspecified"] else (
                 "none" if len(item["unspecified"]) == 3 else "partial")
@@ -551,7 +551,7 @@ def build_models() -> tuple[Path, dict]:
                           r["표준화"].strip(), "optional"),
                       "why": r["왜"]}
                      for r in find_table(tables, "3.6 모델×전처리").rows]
-    # 3.7 모델 비교 — 비교 가능 여부는 모델쌍의 관계가 정한다 (, )
+    # 3.7 모델 비교 — 비교 가능 여부는 모델쌍의 관계가 정한다 ()
     comparison = [{"condition": r["조건"], "comparable": r["비교 가능"],
                    "allowed": [x.strip() for x in r["쓸 수 있는 것"].split(",")
                                if x.strip() and x.strip() != "—"],
