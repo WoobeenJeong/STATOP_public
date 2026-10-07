@@ -75,11 +75,13 @@ Check: `statop --help` works, `pytest -q` says 949 passed.
 
 **Terminal** — `statop`
 
-<!-- docs/img/tui.png -->
+<img width="1070" height="794" alt="image" src="https://github.com/user-attachments/assets/2a5fffcf-f7f4-406a-8d17-862d22055967" />
 
 **Web** — `statop serve`
 
-<!-- docs/img/web.png -->
+<img width="741" height="783" alt="image" src="https://github.com/user-attachments/assets/662a3d45-9ca4-49f9-a3f8-76bac9b68f74" />
+<img width="740" height="566" alt="image" src="https://github.com/user-attachments/assets/bd96fc31-6896-4772-b6c8-9c1769e2f663" />
+<img width="741" height="967" alt="image" src="https://github.com/user-attachments/assets/53f03ab0-a4d6-43f4-a5a7-f26fa2334b87" />
 
 Everything below is clicking. Nothing has to be typed except a file path.
 
