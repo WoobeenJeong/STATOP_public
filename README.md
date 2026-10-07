@@ -10,13 +10,12 @@ reasoning as an ontology, not just the number.**
 ## Three ideas
 
 **1 · Same statistics, whoever runs them.**
-An agent call, a hand-written script, a click in the UI — one core, one record.
+An agent call or a click in the UI — one core, one record.
 
 ```mermaid
 flowchart LR
   A["AI agent"] --> C["one core"]
-  B["you — CLI · TUI · Web"] --> C
-  D["your script"] --> C
+  B["human user — TUI · Web"] --> C
   C --> E["same verdict · same record"]
 ```
 
@@ -35,7 +34,7 @@ flowchart TD
 **3 · The link is kept.**
 What a column is, what was asked of it, which rule allowed the test — recorded as
 a chain. The same chain runs on other data; the same data runs under other chains;
-two runs are compared by reading two records — by you, or by an agent you ask.
+two runs are compared by reading two records — by a human user, or by an agent.
 
 ```mermaid
 flowchart LR
@@ -43,8 +42,8 @@ flowchart LR
   C --> D1["other data"]
   C --> D2["other chains"]
   C --> D3["other runs"]
-  U["you"] --- C
-  A["agent"] --- C
+  U["human user"] --- C
+  A["AI agent"] --- C
 ```
 
 ## Three questions it answers
@@ -99,7 +98,7 @@ Everything below is clicking. Nothing has to be typed except a file path.
 
 ## Six steps
 
-| | you click | and you get |
+| | a human user clicks | and gets |
 |---|---|---|
 | 1 | **열기** on a file | the columns, with missing rate and unique count |
 | 2 | **가져오기** after ticking columns | a work area holding only those |
@@ -145,7 +144,7 @@ Open [`demo/talk/001.html`](demo/talk/001.html) in a browser to look without ins
 
 ## 세 가지 생각
 
-**1 · 누가 돌려도 같은 통계.** 에이전트 호출, 손으로 짠 코드, 화면 클릭 —
+**1 · 누가 돌려도 같은 통계.** 에이전트가 부르든 사람이 화면에서 누르든 —
 같은 코어를 지나 같은 기록을 남깁니다.
 
 **2 · 가설은 숫자 하나가 아닙니다.** 목표 지표(Goal), 설명하는 지표(Support),
