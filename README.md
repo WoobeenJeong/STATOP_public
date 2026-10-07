@@ -75,13 +75,25 @@ Check: `statop --help` works, `pytest -q` says 949 passed.
 
 **Terminal** — `statop`
 
-<img width="1070" height="795" alt="image" src="https://github.com/user-attachments/assets/48d53d2a-f8a2-417b-909c-344c4a3d4209" />
+<img width="720" alt="STATOP terminal UI" src="https://github.com/user-attachments/assets/48d53d2a-f8a2-417b-909c-344c4a3d4209" />
 
 **Web** — `statop serve`
 
-<img width="741" height="783" alt="image" src="https://github.com/user-attachments/assets/662a3d45-9ca4-49f9-a3f8-76bac9b68f74" />
-<img width="740" height="566" alt="image" src="https://github.com/user-attachments/assets/bd96fc31-6896-4772-b6c8-9c1769e2f663" />
-<img width="741" height="967" alt="image" src="https://github.com/user-attachments/assets/53f03ab0-a4d6-43f4-a5a7-f26fa2334b87" />
+<img width="720" alt="STATOP web — work area" src="https://github.com/user-attachments/assets/662a3d45-9ca4-49f9-a3f8-76bac9b68f74" />
+
+<details>
+<summary>그림 열기 — 타입 추론 및 분포 관찰</summary>
+
+<img width="720" alt="type inference and distribution" src="https://github.com/user-attachments/assets/bd96fc31-6896-4772-b6c8-9c1769e2f663" />
+
+</details>
+
+<details>
+<summary>그림 열기 — 통계량 및 가설 저장</summary>
+
+<img width="720" alt="statistic and hypothesis" src="https://github.com/user-attachments/assets/53f03ab0-a4d6-43f4-a5a7-f26fa2334b87" />
+
+</details>
 
 Everything below is clicking. Nothing has to be typed except a file path.
 
@@ -170,6 +182,24 @@ pip install -e .
 
 - **터미널**: `statop`
 - **웹**: `statop serve`
+
+<img width="720" alt="STATOP 터미널 화면" src="https://github.com/user-attachments/assets/48d53d2a-f8a2-417b-909c-344c4a3d4209" />
+
+<img width="720" alt="STATOP 웹 — 작업 영역" src="https://github.com/user-attachments/assets/662a3d45-9ca4-49f9-a3f8-76bac9b68f74" />
+
+<details>
+<summary>그림 열기 — 타입 추론 및 분포 관찰</summary>
+
+<img width="720" alt="타입 추론과 분포" src="https://github.com/user-attachments/assets/bd96fc31-6896-4772-b6c8-9c1769e2f663" />
+
+</details>
+
+<details>
+<summary>그림 열기 — 통계량 및 가설 저장</summary>
+
+<img width="720" alt="통계량과 가설" src="https://github.com/user-attachments/assets/53f03ab0-a4d6-43f4-a5a7-f26fa2334b87" />
+
+</details>
 
 아래는 전부 클릭입니다. 직접 치는 것은 파일 경로뿐입니다.
 
