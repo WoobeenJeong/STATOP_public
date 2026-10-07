@@ -1,5 +1,5 @@
 # 자동 생성 파일 — schema/registry-tests.md 에서 생성됨. 수기 편집 금지 (statop rules build).
-# rules_version: 1791c4674e57
+# rules_version: 72d1381d2131
 - id: C-01
   check: 정규성
   method: n<50 Shapiro–Wilk / 50~300 D'Agostino K² / >300 검정 무의미 → QQ·왜도·첨도만

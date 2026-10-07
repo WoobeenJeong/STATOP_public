@@ -1,5 +1,5 @@
 # 자동 생성 파일 — schema/registry-tests.md 에서 생성됨. 수기 편집 금지 (statop rules build).
-# rules_version: 1791c4674e57
+# rules_version: 72d1381d2131
 - id: S-T01
   type: count
   infer_basis: 비음 정수, 0 다수 가능, 상한 없음
@@ -9,6 +9,7 @@
   type: proportion (fraction [0,1])
   infer_basis: 실수, 0≤x≤1, 형제 컬럼 행 합≈1(행 방향 정규화)
   trap: 0~1 값을 가진 count(소수 비율로 저장된 카운트). probability·normalized score와 범위가 같아 구분 불가 → S-T14/15 대비 신호 확인
+
   allowed_ops: CLR/ALR, logit, beta 회귀
 - id: S-T03
   type: percent [0,100]

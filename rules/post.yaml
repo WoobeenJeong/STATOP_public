@@ -1,5 +1,5 @@
 # 자동 생성 파일 — schema/registry-tests.md 에서 생성됨. 수기 편집 금지 (statop rules build).
-# rules_version: 1791c4674e57
+# rules_version: 72d1381d2131
 - id: P-201
   kind: effect_size
   name: 표준화 차이 (Cohen d, Hedges g, Cliff's δ, rank-biserial)

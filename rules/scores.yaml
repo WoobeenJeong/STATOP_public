@@ -1,5 +1,5 @@
 # 자동 생성 파일 — schema/None 에서 생성됨. 수기 편집 금지 (statop rules build).
-# rules_version: 1791c4674e57
+# rules_version: 72d1381d2131
 grades:
 - label: 안됨
   meaning: 수학적으로 정의되지 않거나(정의역 밖), 결과가 뜻을 잃음. 실행은 되지만 빨간 배너 + 원클릭 변환 제안

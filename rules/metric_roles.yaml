@@ -1,5 +1,5 @@
 # 자동 생성 파일 — schema/registry-metric-roles.md 에서 생성됨. 수기 편집 금지 (statop rules build).
-# rules_version: 1791c4674e57
+# rules_version: 72d1381d2131
 roles:
 - role: Goal
   definition: 가설이 검증됨을 확인하는 주 지표
