@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STATOP — walkthroughs</title>
+<style>
+  :root{--bg:#fff;--text:#1c1f22;--muted:#5b6166;--border:#dde0e3;--brand:#35566b;--ok:#0b6e6e}
+  @media (prefers-color-scheme:dark){:root{--bg:#14171a;--text:#e7e9ea;--muted:#a2a9af;
+    --border:#2c3136;--brand:#7ba3bd;--ok:#3fb0ad}}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font:15px/1.65 "Malgun Gothic",-apple-system,"Segoe UI",Roboto,"Noto Sans KR",sans-serif}
+  .wrap{max-width:680px;margin:0 auto;padding:44px 20px 72px}
+  h1{font-family:Georgia,"Times New Roman",serif;font-size:26px;letter-spacing:-.035em;margin:0}
+  h1 i{font-style:normal;color:var(--ok)}
+  .sub{color:var(--muted);margin:6px 0 26px}
+  a.card{display:block;border:1px solid var(--border);border-radius:9px;padding:14px 16px;
+    margin-top:10px;text-decoration:none;color:var(--text)}
+  a.card:hover{border-color:var(--brand)}
+  a.card b{color:var(--brand)}
+  a.card span{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+  .note{color:var(--muted);font-size:13px;margin-top:26px;border-top:1px solid var(--border);
+    padding-top:13px}
+  .note a{color:var(--brand)}
+</style></head><body><div class="wrap">
+<h1>STAT<i>OP</i></h1>
+<div class="sub">Three walkthroughs. Click through them — nothing to install.<br>
+클릭만으로 둘러보는 세 가지 흐름입니다. 자료는 전부 합성입니다.</div>
+
+<a class="card" href="001.html"><b>01 · 군별 상관 — group correlation</b>
+<span>한 군만 휘는 관계 — 상관은 놓치고 거리상관은 잡는다</span></a>
+
+<a class="card" href="002.html"><b>02 · 분포에 맞는 공식 — the distribution decides</b>
+<span>파생 컬럼 하나로 겹쳐 있던 두 군이 갈린다</span></a>
+
+<a class="card" href="003.html"><b>03 · 무결성 검증 — integrity check</b>
+<span>같은 표의 두 판본, 짝을 지어야 보이는 차이 (터미널 화면 그대로)</span></a>
+
+<div class="note">Each page is one self-contained file — the statistics are computed
+in your browser as you click. · 각 페이지는 파일 하나로 완결되고, 통계는 누를 때
+브라우저 안에서 계산됩니다.<br>
+Source &amp; install: <a href="https://github.com/WoobeenJeong/STATOP_public">github.com/WoobeenJeong/STATOP_public</a></div>
+</div></body></html>
