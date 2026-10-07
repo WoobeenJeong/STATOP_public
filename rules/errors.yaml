@@ -1,0 +1,1810 @@
+# 자동 생성 파일 — schema/registry-errors.md 에서 생성됨. 수기 편집 금지 (statop rules build).
+# rules_version: 72d1381d2131
+categories:
+- code: G
+  name: 값이 사는 공간
+  checks: 실수선 ℝ / 양의 실수 ℝ⁺ / 구간 [0,1] / 심플렉스(조성) / 순위 / 카운트 ℕ / 시간축 / 로그 공간
+  source: S-T 의미 타입, C-12, C-14
+- code: D
+  name: 가정하는 분포족
+  checks: 정규 / 정규 근사(CLT) / 분포 무관 / 형태 유사 / Poisson·NB / 이항 / 베타 / 비례위험
+  source: C-01, C-04, C-10, C-11
+- code: I
+  name: 관측 간 관계
+  checks: 독립 / 대응(짝) / 반복측정 / 군집(환자·batch) / 시계열 자기상관 / 조성 내 성분 간 의존
+  source: C-05, M0-7, S-T13
+- code: S
+  name: 값의 척도
+  checks: 원척도 / log / logit / z / 순위 / 비율 vs 차이 / 등간 여부
+  source: S-T, S-R
+- code: N
+  name: 크기와 희소성
+  checks: 군별 n / 셀 기대빈도 / EPV / 동점 비율 / 0 비율
+  source: C-09, C-10
+- code: M
+  name: 결측 처리
+  checks: 허용 방식(listwise/pairwise/불허) / 결측 비무작위 / 0과 NaN 구분
+  source: C-13, 1절
+- code: H
+  name: 검정이 답하는 질문
+  checks: 위치 vs 형태 / 차이 vs 비율 / omnibus vs 대비 / 단측·양측
+  source: A1, R-01
+- code: P
+  name: 검정 수
+  checks: 명시적 다중검정 / 암묵적(사후 선택, 컬럼 스캔) / 세션 내 교체
+  source: C-15, R-16
+- code: E
+  name: 결과 읽기
+  checks: 효과크기 부재 / p 오해 / CI 부재 / 방향 착오
+  source: P-20x, P-23x
+- code: C
+  name: 구현 문제
+  checks: 동점 보정 / 연속성 보정 / 0·inf / 수렴 실패 / seed
+  source: 구현 검사
+nan_policies:
+- code: LW
+  method: Listwise
+  meaning: 분석에 쓰이는 컬럼 중 하나라도 NaN인 행 제거
+  applies_to: 회귀(T-8xx), 다변량, 이원 ANOVA(T-401)
+- code: GW
+  method: Groupwise
+  meaning: 그 군의 값만 없으면 그 관측만 제거, 군별 n 달라도 됨
+  applies_to: 독립 2군·k군 검정(T-101~105, 121~124, 201~203)
+- code: PW
+  method: Pairwise
+  meaning: 두 변수 모두 있는 행만 사용(상관행렬은 쌍마다 n 다름)
+  applies_to: 상관(T-301~305). 행렬 전체 비교 시 n 불일치 경고
+- code: PR
+  method: Pair-required
+  meaning: 짝 중 하나라도 없으면 그 짝 제거
+  applies_to: 대응 검정(T-111~113, 211), Bland–Altman(T-602)
+- code: CW
+  method: Complete-within-subject
+  meaning: 피험자의 모든 조건이 있어야 함. 하나라도 없으면 피험자 전체 제거
+  applies_to: RM ANOVA(T-131), Friedman(T-132), Cochran Q(T-212)
+- code: ML
+  method: Model-based (허용)
+  meaning: MAR 가정 하에 결측 그대로 적합 (제거 불필요)
+  applies_to: 혼합모형(T-133, 404), Cox(T-807, 검열은 결측 아님)
+- code: 'NO'
+  method: 불허
+  meaning: 셀/성분에 NaN이 있으면 계산 불가
+  applies_to: '분할표(T-201~203, 211, 212: 범주 결측은 행 제거로 귀결), 조성 세트(T-1001~1006: 성분 NaN은 행 제거 또는 세트 재정의)'
+errors:
+- id: E-101-1
+  test: T-101
+  test_name: Welch t-test
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 군별 정규성 위배 + 소표본
+  categories:
+  - D
+  - N
+  detect: C-01, n<15
+  action: T-103/105 (R-04)
+- id: E-101-2
+  test: T-101
+  test_name: Welch t-test
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 군집·반복 관측을 독립으로 취급
+  categories:
+  - I
+  detect: C-05 ICC
+  action: T-133 (R-02)
+- id: E-101-3
+  test: T-101
+  test_name: Welch t-test
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 값이 [0,1]·심플렉스인데 원척도 t
+  categories:
+  - G
+  - S
+  detect: S-T02/13
+  action: logit/CLR 후 (S-R02)
+- id: E-101-4
+  test: T-101
+  test_name: Welch t-test
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 카운트(깊이 상이)를 그대로 비교
+  categories:
+  - G
+  - N
+  detect: S-T01, 총합 분산
+  action: 비율화 또는 T-803 (S-R03)
+- id: E-101-5
+  test: T-101
+  test_name: Welch t-test
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 한 군 n<5
+  categories:
+  - N
+  detect: C-09
+  action: 검정력 표시, 비모수
+- id: E-101-6
+  test: T-101
+  test_name: Welch t-test
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 효과크기·CI 없이 p만
+  categories:
+  - E
+  detect: P-201/203 미포함
+  action: 강제 병기
+- id: E-101-7
+  test: T-101
+  test_name: Welch t-test
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 방향 가설을 양측으로(또는 반대)
+  categories:
+  - H
+  detect: A1 방향성
+  action: 단측 지정 시 사전기록
+- id: E-101-8
+  test: T-101
+  test_name: Welch t-test
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: outlier가 평균을 지배
+  categories:
+  - D
+  detect: C-03
+  action: T-103/104, 제외는 A4
+- id: E-102-1
+  test: T-102
+  test_name: Student t-test
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 등분산 위배 (n 불균형 시 치명)
+  categories:
+  - D
+  detect: C-02
+  action: T-101 (R-06)
+- id: E-102-2
+  test: T-102
+  test_name: Student t-test
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 그 외 T-101과 동일
+  categories: []
+  detect: null
+  action: null
+- id: E-103-1
+  test: T-103
+  test_name: Mann–Whitney U
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: '"중위수 차이 검정"으로 오해 — 실제는 확률적 우위'
+  categories:
+  - H
+  - E
+  detect: 문구
+  action: 효과크기 Cliff's δ, 해석 문구 고정
+- id: E-103-2
+  test: T-103
+  test_name: Mann–Whitney U
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 두 분포 형태·분산 상이 → 위치 차이로 해석 불가
+  categories:
+  - D
+  detect: C-04
+  action: T-104 (R-07)
+- id: E-103-3
+  test: T-103
+  test_name: Mann–Whitney U
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 동점 다수 (이산·순위 자료)
+  categories:
+  - C
+  - N
+  detect: 동점 비율 >20%
+  action: 동점 보정 U, 정확 p 대신 근사
+- id: E-103-4
+  test: T-103
+  test_name: Mann–Whitney U
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 순위 변환이 심플렉스 의존성을 없애준다는 착각
+  categories:
+  - G
+  - I
+  detect: S-T13
+  action: 조성이면 CLR 후
+- id: E-103-5
+  test: T-103
+  test_name: Mann–Whitney U
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 군집 구조
+  categories:
+  - I
+  detect: C-05
+  action: 군집 순위 검정 또는 T-133
+- id: E-104-1
+  test: T-104
+  test_name: Brunner–Munzel
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 극소표본(n<10)에서 t-근사 불안정
+  categories:
+  - N
+  detect: C-09
+  action: permutation 버전
+- id: E-104-2
+  test: T-104
+  test_name: Brunner–Munzel
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 효과크기 P(X>Y)를 확률 차이로 오해
+  categories:
+  - E
+  detect: null
+  action: 문구 고정
+- id: E-105-1
+  test: T-105
+  test_name: Permutation t
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: 교환 가능성 위배 (군집·층 무시)
+  categories:
+  - I
+  detect: C-05
+  action: 층화·군집 permutation
+- id: E-105-2
+  test: T-105
+  test_name: Permutation t
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: seed 미기록 → 재현 불가
+  categories:
+  - C
+  detect: seed 필드
+  action: Gate (#7)
+- id: E-105-3
+  test: T-105
+  test_name: Permutation t
+  nan_policy: GW
+  section: 2.1 Q-01 차이 — 독립 2군
+  error: B 부족 → p 해상도 부족 (B=999면 p<0.001 불가)
+  categories:
+  - C
+  detect: B 값
+  action: B≥5000 기본
+- id: E-111-1
+  test: T-111
+  test_name: Paired t
+  nan_policy: PR
+  section: 2.2 Q-01 차이 — 대응 2군
+  error: 짝 결측을 독립 검정으로 우회
+  categories:
+  - I
+  - M
+  detect: 짝 결측 수
+  action: PR 제거 + n 보고, 또는 T-133
+- id: E-111-2
+  test: T-111
+  test_name: Paired t
+  nan_policy: PR
+  section: 2.2 Q-01 차이 — 대응 2군
+  error: 차이값(원값 아님) 정규성 미확인
+  categories:
+  - D
+  detect: C-01 on diff
+  action: T-112
+- id: E-111-3
+  test: T-111
+  test_name: Paired t
+  nan_policy: PR
+  section: 2.2 Q-01 차이 — 대응 2군
+  error: 대응 구조를 무시하고 독립 t
+  categories:
+  - I
+  detect: 설계 입력
+  action: A1 대응 여부 필수
+- id: E-111-4
+  test: T-111
+  test_name: Paired t
+  nan_policy: PR
+  section: 2.2 Q-01 차이 — 대응 2군
+  error: 비율·확률의 차이 (0.01→0.02 vs 0.5→0.51)
+  categories:
+  - G
+  - S
+  detect: S-T02/04
+  action: logit 차이 또는 비율
+- id: E-112-1
+  test: T-112
+  test_name: Wilcoxon signed-rank
+  nan_policy: PR
+  section: 2.2 Q-01 차이 — 대응 2군
+  error: 차이 분포 비대칭 → 검정 무효
+  categories:
+  - D
+  detect: 차이 왜도
+  action: T-113
+- id: E-112-2
+  test: T-112
+  test_name: Wilcoxon signed-rank
+  nan_policy: PR
+  section: 2.2 Q-01 차이 — 대응 2군
+  error: 0 차이 다수 (처리 방식에 따라 결과 변동)
+  categories:
+  - C
+  - N
+  detect: 0 차이 비율
+  action: 방법 명시(Pratt/Wilcoxon)
+- id: E-113-1
+  test: T-113
+  test_name: Sign test
+  nan_policy: PR
+  section: 2.2 Q-01 차이 — 대응 2군
+  error: 검정력 극히 낮음 → 비유의를 "차이 없음"으로 오해
+  categories:
+  - E
+  - N
+  detect: C-09
+  action: 검정력 표시
+- id: E-121-1
+  test: T-121
+  test_name: One-way ANOVA
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: 등분산 위배, 특히 n 불균형
+  categories:
+  - D
+  - N
+  detect: C-02
+  action: T-122
+- id: E-121-2
+  test: T-121
+  test_name: One-way ANOVA
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: omnibus 유의 → "모두 다르다"로 오해 / 사후 없이 결론
+  categories:
+  - H
+  - E
+  detect: 사후 미실행
+  action: P-211~213 강제
+- id: E-121-3
+  test: T-121
+  test_name: One-way ANOVA
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: 가설이 특정 대비인데 omnibus 사용 (#9)
+  categories:
+  - H
+  detect: A1 대비 입력
+  action: T-1101 (R-01)
+- id: E-121-4
+  test: T-121
+  test_name: One-way ANOVA
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: 사후검정 쌍 수를 다중성에 미반영
+  categories:
+  - P
+  detect: C-15
+  action: 보정 사후
+- id: E-121-5
+  test: T-121
+  test_name: One-way ANOVA
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: 군집·반복
+  categories:
+  - I
+  detect: C-05
+  action: T-131/133
+- id: E-121-6
+  test: T-121
+  test_name: One-way ANOVA
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: 조성·비율 원척도
+  categories:
+  - G
+  detect: S-T02/13
+  action: CLR
+- id: E-121-7
+  test: T-121
+  test_name: One-way ANOVA
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: 순서 있는 군인데 순서 무시
+  categories:
+  - H
+  detect: A1
+  action: T-501
+- id: E-122-1
+  test: T-122
+  test_name: Welch ANOVA
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: 소표본 군에서 자유도 근사 불안정
+  categories:
+  - N
+  detect: 군 n<6
+  action: permutation
+- id: E-122-2
+  test: T-122
+  test_name: Welch ANOVA
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: 사후를 Tukey로(등분산 가정)
+  categories:
+  - D
+  - P
+  detect: null
+  action: P-212 Games–Howell
+- id: E-123-1
+  test: T-123
+  test_name: Kruskal–Wallis
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: 형태 상이 군 혼합 → 해석 불가
+  categories:
+  - D
+  detect: C-04
+  action: permutation ANOVA
+- id: E-123-2
+  test: T-123
+  test_name: Kruskal–Wallis
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: 사후 Dunn 미보정
+  categories:
+  - P
+  detect: null
+  action: P-213
+- id: E-123-3
+  test: T-123
+  test_name: Kruskal–Wallis
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: 동점
+  categories:
+  - C
+  detect: null
+  action: 보정 H
+- id: E-124-1
+  test: T-124
+  test_name: Permutation ANOVA
+  nan_policy: GW
+  section: 2.3 Q-01 차이 — ≥3군
+  error: T-105와 동일 (교환 가능성, seed, B)
+  categories:
+  - I
+  - C
+  detect: null
+  action: null
+- id: E-131-1
+  test: T-131
+  test_name: RM ANOVA
+  nan_policy: CW
+  section: 2.4 Q-01 차이 — 반복측정
+  error: 구형성 위배 미보정
+  categories:
+  - D
+  detect: C-06
+  action: GG/HF
+- id: E-131-2
+  test: T-131
+  test_name: RM ANOVA
+  nan_policy: CW
+  section: 2.4 Q-01 차이 — 반복측정
+  error: 결측 피험자 전체 삭제 → n 급감·편향
+  categories:
+  - M
+  - N
+  detect: CW 제거량
+  action: T-133
+- id: E-131-3
+  test: T-131
+  test_name: RM ANOVA
+  nan_policy: CW
+  section: 2.4 Q-01 차이 — 반복측정
+  error: 시점 순서 자기상관 무시
+  categories:
+  - I
+  detect: 시점 수 ≥4
+  action: T-133 (AR 구조)
+- id: E-131-4
+  test: T-131
+  test_name: RM ANOVA
+  nan_policy: CW
+  section: 2.4 Q-01 차이 — 반복측정
+  error: 피험자 간 요인 혼합 시 설계 오지정
+  categories:
+  - I
+  - H
+  detect: 설계 입력
+  action: mixed ANOVA / T-133
+- id: E-132-1
+  test: T-132
+  test_name: Friedman
+  nan_policy: CW
+  section: 2.4 Q-01 차이 — 반복측정
+  error: 블록 내 순위만 사용 → 크기 정보 손실, 검정력 낮음
+  categories:
+  - E
+  - N
+  detect: null
+  action: T-133
+- id: E-132-2
+  test: T-132
+  test_name: Friedman
+  nan_policy: CW
+  section: 2.4 Q-01 차이 — 반복측정
+  error: 결측
+  categories:
+  - M
+  detect: CW
+  action: T-133
+- id: E-133-1
+  test: T-133
+  test_name: Linear mixed model
+  nan_policy: ML
+  section: 2.4 Q-01 차이 — 반복측정
+  error: 랜덤효과 구조 오지정 (기울기 누락 등)
+  categories:
+  - I
+  detect: 설계
+  action: 구조 비교 AIC, 명시 기록
+- id: E-133-2
+  test: T-133
+  test_name: Linear mixed model
+  nan_policy: ML
+  section: 2.4 Q-01 차이 — 반복측정
+  error: 수렴 실패·특이 적합을 무시
+  categories:
+  - C
+  detect: 경고 로그
+  action: 구조 단순화
+- id: E-133-3
+  test: T-133
+  test_name: Linear mixed model
+  nan_policy: ML
+  section: 2.4 Q-01 차이 — 반복측정
+  error: 결측이 MAR 아님 (MNAR)
+  categories:
+  - M
+  detect: C-13
+  action: 민감도 분석
+- id: E-133-4
+  test: T-133
+  test_name: Linear mixed model
+  nan_policy: ML
+  section: 2.4 Q-01 차이 — 반복측정
+  error: 잔차 정규성·등분산 미확인
+  categories:
+  - D
+  detect: 잔차 plot
+  action: 변환/GLMM
+- id: E-133-5
+  test: T-133
+  test_name: Linear mixed model
+  nan_policy: ML
+  section: 2.4 Q-01 차이 — 반복측정
+  error: 고정효과 p의 자유도 방법 미명시
+  categories:
+  - C
+  - E
+  detect: null
+  action: Satterthwaite/KR 기록
+- id: E-201-1
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 2.5 Q-02 비율/빈도
+  error: 기대빈도 <5 셀 다수
+  categories:
+  - N
+  detect: 셀 검사
+  action: T-202 (R-09)
+- id: E-201-2
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 2.5 Q-02 비율/빈도
+  error: 대응·반복 자료를 독립 분할표로
+  categories:
+  - I
+  detect: 설계
+  action: T-211/212
+- id: E-201-3
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 2.5 Q-02 비율/빈도
+  error: 같은 개체가 여러 셀에 (다중응답)
+  categories:
+  - I
+  detect: 행 합 ≠ 개체 수
+  action: 개체 단위 재구성
+- id: E-201-4
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 2.5 Q-02 비율/빈도
+  error: 2×2 연속성 보정 유무로 결론 변동
+  categories:
+  - C
+  detect: 경계 p
+  action: 두 값 병기
+- id: E-201-5
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 2.5 Q-02 비율/빈도
+  error: 유의 후 어느 셀이 기여하는지 미확인
+  categories:
+  - E
+  detect: null
+  action: 표준화 잔차
+- id: E-201-6
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 2.5 Q-02 비율/빈도
+  error: 층화 변수 무시 → Simpson
+  categories:
+  - I
+  - H
+  detect: S-R11
+  action: 층별 표 + CMH
+- id: E-201-7
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 2.5 Q-02 비율/빈도
+  error: 비율을 백분율·비율 컬럼으로 넣음(카운트 아님)
+  categories:
+  - G
+  - S
+  detect: S-T02/03
+  action: 원 카운트 요구
+- id: E-202-1
+  test: T-202
+  test_name: Fisher exact
+  nan_policy: 'NO'
+  section: 2.5 Q-02 비율/빈도
+  error: 보수적(이산성) → 검정력 손실
+  categories:
+  - E
+  - N
+  detect: null
+  action: mid-p 병기
+- id: E-202-2
+  test: T-202
+  test_name: Fisher exact
+  nan_policy: 'NO'
+  section: 2.5 Q-02 비율/빈도
+  error: r×c 확장 계산 시간
+  categories:
+  - C
+  detect: null
+  action: Monte Carlo
+- id: E-211-1
+  test: T-211
+  test_name: McNemar
+  nan_policy: PR
+  section: 2.5 Q-02 비율/빈도
+  error: 불일치 셀 <10에서 카이제곱 근사
+  categories:
+  - N
+  detect: 셀 검사
+  action: 정확 McNemar
+- id: E-211-2
+  test: T-211
+  test_name: McNemar
+  nan_policy: PR
+  section: 2.5 Q-02 비율/빈도
+  error: 일치 셀을 결과에 포함하려는 오해
+  categories:
+  - E
+  detect: null
+  action: 문구
+- id: E-221-1
+  test: T-221
+  test_name: 비율 차이 CI
+  nan_policy: GW
+  section: 2.5 Q-02 비율/빈도
+  error: Wald 구간 (0·1 근처에서 붕괴)
+  categories:
+  - C
+  - G
+  detect: p<0.1 or >0.9
+  action: Wilson/Newcombe (P-234)
+- id: E-221-2
+  test: T-221
+  test_name: 비율 차이 CI
+  nan_policy: GW
+  section: 2.5 Q-02 비율/빈도
+  error: RD·RR·OR 혼용
+  categories:
+  - E
+  - S
+  detect: null
+  action: 셋 병기
+- id: E-301-1
+  test: T-301
+  test_name: Pearson r
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: outlier 1~2개가 r을 결정
+  categories:
+  - D
+  detect: C-03, leverage
+  action: T-302/305 (R-03)
+- id: E-301-2
+  test: T-301
+  test_name: Pearson r
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 비선형(단조) 관계 과소추정
+  categories:
+  - D
+  detect: C-08
+  action: T-302
+- id: E-301-3
+  test: T-301
+  test_name: Pearson r
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 조성 성분 간 상관 (심플렉스) — 음의 편향
+  categories:
+  - G
+  - I
+  detect: S-T13
+  action: CLR·proportionality (S-R01)
+- id: E-301-4
+  test: T-301
+  test_name: Pearson r
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 군집 자료의 pooled 상관 (Simpson·생태학적 오류)
+  categories:
+  - I
+  detect: C-05
+  action: 군내/군간 상관 분리
+- id: E-301-5
+  test: T-301
+  test_name: Pearson r
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 총합 상이한 카운트 간 상관 (깊이 효과)
+  categories:
+  - G
+  - N
+  detect: S-T01
+  action: 비율화→CLR
+- id: E-301-6
+  test: T-301
+  test_name: Pearson r
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 척도 혼합 (log vs 원척도)
+  categories:
+  - S
+  detect: S-R06
+  action: 통일
+- id: E-301-7
+  test: T-301
+  test_name: Pearson r
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: PW n이 쌍마다 달라 행렬 비교 불가
+  categories:
+  - M
+  detect: n 불일치
+  action: LW 전환 또는 n 표기
+- id: E-301-8
+  test: T-301
+  test_name: Pearson r
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 컬럼 스캔(다수 변수 × 라벨) 후 유의한 것만 보고
+  categories:
+  - P
+  detect: C-15 실행 카운트
+  action: P-223 BH
+- id: E-301-9
+  test: T-301
+  test_name: Pearson r
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: r만 보고 인과·기울기로 해석
+  categories:
+  - E
+  detect: null
+  action: 회귀 병기 (Support)
+- id: E-301-10
+  test: T-301
+  test_name: Pearson r
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 범위 제한(특정 군만)으로 r 축소
+  categories:
+  - D
+  - N
+  detect: 범위 vs 전체
+  action: 문구
+- id: E-301-11
+  test: T-301
+  test_name: Pearson r
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: CI 없음
+  categories:
+  - E
+  detect: P-205
+  action: Fisher z / bootstrap
+- id: E-302-1
+  test: T-302
+  test_name: Spearman ρ
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 비단조 관계
+  categories:
+  - D
+  detect: C-08
+  action: T-304
+- id: E-302-2
+  test: T-302
+  test_name: Spearman ρ
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 동점 다수
+  categories:
+  - C
+  detect: null
+  action: 보정
+- id: E-302-3
+  test: T-302
+  test_name: Spearman ρ
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 순위가 심플렉스 의존을 없앤다는 착각
+  categories:
+  - G
+  detect: S-T13
+  action: CLR
+- id: E-302-4
+  test: T-302
+  test_name: Spearman ρ
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: E-301-4/5/7/8 동일
+  categories: []
+  detect: null
+  action: null
+- id: E-303-1
+  test: T-303
+  test_name: Kendall τ
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: τ-a/b/c 혼용
+  categories:
+  - C
+  detect: null
+  action: 명시
+- id: E-304-1
+  test: T-304
+  test_name: Distance correlation
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 방향·형태 정보 없음 → 단독 보고 시 해석 불가
+  categories:
+  - E
+  - H
+  detect: R-12
+  action: Support metric 강제
+- id: E-304-2
+  test: T-304
+  test_name: Distance correlation
+  nan_policy: PW
+  section: 2.6 Q-03 연관
+  error: 표본 크기에 따른 편향 (bias-corrected 필요)
+  categories:
+  - N
+  - C
+  detect: n<50
+  action: 편향 보정판
+- id: E-311-1
+  test: T-311
+  test_name: Partial correlation
+  nan_policy: LW
+  section: 2.6 Q-03 연관
+  error: 통제 변수가 collider/매개변수 → 편향 유발
+  categories:
+  - I
+  - H
+  detect: 사용자 지정
+  action: DAG 문구 요구
+- id: E-311-2
+  test: T-311
+  test_name: Partial correlation
+  nan_policy: LW
+  section: 2.6 Q-03 연관
+  error: 통제 변수 선형 가정
+  categories:
+  - D
+  detect: null
+  action: null
+- id: E-321-1
+  test: T-321
+  test_name: Proportionality (ρ_p, φ)
+  nan_policy: 'NO'
+  section: 2.6 Q-03 연관
+  error: CLR 미적용 원척도에 계산
+  categories:
+  - G
+  detect: S-T
+  action: 자동 CLR
+- id: E-321-2
+  test: T-321
+  test_name: Proportionality (ρ_p, φ)
+  nan_policy: 'NO'
+  section: 2.6 Q-03 연관
+  error: 0 처리 방법(의사카운트) 미기록 → 결과 변동
+  categories:
+  - C
+  - G
+  detect: 0 비율
+  action: 방법 로그
+- id: E-321-3
+  test: T-321
+  test_name: Proportionality (ρ_p, φ)
+  nan_policy: 'NO'
+  section: 2.6 Q-03 연관
+  error: 성분 수 적을 때 CLR 기하 평균 불안정
+  categories:
+  - N
+  - G
+  detect: 성분 <5
+  action: ALR 고려
+- id: E-401-1
+  test: T-401
+  test_name: Two-way ANOVA
+  nan_policy: LW
+  section: 2.7 Q-04 상호작용
+  error: 불균형 설계에서 Type I SS 사용
+  categories:
+  - C
+  - N
+  detect: 셀 n 불균형
+  action: Type II/III 명시
+- id: E-401-2
+  test: T-401
+  test_name: Two-way ANOVA
+  nan_policy: LW
+  section: 2.7 Q-04 상호작용
+  error: 교호작용 유의한데 주효과를 단독 해석
+  categories:
+  - E
+  - H
+  detect: 교호 p
+  action: 단순효과 분석
+- id: E-401-3
+  test: T-401
+  test_name: Two-way ANOVA
+  nan_policy: LW
+  section: 2.7 Q-04 상호작용
+  error: 교호작용 비유의를 "없다"로 해석 (검정력)
+  categories:
+  - E
+  - N
+  detect: C-09
+  action: 검정력 표시
+- id: E-401-4
+  test: T-401
+  test_name: Two-way ANOVA
+  nan_policy: LW
+  section: 2.7 Q-04 상호작용
+  error: 셀 결측·빈 셀
+  categories:
+  - M
+  - N
+  detect: 빈 셀
+  action: T-403/404
+- id: E-401-5
+  test: T-401
+  test_name: Two-way ANOVA
+  nan_policy: LW
+  section: 2.7 Q-04 상호작용
+  error: 척도 의존적 상호작용 (log 변환 시 사라지는 교호)
+  categories:
+  - S
+  detect: S-T
+  action: 척도 명시, 변환 전후 병기
+- id: E-402-1
+  test: T-402
+  test_name: ART ANOVA
+  nan_policy: LW
+  section: 2.7 Q-04 상호작용
+  error: 정렬 후 순위이므로 사후 비교 시 ART-C 필요
+  categories:
+  - C
+  - P
+  detect: null
+  action: ART-C
+- id: E-403-1
+  test: T-403
+  test_name: GLM 교호작용
+  nan_policy: LW
+  section: 2.7 Q-04 상호작용
+  error: 연속 조절변수 미중심화 → 주효과 계수 해석 오류
+  categories:
+  - S
+  - E
+  detect: C-07
+  action: 중심화
+- id: E-403-2
+  test: T-403
+  test_name: GLM 교호작용
+  nan_policy: LW
+  section: 2.7 Q-04 상호작용
+  error: 다중공선성
+  categories:
+  - D
+  detect: C-07 VIF
+  action: null
+- id: E-501-1
+  test: T-501
+  test_name: Jonckheere–Terpstra
+  nan_policy: GW
+  section: 2.8 Q-05 경향
+  error: 군 순서를 임의로 지정
+  categories:
+  - H
+  detect: A1 순서 입력
+  action: 사전 명시
+- id: E-501-2
+  test: T-501
+  test_name: Jonckheere–Terpstra
+  nan_policy: GW
+  section: 2.8 Q-05 경향
+  error: 단조 아닌(U형) 패턴을 놓침
+  categories:
+  - H
+  - D
+  detect: 군 평균 plot
+  action: 대비 또는 회귀
+- id: E-502-1
+  test: T-502
+  test_name: Cochran–Armitage
+  nan_policy: 'NO'
+  section: 2.8 Q-05 경향
+  error: 점수(score) 선택이 결과를 바꿈
+  categories:
+  - C
+  - H
+  detect: null
+  action: 점수 명시
+- id: E-503-1
+  test: T-502
+  test_name: Cochran–Armitage
+  nan_policy: 'NO'
+  section: 2.8 Q-05 경향
+  error: 자기상관으로 1종 오류 팽창
+  categories:
+  - I
+  detect: ACF
+  action: 수정 MK / 블록
+- id: E-503-2
+  test: T-502
+  test_name: Cochran–Armitage
+  nan_policy: 'NO'
+  section: 2.8 Q-05 경향
+  error: 계절성 미제거
+  categories:
+  - D
+  detect: null
+  action: 계절 MK
+- id: E-601-1
+  test: T-601
+  test_name: ICC
+  nan_policy: CW
+  section: 2.9 Q-06 일치도
+  error: ICC 유형(1/2/3, 일치/절대, 단일/평균) 미명시
+  categories:
+  - C
+  - E
+  detect: null
+  action: 유형 강제 선택
+- id: E-601-2
+  test: T-601
+  test_name: ICC
+  nan_policy: CW
+  section: 2.9 Q-06 일치도
+  error: 피험자 분산이 작으면 ICC 낮음(범위 제한)
+  categories:
+  - D
+  - N
+  detect: 피험자 분산
+  action: 문구
+- id: E-602-1
+  test: T-602
+  test_name: Bland–Altman
+  nan_policy: PR
+  section: 2.9 Q-06 일치도
+  error: 차이가 크기에 비례 (깔때기)
+  categories:
+  - S
+  - D
+  detect: 차이 vs 평균 기울기
+  action: 비율/log 척도
+- id: E-602-2
+  test: T-602
+  test_name: Bland–Altman
+  nan_policy: PR
+  section: 2.9 Q-06 일치도
+  error: 반복측정 짝을 독립으로
+  categories:
+  - I
+  detect: C-05
+  action: 반복측정 BA
+- id: E-602-3
+  test: T-602
+  test_name: Bland–Altman
+  nan_policy: PR
+  section: 2.9 Q-06 일치도
+  error: 사전 허용 한계 없이 "일치"로 결론
+  categories:
+  - H
+  - E
+  detect: null
+  action: 한계 입력 요구
+- id: E-604-1
+  test: T-604
+  test_name: Cohen κ
+  nan_policy: PR
+  section: 2.9 Q-06 일치도
+  error: 유병률 극단에서 κ 낮음(역설)
+  categories:
+  - N
+  - E
+  detect: 주변 분포
+  action: PABAK·일치율 병기
+- id: E-604-2
+  test: T-604
+  test_name: Cohen κ
+  nan_policy: PR
+  section: 2.9 Q-06 일치도
+  error: 순서 범주에 비가중 κ
+  categories:
+  - S
+  detect: S-T07
+  action: weighted κ
+- id: E-701-1
+  test: T-701
+  test_name: KS 2-sample
+  nan_policy: GW
+  section: 2.10 Q-07 분포 비교
+  error: 이산·동점 자료 (p 부정확)
+  categories:
+  - C
+  - D
+  detect: 동점
+  action: permutation KS
+- id: E-701-2
+  test: T-701
+  test_name: KS 2-sample
+  nan_policy: GW
+  section: 2.10 Q-07 분포 비교
+  error: 꼬리 차이에 둔감
+  categories:
+  - D
+  detect: null
+  action: T-702
+- id: E-701-3
+  test: T-701
+  test_name: KS 2-sample
+  nan_policy: GW
+  section: 2.10 Q-07 분포 비교
+  error: 위치 차이만 원인인데 "분포 다름"으로 과해석
+  categories:
+  - H
+  - E
+  detect: 위치 검정 병기
+  action: Support
+- id: E-703-1
+  test: T-703
+  test_name: Energy/MMD
+  nan_policy: LW
+  section: 2.10 Q-07 분포 비교
+  error: 커널·척도 선택 의존
+  categories:
+  - C
+  - S
+  detect: null
+  action: 명시
+- id: E-703-2
+  test: T-703
+  test_name: Energy/MMD
+  nan_policy: LW
+  section: 2.10 Q-07 분포 비교
+  error: 다변량에서 표준화 미적용 → 큰 척도 변수 지배
+  categories:
+  - S
+  detect: 컬럼 분산 비
+  action: 표준화
+- id: E-801-1
+  test: T-801
+  test_name: Logistic
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: EPV<10 → 과적합·계수 편향
+  categories:
+  - N
+  detect: C-09
+  action: 변수 축소, Firth
+- id: E-801-2
+  test: T-801
+  test_name: Logistic
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 완전분리 (계수 발산)
+  categories:
+  - C
+  - N
+  detect: 경고
+  action: Firth/베이지안
+- id: E-801-3
+  test: T-801
+  test_name: Logistic
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 다중공선성
+  categories:
+  - D
+  detect: C-07
+  action: null
+- id: E-801-4
+  test: T-801
+  test_name: Logistic
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 연속 예측변수의 로짓 선형성 미확인
+  categories:
+  - D
+  detect: 부분 잔차
+  action: 스플라인
+- id: E-801-5
+  test: T-801
+  test_name: Logistic
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 군집 자료
+  categories:
+  - I
+  detect: C-05
+  action: GLMM/GEE
+- id: E-801-6
+  test: T-801
+  test_name: Logistic
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 라벨 대리변수 포함 (L3)
+  categories:
+  - H
+  detect: 라벨 상관 극단
+  action: 제거
+- id: E-801-7
+  test: T-801
+  test_name: Logistic
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: OR을 RR로 해석 (유병률 높을 때)
+  categories:
+  - E
+  detect: 기저율 >10%
+  action: 문구
+- id: E-801-8
+  test: T-801
+  test_name: Logistic
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 라벨 코드 방향(0/1) 착오
+  categories:
+  - E
+  - C
+  detect: B3 매핑
+  action: 매핑 로그
+- id: E-802-1
+  test: T-802
+  test_name: OLS
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 잔차 비정규·이분산
+  categories:
+  - D
+  detect: 잔차 plot, C-02
+  action: robust SE / T-806
+- id: E-802-2
+  test: T-802
+  test_name: OLS
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 고 leverage 점
+  categories:
+  - D
+  detect: Cook's D
+  action: T-806
+- id: E-802-3
+  test: T-802
+  test_name: OLS
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 종속변수가 [0,1]·카운트·조성
+  categories:
+  - G
+  detect: S-T
+  action: T-805/803/CLR
+- id: E-802-4
+  test: T-802
+  test_name: OLS
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 자기상관 (시계열)
+  categories:
+  - I
+  detect: DW
+  action: GLS
+- id: E-802-5
+  test: T-802
+  test_name: OLS
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 단계적 변수선택 후 p 보고
+  categories:
+  - P
+  detect: null
+  action: 금지, 사전지정
+- id: E-802-6
+  test: T-802
+  test_name: OLS
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: R² 단독 보고
+  categories:
+  - E
+  detect: null
+  action: 계수 CI, RMSE
+- id: E-803-1
+  test: T-803
+  test_name: Poisson / NB
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 과산포 무시 (Poisson)
+  categories:
+  - D
+  detect: 분산/평균
+  action: NB
+- id: E-803-2
+  test: T-803
+  test_name: Poisson / NB
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 영과잉
+  categories:
+  - D
+  detect: C-10
+  action: ZIP/ZINB
+- id: E-803-3
+  test: T-803
+  test_name: Poisson / NB
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 노출량(offset) 누락 (깊이·시간)
+  categories:
+  - G
+  - N
+  detect: 총합 변수 존재
+  action: offset 지정
+- id: E-804-1
+  test: T-804
+  test_name: Ordinal logistic
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 비례 오즈 위배
+  categories:
+  - D
+  detect: Brant
+  action: partial PO
+- id: E-805-1
+  test: T-805
+  test_name: Beta / logit 회귀
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 정확히 0·1 값 존재 (beta 정의역 밖)
+  categories:
+  - G
+  - C
+  detect: 경계값 수
+  action: 변환 (y(n−1)+0.5)/n 또는 eps
+- id: E-805-2
+  test: T-805
+  test_name: Beta / logit 회귀
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: logit 변환이 0/1 근처 변동을 증폭 → "변동성" 질문에 오용 (#3)
+  categories:
+  - S
+  - H
+  detect: S-R05
+  action: p(1−p) 정규화 병기
+- id: E-806-1
+  test: T-806
+  test_name: Robust regression
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 추정량 종류(Huber/MM) 미기록
+  categories:
+  - C
+  detect: null
+  action: 명시
+- id: E-807-1
+  test: T-806
+  test_name: Robust regression
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 비례위험 위배
+  categories:
+  - D
+  detect: C-11
+  action: 층화/시간의존
+- id: E-807-2
+  test: T-806
+  test_name: Robust regression
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 시간의존 공변량을 기저에 넣음 (immortal time)
+  categories:
+  - I
+  - H
+  detect: 시점 정의
+  action: landmark
+- id: E-807-3
+  test: T-806
+  test_name: Robust regression
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 경쟁 위험 무시
+  categories:
+  - D
+  - H
+  detect: 사건 유형 >1
+  action: Fine–Gray
+- id: E-807-4
+  test: T-806
+  test_name: Robust regression
+  nan_policy: LW
+  section: 2.11 Q-08 회귀
+  error: 검열을 결측으로 제거
+  categories:
+  - M
+  detect: null
+  action: 금지
+- id: E-901-1
+  test: T-901
+  test_name: KM + Log-rank
+  nan_policy: ML
+  section: 2.12 Q-09 생존
+  error: 곡선 교차 시 검정력 저하
+  categories:
+  - D
+  detect: 교차 감지
+  action: T-902/903
+- id: E-901-2
+  test: T-901
+  test_name: KM + Log-rank
+  nan_policy: ML
+  section: 2.12 Q-09 생존
+  error: 정보적 검열 (탈락이 예후와 연관)
+  categories:
+  - M
+  - I
+  detect: 탈락 vs 공변량
+  action: 민감도
+- id: E-901-3
+  test: T-901
+  test_name: KM + Log-rank
+  nan_policy: ML
+  section: 2.12 Q-09 생존
+  error: 중위 생존 미도달 군을 수치로 보고
+  categories:
+  - E
+  detect: 50% 미도달
+  action: RMST
+- id: E-1001-1
+  test: T-1001
+  test_name: CLR + 검정
+  nan_policy: 'NO'
+  section: 2.13 Q-10 조성 데이터
+  error: 0 다수 → log 불가, 의사카운트가 결과 지배
+  categories:
+  - G
+  - C
+  detect: 0 비율 >30%
+  action: Bayesian-multiplicative, 방법 기록
+- id: E-1001-2
+  test: T-1001
+  test_name: CLR + 검정
+  nan_policy: 'NO'
+  section: 2.13 Q-10 조성 데이터
+  error: CLR 후 성분별 검정을 독립으로 다중보정 (성분 합이 0이라 의존)
+  categories:
+  - I
+  - P
+  detect: null
+  action: 문구, FDR 보수적
+- id: E-1001-3
+  test: T-1001
+  test_name: CLR + 검정
+  nan_policy: 'NO'
+  section: 2.13 Q-10 조성 데이터
+  error: 조성 세트에 빠진 성분 (부분 조성) → CLR 기하평균 왜곡
+  categories:
+  - G
+  detect: 행 합 ≠ 상수
+  action: 세트 재정의 (S-T13)
+- id: E-1001-4
+  test: T-1001
+  test_name: CLR + 검정
+  nan_policy: 'NO'
+  section: 2.13 Q-10 조성 데이터
+  error: CLR 값의 차이를 원척도 비율 차이로 해석
+  categories:
+  - E
+  - S
+  detect: null
+  action: '문구: log-ratio 변화'
+- id: E-1001-5
+  test: T-1001
+  test_name: CLR + 검정
+  nan_policy: 'NO'
+  section: 2.13 Q-10 조성 데이터
+  error: 깊이(총합) 정보 폐기가 문제인 경우 (절대량 질문)
+  categories:
+  - H
+  - G
+  detect: A1 질문
+  action: 절대량이면 조성 경로 아님
+- id: E-1003-1
+  test: T-1003
+  test_name: ALDEx2형 / T-1004 ANCOM-BC형
+  nan_policy: 'NO'
+  section: 2.13 Q-10 조성 데이터
+  error: 방법 간 결과 불일치를 한 가지만 보고
+  categories:
+  - E
+  - P
+  detect: null
+  action: 2종 병기
+- id: E-1004-1
+  test: T-1003
+  test_name: ALDEx2형 / T-1004 ANCOM-BC형
+  nan_policy: 'NO'
+  section: 2.13 Q-10 조성 데이터
+  error: 편향 보정 가정(대부분 성분 불변) 위배
+  categories:
+  - D
+  detect: null
+  action: 문구
+- id: E-1006-1
+  test: T-1003
+  test_name: ALDEx2형 / T-1004 ANCOM-BC형
+  nan_policy: 'NO'
+  section: 2.13 Q-10 조성 데이터
+  error: 층화 변수(size) 선택 누락 → 합산만 보고 (#5)
+  categories:
+  - I
+  - H
+  detect: S-R11
+  action: 후보 변수 열거
+- id: E-1006-2
+  test: T-1003
+  test_name: ALDEx2형 / T-1004 ANCOM-BC형
+  nan_policy: 'NO'
+  section: 2.13 Q-10 조성 데이터
+  error: 층 내 n 극소 → 층별 추정 불안정
+  categories:
+  - N
+  detect: 층별 n
+  action: 층 병합 근거 기록
+- id: E-1101-1
+  test: T-1101
+  test_name: Planned contrast
+  nan_policy: GW
+  section: 2.14 Q-11 사전지정 대비
+  error: 대비를 데이터 본 뒤 정함 (사후 대비를 사전으로 위장)
+  categories:
+  - P
+  - H
+  detect: 세션 순서(R-16)
+  action: 이력 첨부
+- id: E-1101-2
+  test: T-1101
+  test_name: Planned contrast
+  nan_policy: GW
+  section: 2.14 Q-11 사전지정 대비
+  error: 대비 가중치 합 ≠ 0
+  categories:
+  - C
+  detect: 자동 검사
+  action: 차단
+- id: E-1101-3
+  test: T-1101
+  test_name: Planned contrast
+  nan_policy: GW
+  section: 2.14 Q-11 사전지정 대비
+  error: 여러 비직교 대비를 미보정
+  categories:
+  - P
+  detect: 직교성 검사
+  action: P-215
+- id: E-1101-4
+  test: T-1101
+  test_name: Planned contrast
+  nan_policy: GW
+  section: 2.14 Q-11 사전지정 대비
+  error: 단측 방향을 결과 보고 정함
+  categories:
+  - H
+  - P
+  detect: 방향 사전 기록
+  action: 'Gate: 방향은 확정 전 입력'
+- id: E-1101-5
+  test: T-1101
+  test_name: Planned contrast
+  nan_policy: GW
+  section: 2.14 Q-11 사전지정 대비
+  error: 대비 유의를 "A=B"의 증명으로 해석 (동등성은 별도)
+  categories:
+  - E
+  - H
+  detect: null
+  action: TOST 제안
+- id: E-1102-1
+  test: T-1102
+  test_name: Dunnett
+  nan_policy: GW
+  section: 2.14 Q-11 사전지정 대비
+  error: 대조군 아닌 군을 참조로 지정
+  categories:
+  - H
+  detect: 사용자 지정
+  action: 확인
+- id: E-X-1
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: p>0.05를 "차이 없음"으로 해석
+  categories:
+  - E
+  detect: 비유의 결과
+  action: 검정력·CI 문구, TOST
+- id: E-X-2
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: p<0.05를 효과 크기로 해석
+  categories:
+  - E
+  detect: null
+  action: 효과크기 강제
+- id: E-X-3
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: 검정을 여러 개 시도 후 하나 보고
+  categories:
+  - P
+  detect: R-16
+  action: 이력 첨부
+- id: E-X-4
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: 결측 제거·대치 후 n·구성 변화 미보고
+  categories:
+  - M
+  detect: '1.1'
+  action: 전/후 병기, 대치 셀 표시
+- id: E-X-11
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: 평균 대치 후 분산 축소를 무시 (p 과소)
+  categories:
+  - M
+  - E
+  detect: 대치 비율 >10%
+  action: 노랑, 다중 대치 안내
+- id: E-X-12
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: 대치 seed 미기록 (KNN·MICE)
+  categories:
+  - M
+  - C
+  detect: null
+  action: Gate
+- id: E-X-5
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: 결측이 라벨·군과 연관
+  categories:
+  - M
+  - I
+  detect: C-13
+  action: red
+- id: E-X-6
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: seed 미기록 (재표본·permutation·bootstrap)
+  categories:
+  - C
+  detect: null
+  action: Gate
+- id: E-X-7
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: 의미 타입 미확정 상태에서 실행
+  categories:
+  - G
+  - S
+  detect: S-R14
+  action: 노랑
+- id: E-X-8
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: 단측/양측 미기록
+  categories:
+  - H
+  detect: A1
+  action: 강제 필드
+- id: E-X-9
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: 단위·척도 라벨 없는 plot
+  categories:
+  - E
+  detect: null
+  action: 축 라벨 강제
+- id: E-X-10
+  test: null
+  test_name: null
+  nan_policy: null
+  section: 3. 범용 오류 (모든 검정) — E-X
+  error: 같은 데이터로 가설 생성과 검정 동시 수행
+  categories:
+  - P
+  - H
+  detect: null
+  action: 문구 (탐색/확인 구분)

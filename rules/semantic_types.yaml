@@ -1,0 +1,78 @@
+# 자동 생성 파일 — schema/registry-tests.md 에서 생성됨. 수기 편집 금지 (statop rules build).
+# rules_version: 72d1381d2131
+- id: S-T01
+  type: count
+  infer_basis: 비음 정수, 0 다수 가능, 상한 없음
+  trap: 0~1 정수만 있으면 이진 코드일 수 있음
+  allowed_ops: 합, 비율화, log(+eps), Poisson/NB
+- id: S-T02
+  type: proportion (fraction [0,1])
+  infer_basis: 실수, 0≤x≤1, 형제 컬럼 행 합≈1(행 방향 정규화)
+  trap: 0~1 값을 가진 count(소수 비율로 저장된 카운트). probability·normalized score와 범위가 같아 구분 불가 → S-T14/15 대비 신호 확인
+
+  allowed_ops: CLR/ALR, logit, beta 회귀
+- id: S-T03
+  type: percent [0,100]
+  infer_basis: 0≤x≤100, 소수 1~2자리
+  trap: 정수로 저장된 percent ↔ count 혼동
+  allowed_ops: /100 → S-T02
+- id: S-T04
+  type: probability
+  infer_basis: '[0,1], 행 합 대개 ≠1(행마다 독립 사건), 0/1 근처 집중(쌍봉형) 흔함. 컬럼명 패턴(prob, p_)은 보조 신호'
+  trap: proportion·normalized score와 동일 범위. 배타 클래스면 행 합=1이 되어 proportion과 진짜로 혼동 → 상충 표시 후 확정 요구
+  allowed_ops: p(1−p) 정규화 변동성, logit, Brier, 보정곡선·ECE
+- id: S-T05
+  type: log-scale
+  infer_basis: 음수 포함, 컬럼명 log/ln/log2, 파생 수식에서 부여
+  trap: 원척도와 혼합 비교 금지
+  allowed_ops: 차이(=원척도 비율), 산술평균
+- id: S-T06
+  type: z-score
+  infer_basis: 평균≈0, SD≈1
+  trap: 표준화 기준 집단 불명
+  allowed_ops: 비교 시 기준 동일성 확인
+- id: S-T07
+  type: ordinal code
+  infer_basis: 소수의 정수 수준(≤10), 순서 의미
+  trap: nominal과 구분 불가 → 사용자 확정 필수
+  allowed_ops: 순위 검정, ordinal 회귀
+- id: S-T08
+  type: nominal code
+  infer_basis: 소수의 정수/문자 수준
+  trap: 순서 있는 것을 nominal로 오판
+  allowed_ops: 빈도 검정
+- id: S-T09
+  type: id
+  infer_basis: 고유값 비율 ≈ 1, 문자/정수
+  trap: 연속 변수로 오판 → 자동 hold 제안
+  allowed_ops: 분석 제외, 그룹 구조(C-05)
+- id: S-T10
+  type: datetime
+  infer_basis: 파싱 가능
+  trap: null
+  allowed_ops: 시간 누수(L2.1), 추세
+- id: S-T11
+  type: continuous
+  infer_basis: 그 외 실수
+  trap: '상한·하한 있는 물리량(예: 0 이상)은 변환 고려'
+  allowed_ops: 전부
+- id: S-T12
+  type: clr / alr (파생)
+  infer_basis: M1-3 수정 버튼 또는 F-11/12로 생성
+  trap: 원 조성 세트가 로그에 기록됨
+  allowed_ops: 상관, 차이 검정
+- id: S-T13
+  type: 조성 세트
+  infer_basis: 여러 컬럼 행 합 ≈ 상수 (C-12)
+  trap: 우연히 합이 상수인 독립 변수들
+  allowed_ops: Q-10 경로
+- id: S-T14
+  type: normalized score
+  infer_basis: '[0,1]이며 컬럼 min·max가 정확히 0·1(min-max 흔적) 또는 분위수 균등 간격(분위 정규화). 행 합 ≠1'
+  trap: probability·proportion과 동일 범위. 원척도가 소실돼 배치·집단 간 직접 비교 불가
+  allowed_ops: 순위 기반 비교, 동일 정규화 기준 내에서만 비교
+- id: S-T15
+  type: expression index
+  infer_basis: 값이 1 초과 또는 음수 포함(log2 비율은 음수 정상), 참조 기준(내부 대조·전체 신호)에 대한 상대량
+  trap: 로그 스케일인데 원척도로 오인 → 산술평균이 틀림(기하평균 필요), S-R06 척도 혼합
+  allowed_ops: log 차이(=비율), 기하평균, 정규화 기준 명시 후 비교

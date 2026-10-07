@@ -1,0 +1,132 @@
+# 자동 생성 파일 — schema/registry-tests.md 에서 생성됨. 수기 편집 금지 (statop rules build).
+# rules_version: 72d1381d2131
+- id: F-01
+  functions:
+  - log(x+eps)
+  - log2
+  - log10
+  - ln
+  scope: row
+  scope_raw: 행 단위
+  result_type: log-scale
+  eps_rule: 필수(0 존재 시). 추천 `10^floor(log10(min_positive(x)))−k`, k 기본 2. 추천 이하만 허용
+  note: 미리보기에 −inf 발생 행 수
+- id: F-02
+  functions:
+  - + − × ÷
+  scope: row
+  scope_raw: 행 단위
+  result_type: 피연산자 타입에서 유도 (fraction÷fraction → ratio)
+  eps_rule: ÷는 0 분모 검사
+  note: 타입 충돌 시 S-R 배너
+- id: F-03
+  functions:
+  - abs
+  - sqrt
+  - pow
+  scope: row
+  scope_raw: 행 단위
+  result_type: continuous
+  eps_rule: sqrt는 음수 검사
+  note: null
+- id: F-04
+  functions:
+  - sum(col)
+  - mean(col)
+  - sd(col)
+  scope: column_scalar
+  scope_raw: 컬럼 스칼라
+  result_type: null
+  eps_rule: null
+  note: 행 단위 연산과 UI에서 색 구분
+- id: F-05
+  functions:
+  - x / sum(x)
+  scope: row
+  scope_raw: 비율화
+  result_type: fraction
+  eps_rule: null
+  note: 조성 세트 자동 제안
+- id: F-06
+  functions:
+  - logit(p)
+  scope: row
+  scope_raw: 행 단위
+  result_type: log-scale
+  eps_rule: p∈{0,1} 시 eps
+  note: null
+- id: F-07
+  functions:
+  - zscore(x)
+  scope: column_scalar
+  scope_raw: 컬럼
+  result_type: z-score
+  eps_rule: null
+  note: 기준 집단 기록
+- id: F-08
+  functions:
+  - rank(x)
+  scope: column_scalar
+  scope_raw: 컬럼
+  result_type: ordinal
+  eps_rule: null
+  note: 동점 처리 방식 기록
+- id: F-09
+  functions:
+  - p*(1−p)
+  scope: row
+  scope_raw: 행 단위
+  result_type: continuous
+  eps_rule: null
+  note: S-R05 보조
+- id: F-10
+  functions:
+  - bin(x
+  - edges)
+  scope: row
+  scope_raw: 행 단위
+  result_type: ordinal
+  eps_rule: null
+  note: 경계 기록
+- id: F-11
+  functions:
+  - clr(set)
+  scope: set
+  scope_raw: 세트 → 성분 수만큼 컬럼
+  result_type: clr
+  eps_rule: 0 존재 시 의사카운트/eps, 방법 기록
+  note: 조성 세트 필요
+- id: F-12
+  functions:
+  - alr(a
+  - b)` = `log(a/b)
+  scope: row
+  scope_raw: 두 컬럼
+  result_type: alr
+  eps_rule: eps
+  note: 2성분 시 CLR 대안
+- id: F-13
+  functions:
+  - ilr(set)
+  scope: set
+  scope_raw: 세트
+  result_type: ilr
+  eps_rule: null
+  note: 고급, 기본 숨김
+- id: F-14
+  functions:
+  - delta(x
+  - group)` 전후 차이
+  scope: group
+  scope_raw: 그룹 기준
+  result_type: 피연산자 유도
+  eps_rule: null
+  note: 대응 설계
+- id: F-15
+  functions:
+  - arcsinh(x)
+  scope: row
+  scope_raw: 행 단위
+  result_type: log-scale
+  eps_rule: 불필요 — 0에서 정의됨
+  note: S-R04 의 권고. 큰 값에서 log 처럼 거동하되 0·음수에서 끊기지 않는다. 척도를 바꾸려면 `arcsinh(x/θ)` 처럼 나눠서 쓴다

@@ -1,0 +1,485 @@
+# 자동 생성 파일 — schema/design-tokens.md 에서 생성됨. 수기 편집 금지 (statop rules build).
+# rules_version: 72d1381d2131
+keyword_conflicts:
+- keyword: germ-cell
+  categories:
+  - testis
+  - germ_cell
+normalize:
+  lowercase: true
+  strip_separators:
+  - '-'
+  - _
+  - .
+  - /
+  - ' '
+  strip_suffixes:
+  - cancer
+  - ca
+  - tumor
+  - carcinoma
+  - adeno
+  - tissue
+  - cells
+  - ep
+match_rules:
+- TCGA 코드 정확 일치
+- 키워드 부분일치 — 가장 긴 일치 우선
+- 다중 일치 시 상태축(암종) > 조직축
+- 그래도 모호하면 사용자 확인(노랑)
+- 무매칭은 회색 '미분류' — 사용자 지정 시 palette.json에 학습
+anchors:
+- category: liver
+  tcga:
+  - LIHC
+  - CHOL
+  keywords:
+  - hcc
+  - liver
+  - hepat
+  - lihc
+  - chol
+  - hepatocellular
+  color: '#3FA66B'
+  family: 초록
+- category: lung
+  tcga:
+  - LUAD
+  - LUSC
+  keywords:
+  - lung
+  - luad
+  - lusc
+  - nsclc
+  - sclc
+  - alveo
+  - bronch
+  color: '#57C08A'
+  family: 청록초록
+- category: breast
+  tcga:
+  - BRCA
+  keywords:
+  - breast
+  - brca
+  - mammary
+  - luminal
+  - basal
+  - her2
+  - tnbc
+  color: '#E8A6C2'
+  family: 분홍
+- category: ovary
+  tcga:
+  - OV
+  keywords:
+  - ov
+  - ovary
+  - ovarian
+  - hgsoc
+  - serous-ov
+  color: '#D96B9A'
+  family: 장미빛
+- category: colon
+  tcga:
+  - COAD
+  keywords:
+  - colon
+  - coad
+  - colorectal
+  - crc
+  - colo
+  color: '#C08AE0'
+  family: 보라
+- category: rectum
+  tcga:
+  - READ
+  keywords:
+  - rectum
+  - read
+  - rectal
+  color: '#B77AD6'
+  family: 보라
+- category: stomach
+  tcga:
+  - STAD
+  keywords:
+  - stomach
+  - stad
+  - gastric
+  - gej
+  color: '#C67A2E'
+  family: 갈주황
+- category: pancreas
+  tcga:
+  - PAAD
+  keywords:
+  - pancrea
+  - paad
+  - pdac
+  - acinar
+  - ductal-panc
+  color: '#E8873C'
+  family: 주황
+- category: prostate
+  tcga:
+  - PRAD
+  keywords:
+  - prostate
+  - prad
+  color: '#3E7CC0'
+  family: 파랑
+- category: bladder
+  tcga:
+  - BLCA
+  keywords:
+  - bladder
+  - blca
+  - urothelial
+  color: '#E0A85C'
+  family: 연주황
+- category: kidney
+  tcga:
+  - KIRC
+  - KIRP
+  - KICH
+  keywords:
+  - kidney
+  - kirc
+  - kirp
+  - kich
+  - renal
+  - rcc
+  - ccRCC
+  color: '#4FA3D1'
+  family: 하늘
+- category: head_neck
+  tcga:
+  - HNSC
+  keywords:
+  - head
+  - neck
+  - hnsc
+  - hn
+  - oral
+  - oropharyn
+  - laryn
+  color: '#B5892E'
+  family: 황갈
+- category: thyroid
+  tcga:
+  - THCA
+  keywords:
+  - thyroid
+  - thca
+  - papillary-thy
+  color: '#5CC0C0'
+  family: 청록
+- category: brain_gbm
+  tcga:
+  - GBM
+  keywords:
+  - gbm
+  - glioblastoma
+  - glioma-high
+  color: '#4A5560'
+  family: 짙은 회청
+- category: brain_lgg
+  tcga:
+  - LGG
+  keywords:
+  - lgg
+  - glioma-low
+  - astrocyt
+  - oligodendro
+  color: '#6E7A86'
+  family: 회청
+- category: melanoma
+  tcga:
+  - SKCM
+  keywords:
+  - melanoma
+  - skcm
+  - cutaneous-mel
+  color: '#7E4B2B'
+  family: 갈색
+- category: skin_scc
+  tcga: []
+  keywords:
+  - skin-scc
+  - cutaneous-scc
+  - keratino
+  color: '#D98A6A'
+  family: 살구
+- category: esophagus
+  tcga:
+  - ESCA
+  keywords:
+  - esophag
+  - esca
+  color: '#C29A4E'
+  family: 황토
+- category: cervix
+  tcga:
+  - CESC
+  keywords:
+  - cervix
+  - cesc
+  - cervical
+  color: '#D97AA8'
+  family: 분홍보라
+- category: uterus
+  tcga:
+  - UCEC
+  - UCS
+  keywords:
+  - uter
+  - ucec
+  - endometr
+  - ucs
+  color: '#CC7A9E'
+  family: 분홍
+- category: leukemia
+  tcga:
+  - LAML
+  keywords:
+  - leukemia
+  - laml
+  - aml
+  - all-leuk
+  - cml
+  - cll
+  color: '#4060C0'
+  family: 진파랑
+- category: lymphoma
+  tcga:
+  - DLBC
+  keywords:
+  - lymphoma
+  - dlbc
+  - dlbcl
+  - hodgkin
+  - nhl
+  color: '#5A6FD0'
+  family: 파랑보라
+- category: myeloma
+  tcga: []
+  keywords:
+  - myeloma
+  - multiple-myeloma
+  - mm-plasma
+  color: '#6A5ACD'
+  family: 보라
+- category: sarcoma
+  tcga:
+  - SARC
+  keywords:
+  - sarcoma
+  - sarc
+  - leiomyo
+  - liposarc
+  color: '#8A6D3B'
+  family: 갈
+- category: gist
+  tcga: []
+  keywords:
+  - gist
+  - gastrointest-stromal
+  color: '#A6772E'
+  family: 갈주황
+- category: bone
+  tcga: []
+  keywords:
+  - osteosarc
+  - bone-tumor
+  - chondrosarc
+  color: '#B0B7BE'
+  family: 회
+- category: mesothelioma
+  tcga:
+  - MESO
+  keywords:
+  - mesotheli
+  - meso
+  color: '#6E8A8A'
+  family: 청회
+- category: adrenal
+  tcga:
+  - ACC
+  keywords:
+  - adrenal
+  - acc-adren
+  - pheochrom
+  - pcpg
+  color: '#C08A5C'
+  family: 갈주황
+- category: testis
+  tcga:
+  - TGCT
+  keywords:
+  - testi
+  - tgct
+  - germ-cell
+  color: '#4A88C0'
+  family: 파랑
+- category: eye_uveal
+  tcga:
+  - UVM
+  keywords:
+  - uveal
+  - uvm
+  - ocular-mel
+  color: '#6B4A8A'
+  family: 보라
+- category: bile_duct
+  tcga:
+  - CHOL
+  keywords:
+  - cholangio
+  - bile
+  - chol-duct
+  color: '#47986B'
+  family: 초록
+- category: gallbladder
+  tcga: []
+  keywords:
+  - gallbladder
+  - gbc
+  color: '#6FBF9A'
+  family: 연초록
+- category: gastric_ep
+  tcga: []
+  keywords:
+  - gastric-ep
+  - stomach-ep
+  color: '#C67A2E'
+  family: 갈주황
+- category: endocrine_panc
+  tcga: []
+  keywords:
+  - insulinoma
+  - neuroendocrine-panc
+  - pnet
+  color: '#E89A5C'
+  family: 주황
+- category: neuroendocrine
+  tcga: []
+  keywords:
+  - net
+  - neuroendocrine
+  - carcinoid
+  color: '#D98A4C'
+  family: 주황
+- category: glioma_other
+  tcga: []
+  keywords:
+  - ependymoma
+  - medulloblast
+  color: '#5A6570'
+  family: 회청
+- category: nasopharynx
+  tcga: []
+  keywords:
+  - nasophary
+  - npc
+  color: '#B5892E'
+  family: 황갈
+- category: salivary
+  tcga: []
+  keywords:
+  - salivary
+  - parotid
+  color: '#C79A4E'
+  family: 황토
+- category: small_intestine
+  tcga: []
+  keywords:
+  - small-intest
+  - duoden
+  - jejun
+  - ileum
+  color: '#C99AE0'
+  family: 연보라
+- category: anal
+  tcga: []
+  keywords:
+  - anal
+  - anus-scc
+  color: '#B77AD6'
+  family: 보라
+- category: vulva
+  tcga: []
+  keywords:
+  - vulva
+  - vulvar
+  color: '#D97AA8'
+  family: 분홍
+- category: penile
+  tcga: []
+  keywords:
+  - penile
+  - penis-scc
+  color: '#4478B0'
+  family: 파랑
+- category: pleura
+  tcga: []
+  keywords:
+  - pleural
+  - pleura
+  color: '#6E8A8A'
+  family: 청회
+- category: thymus
+  tcga:
+  - THYM
+  keywords:
+  - thymoma
+  - thym
+  - thymic
+  color: '#7A8A9A'
+  family: 회청
+- category: retinoblastoma
+  tcga: []
+  keywords:
+  - retinoblast
+  - rb-eye
+  color: '#6B4A8A'
+  family: 보라
+- category: wilms
+  tcga: []
+  keywords:
+  - wilms
+  - nephroblast
+  color: '#4FA3D1'
+  family: 하늘
+- category: neuroblastoma
+  tcga: []
+  keywords:
+  - neuroblast
+  - nb-child
+  color: '#4A5560'
+  family: 회청
+- category: germ_cell
+  tcga: []
+  keywords:
+  - germ-cell
+  - teratoma
+  - seminoma
+  color: '#4A88C0'
+  family: 파랑
+- category: unknown_primary
+  tcga: []
+  keywords:
+  - cup
+  - unknown-primary
+  color: '#9AA0A6'
+  family: 회색(normal 계열)
+- category: normal
+  tcga: []
+  keywords:
+  - normal
+  - control
+  - healthy
+  - adjacent-normal
+  - wt
+  color: '#9AA0A6'
+  family: 회색

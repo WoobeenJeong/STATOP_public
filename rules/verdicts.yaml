@@ -1,0 +1,180 @@
+# 자동 생성 파일 — schema/registry-tests.md 에서 생성됨. 수기 편집 금지 (statop rules build).
+# rules_version: 72d1381d2131
+- id: R-01
+  priority: 1
+  condition: A1 대비 입력이 "A=B≠C" 형태
+  verdicts:
+    green:
+    - T-1101
+    yellow:
+    - T-121
+  verdict_raw: 초록 T-1101 / 노랑 T-121
+  applies_to: Q-01
+  message: '"사전지정 대비가 목적. omnibus는 ''모두 다르다''만 답함"'
+  short_tag: contrast
+- id: R-02
+  priority: 2
+  condition: C-05 ICC>0.1
+  verdicts:
+    gray:
+    - 독립 가정 검정 전부
+    green:
+    - T-133
+  verdict_raw: '회색: 독립 가정 검정 전부 / 초록 T-133'
+  applies_to: 전부
+  message: '"반복·군집 구조 감지({col}). 독립 표본 검정 불가"'
+  short_tag: cluster
+- id: R-03
+  priority: 3
+  condition: C-03 outlier >5%
+  verdicts:
+    green:
+    - T-302/T-806
+    yellow:
+    - T-301/T-802
+  verdict_raw: 초록 T-302/T-806, 노랑 T-301/T-802
+  applies_to: Q-03, Q-08
+  message: '"outlier {pct}% ({k}개). 순위 기반 권고"'
+  short_tag: outlier
+- id: R-04
+  priority: 4
+  condition: C-01 위배 & n<15/군
+  verdicts:
+    green:
+    - T-103/T-105
+    yellow:
+    - T-101
+  verdict_raw: 초록 T-103/T-105, 노랑 T-101
+  applies_to: Q-01
+  message: '"소표본 비정규. 비모수 또는 permutation"'
+  short_tag: small, nonnormal
+- id: R-05
+  priority: 5
+  condition: C-01 위배 & n≥50/군
+  verdicts:
+    yellow:
+    - T-101 (CLT)
+    green:
+    - T-103
+  verdict_raw: 노랑 T-101 (CLT), 초록 T-103
+  applies_to: Q-01
+  message: '"정규성 위배지만 n 충분. 두 결과 병기"'
+  short_tag: nonnormal
+- id: R-06
+  priority: 6
+  condition: C-02 위배
+  verdicts:
+    gray:
+    - T-102/T-121
+    green:
+    - T-101/T-122
+  verdict_raw: 회색 T-102/T-121, 초록 T-101/T-122
+  applies_to: Q-01
+  message: '"등분산 위배. Welch 계열"'
+  short_tag: hetero
+- id: R-07
+  priority: 7
+  condition: C-04 형태 상이 & 비정규
+  verdicts:
+    gray:
+    - T-103
+    green:
+    - T-104
+  verdict_raw: 회색 T-103, 초록 T-104
+  applies_to: Q-01
+  message: '"분포 형태 다름. Mann–Whitney 해석 불가"'
+  short_tag: shape
+- id: R-08
+  priority: 8
+  condition: C-12 조성 감지
+  verdicts:
+    green:
+    - T-100x
+    yellow:
+    - 원척도 검정
+  verdict_raw: 초록 T-100x, 노랑 원척도 검정
+  applies_to: Q-10
+  message: '"행 합 상수. 조성 데이터 경로"'
+  short_tag: compos
+- id: R-09
+  priority: 9
+  condition: 기대빈도 <5 셀 ≥20%
+  verdicts:
+    gray:
+    - T-201
+    green:
+    - T-202
+  verdict_raw: 회색 T-201, 초록 T-202
+  applies_to: Q-02
+  message: '"희소 셀. Fisher"'
+  short_tag: sparse
+- id: R-10
+  priority: 10
+  condition: C-15 검정 수 ≥2 & 보정 미선택
+  verdicts:
+    gate:
+    - 차단
+  verdict_raw: Gate 차단
+  applies_to: 전부
+  message: '"다중검정 보정 필수 (Holm 기본)"'
+  short_tag: multi
+- id: R-11
+  priority: 11
+  condition: C-14 값 범위 [0,1] & 변동성 질문
+  verdicts:
+    diagnostic:
+    - SD + p(1−p) 정규화 + 2σ 병기
+  verdict_raw: 'Diagnostic: SD + p(1−p) 정규화 + 2σ 병기'
+  applies_to: Q-01, Q-07
+  message: '"확률값. scale 왜곡 방지 지표 병기"'
+  short_tag: prob
+- id: R-12
+  priority: 12
+  condition: Q-03 & 후보에 T-304/T-311 (해석 어려운 지표) 포함
+  verdicts:
+    diagnostic:
+    - T-301/T-302 + P-203 Support 강제
+  verdict_raw: 'Diagnostic: T-301/T-302 + P-203 Support 강제'
+  applies_to: Q-03
+  message: '"복잡 지표 단독 금지. 단순 지표 병기" (#2)'
+  short_tag: support
+- id: R-13
+  priority: 13
+  condition: C-09 검정력 <0.5
+  verdicts:
+    yellow:
+    - 전부
+  verdict_raw: 노랑 전부
+  applies_to: 전부
+  message: '"검정력 부족. 군당 {n} 필요" (#4)'
+  short_tag: underpow
+- id: R-14
+  priority: 14
+  condition: C-13 결측이 라벨과 연관
+  verdicts:
+    red:
+    - 경고
+  verdict_raw: red 경고
+  applies_to: 전부
+  message: '"결측이 비무작위. 결과 편향 가능"'
+  short_tag: missing
+- id: R-15
+  priority: 15
+  condition: 확정 시 Goal/Support/Guardrail 중 Goal·Support 미기입
+  verdicts:
+    gate:
+    - 차단
+  verdict_raw: Gate 차단
+  applies_to: A5
+  message: '"3-metric 중 Goal·Support 필수"'
+  short_tag: null
+- id: R-16
+  priority: 16
+  condition: 세션 내 검정 교체 ≥3회 후 유의 결과 확정
+  verdicts:
+    diagnostic:
+    - 시도 이력 출력 첨부
+  verdict_raw: 'Diagnostic: 시도 이력 출력 첨부'
+  applies_to: A5
+  message: '"탐색 이력 {k}건 첨부 (forking paths)"'
+  short_tag: explore

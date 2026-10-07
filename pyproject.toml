@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "statop"
+version = "1.0.0"
+description = "STATOP — STATistic Ontology Platform"
+requires-python = ">=3.12"
+# 런타임 의존성은 conda environment.yml로 관리 (온프레미스 배포 기준)
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.scripts]
+statop = "statop.cli:main"
+
+[tool.setuptools.package-data]
+statop = ["messages/*.yaml"]
+
+[tool.pytest.ini_options]
+# 남의 서버가 필요한 검사 — 네트워크가 없으면 스스로 skip 한다
+markers = ["network: 외부 API 가 필요한 검사"]

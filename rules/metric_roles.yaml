@@ -1,0 +1,232 @@
+# 자동 생성 파일 — schema/registry-metric-roles.md 에서 생성됨. 수기 편집 금지 (statop rules build).
+# rules_version: 72d1381d2131
+roles:
+- role: Goal
+  definition: 가설이 검증됨을 확인하는 주 지표
+  complexity: 해석 가능하면 복잡해도 됨
+  example: RMSE, Mahalanobis, AUC, CLR-차이, C-index
+- role: Support
+  definition: 같은 방향을 확인하되 해석이 쉬운 보조 지표. Goal이 "얼마나"를 안 알려줄 때 보완
+  complexity: 복잡성 비허용, 직관적
+  example: MAE, Euclidean, raw 값, 원척도 차이
+- role: Guardrail
+  definition: Goal을 올리면 대가로 나빠질 수 있는 trade-off 지표. 함께 봐야 결론이 흔들리지 않음
+  complexity: —
+  example: specificity(↔sensitivity), 배치 보존(↔혼합), 검정력(↔α)
+support_relations:
+- id: MR-S01
+  goal: RMSE (SC-ERR-02)
+  support: MAE (SC-ERR-01)
+  why: RMSE는 큰 오차를 제곱해 "몇 배"인지 감이 안 옴. MAE는 평균적으로 몇 단위 틀렸는지 직관적
+- id: MR-S02
+  goal: RMSE / MAE
+  support: MAPE·sMAPE (SC-ERR-03/04)
+  why: 절대 단위 대신 상대 오차(%)로 스케일 감
+- id: MR-S03
+  goal: Mahalanobis (SC-DIST-03)
+  support: 표준화 Euclidean (SC-DIST-01)
+  why: 공분산 보정 거리 3.2가 뭔지 안 와닿음. 표준화 유클리드는 "몇 SD 떨어짐"
+- id: MR-S04
+  goal: Cosine similarity (SC-DIST-04)
+  support: Euclidean (SC-DIST-01) / raw 크기
+  why: 코사인은 방향만. 크기 정보를 raw로
+- id: MR-S05
+  goal: log/CLR 값 (SC-NORM-09)
+  support: raw 비율·원척도
+  why: log-ratio 차이 1이 "e배"인지 감이 안 옴. raw 비율 병기
+- id: MR-S06
+  goal: KL divergence (SC-DIST-12)
+  support: Jensen–Shannon (SC-DIST-11) / TV
+  why: KL은 비대칭·무한대 가능. JS는 대칭·유계라 크기 비교 쉬움
+- id: MR-S07
+  goal: AUC (SC-CLS-06)
+  support: Sens·Spec at 임계 (SC-CLS-01/02)
+  why: AUC 0.8이 실제 임계에서 어떤 민감도인지
+- id: MR-S08
+  goal: C-index (SC-CLS-15)
+  support: KM 곡선·중위 생존차
+  why: 일치도 숫자보다 곡선이 직관적
+- id: MR-S09
+  goal: Brier / log loss (SC-ERR-10/11)
+  support: 보정 곡선·정확도
+  why: 손실값 자체는 크기 감 없음
+- id: MR-S10
+  goal: dCor / MMD (SC-DIST-14)
+  support: 산점도·Pearson r
+  why: 방향 없는 연관 → 그림·단순 상관으로
+- id: MR-S11
+  goal: Aitchison distance (SC-DIST-09)
+  support: 최대 기여 성분 top-k
+  why: 조성 거리 값 → 어떤 성분이 벌렸는지
+- id: MR-S12
+  goal: Shannon 엔트로피 (SC-DIV-01)
+  support: richness·top 우점종 비율
+  why: 엔트로피 수치 → 종 수·우점도로
+- id: MR-S13
+  goal: Rényi/Hill (SC-DIV-04/05)
+  support: Hill q=0,1,2 세 값
+  why: 한 α보다 프로파일이 직관적
+- id: MR-S14
+  goal: η²/ω² (P-202)
+  support: 군 평균·차이 원값
+  why: 분산설명비 → 실제 평균차
+- id: MR-S15
+  goal: Cohen d (P-201)
+  support: 원척도 평균차 + CI (P-203)
+  why: 표준화 효과 → 원단위
+- id: MR-S16
+  goal: Batch entropy/LISI (SC-BE-04/11)
+  support: 이웃 배치 비율 표
+  why: 지수값 → 실제 섞임 비율
+- id: MR-S17
+  goal: Wasserstein (SC-DIST-13)
+  support: 중위수·분위수 차
+  why: 분포 이동을 대표값 차로
+- id: MR-S18
+  goal: Beta-회귀 계수 (T-805)
+  support: 원척도 비율 예측
+  why: logit 계수 → 예측 비율
+guardrail_relations:
+- id: MR-G01
+  goal: Sensitivity (SC-CLS-01)
+  guardrail: Specificity (SC-CLS-02)
+  tradeoff: 문턱 낮추면 민감도↑ 특이도↓. 항상 쌍
+- id: MR-G02
+  goal: PPV
+  guardrail: NPV / 유병률
+  tradeoff: 한쪽 올리면 다른 쪽·기저율 의존
+- id: MR-G03
+  goal: Recall (재현율)
+  guardrail: Precision (SC-CLS-09)
+  tradeoff: PR 곡선의 양 축
+- id: MR-G04
+  goal: ROC-AUC (SC-CLS-06)
+  guardrail: PR-AUC (SC-CLS-08) + 기저율
+  tradeoff: 불균형에서 ROC 낙관적, PR로 견제 (#6)
+- id: MR-G05
+  goal: 배치 혼합 iLISI/kBET (SC-BE-03/04)
+  guardrail: 생물 보존 cLISI/label silhouette (SC-BE-02/04)
+  tradeoff: 배치 지우면 신호도 지워짐. 혼합↔보존
+- id: MR-G06
+  goal: 검정력 / 표본 확대
+  guardrail: 1종 오류 α, 다중검정 (C-15)
+  tradeoff: 많이 검정하면 검출↑ 위양성↑
+- id: MR-G07
+  goal: 모델 정확도
+  guardrail: 보정 ECE (SC-CLS-13)
+  tradeoff: 정확해도 확률이 과신될 수 있음
+- id: MR-G08
+  goal: 민감도 높은 임계
+  guardrail: 결정곡선 net benefit (SC-CLS-14)
+  tradeoff: 임상 순이득으로 과잉진단 견제
+- id: MR-G09
+  goal: fold 성능 평균
+  guardrail: fold 간 분산 / 최악 fold
+  tradeoff: 평균 좋아도 불안정
+- id: MR-G10
+  goal: 차등발현 유의 수
+  guardrail: log2FC 크기 + FDR (P-223)
+  tradeoff: p만 낮고 효과 미미
+- id: MR-G11
+  goal: in-sample 적합(R²)
+  guardrail: 검증셋 성능 / 과적합 격차
+  tradeoff: 훈련 성능↔일반화
+- id: MR-G12
+  goal: 특이 유전자 선택 수
+  guardrail: 안정성(재표본 재현율, AIRepr)
+  tradeoff: 많이 고를수록 불안정
+- id: MR-G13
+  goal: 클러스터 분리(silhouette)
+  guardrail: 생물학적 타당성/마커
+  tradeoff: 수치 분리↔의미
+- id: MR-G14
+  goal: 데이터 정제(이상치 제거)
+  guardrail: 제거 비율·남은 n (A4)
+  tradeoff: 깨끗해질수록 표본 편향·축소
+- id: MR-G15
+  goal: 정규화 강도(배치보정)
+  guardrail: 그룹 간 실제 신호 잔존
+  tradeoff: 과보정 위험
+- id: MR-G16
+  goal: 조성 성분 증가
+  guardrail: 다른 성분 필연 감소(심플렉스)
+  tradeoff: 합=1 제약, CLR로 봐야 (S-R01)
+- id: MR-G17
+  goal: 생존 HR 개선
+  guardrail: 경쟁위험·추적손실 (E-807-3)
+  tradeoff: 다른 사건·검열 편향
+- id: MR-G18
+  goal: 지표 커버리지 확대
+  guardrail: 관측 불균형 (GR-04)
+  tradeoff: 합치며 소수군 왜곡
+triads:
+- id: MR-T01
+  situation: 이진 진단 모델
+  goal: AUC
+  support: Sens·Spec@임계
+  guardrail: PR-AUC + 기저율
+- id: MR-T02
+  situation: 불균형 진단
+  goal: PR-AUC
+  support: Recall·Precision
+  guardrail: MCC / balanced acc
+- id: MR-T03
+  situation: 생존 예측
+  goal: C-index
+  support: KM 곡선
+  guardrail: 경쟁위험·추적손실
+- id: MR-T04
+  situation: 회귀 예측
+  goal: RMSE
+  support: MAE + 원척도차
+  guardrail: fold 분산 / 잔차 진단
+- id: MR-T05
+  situation: scRNA 배치통합
+  goal: iLISI/kBET
+  support: 이웃 배치비율
+  guardrail: cLISI/label silhouette
+- id: MR-T06
+  situation: 미생물 조성 비교
+  goal: Aitchison + PERMANOVA
+  support: top 기여 성분
+  guardrail: 0 비율·부분조성 (E-1001)
+- id: MR-T07
+  situation: alpha 다양성
+  goal: Shannon
+  support: richness·우점도
+  guardrail: 깊이 균일성(rarefaction)
+- id: MR-T08
+  situation: 차등발현
+  goal: log2FC + FDR
+  support: 발현 원값
+  guardrail: p-분포·독립필터 누수
+- id: MR-T09
+  situation: 바이오마커 선택
+  goal: 선택 성능
+  support: 마커 수·해석
+  guardrail: 안정성(재표본 재현)
+- id: MR-T10
+  situation: 확률 변동성(#3)
+  goal: Bernoulli 정규화 변동성 (SC-VAR-04)
+  support: SD + raw 값
+  guardrail: 2σ 밴드 밖 비율
+- id: MR-T11
+  situation: 군 간 차이(3군, 대비)
+  goal: planned contrast (T-1101)
+  support: 군 평균±CI
+  guardrail: omnibus로 본 전체차
+- id: MR-T12
+  situation: 두 측정법 일치
+  goal: Lin's CCC
+  support: Bland–Altman
+  guardrail: 크기 의존 편향(깔때기)
+- id: MR-T13
+  situation: 고차원 이상탐지
+  goal: Mahalanobis
+  support: 표준화 Euclidean
+  guardrail: Σ 안정성(d/n)
+- id: MR-T14
+  situation: 분류 보정
+  goal: ECE
+  support: 보정 곡선
+  guardrail: 판별력(AUC) 손실

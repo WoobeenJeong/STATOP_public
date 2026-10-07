@@ -1,0 +1,1882 @@
+notice_partial_hash: 'Note: source verification uses a partial hash (size + first/last 4MB). A match means "appears unchanged", not a full verification — changes limited to the middle of the file can be missed. For an exact comparison, run the Integrity check yourself.'
+cli_integrity_hint: ' (command: statop integrity)'
+columns_saved_out: 'Saved full table of {n:,} columns: {out}'
+columns_file_line: 'File: {name} ({fmt}, {mb:.0f}MB){suffix}'
+columns_transposed_suffix: ' — transposed view'
+columns_rows_line: 'Rows: {rows} | {n:,} columns'
+columns_rows_estimated: ~{n:,} (estimated)
+columns_warn_many: ⚠ More than 200 columns ({n:,}) — consider --grep to filter or --out to save to a file
+columns_sample_est: 'Sample basis: {per:,} rows each from head/middle/tail ({obs:,} observed) — missing rate and unique counts are estimates'
+columns_sample_full: 'Sample basis: all rows observed'
+columns_storage_types: 'Storage types: {items}'
+columns_missing_top: 'Top missing: {items}'
+columns_table_title: 'Columns (showing {shown:,} of {total:,}; use --limit or --out for all):'
+columns_table_header: '     column                   type             missing      unique'
+session_source_registered: 'Source registered: {data} → {src} (hash {hash12}…, {mode})'
+session_created: 'Session created: {sid}'
+session_logfile: 'Log file: {path}'
+session_saved: 'Saved: {path}'
+session_save_exists: 'Already exists: {path} — specify overwrite to replace'
+session_no_project: 'Project folder does not exist: {path}'
+session_load_missing: '⚠ Source {src} file is missing: {path}'
+session_load_changed: '⚠ Source {src} hash differs from when it was recorded (content changed): {path}'
+session_load_guide: If you loaded the wrong log, answer N and load the correct one. If the file really changed, answer y to replay, then compare against a copy of the original with the Integrity check to see what differs.
+session_load_confirm: Replay anyway?
+session_load_cancelled: Load cancelled.
+session_load_hash_ok: 'Source partial hashes match. '
+session_loaded: 'Loaded: {name} → new session {sid}'
+session_workfile: 'Working file: {path}'
+session_restored: 'Restored selection: {src} {n} columns ({head}{more})'
+session_close_unsaved: This session was never saved ({n} operations). Save first, or pass --force to discard.
+session_closed: 'Session closed: {sid} (working copy deleted{saved})'
+session_closed_saved_suffix: ', saved as: {name}'
+ops_summary: '{n} operations ({kinds})'
+ops_summary_tail: ' | last: {tail}'
+replay_unknown_op: 'No replay rule for op: {op} (seq {seq})'
+op_recorded_open: 'op recorded: #{seq} open {data} → {src} ({n} operations total)'
+select_imported: 'Imported {n} columns: {head}{more}'
+select_recorded: 'op recorded: #{seq} select ({n} operations total)'
+select_err_xor: Specify exactly one of --cols or --cols-file
+select_err_missing: 'Columns not in file: {cols}'
+deselect_removed: 'Removed {n} columns: {cols}'
+deselect_recorded: 'op recorded: #{seq} deselect ({n} still selected)'
+deselect_err_not_selected: 'Columns never imported: {cols}'
+transpose_estimate: 'Transpose estimate: {rows:,} rows × {cols:,} columns{est} → ~{mb:,.0f}MB memory'
+estimated_suffix: ' (estimated)'
+transpose_confirm_mem: High memory usage expected. Proceed?
+transpose_cancelled: Transpose cancelled.
+transpose_result: 'Transposed view: {rows:,} rows × {cols:,} columns | new columns: {preview}'
+transpose_recorded: 'op recorded: #{seq} transpose (current view: {state})'
+transpose_state_on: transposed
+transpose_state_off: restored
+transpose_dup_ids: First column ({col}) has {n} duplicate values — cannot become column names
+unsupported_format: 'unsupported format: {suffix} ({path})'
+integrity_err_xor: Specify exactly one of a second file or --log
+integrity_err_not_registered: 'File not registered in session: {path}'
+integrity_log_match: 'Match: same file as recorded (partial hash)'
+integrity_log_mismatch: 'Mismatch: file differs from when it was recorded'
+integrity_identical: 'Identical: full contents of both files match'
+integrity_differ: 'Different: the files do not match'
+integrity_size: 'Size: {a:,} vs {b:,} bytes ({delta:+,})'
+integrity_chunks: 'Differing chunks: {differ} of {total} 4MB chunks{first}'
+integrity_first_diff: ' (first difference at byte {offset:,})'
+integrity_unreadable: 'Table comparison unavailable: file cannot be read as a table — possibly corrupted ({err})'
+integrity_table: 'Table: rows {rows_a:,} vs {rows_b:,}{est} · columns {cols_a:,} vs {cols_b:,}'
+integrity_only_a: '  {n} columns only in a: {cols}{more}'
+integrity_only_b: '  {n} columns only in b: {cols}{more}'
+path_ok_write: exists and writable
+path_ok_read: exists and readable
+path_no_read: no read permission
+path_no_write: no write permission
+path_not_exist: path does not exist
+path_can_create: does not exist — folder can be created
+path_cannot_create: cannot create (no write permission in {parent})
+path_no_access: not accessible ({err})
+rules_built: 'Rule DB rebuilt: {n} files'
+rules_stale: '⚠ yaml out of sync with md: {files} — rebuild required'
+rules_in_sync: yaml is in sync with md
+rules_id_counts: 'Registered rules: {items} (total {total})'
+rules_broken_refs: '{n} broken references'
+rules_refs_ok: No broken references
+rules_version: 'Rule DB version: {version}'
+rules_stale_version: '⚠ Version header only: {n} files (content unchanged)'
+serve_starting: 'API server starting: http://{host}:{port} (docs at /docs)'
+columns_page_title: 'Columns ({shown:,} · page {page}/{pages} of {total:,}; use --page N):'
+select_err_empty: Select at least one column
+shell_welcome: <b>STATOP</b> interactive shell — /help for commands, /quit to exit
+shell_first_step: 'Start by opening a file:  <b>/open &lt;path&gt;</b>   then  <b>/columns</b> to pick columns'
+shell_scope_note: This shell covers opening files, picking columns, and sessions. Type confirmation, formulas, compatibility and guardrails run as <b>statop &lt;command&gt;</b> (statop --help)
+shell_help_title: <b>Commands</b>
+shell_help_open: /open &lt;path&gt;       open a file (creates a session if none)
+shell_help_columns: /columns           column list — ↑↓ move · space select · enter import · / search
+shell_help_select: /select a,b,c      import columns by name
+shell_help_selected: /selected          current workspace (imported columns)
+shell_help_transpose: /transpose         transpose (run twice to restore)
+shell_help_integrity: /integrity &lt;file&gt;  integrity check — compare with the original
+shell_help_session: /save  /load  /close   save · load · close session
+shell_help_etc: /help  /quit
+shell_need_session: Open a file first with /open
+shell_need_path: 'Specify a path: /open &lt;path&gt;'
+shell_opened: 'opened: {name}  (session {sid})'
+shell_workspace: 'Workspace: {n} columns — {head}{more}'
+shell_integrity_usage: /integrity &lt;file&gt; — compares with the current file
+shell_overwrite_hint: 'To overwrite: /save --overwrite'
+shell_no_saved: 'No saved sessions in: {dir}'
+shell_pick_number: number
+shell_loaded: 'Loaded: {name} — {n} columns restored'
+shell_closed: Session closed
+shell_unknown_cmd: 'Unknown command: {cmd}'
+view_search_hint: (Enter to apply · Esc to cancel)
+view_search_label: search
+view_page: page {page}/{pages}
+view_col_count: '{n:,} columns'
+view_header: column                    type          missing    unique
+view_empty: (no matching columns)
+view_keys: '{n} selected · ↑↓ move · space select · enter import · / search · n/p page · s sort · q quit'
+dist_numeric_head: n={n:,}
+dist_missing_suffix: ' · missing {n:,}'
+dist_quartiles: min {mn:,.4g} · IQR {q1:,.4g}–{q3:,.4g} · median {med:,.4g} · max {mx:,.4g}
+dist_skew: skew {v:+.1f} (skewed)
+dist_outlier_iqr: outliers IQR {v:.1%}
+dist_outlier_mad: MAD {v:.1%}
+dist_zeros: zeros {v:.0%}
+dist_levels_head: '{n_levels} levels · n={n:,}'
+dist_levels_rest: … {n} more
+chart_bins_merged: ({n} bins → {w} cells)
+chart_box_narrow: box is very narrow — IQR is {ratio:.1%} of the full range (strong skew)
+chart_outlier_sides: outliers below {lo:.1%} · above {hi:.1%}
+chart_single_value: '(single value: {v})'
+chart_no_points: (no points to plot)
+chart_scatter_axes: '{x} × {y}  (n={n:,})'
+hold_on: 'Held {n} columns: {cols} (excluded from analysis · kept for plots)'
+hold_off: 'Unheld {n} columns: {cols}'
+hold_state: '{n_analysis} in analysis · {n_held} held'
+shell_help_hold: /hold a,b [--off]   exclude from analysis (keep for plots) · --off to undo
+labels_head: '{column} — {n} string levels (display → code)'
+labels_regrouped: ⚠ {before} levels → {after} groups — this changes what is compared
+labels_group: 'code {code}: {values} (n={n:,})'
+labels_recorded: 'op recorded: #{seq} label_map ({column}) — mapping is logged'
+labels_map_format: 'mapping format: value=code,value=code (e.g. control=0,hct=0,liver=1)'
+relabel_note_required: A note is required to change a label — why do you believe it is wrong?
+relabel_key_not_found: 'Row not found: {key}'
+relabel_same_value: 'Already the same value: {value}'
+relabel_notice: ⚠ This result includes {n} individual label edits (the source file is unchanged)
+relabel_over_threshold: ⚠ {n} edits ({ratio:.1%}) exceed the 1% threshold — check data quality first
+relabel_done: 'Relabeled: {key} {column} {from_} → {to}'
+relabel_reason: 'Reason: {note}'
+filter_empty: Enter a condition
+filter_unsafe: 'Expression not allowed (columns, numbers, strings, comparison/logic only): {expr}'
+filter_bad_expr: 'Cannot evaluate: {expr} — {err}'
+filter_not_boolean: 'Condition must yield true/false: {expr}'
+filter_preview: Condition {expr} → keep {kept:,} · remove {removed:,} ({ratio:.1%})
+filter_recorded: 'op recorded: #{seq} filter_rows — the reason is attached to outputs'
+filter_reason: 'Reason: {reason}'
+export_same_as_source: Cannot write over the source file
+export_done: 'Exported: {path} ({rows:,} rows × {cols} columns)'
+export_sidecar: 'Sidecar: {path} — reopening this file will surface the edits'
+export_relabel_note: ⚠ This file contains {n} manual label edits (marker column _relabeled)
+open_trimmed_banner: ⚠ This file was produced by STATOP — {n} manual edits
+open_trimmed_source: 'Source: {path}'
+open_trimmed_marker: ⚠ This file has a _relabeled marker — it contains manually changed values
+missing_bad_how: 'Removal mode must be row or column: {how}'
+missing_method_not_allowed: 'Unsupported imputation: {method} (allowed: {allowed}). Heavy estimators are not supported'
+missing_group_required: Group-wise imputation requires a group column
+missing_knn_limit: KNN imputation requires ≤{rows:,} rows and ≤{cols} columns
+missing_mice_limit: MICE imputation requires ≤{cols} columns
+missing_warn_mean: '{col}: {ratio:.1%} missing — mean imputation is advised below 10% (variance shrinkage)'
+missing_warn_zero_fraction: '{col}: values in [0,1] — filling with 0 changes the meaning of a proportion'
+missing_not_all_filled: '{n} missing values remain after imputation'
+missing_head: Missing data — {complete:,} complete rows of {n_rows:,}
+missing_col_line: '{col} {n:,} ({ratio:.1%})'
+missing_suspect_zero: possible zero-filled missing (zeros {zero:.0%})
+missing_pattern_head: Co-missing patterns (top {n})
+missing_pattern_line: '{cols} — {n:,} rows ({ratio:.1%})'
+missing_drop_result: 'Removed: {before:,} → {after:,} rows ({removed:,} dropped)'
+missing_drop_cols: 'Columns removed: {cols}'
+missing_impute_result: 'Imputed: {method} — {n_filled:,} cells ({ratio:.2%})'
+missing_impute_params: 'Parameters: {params}'
+missing_alternatives_head: Alternatives (guidance only, not executed)
+missing_recorded: 'op recorded: #{seq} {op} — method, ratio and before/after n stay in outputs'
+group_reason_id: unique ratio {ratio:.0%} — looks like an identifier (suggest hold)
+group_reason_repeat: observations repeat across {levels} levels (mean {mean:.1f} per group) — check independence
+group_head: '{n} group-structure candidates — you decide'
+group_line: '{col} [{kind}] {levels} levels · mean {mean:.1f} per group (max {mx})'
+group_none: No repeated/clustered structure found (observations look independent)
+group_imbalanced: group sizes are uneven
+group_confirm_hint: 'to confirm: --confirm COLUMN --kind subject|batch|site|time'
+group_confirmed: 'Group structure confirmed: {col} ({kind}) — independence checks will use it'
+compose_head: Composition — {n_rows:,} rows · {n_selected} imported ({n_analysis} analysis · {n_held} held)
+compose_kinds: 'Types: numeric {numeric} · categorical {categorical} · datetime {datetime}'
+compose_missing: '{complete:,} complete rows · {any:,} rows with missing'
+shape_unimodal: unimodal
+shape_bimodal: bimodal
+shape_bimodal_ends: bimodal (mass near 0/1)
+shape_skewed: skewed
+shape_flat: flat
+shape_categorical: categorical
+shape_too_few: too few observations to judge shape
+ev_unique_ratio: unique ratio {ratio:.0%}
+ev_few_levels: '{n} levels'
+ev_few_levels_ordered: '{n} levels — may be ordered'
+ev_parses_as_date: parses as a date
+ev_row_sum_one: sibling columns sum to ~1 per row (row-wise normalization)
+ev_minmax_exact: column min/max are exactly 0/1 (min-max normalization)
+ev_range_01: values within [0,1]
+ev_bimodal_ends: mass near 0/1 (typical of model output)
+ev_binary_int: only 0/1 integers
+ev_binary_int_count: 0/1 integers — could be counts
+ev_nonneg_int: non-negative integers
+ev_few_int_levels: '{n} integer levels'
+ev_range_0_100: values within [0,100]
+ev_has_negative: contains negatives
+ev_negative_log: contains negatives — may be a log ratio
+ev_mean0_sd1: mean≈0, sd≈1
+ev_real_positive: reals above 1
+ev_gt1_reference: above 1 — may be relative to a reference
+ev_name_hint: column name {name} (weak signal)
+ev_empty: no values
+ev_fallback: no other signal
+conflict_nominal_ordinal: values alone cannot tell ordered codes from name-only codes
+conflict_binary_count: 0/1 integers — could be a binary code or a count
+conflict_negative_scale: negatives present — raw, log or standardized is ambiguous
+confirm_conflict: signals conflict — confirmation required
+confirm_tie: several candidates tie for first — confirmation required
+confirm_costly: confusing {a} with {b} changes results substantially — confirmation required
+semantic_head: '{column} — {shape}'
+semantic_cand: '{rank}. {type}'
+semantic_confirmed: 'Semantic type confirmed: {column} = {type}'
+semantic_unknown_type: 'Unknown semantic type: {type} (allowed: {allowed})'
+semantic_not_inferred: 'Confirming a type that was not inferred: {type} — it will compute, but interpret with care'
+semantic_risk_head: Risks when computing with this type
+semantic_state: '{n_confirmed} confirmed / {n_pending} pending'
+conflict_partial_composition: only part of a composition set ({n} columns) was imported — {missing} missing, so CLR-type transforms are unavailable
+risk_line: '[{id}] {combination}'
+risk_why: 'why: {why}'
+risk_fix: 'fix: {fix}'
+risk_none: No registered caveats for this type
+risk_verdict_red: It will run, but the result keeps a warning
+risk_verdict_yellow: Caution required
+risk_verdict_gate: This combination is blocked
+formula_empty: The formula is empty
+formula_syntax: 'Cannot read the formula: {expr} — {err}'
+formula_node_not_allowed: 'Expression not allowed ({node}): {expr}'
+formula_call_not_allowed: 'This call form is not allowed: {expr}'
+formula_func_not_allowed: 'Function not allowed: {func} (allowed: {allowed})'
+formula_unknown_column: 'Columns not in the data: {cols}'
+formula_latex_unsupported: 'Unsupported LaTeX commands: {items}'
+eps_required: zeros present — log needs an eps
+eps_recommended: recommended eps {value:g} (based on min positive {minpos:g})
+eps_too_large: eps {given:g} exceeds the recommended {limit:g} — it would distort the log scale, so it is not allowed
+eps_candidates: 'choices: {values}'
+eps_not_needed: no zeros — eps is not needed
+formula_needs_composition: '{func} needs the whole composition set — specify the set columns'
+derive_preview_head: '{name} = {expr}'
+derive_preview_stats: n={n:,} · finite {n_finite:,} · NaN {n_nan:,} · ±inf {n_inf:,}
+derive_preview_range: min {min:g} · mean {mean:g} · max {max:g}
+derive_inf_warning: '{n_inf:,} ±inf values — log(0) or division by zero'
+derive_committed: 'Derived column created: {name} (semantic type {type})'
+derive_recorded: 'op recorded: #{seq} derive — formula and eps stay in outputs'
+derive_name_exists: 'A column with this name already exists: {name}'
+eps_preview_with_recommended: eps not given — previewing with the recommended {value:g} (specify --eps to commit)
+eps_explicit_required: Specify --eps to commit — the value used must be recorded
+derive_preview_label: (preview)
+formula_name_exists: 'A formula with this name exists: {name} (use --overwrite)'
+formula_not_found: 'No saved formula named: {name}'
+formula_slot_missing: 'Assign columns to slots: {slots}'
+formula_saved: 'Formula saved: {name} → {path}'
+formula_removed: 'Formula removed: {name}'
+formula_list_head: '{n} saved formulas'
+formula_list_line: '{name}  slots {slots}  → {result_type}'
+formula_applied: 'Applied: {name} ({mapping}) → {expr}'
+formula_verdict_green: OK — slot types fit this formula
+formula_verdict_yellow: Caution — check before using
+formula_verdict_red: Not applicable — it will run, but the result keeps a warning
+formula_unconfirmed: 'Semantic types not confirmed: {cols} — confirm them for an accurate verdict'
+formula_risk_mitigated: '[{id}] mitigated — this formula already applies the recommended transform ({fix})'
+derive_scalar_note: Magenta parts collapse a whole column into one number — they do not vary by row
+derive_role_legend: 'colors: column · row-wise function · column scalar · set function · eps'
+compat_detail_depth: '{a} total {sa:,.0f} · {b} total {sb:,.0f} ({ratio:.1f}x)'
+compat_detail_id: '{col} is a row identifier'
+compat_detail_nominal: spacing between {col} codes carries no meaning
+compat_detail_comp_pair: 'same composition set, {n} parts: {cols}'
+compat_detail_scale_mix: log scale {log} · raw scale {raw}
+compat_detail_percent: '{col} is 0-100 while the other is 0-1'
+compat_detail_datetime: features derived from {col} may carry post-label information
+compat_detail_ids_set: '{n} identifier column(s) in the analysis set'
+compat_detail_nominal_set: '{n} name-only code column(s): {cols}'
+compat_detail_comp_set: a {n}-part composition set is selected together
+compat_detail_scale_mix_set: '{n_log} log-scale and {n_raw} raw-scale columns are mixed'
+compat_detail_percent_set: '{n_pct} column(s) on 0-100 · {n_frac} on 0-1'
+compat_detail_depth_set: totals differ by up to {ratio:.1f}x
+compat_detail_zscore_set: '{n} standardized columns — confirm they share a reference group'
+compat_detail_aggregate: aggregated values used while a stratifying variable is present
+compat_no_auto_fix: '{id} has no automatic fix — this one is a human decision'
+compat_need_composition: Specify the composition set first — a different set gives entirely different values
+compat_alr_reference_unknown: reference part {col} is not in the composition set
+compat_alr_note: divides by reference part {ref} — changing the reference changes the values
+compat_clr_note: centers all {n} parts by their geometric mean
+compat_div100_note: divides by 100 to match the 0-1 scale
+compat_unify_note: raises the raw-scale side to log — undoing the log side would lose information
+compat_blocked: Judgment deferred until semantic types are confirmed
+compat_unconfirmed_cols: 'unconfirmed: {cols}'
+compat_head_pair: 'Compatibility — {op}: {a} x {b}'
+compat_head_set: 'Compatibility — {op}: all {n} analysis columns'
+compat_green: no rule applies
+compat_fix_available: 'one-click fix: {action}'
+compat_fix_none: no automatic fix — this one is a human decision
+compat_plan_head: fix plan [{action}] — {n} new column(s)
+compat_plan_derive: '{name} = {expr}'
+compat_plan_replace: 'replace designation: {old} -> {new}'
+compat_applied: fix applied — {n} new column(s), {m} replacement(s)
+compat_rejudge: 're-judged: {verdict}'
+compat_op_unknown: 'operation: {allowed} (got {op})'
+compat_verdict_gate: Blocked — results from this combination cannot be trusted
+compat_verdict_red: Risk — the result may differ from reality
+compat_verdict_yellow: Caution — something to account for when interpreting
+compat_verdict_unconfirmed: Deferred — confirm semantic types first
+compat_verdict_green: No issue
+compat_why: 'why: {why}'
+compat_fix: 'fix: {fix}'
+compat_pair_needs_two: a pair check needs exactly 2 columns
+compat_rule_not_in_report: '{id} did not appear in this report'
+compat_comp_candidate: 'candidate composition set ({n} parts): {cols}'
+compat_comp_none: no set closing to 1 was found — specify one directly
+compat_plan_dryrun: plan only; nothing was recorded
+compat_action_unknown: 'action: {allowed} (got {action})'
+guard_unknown_rule: 'not a guardrail rule: {rule}'
+guard_unknown_tier: 'tier: {allowed} (got {tier})'
+guard_unknown_threshold: '{rule} has no threshold {key} (available: {allowed})'
+guard_unknown_action: 'action: flag|drop|clip|keep (got {action})'
+guard_floor_violation: '{rule} cannot be relaxed below {floor} — requested {tier} is refused'
+guard_action_manual_only: '{action} cannot be a default — it distorts the distribution, so it must be chosen each time'
+guard_gr01_impossible: '{col} — {n} value(s) outside the domain (allowed {lo}-{hi})'
+guard_gr01_boundary: '{col} — {n} boundary value(s) at 0 or 1; log and logit are undefined there'
+guard_gr01_tail: '{col} — {n} value(s) beyond the top {q:.1%} (cut {cut:.4g})'
+guard_gr02_result: chi-square p={p:.2e} · observed {ratio}
+guard_gr02_dimension: SRM within {col}={level} (p={p:.2e}, Bonferroni threshold {adj:.2e})
+guard_gr02_not_applicable: fewer than two groups; nothing to test
+guard_gr02_unexplained: not explained by loss — check whether the expected ratio is right, or whether the population is genuinely imbalanced
+guard_gr03_retention: '{step}: {before:,} -> {after:,} ({rate:.1%} retained)'
+guard_gr03_loss_by_group: overall loss {overall:.1%} · widest gap between groups {spread:.1%}
+guard_gr03_bias_numeric: '{col} — dropped and kept rows differ (SMD {smd:.2f}, p={p:.2e})'
+guard_gr03_bias_categorical: '{col} — loss is associated with this column (p={p:.2e})'
+guard_gr03_join: matched {matched:,} of {left:,} ({rate:.1%})
+guard_gr04_tiny: smallest group has {n} rows (threshold {limit}) — numbers from it cannot carry an argument
+guard_gr04_small: smallest group has {n} rows (threshold {limit})
+guard_gr04_imbalance: group sizes differ {ratio:.1f}x ({hi:,} vs {lo:,})
+guard_gr04_coverage: '{col} — defined on only {cov:.1%} of rows (threshold {limit:.0%}); this is a partial metric'
+guard_gr04_smd: '{col} — between-group SMD {smd:.2f} (threshold {limit:.2f})'
+guard_gr04_stability: '{col} in group {level} — n={n}, 95% CI {lo:.4g}-{hi:.4g}'
+guard_skip_no_loss_data: no before/after data, so loss was not examined
+guard_skip_no_group: no group column was given
+guard_skip_no_types: semantic types are unconfirmed, so the domain is unknown
+guard_headline_gate: '{n} blocking finding(s) ({rules}) — read these before using anything below'
+guard_tier_gate: Blocked
+guard_tier_diagnostic: Diagnostic
+guard_tier_info: Note
+guard_tier_ok: nothing flagged
+guard_head: Guardrail — {n} finding(s), {tier}
+guard_skipped_head: Not examined
+guard_override_head: Non-default settings
+guard_override_line: '{rule}.{key} = {value} (base {base})'
+guard_link_line: 'links: {links}'
+guard_cause_head: Cause candidates (not a conclusion)
+guard_cause_loss: loss rates differ widely between groups — loss is a candidate cause
+guard_counterfactual_resolved: 'counterfactual: restoring the lost rows brings the ratio back to expectation (p={p:.2e})'
+guard_counterfactual_unresolved: 'counterfactual: restoring the lost rows still does not match expectation (p={p:.2e})'
+guard_limits_head: Guardrail settings — base values are read-only; adjustments live in {path}
+guard_limit_line: '{key} = {value}'
+guard_limit_line_over: '{key} = {value} (base {base}, adjusted)'
+guard_floor_line: 'cannot relax below: {floor}'
+guard_set_ok: 'set: {rule}.{key} = {value}'
+guard_cleared: 'adjustments cleared: {scope}'
+guard_set_needs_target: either --tier or --key is required
+guard_set_needs_value: --value is required when --key is given
+guard_gr04_smd_noise: ' · at this sample size chance alone yields about {noise:.2f}'
+screen_subtitle: Experiment validation and integrity diagnosis
+screen_path_label: Type a data file path and press [Open] (Tab moves to buttons)
+screen_recent_label: Recently saved sessions
+screen_open_btn: Open
+screen_load_btn: Load
+screen_import_btn: Import {n} selected
+screen_prev_btn: < Prev
+screen_next_btn: Next >
+screen_sort_missing: By missing
+screen_sort_unique: By unique
+screen_sort_name: By name
+screen_search_btn: Search
+screen_more_btn: Import more columns
+screen_save_btn: Save session
+screen_reading: Reading the file...
+screen_open_hint: Opening a file lists its columns. Data values are never shown
+screen_pick_hint: Only checked columns are carried into the analysis
+screen_none_picked: Nothing selected - click a row or press space
+screen_ws_title: Workspace - {n} column(s) imported
+screen_ws_header: hold  column
+screen_next_head: Next steps (run in the terminal)
+screen_next_types: statop types --session {session}
+screen_next_compat: statop compat check --session {session} --op correlate
+screen_next_guard: statop guard run --session {session} --group <group column>
+screen_keys_open: Tab to move - Enter to open - mouse click - F2 drag-copy <-> click - Ctrl-Q to quit
+screen_keys_columns: Up/Down - space to check - a for this page - Enter to import - Tab for buttons - F2 drag-copy <-> click - Ctrl-Q
+screen_keys_workspace: Up/Down - space to hold - d to drop - Tab for buttons - F2 drag-copy <-> click - Ctrl-Q
+screen_focus_here: you are here > {where}
+screen_focus_path: path box
+screen_focus_search: search box
+screen_focus_table: column table
+screen_focus_workspace: imported columns
+screen_focus_button: button [{name}]  <- press Enter or click
+screen_focus_unknown: unknown (press Tab to move)
+screen_opened_ok: opened {name} - {n} columns
+screen_checked: 'checked: {name}  ({n} selected)'
+screen_unchecked: 'unchecked: {name}  ({n} selected)'
+screen_sorted: sorted by {how}
+screen_sort_off: sorting off (file order)
+screen_searched: search '{q}' - {n} match(es)
+screen_search_cleared: search cleared - {n} columns
+screen_paged: page {page}/{pages}
+screen_open_data_title: 1. Open a data file
+screen_open_data_desc: Start here. Enter a csv/tsv/parquet path and press [Open]
+screen_open_session_title: 2. Continue earlier work
+screen_open_session_desc: Loads a saved session - the record of what you did, not the data
+screen_open_session_count: '{n} saved session(s) - latest {name} - pick one in [Sessions]'
+screen_open_session_none: No saved sessions - if this is your first time, start with 1
+screen_sessions_title: '{n} saved session(s) - pick one'
+screen_sessions_header: name                                                  saved
+screen_sessions_hint: Up/Down then Enter, or click a row
+screen_sessions_dir: 'location: {path}'
+screen_sessions_btn: Sessions
+screen_back_btn: < Back
+screen_save_title: Save session
+screen_save_dir_label: Type a folder and press [Save]. Empty means the default store
+screen_save_target: 'will be saved as: {path}'
+screen_save_exists_warn: A file with this name exists - press [Overwrite] to replace it (previous kept as .bak)
+screen_save_hint: Type a path to change the folder
+screen_save_no_dir: 'no such folder: {path}'
+screen_save_overwrite_hint: press [Overwrite] to replace it
+screen_save_btn2: Save
+screen_overwrite_btn: Overwrite
+screen_keys_sessions: Up/Down - Enter to load - click - Tab for buttons - F2 drag-copy <-> click - Ctrl-Q
+screen_keys_save: Type a path then [Save] - [Overwrite] if it exists - Tab - F2 drag-copy <-> click - Ctrl-Q
+screen_focus_sessions: session list
+screen_focus_savedir: save folder box
+screen_web_btn: Open in web
+screen_refresh_btn: Web to CLI
+screen_web_starting: starting the web server...
+screen_web_ready: open in a browser > {url}
+screen_web_tunnel: 'if your browser cannot reach the server, from your PC: ssh -N -L {port}:127.0.0.1:{port} {user}@<server>'
+screen_web_no_build: the web UI is not built yet - run npm run build in ui/ and press again
+screen_web_failed: could not start the web server (port {port})
+screen_web_same_session: web and terminal share one session - [CLI to web] pushes, [Web to CLI] pulls
+screen_refreshed: web to CLI applied - {n} imported, {h} held
+screen_refresh_none: no session is open yet
+screen_web_url_head: Open this address in a browser (copy and paste)
+session_resolve_not_found: 'session not found: {id}'
+screen_mouse_ok: mouse ok
+screen_mouse_none: no mouse events - press number keys (1-9) for buttons
+screen_numkeys: 'buttons: {items}'
+screen_derive_btn: Derive
+screen_derive_title: Create a derived column (formula)
+screen_derive_cols: 'available columns: {cols}'
+screen_derive_examples: e.g. log2(frac_A + eps) - frac_A / mean(reads_x) - clr(frac_A) - pct_purity / 100
+screen_derive_hint: Type a formula and press [Preview]. Nothing is recorded until [Create]
+screen_derive_empty: type a formula
+screen_derive_need_name: type a name for the new column
+screen_derive_need_columns: import columns first - formulas use imported columns
+screen_derive_previewed: preview only - nothing has been recorded
+screen_derive_result_type: 'result semantic type: {type}'
+screen_derive_legend: 'colors: column - row-wise - column scalar (constant per row) - set function - eps'
+screen_derive_eps: 'eps: {chosen}  (choices: {cands}) - you must pick one to save'
+screen_derive_preview_btn: Preview
+screen_derive_make_btn: Create
+screen_derive_eps_btn: eps down
+screen_keys_derive: type a formula then [Preview] - name it then [Create] - Esc back - F2 drag-copy <-> click - Ctrl-Q
+screen_focus_expr: formula box
+screen_focus_newname: new column name box
+screen_prompt_expr: 'f(x) '
+screen_prompt_name: 'name '
+screen_reading_big: reading {name}...
+screen_reading_note: building the column summary; data values are not read
+screen_share_btn: CLI to web
+screen_pull_btn: Apply to CLI
+screen_shared: CLI state saved ({step} stage, {n} checked) - press [CLI to web] on the web side
+screen_pulled: web to CLI applied (saved by {by}) - {n} imported, {p} checked
+screen_pull_no_view: no saved web view; applied ops only - {n} imported. Press [web to CLI] on the web side first
+screen_eta: about {t} left
+screen_types_btn: Types
+screen_types_title: Semantic types - {ok}/{total} confirmed
+screen_types_header: '     column                 type                shape'
+screen_types_hint: '{pending} unconfirmed - space cycles candidates, Enter confirms'
+screen_types_inferring: inferring types
+screen_types_need_columns: import columns first - types are confirmed on imported columns
+screen_types_cycled: '{column} -> {type} (Enter to confirm)'
+screen_types_confirmed: 'confirmed: {column} = {type}'
+screen_types_confirmed_risky: 'confirmed: {column} = {type} - risks for this type: {ids} (see statop types)'
+screen_types_not_inferred: (not among inferred candidates)
+screen_types_dist_shown: '{column} distribution - press v again to fold'
+screen_keys_types: Up/Down column - space cycles - Enter confirms - v distribution - Esc back - F2 drag-copy <-> click - Ctrl-Q
+screen_focus_types: type list
+screen_types_cycle_btn: Next candidate
+screen_types_confirm_btn: Confirm
+screen_types_dist_btn: Distribution
+stage_check: checking the file
+stage_hash: registering source - partial hash (first/last 4MB)
+stage_session: writing the session
+stage_profile: sampling and column stats
+stage_infer: inferring semantic types
+screen_types_cands: 'candidates:'
+screen_types_outside: 'outside inference (keep pressing space):'
+ev_label_name_hint: column name {name} - typical for a group variable
+ev_label_few_levels: '{n} levels - could be a group variable'
+screen_role_header: '     role  column'
+screen_role_id: id
+screen_role_label: label
+screen_role_hold: hold
+screen_role_auto_held: '{column} = {type} - excluded from analysis automatically (kept for identification/grouping)'
+screen_labels_title: Label mapping - {column} ({n} levels)
+screen_labels_header: '     value              code   count'
+screen_labels_hint: Left/Right changes the code. Equal codes merge into one group
+screen_labels_grouped: '! {before} levels -> {after} groups: {detail}'
+screen_labels_saved: 'mapping saved: {column} - {detail}'
+screen_labels_save_btn: Save mapping
+screen_labels_skip_btn: Skip
+screen_keys_labels: Up/Down level - Left/Right code - Enter save - Esc skip - F2 drag-copy <-> click - Ctrl-Q
+screen_focus_labels: label mapping
+screen_derive_eps_up_btn: eps up
+screen_derive_flow: 'flow: type a formula -> [Preview] (stats and eps) -> name it -> [Create].  Pressing [Create] alone runs the preview for you'
+screen_derive_ready: preview done - name it and press [Create] to record
+ev_from_formula: 'derived from the formula: {expr}'
+spec_bad_question: 'question: {allowed} (got {q})'
+spec_same_column: y and group are the same column
+spec_bad_direction: 'direction: {allowed}'
+spec_bad_contrast: 'contrast: {allowed}'
+spec_need_control: vs-control needs --control with the reference level
+spec_bad_ntests: planned number of tests must be >= 1
+spec_control_unknown: control level {control} is not among the groups ({levels})
+spec_y_unconfirmed: semantic type of {col} is unconfirmed - confirm types first
+spec_group_unconfirmed: semantic type of {col} is unconfirmed - confirm label first
+spec_compat_gate: 'compatibility gate: {ids} - no test on this combination can be trusted'
+spec_recorded: 'question recorded: {q} - y={y}{group} - candidates, checks and corrections all use this'
+spec_head: Question design (A1)
+spec_line_question: 'question: {q} {text}'
+spec_line_target: 'target: y={y} ({y_type}){group_part}'
+spec_line_design: paired {paired} - direction {direction} - contrast {contrast} - {n} planned test(s)
+spec_line_groups: 'groups: {detail}  (label mapping applied)'
+spec_problems_head: resolve before proceeding
+cand_head: Test candidates (A2) - {n} for {q}
+cand_reason_best: '{text}'
+cand_reason_best_unmet: below the recommended condition ({text}) - current min group n={n}
+cand_reason_caution: '{text} (current min group n={n})'
+cand_reason_blocked: '{text}'
+cand_reason_scale: '{y} is {y_type} - cannot go into a continuous-scale test'
+cand_reason_assumptions: assumption {c} unchecked - running A3 updates this
+cand_effect: 'effect size: {e}'
+cand_alt: 'alternatives: {a}'
+cand_none: no candidate fits this question type - revisit the question or the columns
+cand_color_green: fit
+cand_color_yellow: needs checking
+cand_color_red: unfit
+spec_group_too_many_levels: '{col} has {n} levels - is it really a group variable? For a continuous variable use Q-03 (association)'
+a3_name_normality: Normality (C-01)
+a3_name_variance: Equal variance (C-02)
+a3_name_collinearity: Collinearity (C-03)
+a3_name_independence: Independence (C-05)
+a3_name_multiplicity: Multiplicity (C-09)
+a3_name_power: Power (C-08)
+a3_norm_ok: no problem with normal approximation in any group
+a3_norm_violated: 'violated in group {groups} - cause: {cause}'
+a3_norm_caution: sample too small or too large for a test - judge by skew and QQ
+a3_cause_outliers: a few outliers (normal once removed - inspect those values)
+a3_cause_skew: skewed - transform (e.g. log) or go nonparametric
+a3_cause_shape: distribution shape itself (bimodal/tails) - nonparametric recommended
+a3_cause_mixed_shapes: causes differ across groups - shapes differ, rank-based tests recommended
+a3_var_ok: no evidence of unequal variance (Brown-Forsythe p={p:.3f})
+a3_var_violated: variances differ - SD ratio {ratio:.1f}x (p={p:.2e}). Use Welch-type tests
+a3_vif_ok: max VIF {vmax:.1f} - no collinearity problem
+a3_vif_violated: 'high collinearity: {cols} - drop or combine one of them'
+a3_indep_unknown: group structure unconfirmed - independence cannot be judged (confirm with statop groups)
+a3_indep_clustered: 'cluster/repeated structure: {detail} - observations are not independent'
+a3_indep_ok: no cluster/repeat in the confirmed structure
+a3_multi: '{n} planned tests -> Bonferroni alpha = {alpha}/{n} = {adj:.4g}'
+a3_power: with n={n1}/{n2}, the minimum detectable effect at 80% power is d ~ {d:.2f}
+a3_power_short: to detect d=0.5 you need n>={need} per group - group {group} is the short side
+a3_skip_groups: fewer than 2 groups - skipped
+a3_skip_two_groups: computed for 2 groups only - skipped
+a3_skip_columns: fewer than 2 numeric columns - skipped
+a3_need_spec: run analyze plan --apply first - the question decides which assumptions matter
+a3_head: Assumption checks (A3) - for {q}
+a3_verdict_ok: met
+a3_verdict_violated: violated
+a3_verdict_caution: caution
+a3_verdict_skipped: skipped
+run_need_two_groups: needs exactly 2 groups (got {n})
+run_paired_unequal: paired test but group sizes differ ({a} vs {b})
+run_fisher_needs_2x2: Fisher exact requires a 2x2 table (got {shape})
+run_not_implemented: '{id} is not runnable yet - available: {available}'
+run_note_meandiff: mean diff {value:.4g} (95% CI {ci_low:.4g} ~ {ci_high:.4g})
+run_note_alpha: adjusted alpha for {n} planned tests = {adj:.4g} - compare p to this
+run_note_verdict_sig: p={p:.3g} < adjusted alpha ({adj:.4g}) - significant after correction
+run_note_verdict_ns: p={p:.3g} >= adjusted alpha ({adj:.4g}) - not significant after correction
+run_head: 'running: {id} {name}'
+run_line_stat: statistic {stat:.4g} - p = {p:.3g}
+run_line_effect: '{name} = {value:.3g}{ci}'
+run_line_ci: ' (95% CI {lo:.3g} ~ {hi:.3g})'
+run_line_n: 'n: {detail}'
+a3_skew_label: skew {skew:+.2f}
+hypo_need_result: no executed test - run one with analyze run first. Hypotheses are built only from what was actually observed
+hypo_p1_title: Proposal 1 (effect-centric)
+hypo_p2_title: Proposal 2 (observation-centric)
+hypo_mag_negligible: negligible
+hypo_mag_small: small
+hypo_mag_medium: moderate
+hypo_mag_large: large
+hypo_ci: ' (95% CI {lo:.3g}~{hi:.3g})'
+hypo_p1_assoc_sig: '{x} and {y} show a {mag} association ({effect}={value:.3g}{ci}, {test} p={p:.3g} < adjusted alpha {alpha:.3g})'
+hypo_p1_assoc_ns: the association between {x} and {y} is not significant at adjusted alpha {alpha:.3g} ({effect}={value:.3g}{ci}, p={p:.3g})
+hypo_p1_diff_sig: groups of {x} differ in {y} with a {mag} effect ({effect}={value:.3g}{ci}, {test} p={p:.3g} < adjusted alpha {alpha:.3g})
+hypo_p1_diff_ns: the difference in {y} between groups of {x} is not significant at adjusted alpha {alpha:.3g} ({effect}={value:.3g}{ci}, p={p:.3g})
+hypo_p1_interp_sig: effect size {effect} is {mag} - report significance and magnitude together
+hypo_p1_interp_ns: non-significance is not evidence of no difference - read the CI width
+hypo_p2_assoc_sig: '{dir} - observed at a level unlikely by chance ({test}, p={p:.3g})'
+hypo_p2_assoc_ns: '{dir} trend observed but within chance (p={p:.3g})'
+hypo_p2_diff_sig: '{dir} - unlikely by chance per {test} (p={p:.3g})'
+hypo_p2_diff_ns: a {dir} difference was observed but is within chance (p={p:.3g})
+hypo_p2_interp_assoc: states existence of association only - not size prediction or cause
+hypo_p2_interp_diff: states a location difference between groups - not superiority of individual samples
+hypo_dir_positive: positive direction - larger {x} goes with larger {y}
+hypo_dir_negative: negative direction - larger {x} goes with smaller {y}
+hypo_dir_none: no consistent direction
+hypo_dir_group: group {hi} has larger {y} than group {lo}
+hypo_dir_unknown: no direction information
+hypo_caution_clr: '{col} is CLR-transformed - do not read this effect as a raw-scale fold change; it is a difference of relative log-ratios'
+hypo_caution_log: '{col} is on a log scale ({expr}) - differences read as fold changes (diff of 1 = 2x on log2)'
+hypo_caution_eps: eps={eps:g} was used for {col} - values near zero may be affected
+hypo_caution_merged: groups were merged by label mapping ({detail}) - conclusions are about the merged definition
+hypo_caution_small_n: smallest group n={n} - effect estimates are unstable; prioritize the CI
+hypo_caution_alpha: adjusted alpha={adj:.3g} for {k} planned tests - do not compare p to 0.05
+hypo_caution_causal: association is not causation - direction and confounding are not answered by this test
+hypo_comp_r_vs_rho: 'with Spearman rho as companion: r>>rho means a few points drive linearity; rho>>r means monotone but nonlinear'
+hypo_comp_rho_vs_r: 'with Pearson r as companion: rho>>r suggests monotone nonlinearity; r>>rho, check outliers pulling r'
+hypo_comp_cosine: cosine similarity does not center - two all-positive variables score high with no relationship. Not a substitute for correlation
+hypo_comp_other_result: 'also ran {name}: {effect}={value:.3g} - check the sign agrees with the main metric'
+hypo_comp_g_vs_rb: 'with rank-biserial as companion: a sign flip vs g means tails/outliers drive the mean'
+hypo_comp_rb_vs_g: 'with Hedges g as companion: a sign flip vs the rank metric means tails drive the mean'
+hypo_guard_gate: 'guardrail gate [{rule}]: {detail} - resolve before using this hypothesis'
+hypo_guard_diag: 'guardrail diagnostic [{rule}]: {detail} - narrow the generalization scope'
+hypo_head: Hypotheses (A7) - from {test}, mechanically generated
+hypo_cautions_head: Cautions
+hypo_companions_head: Companion metrics
+hypo_guard_head: Guardrail context
+hypo_ask_hint: 'if these do not fit: statop ask can request alternatives from Qwen (needs the GPU server)'
+qwen_no_endpoint: endpoint not set - put the address in {env} (e.g. http://gpu-node:8001/v1)
+qwen_remote_refused: '{url} is not a private-network address - refused to prevent data leaving. Set {env}=1 to allow explicitly'
+qwen_call_failed: 'Qwen call failed ({url}): {err}'
+qwen_head: Qwen proposals (model {model}) - comments on rule-based results, not standalone judgments
+qwen_sent_log: 'sent-content log: {path}'
+qwen_parse_failed: model output broke the format - showing it verbatim
+qwen_dry_head: what would be sent (preview - nothing has been sent)
+ask_opinion_hint: opinion is optional - state why the mechanical hypotheses do not fit
+hypo_direction_label: 'direction: {d}'
+qwen_proposal_label: proposal
+report_title: STATOP report - {name}
+report_session: session {sid} (started {created})
+report_source: source {path} - hash {hash12}... ({mode})
+report_generated: generated {ts}
+report_ops_head: Operation history ({n})
+report_filter_line: 'row filter: `{expr}` - reason: {reason}'
+report_missing_line: 'missing-data {op}: {detail}'
+report_derive_line: derived column {name} = `{expr}`{eps}
+report_labelmap_line: 'label mapping {col}: {mapping}'
+report_relabel_line: '{n} individual relabel(s) - source unchanged, outputs carry a marker'
+report_types_head: Confirmed semantic types ({n})
+report_guard_head: Guardrails (computed at report time)
+report_guard_skipped: not examined
+report_spec_head: Question design (A1)
+report_spec_line: '{q} - y={y} - group={group} - paired {paired} - direction {direction} - {n} planned test(s)'
+report_tests_head: Executed tests ({n})
+report_tests_cols: test | statistic | p | effect (95% CI) | adj. alpha
+report_hypo_head: Hypotheses (mechanical)
+report_bad_format: 'format: {allowed} (got {fmt})'
+report_written: 'report written: {path} ({fmt}, {kb:.0f}KB)'
+session_none_active: no active session - start with statop session new --data <file>, or pass --session
+session_auto_selected: 'session: {name} (most recent working session - pass --session for another)'
+screen_an_btn: Analyze
+screen_an_title: Analysis (module A) - question, candidates, run, hypothesis
+screen_an_flow: Up/Down move - Left/Right change - [Check plan] then Enter on a candidate
+screen_an_hint: pick the question and columns with Left/Right, then [Check plan]
+screen_an_need_columns: import columns and confirm types first
+an_f_question: question
+an_f_y: outcome y
+an_f_group: group/x
+an_f_paired: paired
+an_f_ntests: planned tests
+an_none: (none)
+screen_an_changed: '{label} -> {value}'
+screen_an_blocked: '{n} blocker(s) - resolve below and [Check plan] again'
+screen_an_planned: '{n} candidate(s) - Up/Down then Enter to run'
+screen_an_cands_head: Test candidates ({n})
+screen_an_pick_candidate: press Enter on a candidate - run [Check plan] first
+screen_an_ran: '{id} done - review the hypotheses below'
+screen_keys_analyze: Up/Down - Left/Right value - Enter runs (on a candidate) - Esc back - F2 drag-copy <-> click - Ctrl-Q
+screen_focus_analyze: analysis design
+screen_an_plan_btn: Check plan
+screen_an_run_btn: Run
+screen_an_checks_btn: Assumptions
+screen_an_result_title: Test result and hypotheses
+screen_an_result_spec: '{q} - y={y} - x={x} - Esc or [Redesign] to go back'
+screen_an_result_keys: Esc back to design (candidates kept - run another test right away)
+screen_an_redesign_btn: Redesign
+run_need_three_levels: a trend test needs 3+ ordered groups - got {n}
+run_need_second_column: select a second column (group/x)
+run_need_numeric: 'no numeric values in: {cols}'
+run_need_binary_y: '{col} must have two values - got {n}'
+run_need_positive: need 3+ positive rows to take logs - got {n}
+run_note_order: computed with group order {order} - a different order flips the direction
+run_note_ca_rates: 'rate per group: {rates}'
+run_note_mk_tau: Kendall tau = {tau:.4f}, S = {s:.0f}
+run_note_r2: R2 = {r2:.4f}, intercept = {intercept:.6g}
+run_note_shape_only: spread and skew differences also make this significant, not only location
+run_note_perm_p: p approximated from {n} permutations
+run_note_prop: phi = {phi:.4f} (near 0 = proportional), log-ratio variance = {vr:.4f}
+run_note_no_p: this measure has no standard p-value - judge by magnitude
+run_note_dropped_nonpositive: dropped {n} rows that were zero or negative (cannot take log)
+run_need_two_categories: need 2+ categories - got {n}
+run_note_icc_model: ICC(2,1), two-way random, absolute agreement - a systematic offset between the two also lowers it
+run_note_loa: 95% limits of agreement {lo:.6g} to {hi:.6g}
+run_note_ba_proportional: correlation between mean and difference r={r:.4f} (p={p:.4g}) - if significant, fixed LoA do not apply
+run_note_ccc_parts: precision (correlation) {r:.4f} x accuracy (bias correction) {cb:.4f}
+run_note_kappa_weighted: linearly weighted kappa = {kw:.4f} - use this when categories are ordered
+run_note_kappa_prevalence: raw agreement {po:.4f} - kappa far below this means one category dominates
+run_note_fleiss_two: Fleiss kappa with 2 raters - essentially the same quantity as Cohen's kappa (T-604)
+run_need_counts: '{col} must be non-negative integers (counts)'
+run_need_unit_interval: '{col} must lie in 0..1 - got {cols}'
+run_need_positive_time: '{col} must be positive (time)'
+run_note_coef: '{name}: {value:.6g} [{lo:.6g}, {hi:.6g}]'
+run_note_logit_ref: modeled '{pos}' as the event, '{neg}' as the reference
+run_note_pseudo_r2: pseudo R2 = {r2:.4f} - not comparable to an ordinary R2
+run_note_epv: events per variable is {epv:.1f}, below 10 - estimates may be overstated
+run_note_r2_adj: R2 = {r2:.4f} (adjusted {adj:.4f})
+run_note_hc3: 'heteroskedasticity-robust (HC3): SE={se:.6g}, p={p:.4g}'
+run_note_dispersion: dispersion = {disp:.3f} (1 expected) -> used {model}
+run_note_ordinal_order: treated the outcome order as {order}
+run_note_proportional_odds: assumes proportional odds - one number cannot summarize it if the effect differs by threshold
+run_note_beta_link: 'logit link: coefficients are odds multipliers, not proportions'
+run_note_beta_squeeze: '{n} rows were exactly 0 or 1 and were squeezed inward'
+run_note_robust_vs_ols: OLS slope {ols:.6g} vs robust {rob:.6g}
+run_note_downweighted: '{n} of {total} rows were down-weighted as outliers'
+run_note_cox_no_censor: no censoring column in the design - every row was treated as an observed event
+run_note_ph_assumption: assumes proportional hazards over time
+run_note_ordinal_lexical: the outcome is text, so it was ordered alphabetically - map it to 0,1,2 codes first if that is not the intended order
+run_need_composition: could not find a composition set containing {col}
+run_need_count_composition: 'this test needs counts (integers), got proportions: {cols}'
+run_note_comp_set: 'transformed using all {n} components: {cols}'
+run_note_clr_read: CLR differences are log differences against the geometric mean - do not read them as fold changes in the original proportion
+run_note_alr_ref: used {ref} as the reference component, comparing log({y}/{ref})
+run_note_logratio_diff: mean log-ratio difference ({a}-{b}) = {d:.4f}
+run_note_aldex_mc: median p over {k} Dirichlet instances (max {pmax:.4g})
+run_note_ancombc_simple: 'simplified form: removed a group sampling-fraction bias of {corr:.4f}; no structural-zero detection and no across-taxa multiplicity correction'
+run_note_marginal: 'overall P(Y): {dist}'
+run_note_conditional: 'P(Y | {z}): {dist}'
+run_note_simpson: if the overall and per-group directions disagree, do not conclude from the overall rate (Simpson's paradox)
+cand_reason_not_implemented: no calculator yet - cannot produce a value
+screen_an_not_runnable: '{id} has no calculator yet - pick another candidate'
+an_unimplemented_head: no calculator
+run_name_icc: ICC (2,1) absolute agreement
+run_name_clr_compare: Group comparison after CLR
+run_name_alr_compare: Group comparison after ALR
+run_name_aldex: ALDEx2-style (CLR + Monte Carlo)
+run_name_ancombc: ANCOM-BC-style (simplified)
+run_name_prop_comp: Proportionality (composition)
+run_name_marginal: Marginal vs conditional distribution
+run_name_poisson_over: Poisson regression (overdispersed)
+run_eff_ks_d: D (max cumulative gap)
+run_eff_marginal_gap: max |P(Y|Z)-P(Y)|
+run_eff_clr_diff: CLR difference ({a}-{b})
+run_eff_ancombc_diff: bias-corrected log difference ({a}-{b})
+run_too_many_levels: '{col} has {n} levels - that is continuous, not ordinal. Use a continuous regression (T-802) or bin it first'
+hypo_p1_slope_sig: '{y} changes with {x} ({effect}={value:.3g}{ci}, {test} p={p:.3g} < adjusted alpha {alpha:.3g})'
+hypo_p1_slope_ns: the change in {y} with {x} is not significant at the adjusted alpha ({alpha:.3g}) ({effect}={value:.3g}{ci}, p={p:.3g})
+hypo_p2_slope_sig: '{dir} - unlikely to be chance under {test} (p={p:.3g})'
+hypo_p2_slope_ns: '{dir}: a change in that direction was seen but stays within chance (p={p:.3g})'
+hypo_p2_interp_slope: this is an average change per unit of {x}, not a claim that changing {x} changes {y}
+hypo_p1_agree_sig: '{y} and {x} agree at a {mag} level ({effect}={value:.3g}{ci}, {test})'
+hypo_p1_agree_ns: '{y} and {x} cannot be called well-agreeing ({effect}={value:.3g}{ci}, {test})'
+hypo_p2_agree_sig: the two measurements can be treated as giving the same value ({effect}={value:.3g})
+hypo_p2_agree_ns: the two measurements are not interchangeable ({effect}={value:.3g})
+hypo_p2_interp_agree: high correlation with a systematic offset is not agreement - read the limits of agreement too
+hypo_p1_shape_sig: the distribution of {y} differs between {x} groups ({effect}={value:.3g}{ci}, {test} p={p:.3g} < adjusted alpha {alpha:.3g})
+hypo_p1_shape_ns: the distribution of {y} across {x} groups is not significant at the adjusted alpha ({alpha:.3g}) (p={p:.3g})
+hypo_p2_shape_sig: the two samples are unlikely to come from the same population ({test}, p={p:.3g})
+hypo_p2_shape_ns: not enough evidence that the distributions differ (p={p:.3g})
+hypo_p2_interp_shape: it does not say which of median, spread or skew differs - look at the distributions
+hypo_p1_interp_sig_nomag: '{effect}={value:.3g} is in raw units with no conventional small/medium/large cutoffs - judge practical size against domain knowledge'
+screen_an_missing_head: missing values - only {kept} of {total} rows are usable for this design
+screen_an_missing_col: '{col}: {n} rows empty ({ratio:.1%})'
+screen_an_impute_hint: '[Impute] = {method} (Left/Right to change)'
+screen_an_impute_method: 'imputation method: {method}'
+screen_an_impute_btn: Impute
+screen_an_imputed: filled {n} cells with {method} ({cols}) - recorded in the session
+screen_an_no_missing: no missing values in the columns this design uses
+screen_an_impute_group_missing: '{col} itself is empty, so group-wise imputation cannot be used'
+spec_event_same_column: the event column {col} is the same as the outcome or group column
+run_name_logrank: Kaplan-Meier + log-rank
+run_name_gehan: Gehan-Breslow-Wilcoxon
+run_name_rmst: RMST difference (restricted mean survival time)
+run_name_cox_adj: Cox PH (covariate adjusted)
+run_eff_hr: HR ({name})
+run_eff_rmst: RMST difference ({a}-{b})
+run_note_censor_col: used {col} as the event indicator - {events} events, {censored} censored
+run_note_median_surv: '{level}: n={n}, {events} events, median survival {median:.4g}'
+run_note_hr_companion: the log-rank test has no effect size, so the Cox hazard ratio from the same data is attached
+run_note_logrank_crossing: log-rank misses differences when survival curves cross - use T-903 RMST then
+run_note_gehan_early: weights early time points more heavily - late-emerging differences may be missed
+run_note_rmst_tau: compared areas up to {tau:.4g} where both groups still have observations ({a:.4g}, {b:.4g})
+run_note_rmst_why: does not assume proportional hazards, so it works even when curves cross - units are time
+run_eff_hr_vs: HR ({name} vs {ref})
+run_note_median_unreached: '{level}: n={n}, {events} events, median survival not reached (last survival {low:.3f})'
+an_f_event: event (survival)
+run_note_rows_used: computed from {used} of {total} rows ({dropped} rows dropped for missing values)
+screen_an_ignoring_missing: missing rows excluded - {used} of {total} rows used
+screen_an_ignore_btn: Ignore missing
+spec_by_same_column: the stratifying column {col} is the same as the outcome
+run_note_strata: also computed separately within each of the {n} levels of {col}
+run_note_strata_flip: 'these levels point the opposite way from the overall result: {levels} - do not conclude from the overall value alone (Simpson''s paradox)'
+run_need_two_factors: an interaction needs both a group column and a stratifying label column
+run_name_two_way_anova: Two-way ANOVA (interaction)
+run_name_art_anova: Aligned rank transform ANOVA (interaction)
+run_name_interaction_glm: Regression with interaction term
+run_eff_interaction: interaction coefficient ({term})
+run_note_factors: 'two factors: {a} x {b}'
+run_note_cell: '{a} x {b}: mean {mean:.4g} (n={n})'
+run_note_main_effect: '{name} main effect F={f:.4g}, p={p:.4g}'
+run_note_interaction_first: the interaction is significant, so do not read main effects on their own
+run_note_cell_empty: the smallest cell has {n} rows - that combination is effectively empty
+run_note_unbalanced: cell sizes range {lo}-{hi} - an unbalanced design, results depend on the sum-of-squares type
+run_note_art: interaction measured on ranks - no normality assumed, but the effect size is not in raw units
+run_note_centered: '{col} centered at its mean {mean:.4g} - read main effects as ''when the other is at its mean'''
+run_need_weights: a planned contrast needs weights - give {k} numbers summing to 0, in group order {levels} (e.g. 1,1,-2)
+run_bad_weights: 'cannot read the weights as numbers: {raw}'
+run_weights_count: got {got} weights but there are {k} groups - order {levels}
+run_weights_sum: the weights sum to {total:.4g} - a contrast must sum to 0
+run_weights_need_both_signs: need both positive and negative weights to form two pools
+run_need_control_level: 'specify the control level - available: {levels}'
+run_name_planned_contrast: Planned contrast
+run_name_dunnett: Dunnett (control vs each group)
+run_name_orthogonal: Orthogonal contrast set (Helmert)
+run_name_nonparam_contrast: Nonparametric contrast (pooled Mann-Whitney)
+run_eff_contrast: contrast value
+run_eff_vs_control: '{level} - {ctrl}'
+run_eff_helmert: '{level} vs mean of later groups'
+run_note_contrast_spec: 'contrast weights: {spec}'
+run_note_group_means: 'group means: {means}'
+run_note_contrast_single: this is one pre-specified contrast - if the weights were chosen after seeing the data, a multiplicity correction is needed
+run_note_dunnett_ctrl: used {ctrl} as the control and compared each other group to it
+run_note_dunnett_row: '{level} - control = {diff:.4g} [{lo:.4g}, {hi:.4g}], p={p:.4g}'
+run_note_dunnett_adjusted: p values and intervals are already adjusted for the number of comparisons - do not adjust again
+run_note_helmert_set: split into {k} non-overlapping contrasts (each group vs the mean of later groups)
+run_note_helmert_row: '{level} vs later mean = {value:.4g} [{lo:.4g}, {hi:.4g}], p={p:.4g}'
+run_note_orthogonal_why: being orthogonal, the contrasts do not count the same difference twice
+run_note_pooled: 'positive pool: {plus} / negative pool: {minus}'
+run_note_pooled_caveat: differences inside each pool disappear - whether pooling is valid is decided by the hypothesis
+an_f_by: stratify by
+screen_an_strata_head: by {col} ({n} levels) - read together with the overall value
+screen_an_strata_row: '{level} (n={n}): {name}={value:.4g}, p={p:.3g}'
+run_need_2x2: need a 2x2 table - got {y} outcome levels by {g} groups
+run_need_control_var: partial correlation needs a variable to control for - set the stratifying label
+run_name_prop_diff: Proportion difference (Newcombe interval)
+run_eff_prop_positive: proportion positive
+run_eff_discordant: discordant pair difference
+run_eff_prop_diff: proportion difference ({a}-{b})
+run_eff_partial_r: partial r (controlling {ctrl})
+run_note_sign_only_direction: uses only the sign - ignores magnitude, so it has low power (use T-112 to use magnitude)
+run_note_welch_anova: an ANOVA that allows unequal variances - use instead of T-121 when equal variance fails
+run_note_small_expected: '{n} cells have an expected count below 5 - also look at Fisher''s exact test (T-202)'
+run_note_mcnemar_discordant: uses only discordant pairs - {b} vs {c}. The number of concordant pairs does not affect the result
+run_note_prop_rates: '''{hit}'' rate: {a}={pa:.4f}, {b}={pb:.4f}'
+run_note_newcombe: Newcombe intervals stay inside 0..1 even near the boundaries
+run_note_dcor: detects non-linear relationships too - zero means independence, but there is no sign
+run_note_bicor_vs_pearson: Pearson r={pearson:.4f} vs bicor={bicor:.4f} - a big gap means a few points were driving the correlation
+run_note_partial_vs_raw: raw correlation {raw:.4f} -> {partial:.4f} after controlling {ctrl}
+run_name_gtest: G-test (likelihood ratio)
+run_need_subject: repeated measures needs a subject ID column - pick an id column where the same subject appears more than once
+run_need_occasion: set the occasion (time/batch) column as the group
+run_need_two_occasions: need 2+ occasions - got {n}
+run_need_three_occasions: need 3+ occasions - got {n} (use a paired test for 2)
+run_need_subjects: need 3+ subjects - got {n}
+run_name_mixed_interaction: Mixed model interaction
+run_eff_rate_range: largest rate gap across occasions
+run_eff_vs_first: '{term} (vs {base})'
+run_note_occasions: '{n} subjects by {col}, occasion order {order}'
+run_note_incomplete_subjects: dropped {n} subjects with a missing occasion - use T-133 (mixed model) to keep them
+run_note_means_by_occasion: 'mean per occasion: {means}'
+run_note_mean_ranks: 'mean rank per occasion: {ranks}'
+run_note_prop_by_occasion: '''{hit}'' rate per occasion: {rates}'
+run_note_sphericity: assumes sphericity - if it fails, p is optimistic (use T-132 Friedman)
+run_note_friedman_ranks: uses ranks within each subject - magnitudes are ignored
+run_note_lmm_unbalanced: keeps subjects with missing occasions, unlike repeated-measures ANOVA
+run_note_icc_subject: between-subject variance is {icc:.1%} of the total
+run_note_random_subject: '{col} used as a subject random effect ({n} subjects)'
+an_f_subject: subject ID (repeated)
+screen_an_repeat_hint: '{col} repeats: {subjects} subjects across {rows} rows - set it as [subject ID] to use repeated-measures tests'
+screen_an_flip_warn: 'levels pointing the opposite way from the overall result: {levels}'
+screen_an_flip_why: the overall value alone reverses the conclusion (Simpson's paradox) - always report the per-level values too
+hypo_caution_simpson: the direction reverses within levels {levels} of {by} - a conclusion drawn from the overall value flips when read per level (Simpson's paradox)
+hypo_dir_overall_only: overall {dir}, but the opposite within {levels} of {by}
+hypo_p2_interp_simpson: the overall and per-level directions disagree - which one answers your question is decided by the design, not by the statistics
+points_outlier_iqr: outside the IQR fence, {side} (normal range {lo:.4g} to {hi:.4g})
+points_side_low: below
+points_side_high: above
+points_x_index: row number
+points_note_required: a reason is required to exclude a sample
+screen_an_plot_btn: Show points
+screen_an_plot_title: 'Individual points - {y} (group: {x})'
+screen_an_plot_flow: Up/Down pick - type a reason and Enter to exclude - Enter on an excluded point restores it
+screen_an_plot_hint: '{n} points - find and drop the sample that is driving the result'
+screen_an_point_row: '{key}  {x}  {y:.4g}  - {why}'
+screen_an_excluded_row: '{key}  (excluded) reason: {reason} - Enter to restore'
+screen_an_no_candidates: no points stand out (nothing outside the IQR fence)
+screen_an_need_reason: write a reason first - you must be able to explain why it was dropped
+screen_an_excluded: '{key} excluded - reason: {reason}'
+screen_an_included: '{key} restored'
+screen_an_reason_label: 'reason for exclusion (type below):'
+screen_an_exclude_btn: Exclude
+screen_keys_plot: Up/Down - Enter exclude/restore - Esc back - F2 drag-copy <-> click - Ctrl-Q
+report_excluded_line: '{n} individual samples excluded - reflected in the tests and hypotheses below'
+report_excluded_row: '{col}={key} - {reason}'
+points_alt_why: robust to outliers - try this before dropping anything
+points_excl_red: '{n} of {total} rows ({ratio:.1%}) excluded - above 10% this is sample selection, not analysis'
+points_excl_yellow: '{n} of {total} rows ({ratio:.1%}) excluded - always report alongside the pre-exclusion result'
+points_both_head: before / after exclusion (both must be reported)
+points_both_row: '{when}: {name} statistic={stat:.4g}, p={p:.4g}, {eff}={val:.4g}'
+points_when_before: before
+points_when_after: after
+points_flipped: the conclusion changed because of the exclusion (significant on only one side)
+points_alt_head: alternatives to try before excluding
+metrics_need_result: run a test first - what to report alongside depends on the metric you used
+metrics_not_computable: '{id} is guidance to check, not a computed value'
+metrics_p203_why: a standardized value does not say how many units - always report the raw-scale difference too
+metrics_group_mean: '{level}: mean {mean:.6g} (SD {sd:.4g}, n={n})'
+metrics_group_ci: '{level}: mean {mean:.6g} [95% CI {lo:.6g}, {hi:.6g}] (n={n})'
+metrics_raw_diff: '{a} - {b} = {diff:.6g} [95% CI {lo:.6g}, {hi:.6g}] (raw {unit})'
+metrics_alpha: '{n} planned tests -> adjusted alpha {adj:.4g} (uncorrected family error {any_err:.1%})'
+metrics_alpha_verdict: p={p:.4g} -> {before} before correction, {after} after
+metrics_alpha_flipped: the conclusion changes after correction - revisit the hypothesis
+metrics_sig: significant
+metrics_ns: not significant
+metrics_excluded: '{n} of {total} rows excluded ({ratio:.1%}) - computed from the remaining {left}'
+metrics_comp_head: group means of the {n} composition parts ({a} - {b})
+metrics_comp_row: '{col}: {a:.6g} vs {b:.6g}  (diff {d:+.6g})'
+metrics_comp_sum: differences sum to {total:.3g} - in a composition, one part rising forces another to fall
+metrics_no_event_col: no event column in the design, so loss to follow-up cannot be counted
+metrics_censor: '{events} events / {censored} censored (censoring rate {ratio:.1%})'
+metrics_censor_group: '{level}: censoring rate {ratio:.1%} (n={n})'
+metrics_omnibus: 'omnibus {name}: statistic {stat:.4g}, p={p:.4g}, {eff}={val:.4g}'
+metrics_transformed_note: '{col} is a transformed value - the means below are on the transformed scale'
+metrics_head_support: Support - same direction in plainer units
+metrics_head_guardrail: Guardrail - missing these flips the conclusion
+metrics_head_triad: the three-metric set for this situation
+metrics_triad_row: '{id} {situation} - Goal {goal} / Support {support} / Guardrail {guardrail}'
+metrics_none: nothing to recommend - a Goal alone is also normal
+metrics_check_only: guidance only (no value computed)
+metrics_goal_line: 'Goal metric - {test} {name}: {eff}={val:.4g}, p={p:.4g}'
+scores_unset_no_input: requirement not stated in the rules - not judged
+scores_fit: 'usable columns: {cols}'
+scores_partial: some columns partly meet the requirement ({need}) - a transform may be needed
+scores_no_fit: no column meets the requirement ({need})
+scores_unspecified_cell: '- the {cells} cell of the rule table is blank, so that grade is unverified'
+scores_var_share: share of {col}
+scores_ent_picked: 'using the {name} formula - applies when: {green}'
+scores_ent_cond_unmet: this data does not meet that distribution's condition
+scores_head: score catalogue ({n}) - fine / poor / invalid / unspecified
+scores_row: '{id}  {name}'
+scores_grade_green: fine
+scores_grade_yellow: poor
+scores_grade_red: invalid
+scores_grade_unset: unspecified
+scores_unset_meaning: unspecified = no basis to judge (not 'suitable')
+scores_ent_head: entropy of {col} - continuous distributions each have their own formula
+scores_ent_facts: n={n} · positive={positive} · [0,1]={unit} · skew={skewed} · heavy tail={heavy_tail} · normal={normal}
+scores_ent_rejected: 'formulas not used: {items}'
+scores_ent_discrete: '{col} is {type}, not a continuous variable - use SC-DIV-01 Shannon H for discrete distributions'
+metrics_goal_need_one: 'give one of: score id, test id, or effect-size name'
+metrics_goal_unknown_score: '{id} is not in the score catalogue'
+metrics_goal_set: Goal metric set to {name}
+metrics_goal_auto: no Goal set - using the last test that was run
+scores_more: '... and {n} more (use --limit)'
+screen_scores_btn: Scores
+screen_scores_cycle: Left/Right changes the grade
+screen_scores_shown: '{n} scores - press again to collapse'
+metrics_roles_unknown: 'unknown relation ids: {ids} - relations are base-fixed and cannot be created '
+metrics_roles_saved: saved the choice for Goal {key} - {ns} support, {ng} guardrail
+metrics_chosen_mark: included in the report
+a5_goal: '{name} - {eff}={val:.4g}'
+a5_with_support: Support metrics ({items}) confirm the same direction in raw units.
+a5_with_guardrail: Report the guardrails ({items}) alongside; if they fail, the conclusion does not hold.
+a5_with_caution: 'There are {n} cautions: {first}'
+a5_snippet_head: '# commands that reproduce this analysis, in order'
+a5_snippet_excluded: 'excluded sample: {key} - {reason}'
+a5_snippet_guardrail: 'guardrails to report: {items}'
+a5_head: Rewritten hypothesis (A5)
+a5_snippet_title: reproduction snippet
+a5_triad_line: triad {id} ({situation}) - Goal {goal} / Support {support} / Guardrail {guardrail}
+metrics_goal_line_pending: 'Goal metric - {score} {name}: not computed yet (the test just run was {measured})'
+find_need_query: type something to search (e.g. correlation, survival)
+find_where_test: test - belongs to question {q} {qname}
+find_how_test: pick question {q} in the analysis screen - statop analyze run --test {id}
+find_where_score: score catalogue - {section}
+find_how_score: visible in statop scores --latex ({id})
+find_where_post: reporting rule - {kind}
+find_how_post: attached to test results automatically
+find_where_relation: metric role relation (Goal - Support/Guardrail)
+find_how_relation: suggested automatically by statop metrics when it applies
+find_head: '{n} results for ''{query}'''
+find_none: nothing found for '{query}'
+find_kind_test: test
+find_kind_score: score
+find_kind_post: reporting rule
+find_kind_relation: role relation
+prog_head: progress - derive, confirm types, analyze
+prog_import: import columns
+prog_derive: derived columns (optional)
+prog_types: confirm semantic types
+prog_analyze: run analysis
+prog_import_detail: '{n} imported'
+prog_derive_detail: '{n} created - optional'
+prog_types_detail: '{done}/{total} confirmed - remaining: {left}'
+prog_analyze_detail: '{n} tests run'
+screen_an_list_open: '{label}: {n} choices - Up/Down to pick, Enter to confirm, Esc to close'
+screen_an_choices_n: ' choices - Enter opens the list'
+screen_an_list_btn: Open list
+formula_needs_step: '{func} needs a step size - e.g. floor_to(age, 10)'
+formula_step_positive: '{func} step size must be greater than 0'
+formula_needs_edges: '{func} needs 2+ edges - e.g. bin(age, 0, 20, 40, 65)'
+pad_head: click to insert - no need to memorize function names
+pad_cols: columns
+pad_ops: operators
+pad_bin: binning/rounding
+pad_row_func: row functions
+pad_scalar_func: column scalar
+pad_set_func: composition
+pad_hint: arrow keys to pick, Enter to insert (or click)
+derive_lossy: values are collapsed - {before} distinct to {after}. This cannot be undone
+derive_levels: 'resulting values: {levels}'
+pad_btn: Insert key
+tablediff_no_key: '{file} has no key column {key}'
+tablediff_dup_key: key {key} is duplicated ({a} / {b}) - rows cannot be matched 1:1, cell comparison skipped
+tablediff_head: table diff - keyed on {key} (full read)
+tablediff_same: the two tables are identical - {rows} rows, key {key}
+tablediff_rows: 'rows: {common} shared - {added} added - {removed} removed'
+tablediff_cols: 'columns: added {added} - removed {removed}'
+tablediff_cells: '{n} cells changed'
+tablediff_by_col: '  {col}: {n}'
+tablediff_more: '  ... and {n} more'
+tablediff_example: '  {key} - {column}: {from_} -> {to}'
+tablediff_values_hint: add --show-values to see more changed values
+mb_bad_question: 'unknown modeling question {q} - allowed: {allowed}'
+mb_bad_tier: 'unknown model tier {t} - allowed: {allowed}'
+mb_bad_validation: 'unknown validation {v} - allowed: {allowed}'
+mb_need_k: '{v} needs a fold count k (2+)'
+mb_need_group: '{v} needs a group column'
+mb_need_time: '{v} needs a time column'
+mb_bad_role: 'unknown set roles: {roles} - allowed: {allowed}'
+mb_need_label: specify the label column
+mb_not_v1: this combination is not judged yet ({q}={qv}, {t}={tv}) - registered only
+mb_note_question: '{id} {text} - audited output: {output}'
+mb_note_tier: '{id} {tier} - audit input needed: {need}'
+mb_set_missing: '{role} set file not found: {path}'
+mb_set_unreadable: cannot read the {role} set - {detail}
+mb_holdout_needs_test: holdout validation but no test set given
+mb_loocv_large: '{n} rows with LOOCV - n training runs and high variance (MB-C14)'
+mb_group_hint: '{col} present but plain KFold - GroupKFold needed (MB-C02)'
+mb_seed_missing: no seed - Gate in the reproducibility audit (MB-C25)
+mb_head: module B configuration (B1)
+mb_sets_line: 'sets: {sets}'
+mb_valid_line: 'validation: {v}{k}{group}{time}'
+mb_recorded: configuration recorded in the session
+mb_questions_head: Modeling questions (MB-Q)
+mb_tiers_head: Model tiers (MB-M)
+mb_q_row: '{mark} {id} {text}  -> {output}'
+mb_t_row: '{mark} {id} {tier} ({examples})  - audit input: {need}'
+mb_mark_legend: judged / partial / registered only
+mb_check_row: '{grade} {id} {check}{tier}'
+mb_check_detail: 'detect: {detect} -> {action}'
+mb_check_total: '{n} checks'
+mb_valid_group: ' - group {col}'
+mb_valid_time: ' - time {col}'
+mb_valid_k: ' (k={k})'
+mb_rows_cell: '{role}={n:,} rows'
+screen_tp_title: Transpose (flip rows/columns)
+screen_tp_flow: flips the viewing direction only - twice returns to original
+screen_tp_hint: check the memory estimate then press [Transpose]
+screen_tp_shape: 'current shape: {rows:,} rows x {cols:,} columns{est}'
+screen_tp_cost: 'estimated memory: {mb:,.0f}MB'
+screen_tp_state: 'current state: {state}'
+screen_tp_warn: columns change completely - redo import and type confirmation
+screen_tp_done_on: transposed - column list reloaded
+screen_tp_done_off: transpose turned off (original orientation)
+screen_tp_btn: Transpose
+screen_tp_run_btn: Transpose now
+screen_copy_title: Save a copy (processed file)
+screen_copy_flow: original untouched; a copy with your changes is written
+screen_copy_hint: leave the name empty to use <original>_trimmed
+screen_copy_pending: '{n} unsaved value changes - {detail}'
+screen_copy_nothing: no value-changing operations
+screen_copy_use_main: use this copy as the next basis
+screen_copy_origin: 'original: {path}'
+screen_copy_saved: 'saved: {path} ({rows:,} rows x {cols} columns)'
+screen_copy_sidecar: 'sidecar: {path}'
+screen_copy_done: 'copy saved: {path} ({rows:,} rows)'
+screen_copy_btn: Save copy
+screen_copy_save_btn: Save
+screen_copy_main_btn: Toggle basis
+op_impute: imputation
+op_missing_drop: missing-row removal
+op_relabel: label edit
+op_exclude_row: sample exclusion
+op_filter_rows: row filter
+screen_verify_title: Integrity check (compare two files)
+screen_verify_flow: open the compare file, pick columns, then [Compare]
+screen_verify_hint: open one more file to compare
+screen_verify_a: 'base (A): {path}'
+screen_verify_b: 'compare (B): {path}'
+screen_verify_loaded: 'compare file: {path}'
+screen_verify_need_file: open the compare file first
+screen_verify_cols: pick columns to compare ({n} in common) - click to check
+screen_verify_all_cols: none picked = all common columns
+screen_verify_same: the two tables are identical
+screen_verify_diff: there are differences - see below
+screen_verify_btn: Integrity
+screen_verify_open_btn: Open compare file
+screen_verify_run_btn: Compare
+screen_open_first: open a file first
+screen_keys_simple: number keys for buttons - Esc back · F2 drag-copy <-> click - Ctrl-Q quit
+a3_manual_check: 'no automatic check - verify manually: {method}'
+a3_manual_action: 'if violated: {action}'
+a3_auto_head: assumptions this test requires ({n})
+compat_auto_head: operation compatibility for this combination
+compat_auto_none: no compatibility rule applies
+metrics_ratio_corr_goal: correlation between proportions (S-R01)
+metrics_ratio_corr_support: correlation after CLR/ALR
+metrics_ratio_corr_why: a composition sums to a constant, so raw correlation carries a negative bias
+metrics_corr_raw: 'raw correlation {a}~{b}: r={r:.4f} - ratio-to-ratio reflects absolute association, so a spurious correlation (closure effect) can arise'
+metrics_corr_clr: 'after CLR r={r:.4f} - association relative to the whole (geometric mean of the {n} parts: {cols})'
+metrics_corr_alr: after ALR r={r:.4f} - association relative to the reference part ({ref}); the sign can flip depending on the chosen reference, so interpret with care
+metrics_corr_alr_need_third: ALR needs a third part as reference (only 2 parts here)
+metrics_corr_no_set: could not find the composition set containing {col}
+metrics_corr_read: 'the three values are not a computation error - they answer different questions: absolute (raw) / relative to the whole (CLR) / relative to a reference (ALR). When signs differ, decide ''relative to what'' before interpreting'
+metrics_corr_prop: proportionality rho_p={rho:.4f}, phi={phi:.4f} (T-321) - in compositional data this asks whether two or more parts rise and fall together (a proportional relationship)
+qwen_unreachable: cannot reach {url} ({err})
+qwen_bad_status: server status {code}
+qwen_ready: '{model} · {ms}ms'
+qwen_model_missing: '{model} not loaded - loaded: {served}'
+qwen_stage_no_endpoint: endpoint not set
+qwen_stage_unreachable: server unreachable
+qwen_stage_model_missing: model not loaded
+qwen_stage_ready: ready
+qwen_wait_known: avg {sec}s (last {last}s, {n} calls)
+qwen_wait_unknown: no previous call - first load can take tens of seconds
+qwen_asking: asking Qwen...
+mb_leak_need_train: a train set is required
+mb_leak_need_other: a test/external set is required
+mb_leak_no_shared_cols: no feature columns in common
+mb_c01_fail: '{n} rows duplicated across sets - the model can memorize'
+mb_c01_pass: no duplicates across sets
+mb_c01_row: '{role}: {exact} exact ({ratio:.1%}) and {near} near-duplicate of {n} rows'
+mb_c01_action: remove duplicates or redefine external
+mb_c02_no_group: no group column set
+mb_c02_fail: '{n} {col} groups cross train/test - effectively the same rows'
+mb_c02_pass: '{col} does not cross the split'
+mb_c02_row: '{role}: {n} crossing groups, {rows} rows (e.g. {sample})'
+mb_c02_action: use GroupKFold or split by group
+mb_c03_no_time: no time column set
+mb_c03_unparsable: cannot parse {col} as dates
+mb_c03_fail: time overlap on {col} - future information leaks into the past
+mb_c03_pass: no time overlap on {col}
+mb_c03_row: '{role} {tlo}~{tro} overlaps train {alo}~{ahi}'
+mb_c03_action: split by time (train before test)
+mb_c05_fail: '{n} features carry the label almost directly'
+mb_c05_pass: no label proxy ({n} features checked)
+mb_c05_row: '{col}: {kind}={value:.4f}'
+mb_c05_action: remove the feature - check if it is derived from the outcome
+mb_leak_head: B2 leakage checks (all Gate)
+mb_leak_all_pass: no leakage path found
+mb_leak_blocked: '{n} Gate failures - results cannot be trusted until resolved'
+mb_c01_truncated: near-duplicates compared on the first {n} rows of each set
+mb_c01_low_dim: only {n} numeric features - near-duplicate detection is unreliable here
+mb_need_spec: confirm the modeling setup first - statop model plan ... --apply
+mb_code_head: B2 static code check (preprocessing/feature selection before split)
+mb_code_missing: 'Code file not found: {path}'
+mb_code_unparsable: Cannot parse Python syntax — {detail}
+mb_code_no_split: No split found — train/test split code is needed to tell before from after
+mb_code_split_at: 'Split at: line {line} {name}'
+mb_code_limit: This is what is visible in this code — not finding it is not proof there is none
+mb_code_pipeline: '{n} transformers inside a Pipeline are fit within each fold — treated as pass'
+mb_code_hit: line {line} {cls}.{method} — fit before the split
+mb_c04_fail: '{n} feature selection/preprocessing fits before the split — features chosen by looking at everything'
+mb_c04_pass: No feature selection/preprocessing fit before the split
+mb_c04_action: Put it in a Pipeline so it is fit inside each fold
+mb_c09_fail: '{n} scaling/normalization fits before the split — test distribution leaks into train'
+mb_c09_pass: No scaling/normalization fit before the split
+mb_c09_action: Put it in a Pipeline so it is fit inside each fold
+mb_split_head: B2 set ratio and loss checks (MB-C06, MB-C07)
+mb_c06_need_sets: at least two sets are needed to check ratios
+mb_c06_no_expected: no planned split ratio given, so this was not checked (assuming equal ratios would flag every 8:2 split)
+mb_c06_no_label: the label column is not in the sets, so per-set class ratios were not checked
+mb_c06_one_class: the pooled label has only one level, so class ratios cannot be checked
+mb_c06_set_one_class: '{role}: only one label level'
+mb_c06_detail: planned {expected} / actual {observed} ({rows} rows) - set sizes differ significantly (p={p:.2e}). Re-check that this matches the intended design
+mb_c06_action: check the ratio and seed in the split code, or revisit the planned ratio itself
+mb_c06_strat_detail: the class ratio in {roles} differs significantly from the pooled data (threshold {adj:.2e}). Stratification may not have been applied, or results may be distorted relative to training - confirm this matches the intended design
+mb_c06_strat_action: re-split with a stratified split, or keep it if the composition is intended
+mb_c07_no_key: no key column to match source rows to set rows, so this was not checked (matching rows that cannot be matched invents loss that is not there)
+mb_c07_no_source: no source file given, so this was not checked
+mb_c07_need_sets: no sets to compare
+mb_c07_key_missing: key column {col} is not in {path}
+mb_c07_key_dup: key column {col} has {n} duplicates, so rows cannot be matched 1:1
+mb_c07_funnel_label: source to sets
+mb_c07_set_row: '{role}: {n} rows ({matched} matched to source)'
+mb_c07_no_loss: all {n} source rows ended up in a set
+mb_c07_action: check the funnel to see where rows were dropped
+mb_c07_bias_pass: the distribution of {cols} did not change significantly through missing-data handling
+mb_c07_bias_action: compare the before/after distributions and confirm the change is justified
+mb_c07_no_bias_cols: label/group columns are not in the source, so loss bias was not checked
+mb_c13_head: B3 label encoding direction and mapping (MB-C13)
+mb_c13_need_sets: no sets to read the label from
+mb_c13_set_row: '{role}: {levels}'
+mb_c13_levels_ok: all sets share the same {n} levels
+mb_c13_level_mismatch: levels absent from train appear in other sets - {detail}
+mb_c13_level_mismatch_row: '{role}: {values}'
+mb_c13_level_mismatch_action: a class never trained on cannot be predicted - revisit how the sets were built
+mb_c13_no_mapping: no level codes were recorded for label {col} - please re-check the label
+mb_c13_implied: no level codes are recorded; these assume the training code assigns them in alphabetical order
+mb_c13_recorded: level codes recorded in the session
+mb_c13_no_positive: no positive class was specified
+mb_c13_pass: the positive class {pos} is recorded as {code}
+mb_c13_action: decide and record the code for each level (label mapping)
+mb_c13_positive_action: specify the positive class
+mb_diag_found: '{n} diagnostic findings - not blocking, but read them alongside the results'
+mb_c06_pass: planned {expected} / actual {observed} ({rows} rows) - no evidence of a difference from the plan
+mb_c06_strat_pass: no evidence of class imbalance (e.g. mis-stratification)
+mb_split_all_pass: set ratios and loss are clean
+mb_c13_all_pass: label encoding direction is clean
+screen_model_title: model audit (module B)
+screen_model_flow: training is never run - only set files, config and code syntax are read
+screen_model_btn: model audit
+screen_model_run_btn: run checks
+screen_model_code_btn: check code
+screen_model_audit_head: set ratio and loss, leakage, label direction
+screen_model_hint: press [run checks] to see set ratio and loss, leakage and label direction at once
+screen_model_prompt_key: '  key column > '
+screen_model_prompt_expect: '  planned ratio (e.g. train=8,test=2) > '
+screen_model_prompt_code: '  training code file (.py) > '
+screen_next_model: statop model split --session {session} --key <key-column>
+mb_screen_done: checks done - {n} findings
+mb_screen_need_code: enter the path to the training code file
+mb_c06_class_cell: '{body} ({n:,} rows)'
+mb_c06_axis_set: by set - {body}
+mb_c06_axis_devext: development/external - {body}   (development = train/valid/test, external = external)
+mb_c06_axis_no_ext: development/external - no external set, so the second axis was not checked
+mb_c06_group_note: if a specific group was deliberately held out as external, this result needs re-checking with that group excluded - use the row filter to drop those levels of {col} and look again
+mb_c07_shift: '{cols} ({n} columns) - the distribution of these columns changed significantly after missing-data handling (drop/impute)'
+mb_c07_shift_why: the missingness may be non-random, or the transformation itself may need validation
+mb_c07_shift_risk: if this step is skipped, performance on newly produced data may differ
+mb_c07_shift_see: open the distribution comparison to overlay the two distributions ({cols})
+mb_c07_shift_cat: '{col} (p={p:.2e}): before {before} -> after {after}'
+mb_c07_shift_num: '{col} (p={p:.2e}): before mean {mb:.3g} (SD {sb:.3g}) -> after mean {ma:.3g} (SD {sa:.3g})'
+mb_c13_flipped_maybe: some or all of the positive class may be encoded as 0 ({pos} = {code})
+mb_c13_flipped: the positive class is encoded as 0 ({pos} = {code})
+mb_c13_flip_risk: sensitivity and specificity swap roles and may be read the wrong way - please re-check the label
+mb_c13_table: codes - {body}
+mb_c13_table_cell: '{value}={code}{role}'
+mb_c13_role_pos: (positive)
+mb_c13_positive_unknown: the specified positive class {pos} is not among the label values
+mb_c06_not_planned: sets absent from the planned ratio were excluded from this check - {roles}
+mb_c06_expect_mismatch: the planned ratio ({given}) does not line up with the sets ({sets}), so this was not checked
+mb_c07_view_head: '{col} - distribution before/after missing-data handling'
+mb_c07_view_before: before
+mb_c07_view_after: after
+mb_c07_view_row: '  {value:<18s} {kind} {bar} {ratio:>5.1%} ({n:,})'
+mb_shift_head: distribution before/after missing-data handling (MB-C07)
+screen_model_shift_btn: compare distributions
+mb_screen_no_shift: no column was flagged as shifted - run the checks first
+mb_screen_shift_done: '{n} columns: distribution before/after'
+mb_balance_head: B4 balance and distribution checks (MB-C08, MB-C12)
+mb_balance_all_pass: class balance, meta association and set distributions are clean
+mb_c08_no_dev: no development set (train/valid/test), so class ratios were not checked
+mb_c08_no_meta: no meta columns given, so hidden imbalance was not checked
+mb_c08_dev_row: development - {body}
+mb_c08_set_row: '{role} - {body}'
+mb_c08_imbalanced: the classes are imbalanced - the rarest {minority} has {n:,} rows, max:min {ratio:.1f}x
+mb_c08_why: on imbalanced data, accuracy can be high simply by predicting the majority class - check a balanced performance metric under Guardrail metric
+mb_c08_pass: no evidence that the class ratio is skewed (max:min {ratio:.1f}x)
+mb_c08_action: if the imbalance is intended, confirm the training strategy (stratified split, class weights)
+mb_c08_multiclass: the label has {n} levels, so hidden imbalance (SMD) was not checked - SMD for 3+ groups is defined differently and v1 does not judge it
+mb_c08_meta: '{cols} - shortcut learning risk'
+mb_c08_meta_row: '{col}: SMD {smd:.2f} (level expected from sample size alone {chance:.2f}){note}'
+mb_c08_meta_why: the distribution of this column differs between labels. If a label-associated data characteristic is learned by the model, it can degrade generalization
+mb_c08_meta_pass: no evidence that the distribution of {cols} differs between labels
+mb_c08_meta_action: compare performance with and without adjusting for this column - keep it if this is the intended design
+mb_c12_balanced: the classes are not skewed, so weighting/sampling was not checked
+mb_c12_missing: the classes are skewed {ratio:.1f}x - if the imbalance is intended, confirm the training strategy
+mb_c12_how: if weighting or sampling was used, record it in the configuration - {allowed}
+mb_c12_pass: weighting/sampling is recorded as {how}
+mb_c12_action: report a balanced performance metric alongside (balanced accuracy, MCC, PR-AUC)
+mb_shift_no_ext: no external set, so distribution differences between sets were not checked
+mb_shift_fail: the external set is composed differently from the training data ({n} of {total} features, SMD threshold {limit})
+mb_shift_row: '{col}: SMD {smd:.2f} (level expected from sample size alone {chance:.2f}){note}'
+mb_shift_why: confirm whether the external set was deliberately designed to observe the real population better
+mb_shift_pass: no evidence that the external set is composed differently from the training data ({n} features)
+mb_shift_action: when reading external performance, account for this difference as intended, or recompute with a metric that matches the intent
+mb_smd_at_chance: ' - this size could arise from chance alone'
+mb_shift_ids: columns that look like identifiers were excluded from the features - {cols}
+mb_shift_only_ids: no features to compare - every shared column looks like an identifier ({cols})
+mb_c13_level_absent: some levels are entirely absent from a set - {detail}
+mb_c13_level_absent_action: performance for that class cannot be measured in that set - confirm this is the intended composition
+mb_c08_metrics: balanced performance metrics - balanced accuracy, MCC, PR-AUC + base rate
+metrics_shortcut_goal: classification with label-associated columns (MB-C08)
+metrics_shortcut_guard: performance with vs without adjusting for {cols}
+metrics_shortcut_why: a label-associated data characteristic learned by the model degrades generalization - you only see its share by placing adjusted and unadjusted side by side
+mb_prep_head: B5 preprocessing and model fit (MB-C10, MB-C11, MB-C15)
+mb_prep_all_pass: no issues in the preprocessing and model combination
+mb_c10_no_family: no model family given, so the need for scaling was not checked - {allowed}
+mb_c10_not_needed: '{family} ({examples}) does not need scaling'
+mb_c10_recorded: scaling is recorded as {how} ({family})
+mb_c10_missing: '{family} ({examples}) needs scaling but none is recorded - scales differ by up to {ratio:.0f}x'
+mb_c10_spread: columns with the widest scale differences - {body}
+mb_c10_cell: '{col} SD {sd:.3g} ({ratio:.0f}x)'
+mb_c10_action: if scaling was applied, record it; if not, apply it inside the fold (MB-C09)
+mb_c11_no_reduction: no dimensionality reduction is used, so this was not checked
+mb_c11_need_features: fewer than two numeric features to compare
+mb_c11_recorded: scaling before {reduction} is recorded as {how}
+mb_c11_missing: whether scaling was applied before {reduction} is not recorded - {col} holds {share:.0%} of the total variance (scale {ratio:.0f}x)
+mb_c11_action: a variable with large variance can strongly influence the first PCA axis - state whether scaling was applied
+mb_c15_not_applicable: '{family} is not subject to EPV (logistic/linear families only)'
+mb_c15_binary_only: the label has {n} levels, so EPV was not checked (binary only)
+mb_c15_pass: events per variable (EPV) {epv:.1f} - {events:,} events / {variables} variables
+mb_c15_low: events per variable (EPV) {epv:.1f}, below the threshold of {limit} - {events:,} events / {variables} variables
+mb_c15_why: with few events relative to variables, coefficients swing with the sample and may not reproduce
+mb_c15_room: to meet the threshold at the current event count, keep variables to {n} or fewer
+mb_c15_action: reduce variables, or consider penalized regression or Firth correction
+mb_compare_head: model comparability (MB-C34)
+mb_c34_need_two: at least two models are needed to compare
+mb_c34_row: '{pair}: {comparable}{allowed} ({why})'
+mb_c34_pass: all {n} model pairs can be compared
+mb_c34_action: refit on the same data and outcome, or drop the comparison from the report
+mb_c34_limited_action: use only the usable methods, and for pairs with different row counts refit on the shared rows
+mb_compare_bad_model: 'bad model format - "name: term1+term2 [n=480] [y=outcome] [family=binomial]"'
+mb_c34_allowed: ' - usable: {allowed}'
+mb_family_required: needed
+mb_family_optional: not needed
+mb_c10_depends: for {family} ({examples}), whether to scale depends on the purpose and architecture - which choice was made is not recorded
+mb_c10_depends_action: just record whether scaling was applied - which choice is right depends on the purpose
+mb_c34_gap: '  ({body}, {diff:,} rows apart, {ratio:.0%})'
+mb_c34_flagged: '{n} model pairs need checking - {pairs}'
+mb_c34_gap_cell: '{name} {n:,} rows'
+mb_eval_head: B5 evaluation audit (MB-C16~C20, C22, C23)
+mb_eval_all_pass: no issues in how the evaluation was done
+mb_eval_need_probability: no column is confirmed as the probability semantic type, so the evaluation was not checked - confirm the predicted-probability column first
+mb_eval_score_not_probability: the given score column {col} is not confirmed as probability (confirmed - {found})
+mb_eval_many_probability: several columns are confirmed as probability - specify which one is the predicted probability ({cols})
+mb_eval_no_test: the evaluation set has no {col} or label column (test/external are used)
+mb_eval_binary_only: the label has {n} levels, so this check was not run (binary only)
+mb_c16_values: '{role} {n:,} rows - ROC-AUC {roc:.3f}, PR-AUC {pr:.3f}, positive rate {base:.1%}'
+mb_c16_balanced: positive rate {base:.1%} - reading ROC-AUC directly will not be far off
+mb_c16_imbalanced: there are {n_pos:,} positives, giving about {power:.0%} power to detect an AUC of {ref:.2f} - ROC-AUC {roc:.3f} and PR-AUC {pr:.3f} diverge
+mb_c16_why: use PR-AUC to tune the sensitivity/specificity target when comparing
+mb_c16_action: report sensitivity and specificity at the threshold as a Support metric
+mb_c20_recorded: the threshold {thr} is recorded
+mb_c20_missing: no threshold is recorded - the per-class figures below assume {thr}
+mb_c20_why: sensitivity and specificity change with the threshold, so without one you cannot tell which point the numbers refer to
+mb_c20_action: record which threshold the reported sensitivity and specificity came from
+mb_c18_positive: positive
+mb_c18_negative: negative
+mb_c18_row: '{name} {n:,} - recall {recall:.1%}'
+mb_c18_assumed: no threshold was recorded, so {thr} was assumed
+mb_c18_pass: at threshold {thr}, no class was missed entirely
+mb_c18_collapsed: classes missed entirely - {names} (threshold {thr}) - the effect of those classes cannot be assessed
+mb_c18_action: report per-class recall and the confusion matrix, and consider threshold tuning or weighting
+mb_c19_bins: predictions and outcomes were compared across {n} probability bins
+mb_c19_worst: widest gap - predicted {conf:.0%} but actual {actual:.0%} ({n:,} rows)
+mb_c19_pass: calibration error (ECE) {ece:.3f}, within the threshold of {limit}
+mb_c19_high: calibration error (ECE) {ece:.3f}, above the threshold of {limit}
+mb_c19_why: the predicted probabilities cannot be read directly as real-world likelihoods - the ranking may be good while the number "70%" itself differs from the actual rate
+mb_c19_action: if the probabilities are used as numbers, consider calibration (Platt/isotonic); if only the ranking is used, say so
+mb_c17_binary: the label has {n} levels, so the averaging method was not checked (multiclass only)
+mb_c17_recorded: the averaging method is recorded as {how} ({n} classes)
+mb_c17_missing: there are {n} classes but no averaging method is recorded
+mb_c17_why: macro weights each class equally while micro/weighted lean on the larger classes - the same model yields different numbers
+mb_c17_action: record whether macro, micro or weighted averaging was used
+mb_c22_no_folds: no per-fold scores given, so this was not checked
+mb_c22_values: '{n} folds - mean {mean:.3f}, SD {sd:.3f}, worst fold {worst:.3f}'
+mb_c22_pass: fold-to-fold spread {sd:.3f}, within the threshold of {limit}
+mb_c22_wide: the fold-to-fold spread is {sd:.3f} - the mean is {mean:.3f} but the worst fold is {worst:.3f}
+mb_c22_why: reporting the mean alone hides which fold fell apart
+mb_c22_action: report the spread and the worst fold alongside the mean
+mb_c23_no_test: no test set, so this was not checked
+mb_c23_pass: the configuration was revised only once against this test set
+mb_c23_repeated: the configuration was revised {n} times against the same test set
+mb_c23_why: repeatedly adjusting settings after seeing the result turns the test set into a validation set, and the reported performance becomes optimistic
+mb_c23_limit: this counts only the configurations recorded in the session - runs outside it cannot be seen
+mb_c23_action: set aside a hold-out for the final report and do the tuning on a validation set
+mb_c19_thin_bins: no bin holds {limit} or more rows, so no representative bin was picked
+mb_repro_head: metric change and reproducibility audit (MB-C21, C25~C27)
+mb_repro_all_pass: no issues with metric changes or reproducibility
+mb_c21_no_metric: the reported metric is not recorded, so changes were not checked
+mb_c21_same: the reported metric has stayed {metric}
+mb_c21_changed: the reported metric changed from {old} to {new} with no reason recorded
+mb_c21_why: the metrics differ, so the two cannot be compared on equal terms
+mb_c21_change_action: record why it changed and report the earlier metric alongside
+mb_c21_reason_given: the reported metric changed from {old} to {new} and a reason is recorded
+mb_c21_reason: reason - {reason}
+mb_c21_both: report the earlier metric {old} as well, so the two reports can be read together
+mb_c25_recorded: seed {seed} is recorded
+mb_c25_missing: no seed is recorded
+mb_c25_why: the split, initialization and sampling change every run, so the same code does not give the same result
+mb_c25_action: record the seed in the configuration - you can get pinning code from statop model seed
+mb_c26_recorded: the environment is recorded - {env}
+mb_c26_missing: the library and hardware environment is not recorded
+mb_c26_why: even with the same seed, a different library version can give different values
+mb_c26_action: record the Python and key library versions and the execution device
+mb_seed_script_head: seed pinning for reproduction - session {session}
+mb_seed_script_note: This file only records where the seed must be set. The training code is yours.
+mb_seed_script_assumed: No seed was recorded, so {seed} is used as an example - replace it with the value actually used.
+mb_seed_script_env: recorded environment - {env}
+mb_seed_script_split: pass the same seed to the split as well
+mb_seed_saved: seed pinning code saved - {path}
+mb_family_depends: depends
+mb_specific_head: model-specific checks (MB-C28~C31, T0)
+mb_specific_all_pass: no issues in the model-specific checks
+mb_c28_not_applicable: '{family} is not subject to separation checks (coefficient-fitting families only)'
+mb_c28_binary_only: the label is not binary, so separation was not checked
+mb_c28_pass: no variable separates the label completely
+mb_c28_found: '{n} variables almost completely separate the label - {cols}'
+mb_c28_row: '{col}: {kind} (the two groups overlap over {overlap:.1%} of the range)'
+mb_c28_complete: complete separation
+mb_c28_quasi: quasi-complete separation
+mb_c29_not_applicable: '{family} is not subject to collinearity checks (coefficient-fitting families only)'
+mb_c29_pass: the largest VIF is {vmax:.1f} (reference threshold {limit})
+mb_c29_found: some variables have a VIF of {limit} or above - {cols}
+mb_c29_row: '{col}: VIF {vif:.1f}'
+mb_c29_why: correlation between two or more variables means the estimates can move with the sample, and their effects are not separable - they cannot be interpreted independently (multicollinearity)
+mb_c29_action: combine the overlapping variables or keep only one; if you keep both, do not interpret their coefficients individually
+mb_c31_not_reported: no feature importance was reported, so this was not checked
+mb_c31_pass: importance ({how}) reported - no variable pair correlates at {limit} or above
+mb_c31_correlated: importance ({how}) reported - {n} variable pairs correlate strongly with each other
+mb_c31_row: '{a} <-> {b}: |r| {r:.2f}'
+mb_c27_noted: nondeterministic computation is disclosed - {note}
+mb_c27_suspected: the environment mentions {found} but nondeterministic computation is not disclosed
+mb_c27_why: GPU and parallel computation can give slightly different values per run even with a fixed seed
+mb_c27_action: state the scope of reproducibility - exactly equal, or approximately equal
+mb_c27_unknown: the environment record shows no trace of nondeterministic computation, so no judgement was made - this does not mean there is none
+mb_seed_script_torch: if you use PyTorch
+mb_c28_why_unpenalized: a single variable can separate the label completely, so the coefficient may diverge - its effect size and standard error cannot be trusted or interpreted
+mb_c28_why_penalized: an L1/L2 penalty keeps the coefficient from diverging, but since one variable separates the label, its predictive contribution must be measured separately
+mb_c28_action_unpenalized: check whether that variable is derived from the outcome; if not, consider Firth correction or penalized regression
+mb_c28_action_penalized: check whether that variable is derived from the outcome, then measure its contribution by comparing predictive performance with and without it
+mb_c29_rule_of_thumb: a VIF of {limit} is a rule of thumb, not an absolute threshold - read it together with the magnitude
+mb_c31_why_impurity: when one of the pair is chosen first in a split, no contribution is left for the other, so the same information is spread across several variables - the ranking cannot be read at face value
+mb_c31_why_permutation: shuffling one still leaves the same information in the correlated variable, so performance drops less - genuinely important variables can both score low
+mb_c31_why_unknown: high correlation distorts importance - impurity-based measures split it, permutation-based measures push both down. Record which method was used
+mb_c31_action_impurity: measure again with permutation importance, or group the overlapping variables before reading the ranking
+mb_c31_action_permutation: use grouped permutation (shuffling correlated variables together), or read the ranking by group
+mb_c31_action_unknown: record how the importance was computed - the distortion runs in a different direction for each method
+mb_scope_note: STATOP only advises on direction before training - it does not judge what must be watched during training (early stopping, learning curves, optimization)
+mb_scope_why: adjusting direction from values seen mid-training bends the choice toward the outcome, so the judgement follows the result rather than the data (bias)
+mb_triad_head: 3-metric triad (MB-C24)
+mb_triad_all_pass: no issues with the metric setup
+mb_c24_no_triad: no triad row in the rule table matches {q} - nothing is invented
+mb_c24_goal: Goal
+mb_c24_support: Support
+mb_c24_guardrail: Guardrail
+mb_c24_row: '{role} - {what}'
+mb_c24_basis: max:min class ratio {ratio:.1f}x (threshold {limit}) - the "{which}" row was chosen
+mb_c24_not_recorded: no reported metric is recorded - here is the 3-metric set for "{q}"
+mb_c24_action: do not report a single goal metric alone; report the support and guardrail alongside
+mb_c24_aligned: the reported metric {metric} matches the goal metric for "{q}"
+mb_c24_differs: the reported metric is {metric} while the goal metric for "{q}" is {goal}
+mb_c24_differs_why: choosing a different metric is not itself a problem - but record why, and what you will use as the guardrail
+mb_c24_differs_action: record the reason, and report a metric that can contradict it as the guardrail
+mb_snippet_head: '# commands that reproduce this audit exactly'
+mb_snippet_tail: '# for the whole thing on one page: statop model report --out audit.md'
+mb_report_title: model audit report (module B)
+mb_report_session: session {id}
+mb_report_spec: setup {q}, {t}, validation {v}
+mb_report_summary: summary
+mb_report_counts: '{gate} blocking, {diag} diagnostic, {skip} not checked'
+mb_report_triad: recommended 3-metric
+mb_report_what: what
+mb_report_triad_basis: the "{q}" row of the rule table (registry-models section 5)
+mb_report_findings: findings
+mb_report_snippet: reproduction commands
+mb_report_snippet_note: reruns this audit exactly - the values recorded in the setup are the premises of every verdict
+mb_report_saved: report saved - {path}
+mb_eval_score_not_in_main: the predicted-probability column {col} is not in the session main file, so its type cannot be confirmed - open the file holding the predictions as the main file and confirm it as probability
+qwen_nothing_to_ask: nothing to ask about yet - run a test or confirm a model setup first
+qwen_stance_optimal: Optimal
+qwen_stance_conservative: Conservative
+qwen_stance_broad: Broad
+qwen_line_hypothesis: hypothesis
+qwen_line_test: how to test or refute
+qwen_line_limit: limit
+qwen_family_analysis: hypotheses for the test result
+qwen_family_modeling: hypotheses for the modelling plan
+prompt_block_missing: '{file}: could not find the code block for section "{section}" - the document structure changed'
+prompt_missing_fields: '{family}: the prompt has unfilled placeholders - {fields}'
+qwen_loaded: '{model} is ready (took {s:.0f}s) - you can press [get hypotheses] now'
+qwen_already_loaded: '{model} is already loaded - press [get hypotheses]'
+qwen_load_failed: could not load the model - {url} - {err}
+qwen_load_btn: load model
+qwen_ask_btn: get hypotheses
+qwen_ask_disabled: load the model first
+qwen_three_head: three hypotheses - {family}
+qwen_raw_head: the output did not match the format, so the raw text is shown as is (nothing is invented)
+origin_line: 'file before processing: {path}'
+origin_unknown: 'file before processing: unknown (no sidecar; detected from marker columns only)'
+derive_prefer_arcsinh: there are zeros - consider arcsinh({col}) before adding an eps. It is defined at zero and behaves like log for large values (the result does not depend on what you add)
+scores_groups_head: '{n} groups of metrics that measure the same thing - pick one per group'
+scores_group_line: '[{pid}] {name} ({n} metrics)'
+scores_measures: 'measures: {text}'
+scores_scale: 'how to read: {text}'
+scores_robust: robustness {grade} - {why}
+scores_robust_draft: robustness {grade} (draft, not yet reviewed) - {why}
+scores_pick_one: you choose within a group. The tool only shows which metrics measure the same thing
+scores_robust_legend: robustness A=holds under violated assumptions and outliers - B=moves once conditions break - C=the tuning choice is the conclusion
+scores_robust_all_draft: all robustness grades are drafts - not yet reviewed ({file})
+represent_no_columns: no columns to look at - select columns first
+represent_bad_n: n must be greater than 1 and smaller than the total {total} rows (got {n})
+represent_head: subsampling curve - how many of the {total:,} rows look like the whole
+represent_repeats: averaged over {r} redraws per n (seed {seed}). A single draw would turn that draw's luck into the curve
+represent_col_head: '{col} ({kind}) - {metric}'
+represent_col_enough: from n≈{n:,} the distance stays below {th}
+represent_col_never: never came below {th}
+represent_enough: at n≈{n:,} every selected column is within {th} of the whole ({pct}% of all rows)
+represent_limiting: the n you need is set by {cols} - that column came down last
+represent_never: '{cols} never came below {th} - that column is not represented by subsampling'
+represent_unit_bound: 1-Wasserstein distance is in the original units - columns cannot be added or put on one axis. Read them one at a time
+represent_verify_head: checking n={n:,} - the {n:,} picked rows vs the {rest:,} left behind
+represent_verify_line: '{col}: distance {d:.4f} ({metric})'
+represent_verify_p: '{col}: distance {d:.4f} - p={p:.3g}'
+represent_verify_not_full: not compared against the whole - the picked rows are part of it, so that would not be an independent comparison
+represent_hypothesis: 'hypothesis: the {n:,} randomly picked rows are indistinguishable in distribution from the {rest:,} left behind'
+screen_represent_btn: sample size
+screen_represent_running: measuring the subsampling curve
+screen_represent_shown: curves for {n} columns
+represent_bad_metric: the distance must be either KS distance or 1-Wasserstein distance (got {got})
+represent_verify_p_note: first check whether the distance between the two groups is small; read p only as a secondary check on whether that small difference is consistent enough to be detected
+represent_verify_p_small: '{col}: the difference is significant (p={p:.3g}) but the distance itself is only {d:.4f} - a small scale'
+represent_hypothesis_how: 'how to check it: compute the distance between the two groups'' distributions, and also check whether that difference is statistically significant'
+represent_threshold_convention: a distance of {th} is only a convention - decide where to draw the line by looking at the distances actually measured
+represent_spread_head: distances from {draws} redraws at n={n:,}
+represent_spread_why: this much comes out by chance alone. A threshold has to sit above this spread before it can mean 'not chance'
+represent_spread_q: '{col} ({metric}): median {p50:.4f} - middle half {p25:.4f}~{p75:.4f} - 1 in 20 exceeds {p95:.4f}'
+represent_spread_suggest: '{col}: chance alone reaches {p95:.4f}, so put the threshold above that (currently {th})'
+represent_skipped_ids: 'columns that look like identifiers were left out: {cols} (every row differs, so no n can resemble the whole)'
+hypo_p1_diff_sig_nomag: groups of {x} differ in {y} ({effect}={value:.3g}{ci}, {test} p={p:.3g} < adjusted alpha {alpha:.3g})
+hypo_p1_assoc_sig_nomag: '{x} and {y} are associated ({effect}={value:.3g}{ci}, {test} p={p:.3g} < adjusted alpha {alpha:.3g})'
+hypo_p1_agree_sig_nomag: '{y} and {x} agree in direction ({effect}={value:.3g}{ci}, {test})'
+list_page: page {page}/{pages} - {n} in total
+list_page_next: 'next page: {how}'
+list_detail_hint: 'to see one item in full: {how}'
+list_page_out_of_range: there is no page {page} - there are {pages} pages
+screen_scores_page_keys: PgUp / PgDn to change page
+serve_web_at: 'web page: {url}   <- open this in a browser'
+serve_web_missing: 'the web page has not been built - API only (build with: {how})'
+serve_root_hint: this is the API. The web page is at {url}
+screen_mouse_off: 'F2 - drag-copy ON / click-select OFF  (F2 switches back)'
+screen_mouse_on: 'F2 - drag-copy OFF / click-select ON  (F2 switches back)'
+screen_web_failed_why: could not start the web server (port {port}) - {why}
+screen_web_ports_busy: ports {first}-{last} are all taken by something else or blocked
+web_port_foreign: '{port}: in use by another program'
+web_port_stale: '{port}: held by an outdated STATOP server (stop it and press again)'
+web_port_no_answer: '{port}: started a server but it did not answer within {wait:.0f}s'
+web_port_died: '{port}: the server exited immediately - {tail}'
+web_why_head: per port - {detail}
+doctor_head: STATOP processes still running on this machine ({host})
+doctor_clean: nothing left - all clear
+doctor_server: '{n} web server(s) (ports {ports}) - these are ghosts if no window is open'
+doctor_worker: '{n} worker process(es) - about {gb:.1f} GB'
+doctor_orphan: '{n} of them have no parent (ghosts)'
+doctor_how_stop: add --stop to the same command to clean them up
+doctor_stopped: cleaned up {n}
+doctor_nothing_to_stop: nothing to clean up
+scores_recommend: 'report alongside: {text}'
+scores_source: 'source: {text}'
+robust_need_result: nothing to shake yet - run a test first
+robust_head: robustness - how well does this conclusion hold
+robust_base: '{test} {name} - {eff}={value:.4g} - p={p:.3g} - {n:,} rows'
+robust_boot_head: 1. resampling ({draws} draws, seed {seed}) - the spread chance alone produces
+robust_band: middle 90% spans {lo:.4g} to {hi:.4g} - middle half {q25:.4g} to {q75:.4g} ({n} draws)
+robust_outlier_head: 2. dropping outliers - is a handful of extreme values making the conclusion
+robust_choice_head: 3. changing what you chose - is the method making the conclusion
+robust_trim_label: drop top and bottom {pct:.0f}%
+robust_trim_not_numeric: '{col} is not numeric, nothing to trim'
+robust_line: '{label}: {eff}={value:.4g} - p={p:.3g}'
+robust_line_failed: '{label}: could not run - {why}'
+robust_flipped_mark: direction flipped
+robust_read_head: how to read this
+robust_no_flip: the direction never flipped in {total} draws - resampling does not change it
+robust_flips: the direction flipped {n} times out of {total} - a slightly different sample changes the conclusion
+robust_within_chance: every change in 2 and 3 stays inside the spread from 1 - that is within what chance produces
+robust_bigger_than_chance: 'moved more than the spread from 1: {items} - that is not chance, it is that choice'
+robust_flipped_by: 'flipped the direction: {items} - check before using the conclusion as is'
+robust_caveat: trimming is a check, not an analysis - do not report these values as the result
+robust_choice_note: in 3 each test has a different kind of effect size (P(X>Y), Hedges g, rank-biserial...) so the magnitudes cannot be compared - only direction and significance
+robust_line_named: '{label}: {eff}={value:.4g} - p={p:.3g}'
+screen_robust_btn: robustness
+screen_robust_running: shaking the conclusion
+screen_robust_shown: robustness - {n} resamples, {o} trims, {c} other tests
+scores_shaken_by: 'moves with: {text}'
+scores_shaken_note: which one is more robust is not decided here - it depends on the data, so 'robustness' measures it on yours
+run_note_or_for_2x2: this is a 2x2 table, so the odds ratio is used - Cramer V ({v:.3f}) gives magnitude but not direction
+cand_reason_assump_ok: assumption {c} checked and holds (A3)
+cand_reason_assump_violated: assumption {c} is violated (A3)
+check_c03_name: outliers
+check_c03_ok: '{pct:.1f}% outliers - at or below 5%, mean-based measures hold'
+check_c03_bad: '{pct:.1f}% outliers ({n}) - above 5%, look at rank or robust methods first'
+check_c04_name: similarity of distribution shape
+check_c04_ok: the groups have a similar shape (skew diff {dskew:.2f}, kurtosis diff {dkurt:.2f})
+check_c04_bad: the groups have different shapes (skew diff {dskew:.2f}, kurtosis diff {dkurt:.2f}) - a rank-sum difference no longer means a shift in location
+check_c06_name: sphericity
+check_c06_ok: differences between time pairs have similar variance (max/min {ratio:.2f})
+check_c06_bad: variance of the paired differences changes across time pairs (max/min {ratio:.2f}) - a correction (GG/HF) is needed
+check_c08_name: linearity
+check_c08_ok: a straight line explains about as much as ranks do
+check_c08_bad: ranks explain much more than a straight line (r2={r2:.3f} vs rho2={s2:.3f}) - the relation is curved
+check_c10_name: overdispersion / zero inflation
+check_c10_ok: variance/mean {ratio:.2f}, zeros {zero:.1%} - close to the Poisson assumption
+check_c10_bad: variance/mean {ratio:.2f}, zeros {zero:.1%} - overdispersed. Use negative binomial instead of Poisson
+check_c11_name: proportional hazards
+check_c11_skip: a time column and an event column are needed to look at proportional hazards
+check_need_numeric: '{col} is not numeric, nothing to check'
+check_need_two_groups: two groups are needed to compare shape
+check_need_repeats: sphericity needs the same subjects measured three or more times
+cand_reason_assump_variant: 'assumption {c} is violated - but this test handles it: {how}'
+refs_head: reference anchors (A6) - papers on a similar question and test
+refs_query: 'query: {q}'
+refs_line: '{title}'
+refs_meta: PMID {pmid} - {journal} {year} - {url}
+refs_none: no results - try fewer or different terms
+refs_offline: could not fetch papers - {why}
+refs_nothing_to_search: nothing to search on yet - design a question or run a test first
+refs_title_only: v1 is title level - check the content yourself
+refs_privacy: only the question type, test name and group labels leave this machine. No raw data
+refs_no_labels: searched without the group labels
+refs_broadened: the narrow query returned nothing, so it was broadened - results may be off-topic
+a7_optional_note: the LLM second opinion is optional - everything else (A1-A6) works without it
+a7_unavailable: the LLM second opinion is not available on this server - {why}
+mb_key_auto: 'Row key: {col} — using the confirmed row identifier (no need to retype it)'
+mb_key_none: No row key chosen — no column is confirmed as a row identifier, or more than one is
+semantic_unconfirmed: 'Unconfirmed: {column} — back to not confirmed'
+semantic_not_confirmed: '{column} was never confirmed — nothing to undo'
+screen_types_unconfirm_btn: Undo confirm
+screen_verify_prompt_file: '  file to compare ▏ '
+screen_copy_prompt_dir: '  save to ▏ '
+screen_an_prompt_reason: '  why excluded ▏ '
+tablediff_only_a: no column of this name in {file} — pair it up if the name differs
+tablediff_only_b: no column of this name in {file} — pair it up if the name differs
+screen_verify_title2: Integrity check — are the two files the same
+screen_verify_side: '{tag}  {name}   {rows} rows x {cols} cols'
+screen_verify_side_b_none: compare(B)  not opened yet — type a path below and press Enter
+screen_verify_key_line: row key  {key}   — how rows are matched 1:1
+screen_verify_key_none: No row key — a column must be confirmed as the row identifier first
+screen_verify_key_howto: Put the cursor on that column and press [confirm as row id]
+screen_verify_key_changed: 'row key: {key}'
+screen_verify_key_only_one: Only one column is confirmed as a row identifier — nothing to switch to
+screen_verify_key_not_both: '{col} must exist in both files to be the key'
+screen_verify_key_dup: '{col} has repeated values ({n}) — rows cannot be matched 1:1'
+screen_verify_key_confirmed: '{col} confirmed as the row identifier — using it as the key'
+screen_verify_pick_head: Pick columns — only checked ones are compared (none checked = all paired ones)
+screen_verify_page: page {page}/{pages} · {n} columns
+screen_verify_paired: <-> {other}
+screen_verify_same_name: <-> same name
+screen_verify_no_pair: <-> no pair
+screen_verify_pair_set: 'paired: {a} <-> {b}'
+screen_verify_pair_cleared: 'pairing cleared: {a}'
+screen_verify_pair_none: Nothing left to pair with
+screen_verify_pair_only_unmatched: Pairs are made between columns that exist on one side only
+screen_verify_verdict_same: Same — all {rows} rows and {cols} columns match
+screen_verify_verdict_diff: Different — rows {rows} · cells {cells} · columns {cols}
+screen_verify_rows_line: rows    in both {common} · only in B {added} · only in A {removed}
+screen_verify_cols_line: columns only in A {only_a} · only in B {only_b}
+screen_verify_bycol_head: By column — {n_diff} of {n} compared columns differ
+screen_verify_bycol_num: '{col}  {n_diff}/{n} rows ({ratio})  median diff {median} · max {max}'
+screen_verify_bycol_other: '{col}  {n_diff}/{n} rows ({ratio})  values differ'
+screen_verify_bycol_ex: e.g. {key}  {from_} -> {to}
+screen_verify_same_cols: the other {n} columns are all the same
+screen_verify_unmatched_head: '{n} columns were not compared — why'
+screen_verify_key_btn: change key
+screen_verify_id_btn: confirm as row id
+screen_verify_pair_btn: pair up
+screen_verify_all_btn: check/uncheck all
+screen_verify_side_cols: '{tag}  {name}   {cols} cols'
+screen_verify_bycol_one: '{col}  {n_diff}/{n} rows ({ratio})  diff {max}'
+q_min: min
+q_q1: Q1 (lower 25%)
+q_q2: Q2 (median)
+q_q3: Q3 (upper 25%)
+q_max: max
+q_iqr: IQR (Q3-Q1)
+q_fence_lo: Q1-1.5*IQR
+q_fence_hi: Q3+1.5*IQR
+q_fence_note: fences — values outside this range are counted as IQR outliers
+q_whisker_note: whiskers run to min/max, not to the fences
+screen_verify_picked_fold: compared {n} chosen columns — press [pick columns] to change
+screen_verify_all_fold: compared every paired column — press [pick columns] to narrow
+screen_verify_pick_btn: pick columns
+screen_mb_plan_head: Modeling setup (B1) — state what was trained first
+screen_mb_plan_hint: up/down move · space open list · left/right change · press [apply setup] to start auditing
+screen_mb_f_question: what is predicted
+screen_mb_f_tier: model tier
+screen_mb_f_validation: validation
+screen_mb_f_k: folds (k)
+screen_mb_f_label: label column
+screen_mb_f_positive: positive class
+screen_mb_f_score: score/probability column
+screen_mb_f_group: group column (same patient/batch)
+screen_mb_f_time: time column
+screen_mb_f_seed: random seed
+screen_mb_sets_head: set files — one path per role (now {n})
+screen_mb_sets_none: none yet — type `train=/path/train.csv` below and press Enter
+screen_mb_set_added: '{role} set: {path}'
+screen_mb_set_removed: removed the {role} set
+screen_mb_set_format: type role=path — roles are train · valid · test · external
+screen_mb_set_missing: '{path} does not exist'
+screen_mb_plan_ok: setup applied — the audit can run now
+screen_mb_plan_bad: the setup is missing things ({n}) — see below
+screen_mb_plan_btn: setup
+screen_mb_apply_btn: apply setup
+screen_mb_prompt_set: '  role=path ▏ '
+screen_tmp_title: Clear drafts — unsaved work logs
+screen_tmp_what: A draft holds only the operation log (file path, chosen columns, confirmed types). No data values.
+screen_tmp_none: No drafts left
+screen_tmp_count: '{n} drafts · {kb}KB total'
+screen_tmp_row: '{id}  {when}  {n} ops  {ops}'
+screen_tmp_source: '        {path}'
+screen_tmp_current: '        <- the session you are in (kept)'
+screen_tmp_btn: clear drafts
+screen_tmp_del_btn: really delete
+screen_tmp_confirm: Delete {n} drafts? This cannot be undone. Press once more
+screen_tmp_done: deleted {n} drafts
+screen_tmp_failed: could not delete {n} - {why}
+screen_tmp_keep_note: saved sessions (sessions/) are untouched
+colview_head: '{col} — A and B overlaid ({n} shared rows)'
+colview_paired: '{col} <-> {other}'
+colview_a: A
+colview_b: B
+colview_same: no row differs — the two columns are identical
+colview_stat_head: '              mean    median       min       max       IQR'
+colview_stat_row: '{who:<8s} {mean:>9s} {med:>9s} {mn:>9s} {mx:>9s} {iqr:>9s}'
+colview_stat_diff: '{who:<8s} {mean:>9s} {med:>9s} {mn:>9s} {mx:>9s} {iqr:>9s}'
+colview_diff_label: B-A
+colview_only_diff: looking only at the {n} rows that differ
+colview_dist_head: can the distributions be called the same
+colview_ks: KS distance {v:.4g} — largest vertical gap between the two CDFs (0 = same)
+colview_w1: 1-Wasserstein {v:.4g} — average mass movement, in the original unit
+colview_tv: total variation {v:.4g} — half the sum of level-share differences (0 = same)
+colview_levels_head: share by level — A / B
+colview_not_numeric: not numeric, so shares by level instead of a shape
+colview_no_column: '{col} was not among the compared columns'
+screen_verify_view_btn: distribution
+padj_none: no correction
+padj_bonferroni: Bonferroni — divide alpha by the number of tests (most conservative)
+padj_holm: Holm — step down from the smallest p (less conservative, same guarantee)
+padj_bh: Benjamini-Hochberg FDR — keep the false share among the called-significant under q
+padj_head: looking at {n} together — {method}
+padj_row: '{name}  p {raw:.4g} -> {adj:.4g}  {mark}'
+padj_sig: significant
+padj_ns: not significant
+padj_why: the more you test the more small p values appear by luck — count how many times you looked
+padj_unknown: 'method: one of none, bonferroni, holm, bh'
+explore_bad_question: '{q} is not a question type — {allowed}'
+explore_not_recorded: nothing here is recorded — confirm a design in Analyze
+step_head: '{y} split by {group} - {name}'
+step_now_sig: 'there is a difference (effect size {d:.2f} · p {p})'
+step_now_ns: 'hard to call this a difference (effect size {d:.2f} · p {p})'
+step_small_effect: 'but effect size {d:.2f} is small - significant is not the same as large'
+step_scan_note: below is the same split measured on other columns ({n}) - exploration, not recorded, and it needs correction for how many times you looked
+step_other_column: '{col} separates much more (effect size {d:.2f} · this column {d0:.2f})'
+step_derive_log: '{col} is skewed (skewness {s0:.2f}) - a log straightens it (skewness {s1:.2f}); try it as a derived column'
+step_more_n: 'the size you have ({d:.2f}) is below what this sample can catch ({cut:.2f}) - you need more samples'
+step_none: nothing further to suggest from this result
+step_head_assoc: '{x} against {y} - {name}'
+step_now_sig_assoc: 'there is a relation ({eff} {v:.3f} · p {p})'
+step_now_ns_assoc: 'hard to call this a relation ({eff} {v:.3f} · p {p})'
+step_color_split: 'the relation differs by {col} ({a}: {ra:+.2f}, {b}: {rb:+.2f} · overall {r:+.2f}) - split it by colour'
+step_bent_group: 'inside {col}={level} it is not a straight line (distance correlation {dcor:.2f} exceeds |r| {r:.2f} · n={n}) - split by colour and look at the plot'
+step_nonlinear: 'it may not be a straight line (distance correlation {dcor:.2f} exceeds |r| {r:.2f}) - look at the plot first'
+step_more_n_assoc: 'the size you have ({v:.2f}) is below what this sample can catch ({cut:.2f}) - you would need about n={need}'
+explore_need_second_group: pick one more group column - a comparison needs two sides
+explore_need_second_value: pick one more numeric column - this question looks between two values
+explore_need_second_event: pick one more event column - whether it happened or not
+explore_second_pick: you can pick one of these
+explore_second_none: no column fits this slot - try confirming semantic types first
+explore_head: '{question} · {cols}'
+explore_none: no test fits this combination — see the reasons below
+explore_result: '{name}  {eff_name} {eff}  p {p:.4g}  n {n}'
+explore_result_nop: '{name}  {eff_name} {eff}  (no p)  n {n}'
+explore_sig: p {p:.4g} — significant at alpha {alpha}
+explore_ns: p {p:.4g} — not significant at alpha {alpha}
+explore_run_failed: could not run {name} — {why}
+screen_find_title: Find a metric — what do you want to know, on which columns, what to use
+screen_find_step1: 1 · question
+screen_find_step2: 2 · columns
+screen_find_step3: 3 · what to use
+screen_find_pick_q: pick a question type (up/down, Enter)
+screen_find_pick_col: pick up to two columns (space) — the first is the value you look at
+screen_find_none: no test fits this combination
+screen_find_row: '{flag} {id:<8s} {name}'
+screen_find_value: '        {eff_name} {eff}  ·  p {p}  ·  n {n}'
+screen_find_value_adj: '        {eff_name} {eff}  ·  p {p} -> {adj}  {mark}  ·  n {n}'
+screen_find_run_hint: Enter runs that test (only when you ask)
+screen_find_not_runnable: no runner, so no value
+screen_find_ran: '{name} — {eff_name} {eff}, p {p}'
+screen_find_adj_head: measured {n} times — adjusted together ({method})
+screen_find_btn: find a metric
+screen_find_run_btn: run
+screen_find_goal_btn: set Goal
+screen_find_adj_btn: correction
+screen_keys_find: up/down move · space pick column · Enter choose/run · Tab step · Esc back · Ctrl-Q
+derive_dropped: removed the derived column {name} — the formula stays in the log
+drop_err_unknown: '{cols} is not in the workspace'
+screen_verify_sum_head: by column — {n_diff} of the {n} picked differ
+screen_verify_sum_same: same
+screen_verify_sum_diff: differs
+screen_verify_sum_skip: not compared
+screen_verify_sum_row: '{mark} {col:<24s} {state}  {detail}'
+screen_verify_sum_hint: up/down then Enter for detail · [prev] [next] to step through
+screen_verify_detail_of: '{col} — {i}/{n}'
+screen_verify_back_sum: back to summary
+screen_verify_repick: pick columns again
+screen_verify_rerun: compare again
+screen_verify_detail_btn: detail
+screen_verify_bycol_short: '{n_diff}/{n} rows ({ratio})'
+screen_verify_bycol_max: ' · largest diff {max}'
+screen_find_rule_btn: formula & basis
+rule_design: design
+rule_assumptions: assumptions
+rule_best_when: best when
+rule_blocked_when: do not use when
+rule_caution: caution
+rule_effect_size: effect size
+rule_alternatives: alternatives
+rule_post: do alongside
+rule_section: registry
+metrics_custom_added: added to your recommendations — {name} ({role})
+metrics_custom_removed: removed from your recommendations — {name}
+metrics_custom_tag: user-defined
+metrics_custom_need_name: type what to report alongside
+metrics_custom_bad_role: role must be support or guardrail
+metrics_custom_head: what you added — it will be suggested for this Goal again
+metrics_custom_hint: anything can go here; the source stays marked as user-defined
+screen_find_plot_btn: plot
+screen_find_plot_head: '{x} x {y} — {n} rows'
+screen_find_plot_groups: '{x} by group — {by}'
+screen_find_plot_none: nothing to draw — pick two columns
+screen_find_color_btn: colour by
+screen_find_aim_btn: target power
+screen_find_next: what to look at next
+screen_find_power_what: columns {cols} · showing {name}
+screen_find_power_one: one at a time - press [again] on another row to switch ({others})
+screen_find_aim_prompt: target power %
+screen_find_aim_bad: enter a number - e.g. 95
+screen_find_color_set: 'colour by: {col}'
+screen_find_color_off: no colour split
+screen_find_color_none: no confirmed label column to colour by
+explore_power_corr: with n={n} only |correlation| >= {r:.2f} is caught at 80% power — anything smaller is missed even if real
+explore_power_tight: what you just measured sits near that edge — more samples could change the conclusion
+explore_power_small: small sample (n={n})
+power_head_corr: n={n} — only |correlation| {r:.2f} or larger is caught {pw}% of the time
+power_head_diff: n={n} — only effect size d {d:.2f} or larger is caught {pw}% of the time
+power_band: hard to catch with this sample
+power_why: in a small sample "not significant" is not "no relation" — it may be real and missed
+power_row_ok: large enough to be caught
+power_row_short: a size like this needs about n={need} to be caught {pw}% of the time (now {n})
+power_row_edge: right at the edge — a slightly different sample could flip the conclusion
+power_need_huge: catching a size like this would need a very large sample
+power_ladder_head: if you collect more — smallest size caught at each n
+power_note_alpha: alpha=0.05 two-sided · target power {pw}%
+power_target_label: target power
+power_target_hint: move the line — the surer you want to be, the larger the size you need
+power_not_comparable: '{eff} is on a different scale from a correlation — not compared against this line'
+power_scale_note: the line is on the correlation (r, rho) scale; values on other scales (tau, dCor) are not placed on it
+power_this_value: this value

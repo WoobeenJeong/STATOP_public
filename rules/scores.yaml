@@ -1,0 +1,2338 @@
+# 자동 생성 파일 — schema/None 에서 생성됨. 수기 편집 금지 (statop rules build).
+# rules_version: 72d1381d2131
+grades:
+- label: 안됨
+  meaning: 수학적으로 정의되지 않거나(정의역 밖), 결과가 뜻을 잃음. 실행은 되지만 빨간 배너 + 원클릭 변환 제안
+  color: 빨강
+- label: 별로
+  meaning: 계산은 되지만 가정이 어긋나 해석이 왜곡될 수 있음. 대안 병기 권고
+  color: 노랑
+- label: 문제없음
+  meaning: 의도한 공간·분포에 맞음
+  color: 초록
+- label: 미지정
+  meaning: 해당 조건이 아직 입력되지 않음. 적합하다는 뜻이 아니다 — 목록에는 보이되 판정하지 않고, 사용 시도 시 "이 조건은 아직 정의되지 않았습니다" 안내. 작성자가
+    직접 검토해 채울 대상
+  color: 회색
+axes:
+- axis: 공간
+  values: ℝ (실수) / ℝ⁺ (양수) / [0,1] / 심플렉스(조성) / 카운트 / 순위·순서 / 이진 / 좌표(유클리드) / 확률분포 자체
+- axis: 분포
+  values: 정규 / 비정규·왜도 / 중꼬리(heavy-tail) / 이산 / 혼합
+- axis: 구조
+  values: i.i.d. / 군집·배치 / 반복 / 조성 의존
+- axis: 척도
+  values: 원척도 / log / 표준화 여부 (거리 계열은 표준화에 민감)
+purposes:
+- id: PG-01
+  name: 예측 오차 크기 (원 단위)
+  members:
+  - SC-ERR-01
+  - SC-ERR-02
+  - SC-ERR-09
+  - SC-ERR-08
+- id: PG-02
+  name: 예측 오차 크기 (상대·비율)
+  members:
+  - SC-ERR-03
+  - SC-ERR-04
+  - SC-ERR-05
+- id: PG-03
+  name: 설명력·일치도
+  members:
+  - SC-ERR-06
+  - SC-ERR-07
+- id: PG-04
+  name: 확률 예측의 품질
+  members:
+  - SC-ERR-10
+  - SC-ERR-11
+- id: PG-05
+  name: 임계 고정 — 한쪽 오류만 보는 지표
+  members:
+  - SC-CLS-01
+  - SC-CLS-02
+  - SC-CLS-03
+  - SC-CLS-04
+- id: PG-06
+  name: 임계 고정 — 양쪽 오류를 하나로 요약
+  members:
+  - SC-CLS-05
+  - SC-CLS-09
+  - SC-CLS-10
+  - SC-CLS-11
+  - SC-CLS-17
+- id: PG-07
+  name: 임계 무관 — 순위만으로 본 판별력
+  members:
+  - SC-CLS-06
+  - SC-CLS-07
+  - SC-CLS-08
+  - SC-CLS-15
+- id: PG-08
+  name: 확률이 확률답게 나오는가 (보정)
+  members:
+  - SC-CLS-13
+- id: PG-09
+  name: 임상적 유용성·기존 모델 대비 증분
+  members:
+  - SC-CLS-14
+  - SC-CLS-16
+- id: PG-10
+  name: 우연 보정 일치도 (두 판정자·모델과 라벨)
+  members:
+  - SC-CLS-12
+  - SC-CLN-06
+- id: PG-11
+  name: 두 점 사이의 거리 (원 좌표)
+  members:
+  - SC-DIST-01
+  - SC-DIST-02
+  - SC-DIST-03
+  - SC-DIST-16
+- id: PG-12
+  name: 방향·형태의 유사도 (크기는 무시)
+  members:
+  - SC-DIST-04
+  - SC-DIST-05
+- id: PG-13
+  name: 조성·존재비 프로파일의 거리
+  members:
+  - SC-DIST-06
+  - SC-DIST-07
+  - SC-DIST-09
+  - SC-DIST-17
+- id: PG-14
+  name: 두 확률분포 사이의 거리
+  members:
+  - SC-DIST-10
+  - SC-DIST-11
+  - SC-DIST-12
+  - SC-DIST-13
+  - SC-DIST-14
+  - SC-DIST-18
+  - SC-DIST-19
+- id: PG-15
+  name: 서열·시계열의 정렬 거리
+  members:
+  - SC-DIST-08
+  - SC-DIST-15
+- id: PG-16
+  name: 알파 다양성 (풍부도와 균등도를 함께)
+  members:
+  - SC-DIV-01
+  - SC-DIV-02
+  - SC-DIV-03
+  - SC-DIV-04
+  - SC-DIV-05
+- id: PG-17
+  name: 풍부도만 (얼마나 많은 종류가 있는가)
+  members:
+  - SC-DIV-06
+  - SC-DIV-09
+- id: PG-18
+  name: 균등도·불평등 (쏠림의 정도)
+  members:
+  - SC-DIV-07
+  - SC-DIV-08
+- id: PG-19
+  name: 연속 분포의 엔트로피 — 모수 가정을 두고
+  members:
+  - SC-ENT-01
+  - SC-ENT-02
+  - SC-ENT-03
+  - SC-ENT-04
+  - SC-ENT-05
+  - SC-ENT-06
+  - SC-ENT-07
+  - SC-ENT-08
+  - SC-ENT-09
+  - SC-ENT-10
+- id: PG-20
+  name: 분포 가정 없이 추정한 엔트로피
+  members:
+  - SC-ENT-11
+  - SC-ENT-12
+- id: PG-21
+  name: 두 변수의 의존성 (선형에 한정하지 않고)
+  members:
+  - SC-INF-01
+  - SC-INF-02
+- id: PG-22
+  name: 예측한 분포와 실제 분포의 거리
+  members:
+  - SC-INF-03
+  - SC-INF-04
+- id: PG-23
+  name: 배치가 섞였는가 — 이웃 구성으로
+  members:
+  - SC-BE-03
+  - SC-BE-04
+  - SC-BE-08
+  - SC-BE-11
+- id: PG-24
+  name: 배치가 갈라졌는가 — 군집 기하로
+  members:
+  - SC-BE-01
+  - SC-BE-02
+  - SC-BE-07
+- id: PG-25
+  name: 배치가 설명하는 분산의 몫
+  members:
+  - SC-BE-05
+  - SC-BE-06
+  - SC-BE-10
+- id: PG-26
+  name: 배치와 생물 라벨이 교락되었는가
+  members:
+  - SC-BE-09
+- id: PG-27
+  name: 라이브러리 크기·깊이 보정 (카운트)
+  members:
+  - SC-NORM-01
+  - SC-NORM-02
+  - SC-NORM-03
+  - SC-NORM-14
+- id: PG-28
+  name: 분산 안정화·척도 압축
+  members:
+  - SC-NORM-04
+  - SC-NORM-12
+- id: PG-29
+  name: 중심과 척도를 맞추기
+  members:
+  - SC-NORM-05
+  - SC-NORM-06
+  - SC-NORM-07
+- id: PG-30
+  name: 분포 모양 자체를 맞추기
+  members:
+  - SC-NORM-08
+  - SC-NORM-13
+- id: PG-31
+  name: 조성·비율 자료의 변환
+  members:
+  - SC-NORM-09
+  - SC-NORM-10
+  - SC-NORM-11
+- id: PG-32
+  name: 흩어짐 (원 단위)
+  members:
+  - SC-VAR-01
+  - SC-VAR-03
+  - SC-VAR-06
+- id: PG-33
+  name: 흩어짐 (평균 대비 상대)
+  members:
+  - SC-VAR-02
+  - SC-VAR-05
+  - SC-VAR-07
+  - SC-VAR-04
+- id: PG-34
+  name: 분포 모양 (대칭성·꼬리)
+  members:
+  - SC-VAR-08
+- id: PG-35
+  name: 범주 자료의 변동
+  members:
+  - SC-VAR-09
+- id: PG-41
+  name: 상대 효과 (위험의 배수)
+  members:
+  - SC-CLN-02
+  - SC-CLN-05
+- id: PG-42
+  name: 절대 효과 (몇 명에게 무슨 일이)
+  members:
+  - SC-CLN-01
+  - SC-CLN-03
+- id: PG-43
+  name: 발생 빈도 그 자체
+  members:
+  - SC-CLN-04
+scores:
+- id: SC-ERR-01
+  family: ERR
+  section: 1. 오차·적합도 (회귀·예측값 vs 관측값)
+  name: MAE
+  latex: $\mathrm{MAE}=\frac{1}{n}\sum_{i}\lvert y_i-\hat y_i\rvert$
+  input: 두 연속 컬럼
+  green: ℝ, 단위 동일
+  yellow: 척도 상이한 여러 결과를 합산
+  red: 순위·범주
+  result_type: null
+  note: outlier에 RMSE보다 강건
+  unspecified: []
+  coverage: full
+  purpose: PG-01
+  measures: 잔차 절댓값의 평균
+  scale: y와 같은 단위. 0이 완벽, 상한 없음. 값 자체가 '평균적으로 이만큼 틀린다'
+  shaken_by: 절댓값이라 큰 잔차가 제곱으로 증폭되지 않는다
+- id: SC-ERR-02
+  family: ERR
+  section: 1. 오차·적합도 (회귀·예측값 vs 관측값)
+  name: RMSE
+  latex: $\sqrt{\frac1n\sum_i (y_i-\hat y_i)^2}$
+  input: 두 연속
+  green: ℝ, 정규 오차
+  yellow: 중꼬리 오차(outlier 지배)
+  red: 순위·범주
+  result_type: null
+  note: 큰 오차에 민감
+  unspecified: []
+  coverage: full
+  purpose: PG-01
+  measures: 잔차 제곱평균의 제곱근
+  scale: y와 같은 단위. 항상 MAE 이상이고, 둘의 격차가 크면 큰 오차가 소수 존재
+  shaken_by: 제곱 때문에 이상치 하나가 값을 끌어올린다
+- id: SC-ERR-03
+  family: ERR
+  section: 1. 오차·적합도 (회귀·예측값 vs 관측값)
+  name: MAPE
+  latex: $\frac{100}{n}\sum_i\left\lvert\frac{y_i-\hat y_i}{y_i}\right\rvert$
+  input: 두 연속
+  green: ℝ⁺, y가 0에서 멀 때
+  yellow: y가 작은 값 다수 (폭발)
+  red: y에 0 포함
+  result_type: null
+  note: 0 근처 과대 → SC-ERR-04
+  unspecified: []
+  coverage: full
+  purpose: PG-02
+  measures: 잔차를 실제값으로 나눈 비의 평균 (%)
+  scale: '% 단위. y가 0에 가까운 행에서 폭발하므로 상한이 사실상 없다'
+  shaken_by: y가 작은 행 하나가 전체 값을 지배한다
+- id: SC-ERR-04
+  family: ERR
+  section: 1. 오차·적합도 (회귀·예측값 vs 관측값)
+  name: sMAPE
+  latex: $\frac{100}{n}\sum_i\frac{\lvert y_i-\hat y_i\rvert}{(\lvert y_i\rvert+\lvert\hat y_i\rvert)/2}$
+  input: 두 연속
+  green: ℝ⁺
+  yellow: 부호 혼합
+  red: 둘 다 0인 행
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-02
+  measures: 잔차를 두 값의 평균으로 나눈 비 (%)
+  scale: 0~200%. MAPE의 폭발을 억제하지만 둘 다 0인 행은 정의되지 않는다
+  shaken_by: 분모가 대칭이라 MAPE보다 안정하나 여전히 0 근처에 민감
+- id: SC-ERR-05
+  family: ERR
+  section: 1. 오차·적합도 (회귀·예측값 vs 관측값)
+  name: MSLE / RMSLE
+  latex: $\frac1n\sum_i\left(\log(1+y_i)-\log(1+\hat y_i)\right)^2$
+  input: 두 연속
+  green: 카운트·ℝ⁺, 지수 성장
+  yellow: 음수 없음 확인
+  red: 음수
+  result_type: null
+  note: 비율 오차 관점
+  unspecified: []
+  coverage: full
+  purpose: PG-02
+  measures: log(1+y) 척도에서의 제곱 오차
+  scale: log 단위. 비율 오차 관점이라 큰 값의 오차에 관대하다
+  shaken_by: 음수를 못 받고, +1 이 작은 값의 상대 오차를 눌러 버린다
+- id: SC-ERR-06
+  family: ERR
+  section: 1. 오차·적합도 (회귀·예측값 vs 관측값)
+  name: R²
+  latex: $1-\frac{\sum(y_i-\hat y_i)^2}{\sum(y_i-\bar y)^2}$
+  input: 두 연속
+  green: 선형 회귀
+  yellow: 비선형·범위 제한
+  red: 분류
+  result_type: null
+  note: 검증셋에서 음수 가능
+  unspecified: []
+  coverage: full
+  purpose: PG-03
+  measures: 총 변동 중 모델이 설명한 몫
+  scale: 1이 완벽, 0이 평균 예측과 같음. 검증셋에서는 음수도 나온다
+  shaken_by: y의 분산이 작으면 잘 맞아도 낮게 나온다 — 자료에 따라 값이 흔들린다
+- id: SC-ERR-07
+  family: ERR
+  section: 1. 오차·적합도 (회귀·예측값 vs 관측값)
+  name: Lin's CCC
+  latex: $\rho_c=\frac{2\sigma_{xy}}{\sigma_x^2+\sigma_y^2+(\mu_x-\mu_y)^2}$
+  input: 두 연속
+  green: 방법 비교, 동일 단위
+  yellow: 범위 제한
+  red: 단위 상이
+  result_type: null
+  note: 정확도+정밀도
+  unspecified: []
+  coverage: full
+  purpose: PG-03
+  measures: 일치선(y=x)으로부터의 벗어남 — 정밀도와 정확도를 함께
+  scale: −1~1. 1이 완전 일치. 상관이 높아도 치우침이 있으면 낮아진다
+  shaken_by: 두 측정의 범위가 좁으면(범위 제한) 낮게 나온다
+- id: SC-ERR-08
+  family: ERR
+  section: 1. 오차·적합도 (회귀·예측값 vs 관측값)
+  name: Bias (평균 차이)
+  latex: $\frac1n\sum_i(\hat y_i-y_i)$
+  input: 두 연속
+  green: 두 측정/예측의 계통 치우침을 원 단위로 요약(Bland–Altman 중심선)
+  yellow: 비례 편향(크기에 따라 오차가 변함)이 존재
+  red: 산포를 무시하고 편향만으로 일치도 판정(LoA 미동반)
+  result_type: null
+  note: Bland–Altman 중심선
+  unspecified: []
+  coverage: full
+  purpose: PG-01
+  measures: 잔차의 부호 있는 평균
+  scale: y와 같은 단위. 0이 치우침 없음. 부호가 과대예측/과소예측 방향
+  shaken_by: 상쇄되어 크기는 못 말하지만 방향 자체는 안정적이다
+  recommend: 평균차 ± 1.96 SD(일치한계)와 함께 보고하고 비례 편향 점검
+  source: Statistical methods for assessing agreement between two methods of clinical measurement (Bland
+    & Altman 1986)
+- id: SC-ERR-09
+  family: ERR
+  section: 1. 오차·적합도 (회귀·예측값 vs 관측값)
+  name: Huber loss
+  latex: $L_\delta(r)=\begin{cases}\tfrac12 r^2 & \lvert r\rvert\le\delta\\ \delta(\lvert r\rvert-\tfrac12\delta)
+    & \text{else}\end{cases}$
+  input: 두 연속, δ
+  green: 중꼬리·이상치 섞인 회귀 잔차에 강건 손실이 필요(δ 명시)
+  yellow: δ 미기록 → 재현·비교 불가
+  red: δ 없이 보고하거나 이상치 없는데 관성적으로 사용
+  result_type: null
+  note: δ 기록 필수
+  unspecified: []
+  coverage: full
+  purpose: PG-01
+  measures: δ 안쪽은 제곱, 바깥은 절댓값으로 잰 잔차
+  scale: y와 같은 단위. δ를 키우면 RMSE에, 줄이면 MAE에 가까워진다
+  shaken_by: δ 선택에 값이 달라지므로 δ를 기록해야 비교된다
+  recommend: 전이점 δ를 반드시 기록하고 잔차 스케일(MAD 등)에 맞춰 선택
+  source: Robust estimation of a location parameter (Huber 1964)
+- id: SC-ERR-10
+  family: ERR
+  section: 1. 오차·적합도 (회귀·예측값 vs 관측값)
+  name: Brier score
+  latex: $\frac1n\sum_i(p_i-o_i)^2$
+  input: 확률 컬럼 + 이진 라벨
+  green: '[0,1] 확률'
+  yellow: 점수가 확률이 아님(미보정)
+  red: 라벨 비이진
+  result_type: null
+  note: 보정+판별 종합
+  unspecified: []
+  coverage: full
+  purpose: PG-04
+  measures: 예측 확률과 실제 결과(0/1)의 제곱 오차
+  scale: 0~1. 0이 완벽. 보정과 판별을 한 값에 섞어 담는다
+  shaken_by: 경계가 있고 한 행이 값을 지배하지 못한다
+- id: SC-ERR-11
+  family: ERR
+  section: 1. 오차·적합도 (회귀·예측값 vs 관측값)
+  name: Log loss
+  latex: $-\frac1n\sum_i\left[o_i\log p_i+(1-o_i)\log(1-p_i)\right]$
+  input: 확률 + 이진
+  green: (0,1)
+  yellow: p에 0/1 → eps 필요
+  red: 비확률 점수
+  result_type: null
+  note: eps 규칙 F-01
+  unspecified: []
+  coverage: full
+  purpose: PG-04
+  measures: 실제 결과에 준 확률의 음의 로그
+  scale: 0 이상, 상한 없음. 확실하게 틀린 예측 하나가 값을 크게 올린다
+  shaken_by: p가 0/1에 닿으면 발산해 eps가 필요하다 (F-01)
+- id: SC-CLS-01
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: Sensitivity (재현율)
+  latex: $\frac{TP}{TP+FN}$
+  input: 이진 예측 + 라벨
+  green: 임계값이 명시된 이진 판정에서 양성 검출력 평가
+  yellow: 임계값 미기록 → 값이 임계값에 종속
+  red: 임계값·특이도 없이 단독 보고
+  result_type: null
+  note: 임계값 기록
+  unspecified: []
+  coverage: full
+  purpose: PG-05
+  measures: 실제 양성 중 맞힌 비율
+  scale: 0~1. 유병률과 무관. 특이도를 함께 보지 않으면 임계를 낮추기만 해도 오른다
+  shaken_by: 분모가 실제 양성이라 유병률이 바뀌어도 변하지 않는다
+  recommend: 임계값과 특이도를 반드시 병기(ROC/혼동행렬로)
+  source: null
+- id: SC-CLS-02
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: Specificity
+  latex: $\frac{TN}{TN+FP}$
+  input: 동
+  green: 임계값이 명시된 상황의 음성 배제력 평가
+  yellow: 임계값 미기록
+  red: 민감도와 분리해 단독 해석
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-05
+  measures: 실제 음성 중 맞힌 비율
+  scale: 0~1. 유병률과 무관. 민감도와 짝으로만 읽는다
+  shaken_by: 분모가 실제 음성이라 유병률에 흔들리지 않는다
+  recommend: 민감도와 쌍으로, 임계값 명시
+  source: null
+- id: SC-CLS-03
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: PPV / NPV
+  latex: $\frac{TP}{TP+FP}$, $\frac{TN}{TN+FN}$
+  input: 동
+  green: 대상 집단 유병률이 평가 집단과 같을 때
+  yellow: 유병률이 다른 데이터로 값을 전이
+  red: 유병률 다른 집단에 그대로 적용해 예측치 해석
+  result_type: null
+  note: 유병률 의존
+  unspecified: []
+  coverage: full
+  purpose: PG-05
+  measures: 예측 양성/음성 중 맞은 비율
+  scale: 0~1. 유병률에 따라 값이 달라진다 — 다른 집단의 값과 직접 비교하면 안 된다
+  shaken_by: 같은 모델이라도 유병률이 바뀌면 값이 바뀐다
+  recommend: 유병률 명시, 다른 집단엔 우도비(LR)로 베이즈 재계산
+  source: null
+- id: SC-CLS-04
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: LR+ / LR−
+  latex: $\frac{Sens}{1-Spec}$, $\frac{1-Sens}{Spec}$
+  input: 동
+  green: 유병률 독립 지표로 검사 성능 요약·사전→사후확률 변환
+  yellow: 표본이 적어 CI가 넓거나 극단 임계값
+  red: 임계값 미기록 또는 0 셀로 발산
+  result_type: null
+  note: 유병률 독립
+  unspecified: []
+  coverage: full
+  purpose: PG-05
+  measures: 양성/음성 판정이 사후 오즈를 바꾸는 배수
+  scale: LR+ 는 1보다 클수록, LR− 는 0에 가까울수록 유용. 10 이상/0.1 이하가 흔한 기준
+  shaken_by: 유병률에 무관하지만 셀이 작으면 급격히 흔들린다
+  recommend: 유병률과 무관하게 보고, CI 병기, 사후확률 산출에 사용
+  source: null
+- id: SC-CLS-05
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: Youden J
+  latex: $Sens+Spec-1$
+  input: 동
+  green: 비용 대칭 상황에서 단일 최적 임계값 선택
+  yellow: 비용 비대칭(민감/특이 가중이 다름)
+  red: 비용구조 무시하고 J만으로 임계값 결정
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-06
+  measures: 민감도 + 특이도 − 1
+  scale: −1~1. 두 오류에 같은 무게. 최적 임계를 고르는 데 흔히 쓴다
+  shaken_by: 유병률에 무관하고 두 축을 대칭으로 다룬다
+  recommend: 비용 대칭 가정을 명시; 비대칭이면 비용가중 기준 사용
+  source: Index for rating diagnostic tests (Youden 1950)
+- id: SC-CLS-06
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: ROC-AUC
+  latex: $P(s_{pos}>s_{neg})$
+  input: 점수 + 이진
+  green: 균형 라벨
+  yellow: 불균형 (양성 <10%) → PR-AUC 병기
+  red: 라벨 비이진(→OvR 명시)
+  result_type: null
+  note: '규칙 #6'
+  unspecified: []
+  coverage: full
+  purpose: PG-07
+  measures: 무작위 양성이 무작위 음성보다 높은 점수를 받을 확률
+  scale: 0.5가 무작위, 1이 완벽. 유병률에 무관하다
+  shaken_by: 순위만 쓰므로 단조 변환과 유병률에 불변
+- id: SC-CLS-07
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: pAUC (부분 AUC)
+  latex: $\int_{a}^{b}\mathrm{ROC}(f)\,df$ 정규화 (McClish)
+  input: 점수 + 이진, 구간 [a,b]
+  green: 임상 관심 FPR 구간 [a,b]를 지정해 부분 성능 비교
+  yellow: 구간 미기록 → 비교 불가
+  red: 구간 없이 전체 AUC처럼 해석
+  result_type: null
+  note: 구간 기록 필수
+  unspecified: []
+  coverage: full
+  purpose: PG-07
+  measures: 관심 있는 특이도 구간에서만 잰 AUC
+  scale: 구간 폭으로 나눠 0~1로 읽는다. 구간을 적지 않으면 비교 불가
+  shaken_by: 구간 선택에 값이 좌우되고 쓰는 표본이 줄어 흔들린다
+  recommend: 구간을 사전 지정·기록, McClish 정규화 명시
+  source: Analyzing a portion of the ROC curve (McClish 1989)
+- id: SC-CLS-08
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: PR-AUC / AP
+  latex: $\sum_k (R_k-R_{k-1})P_k$
+  input: 점수 + 이진
+  green: 양성이 희소한 불균형에서 순위 성능 요약
+  yellow: 기저율(양성 비율) 미표기 → 절대 해석 불가
+  red: 균형 라벨에 단독 사용해 ROC-AUC 대체로 오해
+  result_type: null
+  note: 기저율 표기
+  unspecified: []
+  coverage: full
+  purpose: PG-07
+  measures: 재현율에 따른 정밀도 곡선 아래 넓이
+  scale: 무작위 기준선이 유병률과 같다 — 0.5가 아니다. 양성이 드물 때 ROC보다 차이를 보여준다
+  shaken_by: 유병률이 다르면 값이 달라져 집단 간 직접 비교가 안 된다
+  recommend: 기저율 병기, 불균형에선 ROC-AUC보다 우선 고려
+  source: The precision-recall plot is more informative than the ROC plot when evaluating binary classifiers
+    on imbalanced datasets (Saito & Rehmsmeier 2015)
+- id: SC-CLS-09
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: F1 / Fβ
+  latex: $\frac{(1+\beta^2)PR}{\beta^2 P+R}$
+  input: 이진 예측 + 라벨
+  green: 양성 클래스 중심으로 정밀도-재현율 절충 요약
+  yellow: TN이 중요한데 F1이 이를 무시함을 인지
+  red: 클래스 불균형 전반 성능 대표로 F1 단독
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-06
+  measures: 정밀도와 재현율의 조화평균 (β로 무게 조절)
+  scale: 0~1. 진음성을 세지 않는다 — 음성이 대다수인 자료에서 높게 보일 수 있다
+  shaken_by: 유병률에 따라 값이 달라지고 β 선택에 좌우된다
+  recommend: β로 정밀/재현 가중 명시, 종합은 MCC 병행
+  source: null
+- id: SC-CLS-10
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: MCC
+  latex: $\frac{TP\cdot TN-FP\cdot FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}$
+  input: 동
+  green: 클래스 불균형이 심한 이진 분류의 단일 종합 지표
+  yellow: 다중클래스 확장/임계값 최적화 목적일 때 해석·비교 주의
+  red: 혼동행렬의 한 행·열 합이 0 → 분모 0, 정의 불가
+  result_type: null
+  note: 불균형 기본 권고
+  unspecified: []
+  coverage: full
+  purpose: PG-06
+  measures: 2×2 표 전체를 쓴 상관계수
+  scale: −1~1. 0이 무작위. 네 칸을 모두 쓰므로 불균형에서도 속지 않는다
+  shaken_by: 혼동행렬 네 칸을 대칭으로 쓴다 — 불균형에 가장 덜 속는다
+  recommend: 불균형 기본 요약으로 채택; 0 셀 발생 시 보고 보류·임계값 재검토
+  source: The advantages of the Matthews correlation coefficient (MCC) over F1 score and accuracy in binary
+    classification evaluation (Chicco & Jurman 2020)
+- id: SC-CLS-11
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: Balanced accuracy
+  latex: $\tfrac12(Sens+Spec)$
+  input: 동
+  green: 불균형에서 두 클래스 재현율 평균으로 단순 요약
+  yellow: 다중클래스/비용 비대칭에서 정보 손실
+  red: 확률 보정·순위 성능 대체로 오해
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-06
+  measures: 민감도와 특이도의 평균
+  scale: 0~1. 0.5가 무작위. 불균형에서 Accuracy 대신 쓴다
+  shaken_by: 클래스별로 정규화해 다수 클래스에 끌려가지 않는다
+  recommend: 불균형 스크리닝 보조로, 종합은 MCC 병행
+  source: The balanced accuracy and its posterior distribution (Brodersen et al. 2010)
+- id: SC-CLS-12
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: Cohen κ (모델 vs 라벨)
+  latex: $\frac{p_o-p_e}{1-p_e}$
+  input: 동
+  green: 우연 보정된 모델-라벨 일치도
+  yellow: 극단 유병률에서 역설(높은 일치·낮은 κ)
+  red: 유병률·주변분포 무시하고 절대 해석
+  result_type: null
+  note: E-604-1
+  unspecified: []
+  coverage: full
+  purpose: PG-10
+  measures: 우연 일치를 뺀 뒤 남은 일치 비율 (모델 vs 라벨)
+  scale: −1~1. 0이 우연 수준. 0.6 이상이 흔한 기준이나 규칙일 뿐
+  shaken_by: 주변 분포가 치우치면 일치해도 낮게 나온다 (kappa paradox)
+  recommend: 관측 일치도·주변분포와 함께 보고, 역설 주의
+  source: A coefficient of agreement for nominal scales (Cohen 1960); High agreement but low kappa (Feinstein
+    & Cicchetti 1990)
+- id: SC-CLS-13
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: ECE (보정 오차)
+  latex: $\sum_b\frac{n_b}{n}\lvert\mathrm{acc}_b-\mathrm{conf}_b\rvert$
+  input: 확률 + 라벨, bin 수
+  green: 확률 출력
+  yellow: bin 수 미기록
+  red: 비확률
+  result_type: null
+  note: 보정 곡선 병기
+  unspecified: []
+  coverage: full
+  purpose: PG-08
+  measures: 예측 확률 구간별 실제 발생률과의 평균 차이
+  scale: 0이 완벽 보정. bin 개수·경계에 값이 달라진다
+  shaken_by: bin 선택에 값이 좌우되고 표본이 적은 bin이 값을 흔든다
+- id: SC-CLS-14
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: Net benefit (결정곡선)
+  latex: $\frac{TP}{n}-\frac{FP}{n}\cdot\frac{p_t}{1-p_t}$
+  input: 확률 + 라벨, 임계 $p_t$
+  green: 임계확률 범위에서 임상적 유용성을 곡선으로 비교
+  yellow: 단일 p_t만 보고하고 곡선 미제시
+  red: 보정 안 된 확률로 결정하거나 treat-all/none 기준 누락
+  result_type: null
+  note: 곡선으로 표시
+  unspecified: []
+  coverage: full
+  purpose: PG-09
+  measures: 임계확률을 가중치로 쓴 순이익
+  scale: 유병률 단위. 'treat-all/treat-none' 선과 비교해 읽는다
+  shaken_by: 임계확률 범위를 어디로 잡느냐에 결론이 달라진다
+  recommend: p_t 범위 전체 곡선으로 표시, 기준선 포함
+  source: 'Decision curve analysis: a novel method for evaluating prediction models (Vickers & Elkin 2006)'
+- id: SC-CLS-15
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: C-index (Harrell)
+  latex: 일치 쌍 비율 (검열 고려)
+  input: 위험 점수 + 시간 + 사건
+  green: 생존
+  yellow: 검열 많음(>70%) → Uno's C
+  red: 검열 정보 없음
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-07
+  measures: 검열을 고려해 사건 순서를 맞힌 쌍의 비율
+  scale: 0.5가 무작위. 생존 자료의 AUC에 해당
+  shaken_by: 검열이 많거나 추적 기간이 다르면 흔들린다
+- id: SC-CLS-16
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: NRI / IDI
+  latex: 재분류 순증 / 판별 기울기 차
+  input: 두 모델 확률 + 라벨
+  green: 두 모델의 재분류 개선을 연속형으로 평가
+  yellow: 범주 NRI는 임계 의존
+  red: 보정 불량 모델에 적용해 개선 과대평가
+  result_type: null
+  note: 연속 NRI 권고
+  unspecified: []
+  coverage: full
+  purpose: PG-09
+  measures: 새 변수 추가로 재분류가 개선된 정도
+  scale: 0 이상이면 개선. 범주형 NRI 는 구간 설정에 좌우되고 과대평가로 비판받는다
+  shaken_by: 구간 설정에 값이 달라지고 신뢰구간이 넓다
+  recommend: 연속 NRI 권고, 보정 확인, CI 병기
+  source: 'Evaluating the added predictive ability of a new marker: from area under the ROC curve to reclassification
+    and beyond (Pencina et al. 2008)'
+- id: SC-CLS-17
+  family: CLS
+  section: 2. 분류·진단 성능
+  name: Top-k accuracy
+  latex: $\frac1n\sum_i\mathbb 1[y_i\in \text{top}_k(\hat p_i)]$
+  input: 다중 클래스 확률
+  green: 다중클래스 확률에서 상위 k 포함 여부 평가
+  yellow: k 미기록 또는 클래스 수 대비 k 과대
+  red: 이진에 top-k 적용(무의미)
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-06
+  measures: 정답이 상위 k개 안에 든 비율
+  scale: 0~1. k를 키우면 반드시 오른다 — k를 적지 않으면 비교 불가
+  shaken_by: k 선택에 값이 좌우된다
+  recommend: k와 클래스 수를 함께 보고, 다중클래스에 한정
+  source: null
+- id: SC-DIST-01
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Euclidean
+  latex: $\sqrt{\sum_j (x_j-y_j)^2}$
+  input: ℝ^d
+  green: 표준화된 연속, 등방
+  yellow: 단위 상이 미표준화 (큰 척도 지배)
+  red: 심플렉스(→Aitchison)
+  result_type: null
+  note: 표준화 여부 표기
+  unspecified: []
+  coverage: full
+  purpose: PG-11
+  measures: 좌표 차이 제곱합의 제곱근
+  scale: 0 이상, 단위는 입력과 같다. 척도가 큰 컬럼이 거리를 지배한다
+  shaken_by: 표준화하지 않으면 단위 선택이 곧 가중치가 된다
+- id: SC-DIST-02
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Manhattan
+  latex: $\sum_j\lvert x_j-y_j\rvert$
+  input: ℝ^d
+  green: 고차원·희소 벡터 거리(L1)
+  yellow: 스케일이 상이한 특징이 혼재(정규화 필요)
+  red: 심플렉스(조성) 데이터에 유클리드류 직접 적용
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-11
+  measures: 좌표 차이 절댓값의 합
+  scale: 0 이상. 고차원에서 Euclidean보다 대비가 덜 무너진다
+  shaken_by: 역시 척도에 지배되나 제곱이 없어 이상치에 덜 민감
+  recommend: 특징 스케일 정규화 후 사용, 조성엔 Aitchison 거리
+  source: null
+- id: SC-DIST-03
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Mahalanobis
+  latex: $\sqrt{(x-\mu)^\top\Sigma^{-1}(x-\mu)}$
+  input: ℝ^d, 공분산 추정 가능
+  green: n ≫ d, 정규 근사, 이상치 탐지
+  yellow: d/n > 0.1 (Σ 불안정) → 축소 추정
+  red: d ≥ n (Σ 특이), 심플렉스
+  result_type: null
+  note: '해석 어려움 → Support 지표 병기 (규칙 #2). 단순 대안: 표준화 Euclidean'
+  unspecified: []
+  coverage: full
+  purpose: PG-11
+  measures: 공분산으로 척도와 상관을 보정한 거리
+  scale: 0 이상. 자유도 p의 χ² 로 읽어 이상치 판정에 쓴다
+  shaken_by: 공분산 추정이 필요해 n이 변수 수에 비해 작으면 불안정
+- id: SC-DIST-04
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Cosine similarity
+  latex: $\frac{x\cdot y}{\lVert x\rVert\lVert y\rVert}$
+  input: ℝ^d
+  green: 방향만 중요 (텍스트·임베딩)
+  yellow: 크기 정보 필요할 때 (크기 무시)
+  red: 음수 없는 카운트에서 각도만 보는 것이 의도인지 확인
+  result_type: null
+  note: '규칙 #2: 크기 지표(Euclidean) 병기'
+  unspecified: []
+  coverage: full
+  purpose: PG-12
+  measures: 두 벡터가 이루는 각의 코사인
+  scale: −1~1. 1이 같은 방향. 크기 차이를 보지 않는다
+  shaken_by: 크기가 정보인 자료에서는 다른 것을 같다고 말한다
+- id: SC-DIST-05
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Pearson distance
+  latex: $1-r$
+  input: ℝ^d
+  green: 선형 프로파일 유사
+  yellow: outlier
+  red: 심플렉스
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-12
+  measures: 1 − 피어슨 상관
+  scale: 0~2. 각 벡터를 중심화한 코사인과 같다
+  shaken_by: 선형 관계만 보고 이상치에 끌린다
+- id: SC-DIST-06
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Bray–Curtis
+  latex: $\frac{\sum_j\lvert x_j-y_j\rvert}{\sum_j (x_j+y_j)}$
+  input: ℝ⁺ 카운트·풍부도
+  green: 생태·미생물 풍부도
+  yellow: 심플렉스에 직접(비율)
+  red: 음수
+  result_type: null
+  note: 총합 정규화 여부 명시
+  unspecified: []
+  coverage: full
+  purpose: PG-13
+  measures: 존재비 차이의 합을 총합으로 나눈 값
+  scale: 0~1. 생태·마이크로바이옴의 기본 거리
+  shaken_by: 총합이 고정된 자료라 한 성분의 증가가 나머지를 밀어낸다
+- id: SC-DIST-07
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Jaccard
+  latex: $1-\frac{\lvert A\cap B\rvert}{\lvert A\cup B\rvert}$
+  input: 이진/집합
+  green: 존재·부재
+  yellow: 풍부도 정보 버림
+  red: 연속
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-13
+  measures: 공유 항목 수를 합집합으로 나눈 값의 여
+  scale: 0~1. 존재/부재만 본다 — 양을 버린다
+  shaken_by: 이진화되어 있어 척도·이상치에 흔들리지 않는다
+- id: SC-DIST-08
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Hamming
+  latex: $\sum_j \mathbb 1[x_j\ne y_j]$
+  input: 이산
+  green: 서열·이진
+  yellow: 길이 상이
+  red: 연속
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-15
+  measures: 같은 자리에서 다른 문자의 개수
+  scale: 0~길이. 길이가 같아야 정의된다
+  shaken_by: 세기만 하므로 추정 불안정이 없다
+- id: SC-DIST-09
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Aitchison
+  latex: $\sqrt{\sum_j\left(\mathrm{clr}(x)_j-\mathrm{clr}(y)_j\right)^2}$
+  input: 심플렉스
+  green: 조성
+  yellow: 0 다수 (대체 필요)
+  red: 비조성
+  result_type: null
+  note: 조성 데이터 기본 거리
+  unspecified: []
+  coverage: full
+  purpose: PG-13
+  measures: CLR 좌표에서 잰 Euclidean 거리
+  scale: 0 이상. 조성 자료에 수학적으로 맞는 거리
+  shaken_by: 0을 못 받아 대치가 필요하고, 대치값에 결과가 달라진다
+- id: SC-DIST-10
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Hellinger
+  latex: $\frac{1}{\sqrt2}\sqrt{\sum_j(\sqrt{p_j}-\sqrt{q_j})^2}$
+  input: 확률분포 (합 1)
+  green: 분포 비교
+  yellow: 합 1 아님
+  red: 음수
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-14
+  measures: 제곱근 확률 벡터 사이의 거리
+  scale: 0~1. 대칭이고 삼각부등식을 만족한다
+  shaken_by: 경계가 있고 한쪽 확률이 0이어도 발산하지 않는다
+- id: SC-DIST-11
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Jensen–Shannon
+  latex: $\tfrac12 KL(p\lVert m)+\tfrac12 KL(q\lVert m),\ m=\tfrac{p+q}{2}$
+  input: 확률분포
+  green: 대칭 분포 거리
+  yellow: 0 성분 (log 0)
+  red: 합 1 아님
+  result_type: null
+  note: 제곱근이 거리
+  unspecified: []
+  coverage: full
+  purpose: PG-14
+  measures: KL 을 대칭화하고 경계를 씌운 값
+  scale: 0~1 (log2 기준). 대칭이고 항상 유한하다
+  shaken_by: 0 확률에서도 유한해 KL 의 발산 문제가 없다
+- id: SC-DIST-12
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: KL divergence
+  latex: $\sum_j p_j\log\frac{p_j}{q_j}$
+  input: 확률분포
+  green: 기준 분포 명확
+  yellow: 비대칭임을 인지
+  red: q에 0, p>0
+  result_type: null
+  note: 방향 기록
+  unspecified: []
+  coverage: full
+  purpose: PG-14
+  measures: P를 Q로 설명할 때 잃는 정보량
+  scale: 0 이상, 상한 없음. 비대칭 — D(P‖Q)≠D(Q‖P)
+  shaken_by: Q가 0인 곳에서 P가 양수면 발산한다
+- id: SC-DIST-13
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Wasserstein-1 (EMD)
+  latex: $\int\lvert F_p(t)-F_q(t)\rvert\,dt$
+  input: 1차원 분포 / 표본
+  green: 1차원 분포/표본 간 이동량을 원변수 단위로
+  yellow: 다차원은 계산·정의가 복잡(근사 필요)
+  red: 다차원에 1D 공식을 오용
+  result_type: null
+  note: 단위 = 원변수 단위
+  unspecified: []
+  coverage: full
+  purpose: PG-14
+  measures: 한 분포를 다른 분포로 옮기는 최소 운송 비용
+  scale: 입력과 같은 단위. 겹치지 않는 분포에서도 거리가 유한하고 연속적이다
+  shaken_by: 값의 크기 정보를 보존하고 경계가 없는 겹침에도 정의된다
+  recommend: 1D 권장(단위=원변수); 다차원은 Sinkhorn 근사임을 명시
+  source: The earth mover's distance as a metric for image retrieval (Rubner et al. 2000)
+- id: SC-DIST-14
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: MMD (RBF)
+  latex: $\lVert\mu_p-\mu_q\rVert_{\mathcal H}^2$
+  input: 표본 집합
+  green: 다변량 분포 비교(커널 기반)
+  yellow: 대역폭(σ) 미기록 → 재현 불가
+  red: 대역폭 임의 고정으로 검정력 왜곡
+  result_type: null
+  note: T-703
+  unspecified: []
+  coverage: full
+  purpose: PG-14
+  measures: 커널 공간에서 두 표본 평균의 거리
+  scale: 0 이상. RBF 커널 폭(σ)에 값이 좌우된다
+  shaken_by: σ 선택 없이는 값이 정해지지 않는다
+  recommend: 대역폭(median heuristic 등) 기록, 순열검정 병행
+  source: A kernel two-sample test (Gretton et al. 2012)
+- id: SC-DIST-15
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: DTW
+  latex: 최적 정렬 경로 비용
+  input: 시계열
+  green: 길이·속도가 다른 시계열 정렬 비용
+  yellow: 워핑 제약(밴드) 미설정으로 과적합 정렬
+  red: 비시계열/순서 없는 데이터에 적용
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-15
+  measures: 시간축을 늘였다 줄이며 맞춘 최소 거리
+  scale: 0 이상. 속도가 다른 두 시계열을 비교한다
+  shaken_by: 창 제약(window)을 어떻게 두느냐에 값이 달라진다
+  recommend: Sakoe–Chiba band 등 제약 명시, z-정규화 선행
+  source: Dynamic programming algorithm optimization for spoken word recognition (Sakoe & Chiba 1978)
+- id: SC-DIST-16
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Gower
+  latex: 타입 혼합 가중 평균
+  input: 혼합 타입
+  green: 범주+연속 혼합 타입 거리(클러스터링 전)
+  yellow: 변수 가중·스케일 선택이 결과를 좌우
+  red: 단일 타입인데 관성적 사용 또는 결측 처리 불명
+  result_type: null
+  note: 클러스터링 전
+  unspecified: []
+  coverage: full
+  purpose: PG-11
+  measures: 컬럼 타입별로 다르게 잰 뒤 평균낸 거리
+  scale: 0~1. 연속·범주·이진이 섞인 표에 쓴다
+  shaken_by: 타입별 가중이 암묵적으로 정해져 결과에 영향을 준다
+  recommend: 변수 가중·범위 정규화 명시, 클러스터링 전 표준화
+  source: A general coefficient of similarity and some of its properties (Gower 1971)
+- id: SC-DIST-17
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: UniFrac (weighted/unweighted)
+  latex: 계통수 가지 길이 기반
+  input: 미생물 풍부도 + 계통수
+  green: 계통수 기반 미생물 군집 거리(16S/메타지놈)
+  yellow: 트리 품질·희소 표본에 민감
+  red: 계통수 없음 → 정의 불가
+  result_type: null
+  note: 트리 입력 필요
+  unspecified: []
+  coverage: full
+  purpose: PG-13
+  measures: 계통수 가지 길이로 가중한 조성 거리
+  scale: 0~1. 계통수가 있어야 한다
+  shaken_by: 계통수 자체의 불확실성이 그대로 거리에 들어온다
+  recommend: weighted(풍부도)/unweighted(존재) 구분 명시, rarefaction 고려
+  source: 'UniFrac: a new phylogenetic method for comparing microbial communities (Lozupone & Knight 2005)'
+- id: SC-DIST-18
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: KS distance (Kolmogorov–Smirnov 거리)
+  latex: $\sup_t\lvert F_p(t)-F_q(t)\rvert$
+  input: 1차원 분포 / 표본
+  green: 연속, 단위 다른 컬럼을 한 축에 놓을 때
+  yellow: 이산·동순위 많음 (계단 때문에 과소)
+  red: 범주
+  result_type: null
+  note: 0~1 무단위. 꼬리보다 중앙 차이에 민감. T-1201
+  unspecified: []
+  coverage: full
+  purpose: PG-14
+  measures: 두 누적분포의 최대 세로 간격
+  scale: 0~1, 단위 없음. 0.05 는 관행일 뿐 — 무엇이 충분한지는 쓰임새가 정한다
+  shaken_by: 단위가 없어 컬럼끼리 비교되나 동순위가 많으면 과소평가된다
+- id: SC-DIST-19
+  family: DIST
+  section: 3. 거리·유사도 (두 벡터/행 또는 두 컬럼)
+  name: Total variation distance (총변동거리)
+  latex: $\tfrac12\sum_j\lvert p_j-q_j\rvert$
+  input: 범주 분포 (합 1)
+  green: 범주·이산
+  yellow: 희귀 범주 다수 (표본 오차가 값을 만든다)
+  red: 연속을 bin 없이
+  result_type: null
+  note: 0~1 무단위. KS 의 범주판. T-1202
+  unspecified: []
+  coverage: full
+  purpose: PG-14
+  measures: 범주별 비율 차이 절댓값의 합의 절반
+  scale: 0~1, 단위 없음. '한 범주를 잘못 맞힐 최대 확률'로 읽는다
+  shaken_by: 희귀 범주가 많으면 표본 오차만으로도 값이 커진다
+- id: SC-DIV-01
+  family: DIV
+  section: 4.1 이산 분포 / 풍부도 (alpha 다양성)
+  name: Shannon H
+  latex: $H=-\sum_j p_j\log p_j$
+  input: 비율/카운트 → 비율
+  green: 카운트 기반, 깊이 통일(rarefaction)
+  yellow: 깊이 상이
+  red: 음수
+  result_type: null
+  note: log 밑(2/e/10) 기록
+  unspecified: []
+  coverage: full
+  purpose: PG-16
+  measures: 비율의 음의 로그 가중 평균
+  scale: 0 이상, 상한 log S. 드문 종에 무게가 실린다
+  shaken_by: 표본 깊이가 다르면 값이 달라져 rarefaction 이 필요하다
+- id: SC-DIV-02
+  family: DIV
+  section: 4.1 이산 분포 / 풍부도 (alpha 다양성)
+  name: Simpson (1−D)
+  latex: $1-\sum_j p_j^2$
+  input: 동
+  green: 우점종 중심의 다양성 요약(상대풍부도 벡터). 희귀종 변화에 둔감하다는 것을 알고 쓸 때
+  yellow: 희귀종의 증감이 결론에 중요한 경우 — Simpson 은 그 변화를 거의 잡지 못한다. Shannon·Chao1 병기
+  red: 샘플링 깊이가 크게 다른 표본 직접 비교
+  result_type: null
+  note: 우점종 민감
+  unspecified: []
+  coverage: full
+  purpose: PG-16
+  measures: 무작위 두 개체가 다른 종일 확률
+  scale: 0~1. 흔한 종에 무게가 실려 깊이에 덜 민감하다
+  shaken_by: 우점종이 지배해 표본 깊이 차이에 비교적 둔감
+  recommend: 깊이 보정/유효수(Hill) 병행, 우점 민감성 인지
+  source: Measurement of diversity (Simpson 1949)
+- id: SC-DIV-03
+  family: DIV
+  section: 4.1 이산 분포 / 풍부도 (alpha 다양성)
+  name: Inverse Simpson
+  latex: $1/\sum_j p_j^2$
+  input: 동
+  green: 유효 종 수 해석(1/Σp²)
+  yellow: 소표본 편향
+  red: 깊이가 상이한 표본 비교
+  result_type: null
+  note: 유효 종 수
+  unspecified: []
+  coverage: full
+  purpose: PG-16
+  measures: Simpson 우점도의 역수
+  scale: 1 이상. '유효 종 수'로 읽힌다 (Hill q=2)
+  shaken_by: 유효 종 수 단위라 해석이 곧고 깊이에 둔감
+  recommend: Hill q=2로 해석, 깊이 보정
+  source: Measurement of diversity (Simpson 1949)
+- id: SC-DIV-04
+  family: DIV
+  section: 4.1 이산 분포 / 풍부도 (alpha 다양성)
+  name: Rényi 엔트로피 (차수 α)
+  latex: $H_\alpha=\frac{1}{1-\alpha}\log\sum_j p_j^\alpha$
+  input: 동, α
+  green: 차수 α를 명시하고 다양성 프로파일 작성
+  yellow: α 단일값만 보고 → 편향된 요약
+  red: α=1 극한(→Shannon) 미처리로 발산/오류
+  result_type: null
+  note: α=0 richness, 2 Simpson
+  unspecified: []
+  coverage: full
+  purpose: PG-16
+  measures: 차수 α로 드문 종의 무게를 조절한 엔트로피
+  scale: α=0 풍부도, α=1 Shannon, α=2 Simpson. α를 적지 않으면 비교 불가
+  shaken_by: α 선택에 값과 순위가 달라진다
+  recommend: α 스펙트럼(0,1,2,∞)으로 프로파일, α=1은 Shannon으로 계산
+  source: On measures of entropy and information (Rényi 1961)
+- id: SC-DIV-05
+  family: DIV
+  section: 4.1 이산 분포 / 풍부도 (alpha 다양성)
+  name: Hill numbers
+  latex: $D_q=\left(\sum_j p_j^q\right)^{1/(1-q)}$
+  input: 동, q
+  green: 다양성 비교 표준(유효수), q 명시
+  yellow: q 선택 근거 불명
+  red: 서로 다른 q를 직접 비교
+  result_type: null
+  note: 유효 수로 해석 용이
+  unspecified: []
+  coverage: full
+  purpose: PG-16
+  measures: 차수 q의 '유효 종 수'
+  scale: 종 수와 같은 단위 — 서로 다른 q를 한 그림에 놓을 수 있다
+  shaken_by: 단위가 통일되어 q를 바꿔도 읽는 법이 같다
+  recommend: q=0/1/2 프로파일로 보고, 유효수로 해석
+  source: 'Diversity and evenness: a unifying notation and its consequences (Hill 1973); The interpretation
+    of diversity (Jost 2006)'
+- id: SC-DIV-06
+  family: DIV
+  section: 4.1 이산 분포 / 풍부도 (alpha 다양성)
+  name: Richness / Chao1
+  latex: $S_{obs}+\frac{f_1^2}{2f_2}$
+  input: 카운트
+  green: singleton·doubleton 신뢰
+  yellow: 깊이 얕음
+  red: 비율(카운트 아님)
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-17
+  measures: 관측 종 수 (Chao1은 미관측분 보정)
+  scale: 0 이상, 정수 단위. 표본 깊이에 정비례로 끌려간다
+  shaken_by: 더 깊이 보면 반드시 늘어나 깊이 보정 없이는 비교 불가
+- id: SC-DIV-07
+  family: DIV
+  section: 4.1 이산 분포 / 풍부도 (alpha 다양성)
+  name: Pielou 균등도
+  latex: $H/\log S$
+  input: 동
+  green: 관측 종수 대비 균등도(H/logS)
+  yellow: 종수 S가 작을 때 불안정
+  red: 미관측 종 편향이 큰 소표본에 적용
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-18
+  measures: Shannon 을 최대값 log S 로 나눈 값
+  scale: 0~1. 1이 완전 균등. 종 수의 영향을 뺀 균등도
+  shaken_by: S 추정이 깊이에 끌리므로 분모가 흔들린다
+  recommend: S와 함께 보고, 소표본 주의
+  source: The measurement of diversity in different types of biological collections (Pielou 1966)
+- id: SC-DIV-08
+  family: DIV
+  section: 4.1 이산 분포 / 풍부도 (alpha 다양성)
+  name: Gini 계수
+  latex: $\frac{\sum_i\sum_j\lvert x_i-x_j\rvert}{2n^2\bar x}$
+  input: ℝ⁺
+  green: 불균등
+  yellow: 음수
+  red: 음수
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-18
+  measures: 누적 점유 곡선과 균등선 사이 넓이의 2배
+  scale: 0~1. 0이 완전 균등, 1이 완전 독점
+  shaken_by: 순위 기반이라 척도 변환에 불변
+- id: SC-DIV-09
+  family: DIV
+  section: 4.1 이산 분포 / 풍부도 (alpha 다양성)
+  name: Faith's PD
+  latex: 계통수 가지 길이 합
+  input: 존재/부재 + 계통수
+  green: 계통수 가지길이 합으로 계통다양성(존재/부재)
+  yellow: 표본 깊이·트리 완전성에 의존
+  red: 트리 없음 → 정의 불가
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-17
+  measures: 군집에 포함된 계통수 가지 길이의 합
+  scale: 0 이상. 계통적으로 먼 종이 많을수록 크다
+  shaken_by: 계통수 불확실성과 표본 깊이 양쪽에 끌린다
+  recommend: rarefaction으로 깊이 보정, 트리 출처 명시
+  source: Conservation evaluation and phylogenetic diversity (Faith 1992)
+- id: SC-ENT-01
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: 정규 $N(\mu,\sigma^2)$
+  latex: $h=\tfrac12\log(2\pi e\sigma^2)$
+  input: 연속, 정규 확인(C-01)
+  green: '정규성 검사(C-01: n<50 Shapiro–Wilk, 50~300 D''Agostino K², >300 은 QQ·왜도·첨도)를 먼저 하고, 연속 변수의 미분엔트로피
+    근사'
+  yellow: 경미한 비정규(근사 가능)
+  red: 비정규(중꼬리·다봉)에 정규 공식 대입
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-19
+  measures: 정규 가정 아래 σ 로 정해지는 미분 엔트로피
+  scale: nat 단위. 음수가 될 수 있다 (밀도이므로)
+  shaken_by: 정규가 아니면 값 자체가 틀린다
+  recommend: 정규성 검정/QQ 선행, 위반 시 비모수 추정
+  source: Elements of Information Theory (Cover & Thomas 2006)
+- id: SC-ENT-02
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: 다변량 정규
+  latex: $h=\tfrac12\log\left((2\pi e)^d\lvert\Sigma\rvert\right)$
+  input: ℝ^d, Σ 추정
+  green: n ≫ d로 Σ를 안정 추정할 수 있을 때
+  yellow: n과 d가 근접(Σ 조건수 악화)
+  red: d ≥ n → Σ 특이, |Σ| 발산
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-19
+  measures: 공분산 행렬식으로 정해지는 다변량 미분 엔트로피
+  scale: nat 단위. 변수 수 p에 비해 n이 작으면 행렬식이 0에 붙는다
+  shaken_by: 공분산 추정이 불안정하면 값이 발산한다
+  recommend: n≫d 확인, shrinkage 추정 또는 차원축소
+  source: Elements of Information Theory (Cover & Thomas 2006)
+- id: SC-ENT-03
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: 베타 $B(\alpha,\beta)$
+  latex: $h=\ln B(\alpha,\beta)-(\alpha-1)\psi(\alpha)-(\beta-1)\psi(\beta)+(\alpha+\beta-2)\psi(\alpha+\beta)$
+  input: '[0,1] 비율·확률'
+  green: '[0,1] 비율·확률, 모수 적합 양호'
+  yellow: 경계 근처 질량이 커 적합 불안정
+  red: 0/1 경계값 다수(밀도 발산)
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-19
+  measures: 베타 분포의 미분 엔트로피 (α, β)
+  scale: nat 단위. [0,1] 비율 자료용
+  shaken_by: α·β 적합이 꼬리에서 흔들린다
+  recommend: 경계값 처리(clip/zero-one-inflated) 명시
+  source: null
+- id: SC-ENT-04
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: 감마 $\Gamma(k,\theta)$
+  latex: $h=k+\ln\theta+\ln\Gamma(k)+(1-k)\psi(k)$
+  input: ℝ⁺ 왜도
+  green: 양수·우왜 자료(대기시간 등)
+  yellow: 0 근처 질량·형상모수가 작음
+  red: 음수 포함
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-19
+  measures: 감마 분포의 미분 엔트로피 (k, θ)
+  scale: nat 단위. 양의 왜곡 자료용
+  shaken_by: 형상모수 추정이 소표본에서 불안정
+  recommend: 양수 도메인 확인, 형상모수 적합 보고
+  source: null
+- id: SC-ENT-05
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: 지수
+  latex: $h=1-\ln\lambda$
+  input: ℝ⁺ 대기시간
+  green: 양수 대기시간, 무기억성 가정 성립
+  yellow: 과산포/과소산포(지수 이탈)
+  red: 음수 또는 강한 비지수 형태
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-19
+  measures: 지수 분포의 미분 엔트로피 (λ)
+  scale: nat 단위. 대기시간·간격 자료용
+  shaken_by: 무기억 가정이 깨지면 값이 뜻을 잃는다
+  recommend: 무기억성·율 λ 적합도 점검, 필요시 Weibull
+  source: null
+- id: SC-ENT-06
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: 로그정규
+  latex: $h=\mu+\tfrac12\ln(2\pi e\sigma^2)$
+  input: ℝ⁺
+  green: log 변환 후 정규인 양수 자료
+  yellow: 경미한 log-비정규
+  red: 0 포함(log 불가)
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-19
+  measures: 로그정규 분포의 미분 엔트로피
+  scale: nat 단위. log 척도에서 정규인 자료용
+  shaken_by: 0을 못 받고 log 변환 가정에 매인다
+  recommend: 0 처리(+eps 근거) 명시, log 후 정규성 확인
+  source: null
+- id: SC-ENT-07
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: 디리클레 (조성)
+  latex: $h=\ln B(\boldsymbol\alpha)+(\alpha_0-K)\psi(\alpha_0)-\sum_j(\alpha_j-1)\psi(\alpha_j)$
+  input: 심플렉스
+  green: 심플렉스(조성) 벡터의 불확실성
+  yellow: 성분 다수가 0(경계)이라 적합 불안정
+  red: 비조성(합≠1, 음수)
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-19
+  measures: 디리클레 분포의 미분 엔트로피 (조성)
+  scale: nat 단위. 합이 1인 벡터의 분포용
+  shaken_by: 농도모수 추정이 성분 수가 많으면 불안정
+  recommend: 조성 제약 확인, 0 성분 처리 명시
+  source: The Statistical Analysis of Compositional Data (Aitchison 1986)
+- id: SC-ENT-08
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: Cauchy / Lorentzian
+  latex: $h=\ln(4\pi\gamma)$
+  input: ℝ, 중꼬리 (분산 정의 안 됨)
+  green: 중꼬리, 봉우리 폭 γ(척도) 적합
+  yellow: γ 추정 불안정(소표본)
+  red: 표본분산으로 정규 공식 대입(분산 발산 → 무의미)
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-19
+  measures: Cauchy 분포의 미분 엔트로피 (γ)
+  scale: nat 단위. 평균·분산이 존재하지 않는 분포
+  shaken_by: 표본 평균·분산으로 적합하면 안 되고 위치·척도 추정이 까다롭다
+  recommend: 분산 기반 지표 금지, γ(척도) 적합으로 요약
+  source: null
+- id: SC-ENT-09
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: Student t (ν)
+  latex: $h=\tfrac{\nu+1}{2}\left[\psi\!\left(\tfrac{\nu+1}{2}\right)-\psi\!\left(\tfrac{\nu}{2}\right)\right]+\ln\!\left(\sqrt\nu\,B(\tfrac\nu2,\tfrac12)\right)$
+  input: ℝ 중꼬리
+  green: 중꼬리, 자유도 ν 적합
+  yellow: ν 미기록 또는 ν가 매우 작아 분산 미정
+  red: ν≤2에서 분산 기반 정규 근사
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-19
+  measures: Student t 의 미분 엔트로피 (자유도 ν)
+  scale: nat 단위. ν가 작을수록 두꺼운 꼬리
+  shaken_by: ν 추정이 꼬리 표본 수에 좌우된다
+  recommend: ν 적합·보고, ν 작으면 분산 지표 회피
+  source: null
+- id: SC-ENT-10
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: von Mises (원형)
+  latex: $h=\ln(2\pi I_0(\kappa))-\kappa\frac{I_1(\kappa)}{I_0(\kappa)}$
+  input: 각도·주기 (위상, 시각)
+  green: 각도·주기(위상·시각) 원형 자료
+  yellow: 집중도 κ가 낮아 거의 균일
+  red: 실수선 공식 대입(주기성 무시)
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-19
+  measures: von Mises 의 미분 엔트로피 (원형 자료)
+  scale: nat 단위. 각도·주기 자료용
+  shaken_by: 집중도 κ 추정이 소표본에서 흔들린다
+  recommend: 원형통계 사용, κ 적합·보고
+  source: Directional Statistics (Mardia & Jupp 2000)
+- id: SC-ENT-11
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: 비모수 (kNN / KDE 추정)
+  latex: Kozachenko–Leonenko 등
+  input: 임의 연속
+  green: 분포 불명, n≥100인 연속 자료
+  yellow: 대역폭/k 선택에 민감
+  red: 소표본·고차원(편향·분산 폭증)
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-20
+  measures: k번째 이웃 거리 또는 커널 밀도로 추정한 엔트로피
+  scale: nat 단위. k·대역폭 선택에 값이 달라진다
+  shaken_by: 조율 모수와 차원 수에 값이 크게 좌우된다
+  recommend: n·차원 보고, k/대역폭 명시, 편향 보정
+  source: Estimating mutual information (Kraskov et al. 2004); Sample estimate of the entropy of a random
+    vector (Kozachenko & Leonenko 1987)
+- id: SC-ENT-12
+  family: ENT
+  section: 4.3 연속 분포의 엔트로피 (미분 엔트로피) — 분포마다 공식이 다름
+  name: 이산화 후 Shannon
+  latex: bin 나눈 뒤 SC-DIV-01
+  input: 임의
+  green: 탐색용 빠른 요약
+  yellow: bin 수·경계에 값이 종속
+  red: bin 수 미기록(재현 불가)
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-20
+  measures: 구간으로 나눈 뒤 이산 Shannon
+  scale: bit 또는 nat. bin 개수·경계에 값이 달라진다
+  shaken_by: bin 을 바꾸면 값도 순위도 바뀐다
+  recommend: bin 규칙(Freedman–Diaconis 등) 기록, 정량비교 회피
+  source: null
+- id: SC-INF-01
+  family: INF
+  section: 4.4 정보량 관계
+  name: Mutual information
+  latex: $I(X;Y)=\sum p(x,y)\log\frac{p(x,y)}{p(x)p(y)}$
+  input: 두 이산 (연속은 이산화/kNN)
+  green: 두 이산(연속은 이산화/kNN) 변수의 비선형 연관
+  yellow: 추정 편향(bin/표본), 단위(bit/nat) 미기록
+  red: 정규화 없이 크기 비교하거나 연속에 순진한 이산화
+  result_type: null
+  note: 비선형 연관, 단위 bit/nat 기록
+  unspecified: []
+  coverage: full
+  purpose: PG-21
+  measures: 두 변수를 함께 알 때 줄어드는 불확실성
+  scale: 0 이상, 상한은 min(H(X),H(Y)). 비선형 관계도 잡는다
+  shaken_by: 이산화·추정 방식에 값이 달라지고 소표본에서 상향 편향된다
+  recommend: 단위 기록, 추정법(kNN) 명시, 정규화 병행
+  source: Estimating mutual information (Kraskov et al. 2004)
+- id: SC-INF-02
+  family: INF
+  section: 4.4 정보량 관계
+  name: Normalized MI
+  latex: $\frac{I}{\sqrt{H(X)H(Y)}}$
+  input: 동
+  green: 클러스터 vs 라벨 등 정규화된 연관
+  yellow: 정규화 방식(√·min·max)에 값이 달라짐
+  red: 우연 보정 없이(클러스터 수 편향)
+  result_type: null
+  note: 클러스터 vs 라벨
+  unspecified: []
+  coverage: full
+  purpose: PG-21
+  measures: MI 를 엔트로피로 나눠 0~1로 만든 값
+  scale: 0~1. 서로 다른 변수쌍을 비교할 수 있게 한다
+  shaken_by: 정규화 방식(min/max/평균/기하)이 여럿이라 무엇으로 나눴는지 적어야 한다
+  recommend: 정규화식 명시, 우연보정(AMI) 병행
+  source: Information theoretic measures for clusterings comparison (Vinh et al. 2010)
+- id: SC-INF-03
+  family: INF
+  section: 4.4 정보량 관계
+  name: Cross-entropy
+  latex: $-\sum p\log q$
+  input: 두 분포
+  green: 분류 손실 또는 두 분포 불일치 측정
+  yellow: q에 0 확률(무한대) 처리 필요
+  red: 보정 안 된 확률로 절대 해석
+  result_type: null
+  note: 분류 손실
+  unspecified: []
+  coverage: full
+  purpose: PG-22
+  measures: 실제 분포 아래에서 예측 분포에 준 음의 로그
+  scale: 0 이상. 엔트로피 + KL 로 분해된다
+  shaken_by: 0 확률에서 발산해 eps 가 필요하다
+  recommend: 라벨스무딩/eps로 0 처리, 보정 확인
+  source: null
+- id: SC-INF-04
+  family: INF
+  section: 4.4 정보량 관계
+  name: Perplexity
+  latex: $2^{H}$
+  input: 분포
+  green: 분포 불확실성 요약(2^H)
+  yellow: 어휘·토크나이저가 다르면 비교 불가
+  red: 서로 다른 토큰화 모델 간 직접 비교
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-22
+  measures: 교차 엔트로피의 지수 — '평균 몇 갈래로 헷갈리는가'
+  scale: 1 이상. 어휘·범주 수와 같은 단위로 읽힌다
+  shaken_by: 교차 엔트로피와 같은 문제를 물려받는다
+  recommend: 동일 어휘/토크나이저 조건에서만 비교, base 명시
+  source: null
+- id: SC-BE-01
+  family: BE
+  section: 5. 배치효과·혼란 (Batch effect scores)
+  name: Silhouette (배치 라벨)
+  latex: $s_i=\frac{b_i-a_i}{\max(a_i,b_i)}$, 배치를 클러스터로
+  input: 임베딩/PC + 배치 컬럼
+  green: 배치 분리 정도. 0 근처 = 혼합 좋음
+  yellow: 배치 수 2 미만
+  red: 배치 컬럼 없음
+  result_type: null
+  note: 낮을수록 좋음 (배치)
+  unspecified: []
+  coverage: full
+  purpose: PG-24
+  measures: 배치 라벨로 잰 실루엣
+  scale: −1~1. 0에 가까울수록 좋다 (배치가 안 갈림)
+  shaken_by: 임베딩·거리 선택에 값이 달라진다
+- id: SC-BE-02
+  family: BE
+  section: 5. 배치효과·혼란 (Batch effect scores)
+  name: Silhouette (생물 라벨)
+  latex: 동, 세포유형/군을 클러스터로
+  input: 임베딩 + 생물 라벨
+  green: 임베딩+생물 라벨에서 생물 구조 보존(높을수록↑)
+  yellow: 거리 척도·임베딩 차원에 민감
+  red: 배치 혼합 지표와 분리해 단독 해석
+  result_type: null
+  note: BE-01과 쌍으로
+  unspecified: []
+  coverage: full
+  purpose: PG-24
+  measures: 생물 라벨로 잰 실루엣
+  scale: −1~1. 클수록 좋다 (생물 신호 보존)
+  shaken_by: 같은 이유로 임베딩에 좌우된다
+  recommend: 배치 라벨로 잰 실루엣(SC-BE-01)과 쌍으로 — 생물 보존만 높이고 배치가 안 섞이면 통합이 안 된 것이다. 임베딩·거리 명시
+  source: 'Silhouettes: a graphical aid to the interpretation and validation of cluster analysis (Rousseeuw
+    1987)'
+- id: SC-BE-03
+  family: BE
+  section: 5. 배치효과·혼란 (Batch effect scores)
+  name: kBET (accept rate)
+  latex: 이웃 k개의 배치 구성이 전체 배치 비율과 같은지 카이제곱, 채택률
+  input: 임베딩 + 배치
+  green: 국소 이웃의 배치 구성 균질성(카이제곱 채택률)
+  yellow: k 미기록 또는 배치 크기 불균형
+  red: 세포유형 조성이 배치별로 달라 생물↔배치 교란
+  result_type: null
+  note: 높을수록 혼합
+  unspecified: []
+  coverage: full
+  purpose: PG-23
+  measures: 이웃의 배치 구성이 전체 구성과 같다는 가설의 채택률
+  scale: 0~1. 1에 가까울수록 잘 섞였다
+  shaken_by: 이웃 수 k와 검정 반복 설정에 값이 달라진다
+  recommend: k·배치크기 보고, 세포유형 층화 후 평가
+  source: A test metric for assessing single-cell RNA-seq batch correction (Büttner et al. 2019)
+- id: SC-BE-04
+  family: BE
+  section: 5. 배치효과·혼란 (Batch effect scores)
+  name: LISI (iLISI / cLISI)
+  latex: 이웃의 역Simpson $1/\sum_b p_b^2$
+  input: 임베딩 + 배치(iLISI) / 라벨(cLISI)
+  green: 이웃 역Simpson으로 혼합(iLISI↑)/순도(cLISI↓)
+  yellow: perplexity(이웃 규모) 미기록
+  red: 둘 중 하나만 보고해 절충을 무시
+  result_type: null
+  note: 둘 병기
+  unspecified: []
+  coverage: full
+  purpose: PG-23
+  measures: 이웃 안에서 관측되는 유효 배치 수
+  scale: 1~배치 수. iLISI 는 클수록(섞임), cLISI 는 1에 가까울수록(생물 보존) 좋다
+  shaken_by: perplexity 설정과 임베딩 선택에 좌우된다
+  recommend: iLISI·cLISI 병기, perplexity 기록
+  source: Fast, sensitive and accurate integration of single-cell data with Harmony (Korsunsky et al.
+    2019)
+- id: SC-BE-05
+  family: BE
+  section: 5. 배치효과·혼란 (Batch effect scores)
+  name: PC regression (배치 설명 분산)
+  latex: $\sum_k \mathrm{Var}(PC_k)\cdot R^2(PC_k\sim batch)$
+  input: PCA + 배치
+  green: 배치가 설명하는 분산 비율(낮을수록↑)
+  yellow: PC 수 미기록
+  red: 비선형 배치 효과에 선형 R² 단독
+  result_type: null
+  note: 낮을수록 좋음
+  unspecified: []
+  coverage: full
+  purpose: PG-25
+  measures: 주성분을 배치로 회귀했을 때의 설명 분산
+  scale: 0~1. 주성분마다 따로 나오므로 어느 PC 인지 적는다
+  shaken_by: 몇 번째 PC까지 보느냐에 결론이 달라진다
+  recommend: PC 수·설명분산 보고, scIB 관례 준수
+  source: Benchmarking atlas-level data integration in single-cell genomics (Luecken et al. 2022)
+- id: SC-BE-06
+  family: BE
+  section: 5. 배치효과·혼란 (Batch effect scores)
+  name: gPCA δ
+  latex: 배치 유도 PCA와 일반 PCA의 분산 비
+  input: 행렬 + 배치
+  green: 배치유도 PCA와 일반 PCA의 분산비로 배치 강도 평가
+  yellow: 표본 수·요인 구조에 민감
+  red: 순열 기준분포 없이 δ 절대 해석
+  result_type: null
+  note: Reese 2013
+  unspecified: []
+  coverage: full
+  purpose: PG-25
+  measures: 배치 중심화 전후 주성분 분산의 변화량
+  scale: 0~1. 클수록 배치가 주된 변동원
+  shaken_by: PC 개수 선택에 좌우된다
+  recommend: 순열검정으로 유의성 평가
+  source: A new statistic for identifying batch effects in high-throughput genomic data using guided principal
+    components analysis (Reese et al. 2013)
+- id: SC-BE-07
+  family: BE
+  section: 5. 배치효과·혼란 (Batch effect scores)
+  name: ASW batch (1−|s|)
+  latex: $1-\lvert s_{batch}\rvert$ 평균
+  input: 임베딩 + 배치
+  green: 1−|s_batch| 평균으로 배치 혼합(높을수록↑), scIB 관례
+  yellow: 라벨 보존 지표와 균형 필요
+  red: 생물 보존을 무시하고 혼합만 최적화
+  result_type: null
+  note: 높을수록 좋음
+  unspecified: []
+  coverage: full
+  purpose: PG-24
+  measures: 배치 실루엣의 절댓값을 1에서 빼어 '클수록 좋게' 맞춘 값
+  scale: 0~1. 다른 배치 지표와 방향을 맞추기 위한 변형
+  shaken_by: 원 실루엣의 성질을 그대로 물려받는다
+  recommend: 생물 보존 지표와 종합 점수로 결합
+  source: Benchmarking atlas-level data integration in single-cell genomics (Luecken et al. 2022)
+- id: SC-BE-08
+  family: BE
+  section: 5. 배치효과·혼란 (Batch effect scores)
+  name: Graph connectivity
+  latex: 라벨별 kNN 그래프 최대 연결성분 비율
+  input: kNN + 라벨
+  green: 라벨별 kNN 최대 연결성분 비율(라벨 보존)
+  yellow: k·그래프 구성에 민감
+  red: 배치 혼합 지표 없이 단독 해석
+  result_type: null
+  note: scIB
+  unspecified: []
+  coverage: full
+  purpose: PG-23
+  measures: 같은 라벨 안에서 이웃 그래프가 이어지는 정도
+  scale: 0~1. 1이면 라벨이 배치로 쪼개지지 않았다
+  shaken_by: 그래프 구성(k, 거리)에 값이 달라진다
+  recommend: 혼합 지표와 병행, k 기록(scIB)
+  source: Benchmarking atlas-level data integration in single-cell genomics (Luecken et al. 2022)
+- id: SC-BE-09
+  family: BE
+  section: 5. 배치효과·혼란 (Batch effect scores)
+  name: 배치–라벨 연관 (SMD / Cramér V)
+  latex: $\frac{\bar x_1-\bar x_0}{\sqrt{(s_1^2+s_0^2)/2}}$ / V
+  input: 메타 컬럼 + 라벨
+  green: '숨은 불균형 검출(규칙 #6): 메타↔라벨 연관'
+  yellow: 표본이 적어 추정 불안정
+  red: 연관을 무시하고 배치보정 지표만 신뢰
+  result_type: null
+  note: B4 진단의 원천
+  unspecified: []
+  coverage: full
+  purpose: PG-26
+  measures: 배치와 라벨의 연관 강도 (SMD 또는 Cramér V)
+  scale: SMD 0.1 / V 0.1 이 흔한 주의선. 교락이면 어떤 보정도 배치와 신호를 분리하지 못한다
+  shaken_by: 표본 수만 충분하면 안정적이고 임베딩 선택과 무관하다
+  recommend: B4 진단의 원천으로 항상 선행, 강한 연관 시 층화
+  source: null
+- id: SC-BE-10
+  family: BE
+  section: 5. 배치효과·혼란 (Batch effect scores)
+  name: PVCA
+  latex: 주성분 분산을 배치·생물 요인에 분해
+  input: 행렬 + 여러 메타
+  green: 주성분 분산을 배치·생물 요인에 분해
+  yellow: 요인 수가 많아 과적합/해석 난해
+  red: 임의 요인 선택으로 기여 왜곡
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-25
+  measures: 혼합모형으로 나눈 변동 성분의 비율
+  scale: 합이 1인 비율. 배치·생물·잔차로 나눠 읽는다
+  shaken_by: 모형 설정과 수렴에 값이 달라진다
+  recommend: 사전 지정 요인으로, 요인 수·모형 보고
+  source: null
+- id: SC-BE-11
+  family: BE
+  section: 5. 배치효과·혼란 (Batch effect scores)
+  name: Batch entropy (이웃)
+  latex: 이웃의 배치 분포 Shannon (정규화)
+  input: 임베딩 + 배치
+  green: 이웃 배치분포 Shannon(정규화)로 국소 혼합
+  yellow: 이웃 크기 미기록
+  red: 세포유형 조성 교란을 무시
+  result_type: null
+  note: LISI 대안
+  unspecified: []
+  coverage: full
+  purpose: PG-23
+  measures: 이웃의 배치 라벨 엔트로피
+  scale: 0~log(배치 수). 클수록 잘 섞였다
+  shaken_by: 이웃 수에 좌우되고 배치 크기가 불균형하면 상한이 달라진다
+  recommend: LISI/kBET 대안으로 병행, 이웃 크기 기록
+  source: null
+- id: SC-NORM-01
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: CPM
+  latex: $\frac{c_{ij}}{\sum_i c_{ij}}\times 10^6$
+  input: 카운트 행렬
+  green: 표본 내 상대발현(라이브러리 깊이만 보정)
+  yellow: 소수 고발현 유전자가 조성을 좌우하는 표본 간 비교
+  red: 유전자 길이 비교 또는 DE 통계 입력으로 raw CPM 사용
+  result_type: fraction 스케일
+  note: 깊이 정규화
+  unspecified: []
+  coverage: full
+  purpose: PG-27
+  measures: 총 카운트로 나눠 100만 배
+  scale: 합이 1e6. 유전자 길이를 보정하지 않는다 — 샘플 간 비교용
+  shaken_by: 소수 고발현 유전자가 총합을 지배하면 나머지가 눌린다
+  recommend: log-CPM로 시각화, 표본 간 정량엔 TMM 등 조성 보정 병행
+  source: A scaling normalization method for differential expression analysis of RNA-seq data (Robinson
+    & Oshlack 2010)
+- id: SC-NORM-02
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: TPM
+  latex: 길이 보정 후 백만 스케일
+  input: 카운트 + 유전자 길이
+  green: 길이 보정 후 표본 내 상대발현
+  yellow: 표본 간 조성 차이가 남음
+  red: 유전자 길이 입력 부정확 또는 DE 검정에 직접 입력
+  result_type: null
+  note: 길이 입력 필요
+  unspecified: []
+  coverage: full
+  purpose: PG-27
+  measures: 길이로 먼저 나눈 뒤 총합으로 나눔
+  scale: 샘플마다 합이 같다. 샘플 내·간 비교 모두 가능
+  shaken_by: 길이 주석이 틀리면 값이 통째로 틀린다
+  recommend: 길이 출처 명시, 표본 간 DE엔 count 기반 모델
+  source: null
+- id: SC-NORM-03
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: RPKM/FPKM
+  latex: $\frac{c\times 10^9}{L\cdot N}$
+  input: 동
+  green: 단일 표본 내 길이·깊이 보정 요약
+  yellow: 표본마다 합이 달라 표본 간 비교 편향
+  red: 표본 간 비교/DE에 사용
+  result_type: null
+  note: 표본 간 비교엔 TPM 권고
+  unspecified: []
+  coverage: full
+  purpose: PG-27
+  measures: 총합으로 먼저 나눈 뒤 길이로 나눔
+  scale: 샘플마다 합이 다르다 — 샘플 간 비교에 TPM 보다 불리
+  shaken_by: 합이 고정되지 않아 샘플 간 비교에서 편향된다
+  recommend: 표본 간 비교는 TPM/TMM 권고
+  source: null
+- id: SC-NORM-04
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: log1p
+  latex: $\log(1+x)$
+  input: 카운트
+  green: 카운트 분산 안정화 — 0 을 허용한다(별도의 +eps 불필요)
+  yellow: 검출 한계 근처의 작은 값이 결론에 중요한 경우 — 0 은 처리되지만 +1 은 임의 상수라 그 영역에서 변환의 영향이 커진다
+  red: 깊이 보정 없이 log1p로 표본 비교
+  result_type: log-scale
+  note: eps 불필요
+  unspecified: []
+  coverage: full
+  purpose: PG-28
+  measures: log(1+x)
+  scale: log 단위. 0을 받되 작은 값의 상대 차이를 +1 이 누른다
+  shaken_by: +1 이 임의 상수라 검출 한계 근처가 왜곡된다 (S-R04)
+  recommend: '크기보정 후 log1p, base 명시. 작은 값 영역이 중요하면 그 자료의 검출 한계·배경(background) 구조에 맞춘 대안적 변환을 쓴다 — 예: arcsinh(x/θ)
+    의 θ 를 그 척도에 맞춘다 (F-15)'
+  source: null
+- id: SC-NORM-05
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: z-score
+  latex: $\frac{x-\mu}{\sigma}$
+  input: 연속
+  green: 기준 집단이 명시된 연속 변수 표준화
+  yellow: 이상치로 μ·σ가 왜곡
+  red: 비정규·중꼬리에 z 기반 임계 적용
+  result_type: z
+  note: 기준 집단 기록 (S-T06)
+  unspecified: []
+  coverage: full
+  purpose: PG-29
+  measures: 평균을 빼고 표준편차로 나눔
+  scale: 평균 0, SD 1. 이상치가 평균·SD 를 끌어 다른 값이 눌린다
+  shaken_by: 이상치 하나가 전체 척도를 바꾼다
+  recommend: 어느 집단의 평균·SD 로 표준화했는지 기록한다 — 기준이 다르면 z 끼리 비교할 수 없다 (의미 타입 z-score, S-T06). 이상치가 있으면 robust
+    z
+  source: null
+- id: SC-NORM-06
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: Robust z
+  latex: $\frac{x-\mathrm{med}}{1.4826\cdot\mathrm{MAD}}$
+  input: 연속, outlier
+  green: 이상치가 있는 연속(중앙값·MAD 기반)
+  yellow: MAD=0(밀집·이산)일 때 발산
+  red: MAD=0 데이터에 적용
+  result_type: z
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-29
+  measures: 중앙값을 빼고 MAD 로 나눔
+  scale: 중앙값 0. 이상치에 끌리지 않는다
+  shaken_by: 중앙값·MAD 는 절반이 오염돼야 무너진다
+  recommend: 1.4826 상수 기록, MAD=0 처리 규칙 명시
+  source: Alternatives to the median absolute deviation (Rousseeuw & Croux 1993)
+- id: SC-NORM-07
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: Min–max
+  latex: $\frac{x-\min}{\max-\min}$
+  input: 연속
+  green: 경계가 알려진 범위 고정 스케일링
+  yellow: 이상치가 min/max를 좌우
+  red: 이상치가 많은 데이터에 단독
+  result_type: '[0,1]'
+  note: outlier 민감
+  unspecified: []
+  coverage: full
+  purpose: PG-29
+  measures: 최소를 0, 최대를 1로 선형 사상
+  scale: 0~1. 최대·최소 두 점이 전체 척도를 정한다
+  shaken_by: 이상치 하나가 나머지를 한 점에 몰아넣는다
+  recommend: 이상치 제거/클리핑 후, 학습셋 경계 저장
+  source: null
+- id: SC-NORM-08
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: Quantile normalization
+  latex: 순위 → 참조 분포 값
+  input: 행렬
+  green: 표본 간 분포 동일 가정이 타당할 때
+  yellow: 전역 분포 차이가 생물학적일 때 과보정
+  red: 진짜 전역 이동을 인공적으로 제거
+  result_type: null
+  note: 표본 간 분포 강제 일치
+  unspecified: []
+  coverage: full
+  purpose: PG-30
+  measures: 모든 샘플이 같은 분위수 값을 갖도록 치환
+  scale: 원 값이 사라지고 순위만 남는다. 진짜 전역 변화를 지운다
+  shaken_by: '''대부분 안 변한다''는 전제가 깨지면 신호를 지운다'
+  recommend: 분포 동일 가정 명시, 참조 분포 기록
+  source: A comparison of normalization methods for high density oligonucleotide array data (Bolstad et
+    al. 2003)
+- id: SC-NORM-09
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: CLR
+  latex: $\log\frac{x_j}{g(x)}$, $g$ 기하평균
+  input: 조성 세트
+  green: 합이 일정한 성분들을 한 세트로 묶어 지정한 조성 자료 (조성 세트, F-11). 기하평균 기준 로그비
+  yellow: 0 성분(로그 불가) 대체 필요
+  red: 0이 많은데 임의 pseudo-count
+  result_type: clr
+  note: F-11
+  unspecified: []
+  coverage: full
+  purpose: PG-31
+  measures: 기하평균으로 나눈 뒤 log
+  scale: 합이 0. 성분 선택에 무관하나 0을 못 받는다
+  shaken_by: 0 대치값에 결과가 달라진다
+  recommend: 0 대체(pseudocount/베이지안) 근거 기록
+  source: The Statistical Analysis of Compositional Data (Aitchison 1986)
+- id: SC-NORM-10
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: ALR
+  latex: $\log\frac{x_j}{x_{ref}}$
+  input: 조성, 참조 성분
+  green: 참조 성분 하나를 정해 그것 대비 로그비 (ALR, F-12)
+  yellow: 참조 성분 선택이 결과를 좌우
+  red: 참조에 0/불안정 성분 선택
+  result_type: alr
+  note: F-12
+  unspecified: []
+  coverage: full
+  purpose: PG-31
+  measures: 기준 성분으로 나눈 뒤 log
+  scale: 기준 성분 선택에 결과가 달라진다 — 무엇을 기준으로 삼았는지 적는다
+  shaken_by: 기준 성분이 바뀌면 거리도 해석도 바뀐다
+  recommend: 참조 성분 근거 명시, 안정 성분 선택
+  source: The Statistical Analysis of Compositional Data (Aitchison 1986)
+- id: SC-NORM-11
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: Logit
+  latex: $\log\frac{p}{1-p}$
+  input: (0,1)
+  green: (0,1) 확률의 로짓 변환
+  yellow: 0/1 경계값 → eps 필요
+  red: eps 없이 0/1에 적용(발산)
+  result_type: log-scale
+  note: 0/1 → eps
+  unspecified: []
+  coverage: full
+  purpose: PG-31
+  measures: log(p/(1−p))
+  scale: −∞~∞. p가 0/1 이면 발산해 eps 가 필요하다 (F-06)
+  shaken_by: 경계 근처 값이 eps 선택에 좌우된다
+  recommend: 0/1→eps 규칙·값 기록
+  source: null
+- id: SC-NORM-12
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: Box–Cox / Yeo–Johnson
+  latex: $\frac{x^\lambda-1}{\lambda}$
+  input: ℝ⁺ / ℝ
+  green: 정규화를 위한 멱변환(λ 추정)
+  yellow: λ 미기록 또는 해석 스케일 왜곡
+  red: Box–Cox를 음수/0에 적용(정의 위반)
+  result_type: 연속
+  note: λ 기록
+  unspecified: []
+  coverage: full
+  purpose: PG-28
+  measures: 분산이 평균에 의존하지 않도록 λ를 적합
+  scale: λ=0 이면 log. λ를 기록해야 재현된다
+  shaken_by: λ 추정이 표본에 따라 흔들리고 Box–Cox 는 양수만 받는다
+  recommend: λ 기록, 음수 포함 시 Yeo–Johnson
+  source: An analysis of transformations (Box & Cox 1964); A new family of power transformations to improve
+    normality or symmetry (Yeo & Johnson 2000)
+- id: SC-NORM-13
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: Rank / inverse normal
+  latex: $\Phi^{-1}\!\left(\frac{r-0.5}{n}\right)$
+  input: 연속
+  green: GWAS 등 비정규 형질 정규화(관례)
+  yellow: 순위 동점(타이) 처리 필요
+  red: 이산·범주에 강제 적용해 정보 왜곡
+  result_type: 정규화 순위
+  note: GWAS 관례
+  unspecified: []
+  coverage: full
+  purpose: PG-30
+  measures: 순위를 정규분포 분위수로 사상
+  scale: 평균 0, SD 1이고 모양이 정규. 동순위 처리 규칙을 적는다
+  shaken_by: 순위 기반이라 이상치에 무너지지 않는다
+  recommend: 타이 처리 규칙 기록, 연속형에 한정
+  source: null
+- id: SC-NORM-14
+  family: NORM
+  section: 6. 정규화·변환 점수 (컬럼 → 새 컬럼, M1-2 함수와 연동)
+  name: Rarefaction
+  latex: 최소 깊이로 재표본
+  input: 카운트 행렬
+  green: 최소 깊이로 재표본해 깊이를 통일
+  yellow: 정보 손실·seed 의존
+  red: 깊이가 극단으로 상이할 때 대량 정보 폐기
+  result_type: 카운트
+  note: seed 기록, 정보 손실 경고
+  unspecified: []
+  coverage: full
+  purpose: PG-27
+  measures: 같은 깊이로 무작위 재표집
+  scale: 모든 샘플의 총합이 같아진다. 다양성 비교의 전제
+  shaken_by: 자료를 버리는 데다 seed 에 따라 값이 달라진다 — seed 기록 필수
+  recommend: seed 기록, 손실 경고, 대안(비율/모델) 병기
+  source: null
+- id: SC-VAR-01
+  family: VAR
+  section: 7. 변동성·품질 (단일 컬럼 요약)
+  name: SD
+  latex: $\sqrt{\frac{1}{n-1}\sum(x_i-\bar x)^2}$
+  input: 연속
+  green: ℝ 정규 근사
+  yellow: '[0,1] 확률값 (scale 왜곡, #3) → SC-VAR-04 병기'
+  red: 순위·범주
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-32
+  measures: 평균으로부터의 제곱 편차의 제곱근
+  scale: 입력과 같은 단위. 정규분포에서 가장 효율적
+  shaken_by: 이상치가 제곱으로 들어와 값을 끌어올린다
+- id: SC-VAR-02
+  family: VAR
+  section: 7. 변동성·품질 (단일 컬럼 요약)
+  name: CV (%)
+  latex: $\frac{\sigma}{\mu}\times100$
+  input: ℝ⁺
+  green: 평균이 0에서 먼 양수
+  yellow: 평균 0 근처 (폭발)
+  red: 음수 포함, [0,1] 끝단
+  result_type: null
+  note: '#3'
+  unspecified: []
+  coverage: full
+  purpose: PG-33
+  measures: SD 를 평균으로 나눈 값 (%)
+  scale: '% 단위. 평균이 0에 가까우면 폭발하고 음수가 섞이면 뜻을 잃는다'
+  shaken_by: 평균이 분모라 0 근처에서 발산한다
+- id: SC-VAR-03
+  family: VAR
+  section: 7. 변동성·품질 (단일 컬럼 요약)
+  name: MAD
+  latex: $\mathrm{med}(\lvert x_i-\mathrm{med}(x)\rvert)$
+  input: 연속
+  green: 이상치에 강건한 산포(중앙값 기반)
+  yellow: 이산·밀집으로 MAD=0
+  red: MAD=0 상태로 스케일 사용
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-32
+  measures: 중앙값으로부터의 절대 편차의 중앙값
+  scale: 입력과 같은 단위. ×1.4826 하면 정규에서 SD 와 맞는다
+  shaken_by: 절반이 오염돼야 무너진다 (붕괴점 50%)
+  recommend: 1.4826 보정 명시, 0 처리 규칙
+  source: Alternatives to the median absolute deviation (Rousseeuw & Croux 1993)
+- id: SC-VAR-04
+  family: VAR
+  section: 7. 변동성·품질 (단일 컬럼 요약)
+  name: Bernoulli 정규화 변동성
+  latex: $\frac{\sigma}{\sqrt{\bar p(1-\bar p)}}$
+  input: 확률 [0,1]
+  green: 확률[0,1] 변동을 0.5 근처 강·끝단 약으로 반영(#3 제안 지표)
+  yellow: 표본이 적어 p̄ 불안정
+  red: 비확률(범위 밖) 값에 적용
+  result_type: null
+  note: '#3 제안 지표. 2σ 밴드(P-233)와 병기'
+  unspecified: []
+  coverage: full
+  purpose: PG-33
+  measures: p(1−p) 를 최대 0.25 로 정규화한 이진 변동성
+  scale: 0~1. p=0.5 에서 1
+  shaken_by: 닫힌 식이라 추정 불안정이 없다
+  recommend: 관리도처럼 평균 ±2SD 밴드를 함께 그린다 (P-233). p̄ 기록
+  source: null
+- id: SC-VAR-05
+  family: VAR
+  section: 7. 변동성·품질 (단일 컬럼 요약)
+  name: Fano factor
+  latex: $\sigma^2/\mu$
+  input: 카운트
+  green: 카운트 과산포 진단(1 기준)
+  yellow: 평균이 매우 작을 때 불안정
+  red: 연속 자료에 적용
+  result_type: null
+  note: T-803
+  unspecified: []
+  coverage: full
+  purpose: PG-33
+  measures: 분산을 평균으로 나눈 값
+  scale: 1이면 Poisson. 1보다 크면 과산포
+  shaken_by: 평균이 작으면 흔들리고 카운트 자료에만 뜻이 있다
+  recommend: 카운트에 한정. 과산포면(Fano>1) Poisson 대신 음이항으로 모형을 바꾼다 (T-803)
+  source: null
+- id: SC-VAR-06
+  family: VAR
+  section: 7. 변동성·품질 (단일 컬럼 요약)
+  name: IQR
+  latex: $Q_3-Q_1$
+  input: 연속
+  green: 강건한 산포(Q3−Q1)
+  yellow: 소표본에서 분위 불안정
+  red: 다봉/이산에 단독 요약
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-32
+  measures: 3사분위 − 1사분위
+  scale: 입력과 같은 단위. 가운데 50%의 폭
+  shaken_by: 양 꼬리 25%씩을 버리므로 이상치에 흔들리지 않는다
+  recommend: 중앙값과 함께, 분위 방법 명시
+  source: null
+- id: SC-VAR-07
+  family: VAR
+  section: 7. 변동성·품질 (단일 컬럼 요약)
+  name: SNR
+  latex: $\mu/\sigma$
+  input: 신호
+  green: 신호 평균/표준편차 요약
+  yellow: μ≈0 근처에서 불안정
+  red: μ=0 → 발산
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-33
+  measures: 신호 크기를 잡음 크기로 나눈 비
+  scale: 무단위 또는 dB. 무엇을 신호로 보느냐를 적어야 한다
+  shaken_by: 잡음 추정 방식에 값이 달라진다
+  recommend: μ≈0 영역 회피, 정의역 명시
+  source: null
+- id: SC-VAR-08
+  family: VAR
+  section: 7. 변동성·품질 (단일 컬럼 요약)
+  name: 왜도 / 첨도
+  latex: $\frac{m_3}{s^3}$, $\frac{m_4}{s^4}-3$
+  input: 연속
+  green: 분포 형태 진단 — 정규성 검사(C-01)의 보조
+  yellow: n<30에서 추정 불안정
+  red: 소표본에서 정규성 판정 근거로 단독 사용
+  result_type: null
+  note: C-01 보조
+  unspecified: []
+  coverage: full
+  purpose: PG-34
+  measures: 3차·4차 표준화 적률
+  scale: 왜도 0·초과첨도 0이 정규. 고차 적률이라 이상치에 크게 끌린다
+  shaken_by: 이상치 하나가 값을 크게 바꾸고 소표본에서 편향된다
+  recommend: 표본크기 보고, 정규성은 검정+시각화 병행
+  source: null
+- id: SC-VAR-09
+  family: VAR
+  section: 7. 변동성·품질 (단일 컬럼 요약)
+  name: Gini–Simpson 변동 (범주)
+  latex: $1-\sum p_k^2$
+  input: 범주
+  green: 범주 변수의 분산(1−Σp²)
+  yellow: 범주 수가 많고 희소
+  red: 순서형을 명목처럼 취급해 정보 손실
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-35
+  measures: 무작위 두 개체가 다른 범주일 확률
+  scale: 0~1. 범주 수가 많을수록 상한이 1에 가까워진다
+  shaken_by: 비율만 쓰므로 안정적이다
+  recommend: 범주 수 보고, 순서형엔 다른 지표
+  source: null
+- id: SC-CLN-01
+  family: CLN
+  section: 9. 임상·역학 점수
+  name: NNT
+  latex: $1/\lvert RD\rvert$
+  input: 두 군 사건 비율
+  green: 두 군 사건비율차(RD)의 역수로 임상 효과 요약
+  yellow: RD의 CI를 무시하고 점추정만 보고
+  red: 유의하지 않은 RD/RD=0 부근에서 NNT 해석
+  result_type: null
+  note: RD CI로 구간
+  unspecified: []
+  coverage: full
+  purpose: PG-42
+  measures: 한 명의 사건을 막는 데 필요한 치료 인원
+  scale: 명 단위. 절대위험감소의 역수 — 기저위험이 바뀌면 같이 바뀐다
+  shaken_by: 기저위험에 좌우되고 위험차가 0 근처면 발산한다
+  recommend: RD의 CI로 NNT 구간 제시(부호 전환 주의)
+  source: Confidence intervals for the number needed to treat (Altman 1998)
+- id: SC-CLN-02
+  family: CLN
+  section: 9. 임상·역학 점수
+  name: Hazard ratio
+  latex: Cox 계수 exp
+  input: 시간+사건+군
+  green: 시간+사건+군, 비례위험 가정 성립
+  yellow: 비례위험 위반 의심
+  red: PH 위반인데 단일 HR로 요약
+  result_type: null
+  note: C-11
+  unspecified: []
+  coverage: full
+  purpose: PG-41
+  measures: 단위 시간당 사건 위험의 비
+  scale: 1이 차이 없음. 비례위험 가정 아래서만 하나의 수로 요약된다
+  shaken_by: 비례위험이 깨지면 추적 기간에 따라 값이 달라진다
+  recommend: 비례위험 가정을 Schoenfeld 잔차로 확인한다 (잔차 vs 시간, C-11). 시간의존 효과 점검
+  source: Regression models and life-tables (Cox 1972)
+- id: SC-CLN-03
+  family: CLN
+  section: 9. 임상·역학 점수
+  name: Attributable fraction
+  latex: $\frac{RR-1}{RR}$
+  input: RR
+  green: 노출군 기여분율 AFe = (RR−1)/RR — 노출된 사람에게 사건이 생겼을 때 그중 노출 탓인 몫
+  yellow: 교란 미보정 RR 사용
+  red: 인과가 아닌 연관에 AF를 인과로 해석
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-42
+  measures: 노출을 없앴을 때 줄어들 사건의 몫
+  scale: 0~1. 인과를 전제한 양 — 연관만으로 읽으면 과장된다
+  shaken_by: 교란 보정 여부에 값이 크게 달라진다
+  recommend: 보정 RR 사용, 인과 가정 명시
+  source: null
+- id: SC-CLN-04
+  family: CLN
+  section: 9. 임상·역학 점수
+  name: Incidence rate
+  latex: 사건 / 인·시간
+  input: 사건 + 관찰 시간
+  green: 사건/인·시간(offset 사용)
+  yellow: 관찰시간 불균형·중도절단
+  red: 분모(인·시간)를 무시하고 단순 비율로 취급
+  result_type: null
+  note: offset
+  unspecified: []
+  coverage: full
+  purpose: PG-43
+  measures: 관찰 인년당 새 사건 수
+  scale: 건/인년. 추적 기간이 다른 집단을 비교할 수 있게 한다
+  shaken_by: 인년으로 나누므로 추적 길이 차이에 흔들리지 않는다
+  recommend: 인·시간 offset 명시, 시간 단위 기록
+  source: null
+- id: SC-CLN-05
+  family: CLN
+  section: 9. 임상·역학 점수
+  name: Standardized incidence ratio
+  latex: 관측 / 기대
+  input: 관측 + 기대
+  green: 관측/기대(표준화 발생비)
+  yellow: 기대값 계산의 기준집단이 부적절
+  red: 소수 사건으로 불안정한 SIR 해석
+  result_type: null
+  note: null
+  unspecified: []
+  coverage: full
+  purpose: PG-41
+  measures: 관측 사건 수를 기대 사건 수로 나눈 비
+  scale: 1이 기대와 같음. 표준 인구를 무엇으로 삼았는지 적는다
+  shaken_by: 표준 인구 선택에 값이 달라진다
+  recommend: 기준집단·표준화 방법 명시, CI 병기
+  source: null
+- id: SC-CLN-06
+  family: CLN
+  section: 9. 임상·역학 점수
+  name: Kappa (임상 판독)
+  latex: SC-CLS-12
+  input: null
+  green: 판독자 간 일치도(→SC-CLS-12)
+  yellow: 극단 유병률 역설
+  red: 주변분포 무시하고 절대 해석
+  result_type: null
+  note: E-604
+  unspecified: []
+  coverage: full
+  purpose: PG-10
+  measures: 우연 일치를 뺀 뒤 남은 판독자 간 일치 비율
+  scale: −1~1. 순서형이면 가중 kappa 를 쓴다
+  shaken_by: 유병률·판독자 치우침에 값이 흔들린다 (kappa paradox)
+  recommend: 관측 일치율과 주변 분포를 함께 본다 — 한 범주가 대부분이면 판독이 잘 맞아도 κ 가 낮게 나온다(κ 역설). 그때는 PABAK·일치율 병기 (E-604-1).
+    판독 등급이 순서형이면 비가중 κ 대신 가중 κ (E-604-2)
+  source: A coefficient of agreement for nominal scales (Cohen 1960); High agreement but low kappa (Feinstein
+    & Cicchetti 1990)

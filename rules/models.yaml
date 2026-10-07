@@ -1,0 +1,470 @@
+# 자동 생성 파일 — schema/registry-models.md 에서 생성됨. 수기 편집 금지 (statop rules build).
+# rules_version: 72d1381d2131
+questions:
+- id: MB-Q01
+  question: 이진분류
+  output: 확률/점수 + 이진 라벨
+  v1: full
+- id: MB-Q02
+  question: 다중분류 (상호배타, softmax)
+  output: 클래스 확률 + 라벨
+  v1: full
+- id: MB-Q03
+  question: 다중분류 (OvR/OvO 집계)
+  output: 클래스별 점수
+  v1: full
+- id: MB-Q04
+  question: 다중라벨 (동시 다수)
+  output: 라벨별 확률
+  v1: partial
+- id: MB-Q05
+  question: 순서분류
+  output: → T-804
+  v1: later
+- id: MB-Q06
+  question: 회귀
+  output: → T-802/805
+  v1: later
+- id: MB-Q07
+  question: 생존
+  output: → T-807/901
+  v1: later
+- id: MB-Q08
+  question: 표현학습·임베딩
+  output: 배치·보존 점수(SC-BE)
+  v1: partial
+tiers:
+- id: MB-M0
+  tier: T0 고전
+  examples: logistic, SVM, tree/RF/GBM, kNN
+  v1: full
+  audit_input: config, 예측, (가능 시) 계수/중요도
+- id: MB-M1
+  tier: T1 딥러닝 일반
+  examples: MLP, CNN
+  v1: full
+  audit_input: config, 예측, 학습곡선 로그(선택)
+- id: MB-M2
+  tier: T2 파인튜닝
+  examples: full FT, LoRA, DoRA, QLoRA, adapter
+  v1: later
+  audit_input: PEFT config, 병합 산출물, 예측
+- id: MB-M3
+  tier: T3 아키텍처
+  examples: MoE, ensemble/stacking
+  v1: later
+  audit_input: 라우팅 통계, 앙상블 구성, 예측
+checks:
+- id: MB-C01
+  group: data
+  check: train/test/external 중복·근사중복
+  grade: Gate
+  tier: null
+  detect: GR-03, 해시+거리
+  action: 중복 제거·external 재정의
+  status: v1
+- id: MB-C02
+  group: data
+  check: 그룹 구조(환자·batch)가 split 가로지름
+  grade: Gate
+  tier: null
+  detect: C-05, P2
+  action: GroupKFold
+  status: v1
+- id: MB-C03
+  group: data
+  check: 시간 누수(미래 정보)
+  grade: Gate
+  tier: null
+  detect: L2.1, datetime
+  action: 시간 split
+  status: v1
+- id: MB-C04
+  group: data
+  check: split 이전 전처리·피처선택(코드 동반 시)
+  grade: Gate
+  tier: null
+  detect: L1.2/1.3, P4
+  action: fold 내부로 이동
+  status: v1
+- id: MB-C05
+  group: data
+  check: 라벨 대리변수(결과 proxy) 피처
+  grade: Gate
+  tier: null
+  detect: L3, 라벨 과연관
+  action: 제거
+  status: v1
+- id: MB-C06
+  group: data
+  check: SRM / 세트 비율 이상
+  grade: Gate
+  tier: null
+  detect: GR-02
+  action: 원인 진단
+  status: v1
+- id: MB-C07
+  group: data
+  check: 데이터 손실·join율·편향적 손실
+  grade: Gate/Diag
+  tier: null
+  detect: GR-03
+  action: 퍼널 확인
+  status: v1
+- id: MB-C08
+  group: data
+  check: 숨은 불균형(메타→라벨), 클래스 비율
+  grade: Diag
+  tier: null
+  detect: 'GR-04, SC-BE-09, #6'
+  action: 층화·가중·metric
+  status: v1
+- id: MB-C09
+  group: config
+  check: 표준화/정규화가 fold 밖에서 fit
+  grade: Gate
+  tier: null
+  detect: 코드/설정
+  action: fold 내 fit
+  status: v1
+- id: MB-C10
+  group: config
+  check: 표준화 필요 모델인데 누락(SVM/kNN/로지스틱 정규화, PCA 전)
+  grade: Diag
+  tier: null
+  detect: 모델×전처리 규칙
+  action: 표준화 제안
+  status: v1
+- id: MB-C11
+  group: config
+  check: 차원축소(PCA 등) 표준화 여부
+  grade: Diag
+  tier: null
+  detect: 설정
+  action: 명시
+  status: v1
+- id: MB-C12
+  group: config
+  check: 클래스 불균형에 가중/샘플링 미적용
+  grade: Diag
+  tier: null
+  detect: 클래스 비율
+  action: class_weight/loss weight
+  status: v1
+- id: MB-C13
+  group: config
+  check: 라벨 인코딩 방향/매핑 (0/1, 클래스 순서)
+  grade: Diag
+  tier: null
+  detect: B3 매핑 로그
+  action: 매핑 기록·확인
+  status: v1
+- id: MB-C14
+  group: config
+  check: 검증 방식 미지정 또는 부적합(소표본 LOOCV 분산 등)
+  grade: Diag
+  tier: null
+  detect: B1
+  action: 방식 제안
+  status: v1
+- id: MB-C15
+  group: config
+  check: EPV<10 (로지스틱·소표본)
+  grade: Diag
+  tier: null
+  detect: C-09, E-801-1
+  action: 변수 축소/Firth
+  status: v1
+- id: MB-C34
+  group: config
+  check: 견줄 수 없는 모델쌍을 나란히 보고
+  grade: Diag
+  tier: null
+  detect: 3.7 모델 비교 규칙
+  action: 비교 가능한 방법만 쓰거나 비교를 뺀다
+  status: v1
+- id: MB-C16
+  group: evaluation
+  check: 불균형인데 ROC-AUC 단독
+  grade: Diag
+  tier: null
+  detect: 'MR-G04, #6'
+  action: PR-AUC/MCC 병기
+  status: v1
+- id: MB-C17
+  group: evaluation
+  check: 다중분류 macro/micro/weighted 평균 혼용·미명시
+  grade: Diag
+  tier: null
+  detect: 설정
+  action: 평균 방식 명시·병기
+  status: v1
+- id: MB-C18
+  group: evaluation
+  check: 소수 클래스 성능 붕괴(클래스별 recall 0)
+  grade: Diag
+  tier: null
+  detect: 클래스별 표
+  action: 혼동행렬·클래스별 보고
+  status: v1
+- id: MB-C19
+  group: evaluation
+  check: 확률 보정 미확인(과신)
+  grade: Diag
+  tier: null
+  detect: ECE, MR-G07
+  action: 보정 곡선·ECE
+  status: v1
+- id: MB-C20
+  group: evaluation
+  check: 임계값 미기록(sens/spec 보고 시)
+  grade: Diag
+  tier: null
+  detect: 설정
+  action: 임계 기록
+  status: v1
+- id: MB-C21
+  group: evaluation
+  check: 기존과 비교 불가 metric으로 변경(mean→median prob 등)
+  grade: Gate
+  tier: null
+  detect: '#10, 이력'
+  action: 사유 강제·이전 metric 병기
+  status: v1
+- id: MB-C22
+  group: evaluation
+  check: fold 간 분산 미보고(평균만)
+  grade: Diag
+  tier: null
+  detect: fold 결과
+  action: 분산·최악 fold + MR-G09
+  status: v1
+- id: MB-C23
+  group: evaluation
+  check: 테스트셋 반복 사용(사실상 검증셋화)
+  grade: Diag
+  tier: null
+  detect: 세션 이력
+  action: 홀드아웃 분리
+  status: v1
+- id: MB-C24
+  group: evaluation
+  check: Goal/Support/Guardrail 미구성
+  grade: Diag
+  tier: null
+  detect: A5, registry-metric-roles
+  action: 3-metric 권고(MB-Q별 트리아드)
+  status: v1
+- id: MB-C25
+  group: reproducibility
+  check: seed 미기록(split·초기화·샘플링)
+  grade: Gate
+  tier: null
+  detect: seed 필드
+  action: '`seed_<id>.py`'
+  status: v1
+- id: MB-C26
+  group: reproducibility
+  check: 환경·버전 미기록(라이브러리·모델 버전)
+  grade: Diag
+  tier: null
+  detect: config
+  action: 기록
+  status: v1
+- id: MB-C27
+  group: reproducibility
+  check: 비결정 연산 고지 없음(GPU·병렬)
+  grade: Judg
+  tier: null
+  detect: 설정
+  action: 고지
+  status: v1
+- id: MB-C28
+  group: model_specific
+  check: 완전분리(로지스틱 계수 발산)
+  grade: Diag
+  tier: T0
+  detect: E-801-2
+  action: Firth
+  status: v1
+- id: MB-C29
+  group: model_specific
+  check: 다중공선성(선형·로지스틱)
+  grade: Diag
+  tier: T0
+  detect: C-07 VIF
+  action: 변수 정리
+  status: v1
+- id: MB-C31
+  group: model_specific
+  check: 특성중요도 과신(상관·불안정)
+  grade: Judg
+  tier: T0
+  detect: —
+  action: permutation importance·안정성
+  status: v1
+later:
+- check: target module 누락/오지정
+  target: LoRA/DoRA
+  kind: 어떤 층에 어댑터가 붙었는지 config 감사
+  tier: MB-M2
+  status: later
+- check: rank 과대/과소
+  target: LoRA/DoRA
+  kind: rank vs 데이터량
+  tier: MB-M2
+  status: later
+- check: 학습률·스케일(α/rank) 부적합
+  target: LoRA
+  kind: config
+  tier: MB-M2
+  status: later
+- check: 병합(merge) 시 스케일·dtype 오류
+  target: LoRA/DoRA/QLoRA
+  kind: 병합 산출물 vs 어댑터 예측 일치
+  tier: MB-M2
+  status: later
+- check: 베이스 모델 불일치(체크포인트)
+  target: 전체
+  kind: 해시·버전
+  tier: MB-M2
+  status: later
+- check: QLoRA 양자화 dtype·이중양자화 설정
+  target: QLoRA
+  kind: config
+  tier: MB-M2
+  status: later
+- check: DoRA magnitude/direction 분해 설정
+  target: DoRA
+  kind: config
+  tier: MB-M2
+  status: later
+- check: 파인튜닝 데이터 누수(사전학습 오염)
+  target: 전체
+  kind: 데이터 감사
+  tier: MB-M2
+  status: later
+- check: 재현성(seed·라이브러리 버전)
+  target: 전체
+  kind: MB-C25/26 재사용
+  tier: MB-M2
+  status: later
+- check: 라우터 붕괴(소수 전문가 독점)
+  target: MoE
+  kind: 라우팅 통계 분포
+  tier: MB-M3
+  status: later
+- check: load balancing loss 누락
+  target: MoE
+  kind: config
+  tier: MB-M3
+  status: later
+- check: 전문가 수 대비 데이터 부족
+  target: MoE
+  kind: 규모
+  tier: MB-M3
+  status: later
+- check: capacity factor·드롭 토큰 비율
+  target: MoE
+  kind: 로그
+  tier: MB-M3
+  status: later
+- check: 앙상블 구성원 상관 과다(다양성 부족)
+  target: ensemble
+  kind: 예측 상관
+  tier: MB-M3
+  status: later
+- check: 스태킹 메타학습기 누수(같은 fold)
+  target: stacking
+  kind: Gate, 누수 감사
+  tier: MB-M3
+  status: later
+- check: 딥러닝 과적합 격차(train≫val) — 옛 MB-C32
+  target: T1
+  kind: Diag, 학습곡선 로그 필요
+  tier: MB-M1
+  status: later
+- check: 손실 이상(NaN·발산·정체) 고지 — 옛 MB-C33
+  target: T1
+  kind: Diag, 학습 로그 필요
+  tier: MB-M1
+  status: later
+- check: 트리/GBM 조기중단이 테스트 관찰(누수) — 옛 MB-C30
+  target: T0
+  kind: Gate, 구현했다가 떼어냄
+  tier: MB-M0
+  status: later
+triads:
+- question: MB-Q01 이진
+  goal: AUC
+  support: Sens·Spec@임계
+  guardrail: PR-AUC + 기저율 (불균형 시 MB-C16)
+- question: MB-Q01 불균형 이진
+  goal: PR-AUC
+  support: Recall·Precision
+  guardrail: MCC / balanced acc
+- question: MB-Q02/03 다중
+  goal: macro-F1(명시)
+  support: 클래스별 recall 표
+  guardrail: 소수클래스 성능·혼동행렬 (MB-C18)
+- question: MB-Q08 임베딩
+  goal: iLISI/kBET
+  support: 이웃 배치비율
+  guardrail: cLISI/label silhouette (MR-G05)
+preprocessing:
+- family: distance
+  examples: kNN, SVM(RBF/선형), k-means
+  scaling: required
+  why: 거리·커널이 척도에 직접 의존
+- family: penalized
+  examples: 로지스틱/선형 회귀 + L1·L2(ridge/lasso/elastic)
+  scaling: required
+  why: 벌점이 계수 크기에 걸려 척도 큰 변수가 덜 벌점받음
+- family: linear
+  examples: 로지스틱/선형 회귀 (정규화 없음)
+  scaling: optional
+  why: 계수가 척도를 흡수 — 값은 같고 해석 단위만 달라짐
+- family: neural
+  examples: MLP, CNN, RNN, Transformer
+  scaling: depends
+  why: 입력 스케일이 고르지 않으면 수렴이 늦어질 수 있다. 다만 내부 구조·옵티마이저·입력 형태(tabular 여부 등)에 따라 달라 일률적으로 말할 수 없다
+- family: projection
+  examples: PCA, LDA, UMAP, t-SNE
+  scaling: depends
+  why: 척도가 큰 변수가 축에 더 큰 영향을 줄 수 있다. 다만 원척도 그대로 보는 것이 목적일 때도 있어 목적에 따라 갈린다
+- family: tree
+  examples: decision tree, RF, GBM, XGBoost, LightGBM
+  scaling: optional
+  why: 분할이 값의 순서만 보므로 단조 변환에 불변
+- family: naive_bayes
+  examples: GaussianNB, MultinomialNB
+  scaling: optional
+  why: 변수마다 따로 적합하므로 서로의 척도가 영향을 주지 않음
+comparison:
+- condition: same_n_nested
+  comparable: 가능
+  allowed:
+  - 우도비검정(LRT)
+  - AIC
+  - BIC
+  why: 한 모델의 항이 다른 모델 항의 부분집합이고 자료가 같다
+- condition: same_n_non_nested
+  comparable: 부분
+  allowed:
+  - AIC
+  - BIC
+  why: 포함관계가 아니라 LRT 의 귀무분포가 성립하지 않는다
+- condition: different_n
+  comparable: 주의
+  allowed:
+  - 공통 행으로 다시 적합해 비교
+  why: 결측 처리로 행 수가 달라 같은 자료를 본 것이 아니다
+- condition: different_outcome
+  comparable: 불가
+  allowed: []
+  why: 결과변수가 다르면 우도의 단위가 달라 값을 견줄 수 없다
+- condition: different_family
+  comparable: 부분
+  allowed:
+  - 예측성능(교차검증)
+  why: 분포족이 다르면 우도·AIC 를 직접 견줄 수 없다

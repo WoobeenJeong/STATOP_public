@@ -1,0 +1,1882 @@
+notice_partial_hash: '참고: 원본 확인은 부분 해시(크기+선두/말미 4MB) 기준입니다. 일치는 완벽 검증이 아니라 ''안 바뀐 것 같다''는 전제 하의 허용이며, 중간만 바뀐 파일은 놓칠 수 있습니다. 정확한 대조가 필요하면 ''무결성 검증(Integrity)'' 기능으로 직접 확인하세요.'
+cli_integrity_hint: ' (명령: statop integrity)'
+columns_saved_out: '전체 {n:,}컬럼 표 저장: {out}'
+columns_file_line: '파일: {name} ({fmt}, {mb:.0f}MB){suffix}'
+columns_transposed_suffix: ' — 전치(Transpose)된 뷰'
+columns_rows_line: '행수: {rows} | 컬럼 {n:,}개'
+columns_rows_estimated: 약 {n:,} (추정)
+columns_warn_many: ⚠ 컬럼이 200개를 넘습니다 ({n:,}개) — --grep 으로 필터하거나 --out 으로 파일 저장을 권장
+columns_sample_est: '샘플 기준: 앞/중/뒤 각 {per:,}행 (관측 {obs:,}행) — 결측률·고유값수는 추정치'
+columns_sample_full: '샘플 기준: 전체 행 관측'
+columns_storage_types: '저장 타입: {items}'
+columns_missing_top: '결측 상위: {items}'
+columns_table_title: '컬럼 (표시 {shown:,}개 / 해당 {total:,}개, 전체는 --limit 또는 --out):'
+columns_table_header: '     컬럼명                    타입             결측률     고유값수'
+session_source_registered: '원본 등록: {data} → {src} (해시 {hash12}…, {mode})'
+session_created: '세션 생성: {sid}'
+session_logfile: '로그 파일: {path}'
+session_saved: '저장: {path}'
+session_save_exists: '이미 존재: {path} — 덮어쓰려면 overwrite를 명시하세요'
+session_no_project: '프로젝트 폴더가 없습니다: {path}'
+session_load_missing: '⚠ 원본 {src} 파일이 없습니다: {path}'
+session_load_changed: '⚠ 원본 {src} 기록 당시와 해시가 다릅니다 (내용이 바뀜): {path}'
+session_load_guide: 잘못 불러온 거라면 N 후 올바른 저장본을 다시 불러오세요. 파일이 실제로 바뀐 거라면 y로 재생한 뒤 원본 사본과 '무결성 검증(Integrity)'으로 어디가 다른지 확인하세요.
+session_load_confirm: 그래도 재생을 진행할까요?
+session_load_cancelled: 불러오기를 취소했습니다.
+session_load_hash_ok: '원본 부분 해시 일치. '
+session_loaded: '불러옴: {name} → 새 세션 {sid}'
+session_workfile: '작업 파일: {path}'
+session_restored: '복원된 선택: {src} 컬럼 {n}개 ({head}{more})'
+session_close_unsaved: 이 세션은 저장된 적이 없습니다 (조작 {n}개). 먼저 저장하거나, 기록을 버리려면 --force 를 지정하세요.
+session_closed: '세션 닫음: {sid} (임시본 삭제됨{saved})'
+session_closed_saved_suffix: ', 저장본: {name}'
+ops_summary: 조작 {n}개 ({kinds})
+ops_summary_tail: ' | 마지막: {tail}'
+replay_unknown_op: '재생 규칙이 없는 op: {op} (seq {seq})'
+op_recorded_open: 'op 기록: #{seq} open {data} → {src} (총 {n}개 조작)'
+select_imported: '컬럼 {n}개 가져옴: {head}{more}'
+select_recorded: 'op 기록: #{seq} select (총 {n}개 조작)'
+select_err_xor: --cols 또는 --cols-file 중 하나만 지정하세요
+select_err_missing: '파일에 없는 컬럼: {cols}'
+deselect_removed: '컬럼 {n}개 제외: {cols}'
+deselect_recorded: 'op 기록: #{seq} deselect (남은 선택 {n}개)'
+deselect_err_not_selected: '가져온 적 없는 컬럼: {cols}'
+transpose_estimate: '전치 예상: {rows:,}행 × {cols:,}컬럼{est} → 메모리 약 {mb:,.0f}MB'
+estimated_suffix: ' (추정)'
+transpose_confirm_mem: 메모리 사용이 큽니다. 진행할까요?
+transpose_cancelled: 전치를 취소했습니다.
+transpose_result: '전치 결과(뷰): {rows:,}행 × {cols:,}컬럼 | 새 컬럼: {preview}'
+transpose_recorded: 'op 기록: #{seq} transpose (현재 뷰: {state})'
+transpose_state_on: 전치됨
+transpose_state_off: 원상복귀
+transpose_dup_ids: 첫 컬럼({col}) 값에 중복이 {n}개 있어 컬럼명이 될 수 없습니다
+unsupported_format: '지원하지 않는 형식: {suffix} ({path})'
+integrity_err_xor: 두 번째 파일 또는 --log 중 하나만 지정하세요
+integrity_err_not_registered: '세션에 등록되지 않은 파일: {path}'
+integrity_log_match: '일치: 기록 당시와 같은 파일입니다 (부분 해시 기준)'
+integrity_log_mismatch: '불일치: 기록 당시와 다른 파일입니다'
+integrity_identical: '동일: 두 파일의 전체 내용이 일치합니다'
+integrity_differ: '다름: 두 파일이 일치하지 않습니다'
+integrity_size: '크기: {a:,} vs {b:,} bytes ({delta:+,})'
+integrity_chunks: '달라진 구간: 4MB 단위 {total}개 중 {differ}개{first}'
+integrity_first_diff: ' (첫 차이: {offset:,} byte 지점)'
+integrity_unreadable: '표 비교 불가: 파일을 표로 읽을 수 없습니다 — 손상됐을 수 있습니다 ({err})'
+integrity_table: '표 비교: 행 {rows_a:,} vs {rows_b:,}{est} · 컬럼 {cols_a:,} vs {cols_b:,}'
+integrity_only_a: '  a에만 있는 컬럼 {n}개: {cols}{more}'
+integrity_only_b: '  b에만 있는 컬럼 {n}개: {cols}{more}'
+path_ok_write: 존재하고 쓰기 가능
+path_ok_read: 존재하고 읽기 가능
+path_no_read: 읽기 권한 없음
+path_no_write: 쓰기 권한 없음
+path_not_exist: 경로가 존재하지 않음
+path_can_create: 존재하지 않음 — 폴더 생성 가능
+path_cannot_create: 생성 불가 ({parent}에 쓰기 권한 없음)
+path_no_access: 접근 불가 ({err})
+rules_built: '규칙 DB 재생성 완료: {n}개 파일'
+rules_stale: '⚠ md와 어긋난 yaml: {files} — 재생성이 필요합니다'
+rules_in_sync: yaml이 md와 일치합니다
+rules_id_counts: '등록 규칙: {items} (합 {total})'
+rules_broken_refs: 끊어진 참조 {n}건
+rules_refs_ok: 끊어진 참조 없음
+rules_version: '규칙 DB 버전: {version}'
+rules_stale_version: '⚠ 규칙 버전만 갱신 필요: {n}개 파일 (내용 동일)'
+serve_starting: 'API 서버 기동: http://{host}:{port} (문서 /docs)'
+columns_page_title: '컬럼 ({shown:,}개 · {page}/{pages} 쪽 / 해당 {total:,}개, 다른 쪽은 --page N):'
+select_err_empty: 가져올 컬럼을 하나 이상 선택하세요
+shell_welcome: <b>STATOP</b> 대화형 셸 — /help 로 명령 보기, /quit 로 종료
+shell_first_step: '먼저 파일을 엽니다:  <b>/open &lt;파일경로&gt;</b>   그 다음  <b>/columns</b> 로 컬럼을 고릅니다'
+shell_scope_note: 이 셸은 파일 열기·컬럼 선택·세션 관리만 다룹니다. 타입 확정·수식·적합성·가드레일은 <b>statop &lt;명령&gt;</b> 으로 실행하세요 (statop --help)
+shell_help_title: <b>명령</b>
+shell_help_open: /open &lt;경로&gt;      파일 열기 (세션이 없으면 새로 만든다)
+shell_help_columns: /columns           컬럼 목록 — ↑↓ 이동 · space 선택 · enter 가져오기 · / 검색
+shell_help_select: /select a,b,c      컬럼을 이름으로 바로 가져오기
+shell_help_selected: /selected          현재 작업 영역(가져온 컬럼)
+shell_help_transpose: /transpose         전치 (같은 명령 2번이면 원상복귀)
+shell_help_integrity: /integrity &lt;파일&gt;  무결성 검증 — 원본과 같은지 대조
+shell_help_session: /save  /load  /close   세션 저장 · 불러오기 · 닫기
+shell_help_etc: /help  /quit
+shell_need_session: 먼저 /open 으로 파일을 여세요
+shell_need_path: '경로를 지정하세요: /open &lt;경로&gt;'
+shell_opened: '열림: {name}  (세션 {sid})'
+shell_workspace: '작업 영역: {n}개 — {head}{more}'
+shell_integrity_usage: /integrity &lt;비교할 파일&gt; — 현재 파일과 대조합니다
+shell_overwrite_hint: 덮어쓰려면 /save --overwrite
+shell_no_saved: '저장된 세션이 없습니다: {dir}'
+shell_pick_number: 번호
+shell_loaded: '불러옴: {name} — 복원된 선택 {n}개'
+shell_closed: 세션을 닫았습니다
+shell_unknown_cmd: '모르는 명령: {cmd}'
+view_search_hint: (Enter 확정 · Esc 취소)
+view_search_label: 검색
+view_page: '{page}/{pages} 쪽'
+view_col_count: '{n:,}컬럼'
+view_header: 컬럼명                    타입          결측률   고유값수
+view_empty: (해당 컬럼 없음)
+view_keys: 선택 {n}개 · ↑↓ 이동 · space 선택 · enter 가져오기 · / 검색 · n/p 쪽 · s 정렬 · q 종료
+dist_numeric_head: n={n:,}
+dist_missing_suffix: ' · 결측 {n:,}'
+dist_quartiles: 최소 {mn:,.4g} · 사분위 {q1:,.4g}–{q3:,.4g} · 중앙 {med:,.4g} · 최대 {mx:,.4g}
+dist_skew: 왜도 {v:+.1f} (치우침)
+dist_outlier_iqr: outlier IQR {v:.1%}
+dist_outlier_mad: MAD {v:.1%}
+dist_zeros: 0 비율 {v:.0%}
+dist_levels_head: '{n_levels}수준 · n={n:,}'
+dist_levels_rest: … 그 외 {n}종
+chart_bins_merged: ({n}구간 → {w}칸으로 합침)
+chart_box_narrow: 상자가 매우 좁음 — IQR이 전체 범위의 {ratio:.1%} (강한 치우침)
+chart_outlier_sides: outlier 아래 {lo:.1%} · 위 {hi:.1%}
+chart_single_value: '(값이 하나뿐: {v})'
+chart_no_points: (표시할 점 없음)
+chart_scatter_axes: '{x} × {y}  (n={n:,})'
+hold_on: '컬럼 {n}개 hold: {cols} (분석 제외 · 시각화 유지)'
+hold_off: '컬럼 {n}개 hold 해제: {cols}'
+hold_state: 분석 대상 {n_analysis}개 · hold {n_held}개
+shell_help_hold: /hold a,b [--off]   분석 제외(시각화 유지) · --off 로 해제
+labels_head: '{column} — 문자열 {n}수준 (표시 → 계산 코드)'
+labels_regrouped: ⚠ {before}수준 → {after}군으로 묶임 — 비교 대상이 바뀝니다
+labels_group: '코드 {code}: {values} (n={n:,})'
+labels_recorded: 'op 기록: #{seq} label_map ({column}) — 매핑이 기록에 남습니다'
+labels_map_format: '매핑 형식: 값=코드,값=코드 (예: control=0,hct=0,liver=1)'
+relabel_note_required: 사유(note)를 적어야 라벨을 고칠 수 있습니다 — 왜 잘못 들어갔다고 판단하는지
+relabel_key_not_found: '해당 행을 찾지 못했습니다: {key}'
+relabel_same_value: '이미 같은 값입니다: {value}'
+relabel_notice: ⚠ 개별 라벨 수정 {n}건이 이 결과에 포함되어 있습니다 (원본 파일은 변경되지 않음)
+relabel_over_threshold: ⚠ 개별 수정이 {n}건({ratio:.1%})으로 임계(1%)를 넘었습니다 — 데이터 품질을 먼저 확인하세요
+relabel_done: '라벨 수정: {key}의 {column} {from_} → {to}'
+relabel_reason: '사유: {note}'
+filter_empty: 조건식을 입력하세요
+filter_unsafe: '허용되지 않는 식입니다 (컬럼·숫자·문자열·비교/논리 연산만 가능): {expr}'
+filter_bad_expr: '식을 계산할 수 없습니다: {expr} — {err}'
+filter_not_boolean: '조건식이 참/거짓을 내야 합니다: {expr}'
+filter_preview: 조건 {expr} → 남김 {kept:,} · 제외 {removed:,} ({ratio:.1%})
+filter_recorded: 'op 기록: #{seq} filter_rows — 제외 사유는 출력에 첨부됩니다'
+filter_reason: '사유: {reason}'
+export_same_as_source: 원본과 같은 경로에는 저장할 수 없습니다
+export_done: '가공 파일 저장: {path} ({rows:,}행 × {cols}컬럼)'
+export_sidecar: '사이드카: {path} — 이 파일을 다시 열면 가공 사실을 알립니다'
+export_relabel_note: ⚠ 인위적 라벨 수정 {n}건이 이 파일에 포함되어 있습니다 (표식 컬럼 _relabeled)
+open_trimmed_banner: ⚠ 이 파일은 STATOP로 가공된 파일입니다 — 인위적 변경 {n}건
+open_trimmed_source: '원본: {path}'
+open_trimmed_marker: ⚠ 이 파일에 _relabeled 표식이 있습니다 — 인위적으로 변경된 값이 포함돼 있습니다
+missing_bad_how: '제거 방식은 row 또는 column입니다: {how}'
+missing_method_not_allowed: '지원하지 않는 대치 방법입니다: {method} (허용: {allowed}). 무거운 추정기는 지원하지 않습니다'
+missing_group_required: 그룹별 대치는 그룹 컬럼을 지정해야 합니다
+missing_knn_limit: KNN 대치는 {rows:,}행·{cols}컬럼 이하에서만 가능합니다
+missing_mice_limit: MICE 대치는 {cols}컬럼 이하에서만 가능합니다
+missing_warn_mean: '{col}: 결측 {ratio:.1%} — 평균 대치는 결측 10% 미만에서 권장(분산 축소)'
+missing_warn_zero_fraction: '{col}: 값이 [0,1] 범위 — 0으로 채우면 비율·확률의 의미가 바뀝니다'
+missing_not_all_filled: 대치 후에도 결측 {n}개가 남았습니다
+missing_head: 결측 현황 — {n_rows:,}행 중 완전한 행 {complete:,}개
+missing_col_line: '{col} {n:,}개 ({ratio:.1%})'
+missing_suspect_zero: 0으로 채워진 결측 의심 (0 비율 {zero:.0%})
+missing_pattern_head: 함께 비는 조합 (상위 {n}개)
+missing_pattern_line: '{cols} — {n:,}행 ({ratio:.1%})'
+missing_drop_result: '제거: {before:,}행 → {after:,}행 (제외 {removed:,})'
+missing_drop_cols: '컬럼 제거: {cols}'
+missing_impute_result: '대치: {method} — {n_filled:,}개 셀 ({ratio:.2%})'
+missing_impute_params: '매개변수: {params}'
+missing_alternatives_head: 실행하지 않고 안내만 하는 대안 (1.1b)
+missing_recorded: 'op 기록: #{seq} {op} — 방법·비율·전후 n이 출력에 남습니다'
+group_reason_id: 고유값 비율 {ratio:.0%} — 식별자로 보임 (분석 제외·hold 제안)
+group_reason_repeat: '{levels}개 수준에 관측이 반복됨 (그룹당 평균 {mean:.1f}개) — 독립 가정 확인 필요'
+group_head: 그룹 구조 후보 {n}개 — 확정은 사용자가 합니다
+group_line: '{col} [{kind}] {levels}수준 · 그룹당 평균 {mean:.1f}개 (최대 {mx})'
+group_none: 반복·군집 구조 후보가 없습니다 (독립 관측으로 보임)
+group_imbalanced: 그룹 크기가 고르지 않음
+group_confirm_hint: 확정하려면 --confirm 컬럼 --kind subject|batch|site|time
+group_confirmed: '그룹 구조 확정: {col} ({kind}) — 독립 가정 검정에서 이 구조를 고려합니다'
+compose_head: 구성 요약 — {n_rows:,}행 · 가져온 {n_selected}개 (분석 {n_analysis} · hold {n_held})
+compose_kinds: '타입: 수치 {numeric} · 범주 {categorical} · 날짜 {datetime}'
+compose_missing: 완전한 행 {complete:,} · 결측 있는 행 {any:,}
+shape_unimodal: 단봉형
+shape_bimodal: 쌍봉형
+shape_bimodal_ends: 쌍봉형 (0/1 근처 집중)
+shape_skewed: 한쪽으로 치우침
+shape_flat: 평탄
+shape_categorical: 범주형
+shape_too_few: 관측이 적어 형태 판단 어려움
+ev_unique_ratio: 고유값 비율 {ratio:.0%}
+ev_few_levels: '{n}개 수준'
+ev_few_levels_ordered: '{n}개 수준 — 순서가 있을 수 있음'
+ev_parses_as_date: 날짜로 파싱됨
+ev_row_sum_one: 형제 컬럼과 행 합이 1에 가까움 (행 방향 정규화)
+ev_minmax_exact: 컬럼 min·max가 정확히 0·1 (min-max 정규화 흔적)
+ev_range_01: 값이 [0,1] 범위
+ev_bimodal_ends: 0/1 근처에 몰림 (모델 출력의 전형)
+ev_binary_int: 0/1 정수만 존재
+ev_binary_int_count: 0/1 정수 — 카운트일 수도 있음
+ev_nonneg_int: 비음 정수
+ev_few_int_levels: '{n}개 정수 수준'
+ev_range_0_100: 값이 [0,100] 범위
+ev_has_negative: 음수 포함
+ev_negative_log: 음수 포함 — log 비율일 수 있음
+ev_mean0_sd1: 평균≈0, 표준편차≈1
+ev_real_positive: 1을 넘는 실수
+ev_gt1_reference: 1을 넘음 — 참조 기준 대비 상대량일 수 있음
+ev_name_hint: 컬럼명 {name} (보조 신호)
+ev_empty: 값이 없음
+ev_fallback: 다른 신호 없음
+conflict_nominal_ordinal: 순서 있는 코드인지 이름뿐인 코드인지 값만으로는 구분되지 않음
+conflict_binary_count: 0/1 정수 — 이진 코드일 수도, 카운트일 수도 있음
+conflict_negative_scale: 음수가 있어 원척도·log·표준화 중 무엇인지 갈림
+confirm_conflict: 신호가 상충합니다 — 확정이 필요합니다
+confirm_tie: 1위 후보가 여러 개입니다 — 확정이 필요합니다
+confirm_costly: '{a}와 {b}를 혼동하면 결과가 크게 달라집니다 — 확정이 필요합니다'
+semantic_head: '{column} — {shape}'
+semantic_cand: '{rank}. {type}'
+semantic_confirmed: '의미 타입 확정: {column} = {type}'
+semantic_unknown_type: '모르는 의미 타입입니다: {type} (허용: {allowed})'
+semantic_not_inferred: '추론 후보에 없는 타입으로 확정합니다: {type} — 계산은 되지만 결과 해석에 주의하세요'
+semantic_risk_head: 이 타입으로 계산할 때 생길 수 있는 문제
+semantic_state: 확정 {n_confirmed}개 / 미확정 {n_pending}개
+conflict_partial_composition: 조성 세트({n}개)의 일부만 가져왔습니다 — {missing}개가 빠져 있어 CLR 등 조성 변환을 쓸 수 없습니다
+risk_line: '[{id}] {combination}'
+risk_why: '왜: {why}'
+risk_fix: '해결: {fix}'
+risk_none: 이 타입에 등록된 주의 규칙이 없습니다
+risk_verdict_red: 실행은 되지만 결과에 경고가 남습니다
+risk_verdict_yellow: 주의가 필요합니다
+risk_verdict_gate: 이 조합은 차단됩니다
+formula_empty: 수식이 비어 있습니다
+formula_syntax: '수식을 읽을 수 없습니다: {expr} — {err}'
+formula_node_not_allowed: '허용되지 않는 표현입니다 ({node}): {expr}'
+formula_call_not_allowed: '함수 호출 형태가 허용되지 않습니다: {expr}'
+formula_func_not_allowed: '허용되지 않는 함수입니다: {func} (허용: {allowed})'
+formula_unknown_column: '데이터에 없는 컬럼입니다: {cols}'
+formula_latex_unsupported: '지원하지 않는 LaTeX 명령입니다: {items}'
+eps_required: 0이 있어 log를 쓸 수 없습니다 — eps가 필요합니다
+eps_recommended: eps 추천값 {value:g} (대상의 최소 양수 {minpos:g} 기준)
+eps_too_large: eps {given:g}는 추천값 {limit:g}보다 큽니다 — log 척도가 왜곡되어 허용하지 않습니다
+eps_candidates: '선택 가능: {values}'
+eps_not_needed: 0이 없어 eps가 필요하지 않습니다
+formula_needs_composition: '{func}는 조성 세트 전체가 필요합니다 — 세트 컬럼을 지정하세요'
+derive_preview_head: '{name} = {expr}'
+derive_preview_stats: n={n:,} · 유한 {n_finite:,} · NaN {n_nan:,} · ±inf {n_inf:,}
+derive_preview_range: 최소 {min:g} · 평균 {mean:g} · 최대 {max:g}
+derive_inf_warning: ±inf {n_inf:,}개 발생 — log(0)이나 0 나눗셈이 있습니다
+derive_committed: '파생 컬럼 생성: {name} (의미 타입 {type})'
+derive_recorded: 'op 기록: #{seq} derive — 수식·eps가 출력에 남습니다'
+derive_name_exists: '같은 이름의 컬럼이 이미 있습니다: {name}'
+eps_preview_with_recommended: eps 미지정 — 추천값 {value:g}로 미리 계산합니다 (커밋하려면 --eps 로 명시)
+eps_explicit_required: 커밋하려면 --eps 를 명시해야 합니다 — 어떤 값을 썼는지 기록에 남아야 합니다
+derive_preview_label: (미리보기)
+formula_name_exists: '같은 이름의 수식이 이미 있습니다: {name} (덮어쓰려면 --overwrite)'
+formula_not_found: '저장된 수식이 없습니다: {name}'
+formula_slot_missing: '슬롯에 컬럼을 지정해야 합니다: {slots}'
+formula_saved: '수식 저장: {name} → {path}'
+formula_removed: '수식 삭제: {name}'
+formula_list_head: 저장된 수식 {n}개
+formula_list_line: '{name}  슬롯 {slots}  → {result_type}'
+formula_applied: '적용: {name} ({mapping}) → {expr}'
+formula_verdict_green: 문제없음 — 슬롯 타입이 이 수식에 맞습니다
+formula_verdict_yellow: 별로 — 확인이 필요합니다
+formula_verdict_red: 안됨 — 실행은 되지만 결과에 경고가 남습니다
+formula_unconfirmed: '의미 타입 미확정: {cols} — 확정 후 판정이 정확해집니다'
+formula_risk_mitigated: '[{id}] 해소됨 — 이 수식이 권고 변환을 이미 적용합니다 ({fix})'
+derive_scalar_note: 보라색은 컬럼 전체를 하나의 수로 줄인 값입니다 — 행마다 달라지지 않습니다
+derive_role_legend: '색: 컬럼 · 행 단위 함수 · 컬럼 스칼라 · 세트 함수 · eps'
+compat_detail_depth: '{a} 총합 {sa:,.0f} · {b} 총합 {sb:,.0f} ({ratio:.1f}배)'
+compat_detail_id: '{col}는 행 식별자입니다'
+compat_detail_nominal: '{col}의 코드 간격에는 의미가 없습니다'
+compat_detail_comp_pair: '같은 조성 세트 {n}성분: {cols}'
+compat_detail_scale_mix: log 척도 {log} · 원척도 {raw}
+compat_detail_percent: '{col}는 0~100, 상대는 0~1 척도입니다'
+compat_detail_datetime: '{col}에서 파생된 피처는 라벨 이후 정보를 담을 수 있습니다'
+compat_detail_ids_set: 분석 대상에 식별자 {n}개가 있습니다
+compat_detail_nominal_set: '이름뿐인 코드 {n}개: {cols}'
+compat_detail_comp_set: 조성 세트 {n}성분이 함께 선택됨
+compat_detail_scale_mix_set: log 척도 {n_log}개와 원척도 {n_raw}개가 섞여 있습니다
+compat_detail_percent_set: 0~100 척도 {n_pct}개 · 0~1 척도 {n_frac}개
+compat_detail_depth_set: 총합이 최대 {ratio:.1f}배 차이납니다
+compat_detail_zscore_set: 표준화 컬럼 {n}개 — 기준 집단이 같은지 확인이 필요합니다
+compat_detail_aggregate: 층화 변수가 있는 상태에서 집계값을 씁니다
+compat_no_auto_fix: '{id}는 자동 수정이 없습니다 — 무엇을 쓸지는 사람이 정해야 합니다'
+compat_need_composition: 조성 세트를 먼저 지정하세요 — 세트가 달라지면 값이 통째로 달라집니다
+compat_alr_reference_unknown: 기준 성분 {col}이 조성 세트에 없습니다
+compat_alr_note: 기준 성분 {ref}로 나눕니다 — 기준을 바꾸면 값이 달라집니다
+compat_clr_note: 조성 {n}성분 전체를 기하평균으로 중심화합니다
+compat_div100_note: 100으로 나눠 0~1 척도로 맞춥니다
+compat_unify_note: 원척도 쪽을 log로 올립니다 — 이미 log인 쪽을 되돌리면 정보가 사라집니다
+compat_blocked: 의미 타입이 확정되지 않아 판정을 미뤘습니다 — 확정 후 다시 보세요
+compat_unconfirmed_cols: '미확정: {cols}'
+compat_head_pair: '적합성(Compatibility) — {op}: {a} × {b}'
+compat_head_set: '적합성(Compatibility) — {op}: 분석 대상 {n}개 전체'
+compat_green: 걸리는 규칙 없음
+compat_fix_available: '원클릭 수정: {action}'
+compat_fix_none: 자동 수정 없음 — 사람이 판단해야 합니다
+compat_plan_head: 수정 계획 [{action}] — 새 컬럼 {n}개
+compat_plan_derive: '{name} = {expr}'
+compat_plan_replace: '지정 교체: {old} → {new}'
+compat_applied: 수정 적용 — 새 컬럼 {n}개, 지정 교체 {m}건
+compat_rejudge: '재판정: {verdict}'
+compat_op_unknown: '연산 종류: {allowed} (받은 값 {op})'
+compat_verdict_gate: 차단 — 이 조합은 결과를 신뢰할 수 없습니다
+compat_verdict_red: 위험 — 결과가 실제와 다르게 나올 수 있습니다
+compat_verdict_yellow: 주의 — 해석할 때 감안해야 할 것이 있습니다
+compat_verdict_unconfirmed: 보류 — 의미 타입 확정이 먼저입니다
+compat_verdict_green: 문제 없음
+compat_why: '왜: {why}'
+compat_fix: '해결: {fix}'
+compat_pair_needs_two: 쌍 판정에는 컬럼 2개가 필요합니다
+compat_rule_not_in_report: '{id}는 이번 판정에 나오지 않았습니다'
+compat_comp_candidate: '후보 조성 세트 ({n}성분): {cols}'
+compat_comp_none: 합이 1로 닫히는 묶음을 찾지 못했습니다 — 직접 지정하세요
+compat_plan_dryrun: 계획만 표시했습니다
+compat_action_unknown: '조치: {allowed} (받은 값 {action})'
+guard_unknown_rule: '가드레일 규칙이 아닙니다: {rule}'
+guard_unknown_tier: '등급: {allowed} (받은 값 {tier})'
+guard_unknown_threshold: '{rule}에 없는 임계값입니다: {key} (있는 것: {allowed})'
+guard_unknown_action: '조치: flag|drop|clip|keep (받은 값 {action})'
+guard_floor_violation: '{rule}은 {floor} 아래로 낮출 수 없습니다 — 요청한 등급 {tier}는 거부됩니다'
+guard_action_manual_only: '{action}은 기본값으로 둘 수 없습니다 — 분포를 왜곡하므로 쓸 때마다 직접 골라야 합니다'
+guard_gr01_impossible: '{col} — 정의역 밖 {n}개 (허용 {lo}~{hi})'
+guard_gr01_boundary: '{col} — 경계값(0 또는 1) {n}개, log·logit이 정의되지 않습니다'
+guard_gr01_tail: '{col} — 상위 {q:.1%} 밖 {n}개 (경계 {cut:.4g})'
+guard_gr02_result: χ² p={p:.2e} · 관측 비율 {ratio}
+guard_gr02_dimension: '{col}={level} 구간에서 SRM (p={p:.2e}, Bonferroni 임계 {adj:.2e})'
+guard_gr02_not_applicable: 군이 2개 미만이라 검정할 수 없습니다
+guard_gr02_unexplained: 손실로 설명되지 않습니다 — 기대 비율 설정이 맞는지, 모집단이 원래 불균형인지 확인하세요
+guard_gr03_retention: '{step}: {before:,} → {after:,} ({rate:.1%} 잔존)'
+guard_gr03_loss_by_group: 전체 손실률 {overall:.1%} · 군 간 최대 편차 {spread:.1%}
+guard_gr03_bias_numeric: '{col} — 빠진 행과 남은 행의 분포가 다릅니다 (SMD {smd:.2f}, p={p:.2e})'
+guard_gr03_bias_categorical: '{col} — 손실이 이 컬럼과 연관됩니다 (p={p:.2e})'
+guard_gr03_join: 매칭 {matched:,} / 기준 {left:,} ({rate:.1%})
+guard_gr04_tiny: 가장 작은 군이 {n}개입니다 (임계 {limit}) — 이 군의 수치는 근거로 쓰기 어렵습니다
+guard_gr04_small: 가장 작은 군이 {n}개입니다 (임계 {limit})
+guard_gr04_imbalance: 군 크기가 {ratio:.1f}배 차이납니다 ({hi:,} vs {lo:,})
+guard_gr04_coverage: '{col} — 정의된 행이 {cov:.1%}뿐입니다 (임계 {limit:.0%}) · 부분 지표입니다'
+guard_gr04_smd: '{col} — 군 간 분포 차이 SMD {smd:.2f} (임계 {limit:.2f})'
+guard_gr04_stability: '{level} 군의 {col} — n={n}, 95% CI {lo:.4g}~{hi:.4g}'
+guard_skip_no_loss_data: 손실 전후 자료가 없어 손실 검사를 하지 않았습니다
+guard_skip_no_group: 군 컬럼이 지정되지 않아 건너뛰었습니다
+guard_skip_no_types: 의미 타입이 확정되지 않아 정의역을 알 수 없습니다
+guard_headline_gate: 차단 {n}건 ({rules}) — 아래 결과를 근거로 쓰기 전에 먼저 보세요
+guard_tier_gate: 차단
+guard_tier_diagnostic: 진단
+guard_tier_info: 참고
+guard_tier_ok: 걸린 것 없음
+guard_head: 가드레일(Guardrail) — 검사 {n}건, {tier}
+guard_skipped_head: 검사하지 않은 것
+guard_override_head: 기본값이 아닌 설정
+guard_override_line: '{rule}.{key} = {value} (기본 {base})'
+guard_link_line: '연결: {links}'
+guard_cause_head: 원인 후보 (단정이 아닙니다)
+guard_cause_loss: 군별 손실률 차이가 큽니다 — 손실이 원인 후보입니다
+guard_counterfactual_resolved: '반사실 확인: 손실을 되돌리면 비율이 기대에 맞습니다 (p={p:.2e})'
+guard_counterfactual_unresolved: '반사실 확인: 손실을 되돌려도 비율이 맞지 않습니다 (p={p:.2e})'
+guard_limits_head: 가드레일 설정 — 기준값은 읽기 전용, 조정은 {path}
+guard_limit_line: '{key} = {value}'
+guard_limit_line_over: '{key} = {value} (기본 {base}, 조정됨)'
+guard_floor_line: '완화 하한: {floor}'
+guard_set_ok: '설정: {rule}.{key} = {value}'
+guard_cleared: '조정 초기화: {scope}'
+guard_set_needs_target: --tier 또는 --key 중 하나는 있어야 합니다
+guard_set_needs_value: --key를 줬으면 --value도 필요합니다
+guard_gr04_smd_noise: ' · 이 표본 크기에서는 우연만으로도 {noise:.2f} 정도가 나옵니다'
+screen_subtitle: 실험 검증·무결성 진단
+screen_path_label: 데이터 파일 경로를 입력하고 [열기]를 누르세요 (Tab 으로 버튼 이동)
+screen_recent_label: 최근 저장된 세션
+screen_open_btn: 열기
+screen_load_btn: 불러오기
+screen_import_btn: 선택 {n}개 가져오기
+screen_prev_btn: ◂ 이전
+screen_next_btn: 다음 ▸
+screen_sort_missing: 결측률 순
+screen_sort_unique: 고유값 순
+screen_sort_name: 이름 순
+screen_search_btn: 검색
+screen_more_btn: 컬럼 더 가져오기
+screen_save_btn: 세션 저장
+screen_reading: 파일을 읽는 중…
+screen_open_hint: 파일을 열면 컬럼 목록이 뜹니다. 데이터 값은 표시되지 않습니다
+screen_pick_hint: 체크한 컬럼만 이후 분석에 쓰입니다
+screen_none_picked: 선택된 컬럼이 없습니다 — 클릭하거나 space 로 체크하세요
+screen_ws_title: 작업 영역 — 가져온 컬럼 {n}개
+screen_ws_header: hold  컬럼명
+screen_next_head: 다음 단계 (터미널에서 실행)
+screen_next_types: statop types --session {session}
+screen_next_compat: statop compat check --session {session} --op correlate
+screen_next_guard: statop guard run --session {session} --group <군컬럼>
+screen_keys_open: Tab 이동 · Enter 열기 · 마우스 클릭 · F2 드래그복사↔클릭 · Ctrl-Q 종료
+screen_keys_columns: ↑↓ 이동 · space 체크 · a 이 쪽 전체 · Enter 가져오기 · Tab 버튼 · F2 드래그복사↔클릭 · Ctrl-Q 종료
+screen_keys_workspace: ↑↓ 이동 · space hold · d 제외 · Tab 버튼 · F2 드래그복사↔클릭 · Ctrl-Q 종료
+screen_focus_here: 지금 위치 ▶ {where}
+screen_focus_path: 경로 입력칸
+screen_focus_search: 검색칸
+screen_focus_table: 컬럼 표
+screen_focus_workspace: 가져온 컬럼 목록
+screen_focus_button: 버튼 [{name}]  ← Enter 또는 클릭으로 실행
+screen_focus_unknown: 알 수 없음 (Tab 으로 이동)
+screen_opened_ok: '{name} 열었습니다 — 컬럼 {n}개'
+screen_checked: '체크: {name}  (선택 {n}개)'
+screen_unchecked: '해제: {name}  (선택 {n}개)'
+screen_sorted: '{how} 으로 정렬했습니다'
+screen_sort_off: 정렬을 껐습니다 (파일 순서)
+screen_searched: 검색 '{q}' — {n}개
+screen_search_cleared: 검색을 지웠습니다 — {n}개
+screen_paged: '{page}/{pages} 쪽'
+screen_open_data_title: ① 데이터 파일 열기
+screen_open_data_desc: 처음이면 여기입니다. csv·tsv·parquet 경로를 입력하고 [열기]
+screen_open_session_title: ② 하던 작업 이어하기
+screen_open_session_desc: 전에 저장한 작업 기록(세션)을 불러옵니다 — 데이터가 아니라 조작 내역입니다
+screen_open_session_count: 저장된 세션 {n}개 · 최근 {name} — [세션 목록]에서 고르세요
+screen_open_session_none: 저장된 세션이 없습니다 — 처음이면 ①로 시작하세요
+screen_sessions_title: 저장된 세션 {n}개 — 고를 것을 누르세요
+screen_sessions_header: 이름                                                  저장시각
+screen_sessions_hint: ↑↓ 로 고르고 Enter, 또는 줄을 클릭하세요
+screen_sessions_dir: '위치: {path}'
+screen_sessions_btn: 세션 목록
+screen_back_btn: ◂ 뒤로
+screen_save_title: 세션 저장
+screen_save_dir_label: 저장 폴더를 입력하고 [저장]. 비워 두면 기본 저장소에 들어갑니다
+screen_save_target: '저장될 파일: {path}'
+screen_save_exists_warn: 같은 이름이 이미 있습니다 — [덮어쓰기]를 눌러야 덮습니다 (직전 것은 .bak 로 보존)
+screen_save_hint: 폴더를 바꾸려면 입력칸에 경로를 넣으세요
+screen_save_no_dir: '폴더가 없습니다: {path}'
+screen_save_overwrite_hint: 덮어쓰려면 [덮어쓰기] 버튼을 누르세요
+screen_save_btn2: 저장
+screen_overwrite_btn: 덮어쓰기
+screen_keys_sessions: ↑↓ 이동 · Enter 불러오기 · 클릭 · Tab 버튼 · F2 드래그복사↔클릭 · Ctrl-Q 종료
+screen_keys_save: 경로 입력 후 [저장] · 같은 이름이면 [덮어쓰기] · Tab 버튼 · F2 드래그복사↔클릭 · Ctrl-Q 종료
+screen_focus_sessions: 세션 목록
+screen_focus_savedir: 저장 폴더 입력칸
+screen_web_btn: 웹에서 보기
+screen_refresh_btn: 웹→CLI 반영
+screen_web_starting: 웹 서버를 켜는 중…
+screen_web_ready: 웹에서 열기 ▶ {url}
+screen_web_tunnel: '브라우저가 서버에 닿지 않으면 내 PC에서: ssh -N -L {port}:127.0.0.1:{port} {user}@<서버주소>'
+screen_web_no_build: 웹 화면이 아직 빌드되지 않았습니다 — ui 폴더에서 npm run build 후 다시 누르세요
+screen_web_failed: 웹 서버를 띄우지 못했습니다 (포트 {port})
+screen_web_same_session: 웹과 터미널이 같은 세션을 씁니다 — 내 상태를 보내려면 [CLI→웹 반영], 웹 것을 가져오려면 [웹→CLI 반영]
+screen_refreshed: 웹→CLI 반영됨 — 가져온 컬럼 {n}개 · hold {h}개
+screen_refresh_none: 아직 연 세션이 없습니다
+screen_web_url_head: 브라우저에서 이 주소를 여세요 (복사해서 붙여넣기)
+session_resolve_not_found: '세션을 찾지 못했습니다: {id}'
+screen_mouse_ok: 마우스 ✓
+screen_mouse_none: 마우스 신호 없음 — 번호키(1~9)로 버튼을 누르세요
+screen_numkeys: '버튼: {items}'
+screen_derive_btn: 파생 컬럼
+screen_derive_title: 파생 컬럼 만들기 (수식)
+screen_derive_cols: '쓸 수 있는 컬럼: {cols}'
+screen_derive_examples: '예: log2(frac_A + eps) · frac_A / mean(reads_x) · clr(frac_A) · pct_purity / 100'
+screen_derive_hint: 수식을 입력하고 [미리보기]. 이름을 넣고 [만들기]를 눌러야 기록됩니다
+screen_derive_empty: 수식을 입력하세요
+screen_derive_need_name: 새 컬럼 이름을 입력하세요
+screen_derive_need_columns: 먼저 컬럼을 가져오세요 — 가져온 컬럼으로만 수식을 만듭니다
+screen_derive_previewed: 미리보기입니다 — 아직 기록되지 않았습니다
+screen_derive_result_type: '결과 의미 타입: {type}'
+screen_derive_legend: '색: 컬럼 · 행 단위 함수 · 컬럼 스칼라(행마다 안 변함) · 세트 함수 · eps'
+screen_derive_eps: 'eps: {chosen}  (고를 수 있는 값: {cands}) — 저장하려면 골라야 합니다'
+screen_derive_preview_btn: 미리보기
+screen_derive_make_btn: 만들기
+screen_derive_eps_btn: eps ▾
+screen_keys_derive: 수식 입력 후 [미리보기] · 이름 넣고 [만들기] · Esc 뒤로 · F2 드래그복사↔클릭 · Ctrl-Q 종료
+screen_focus_expr: 수식 입력칸
+screen_focus_newname: 새 컬럼 이름칸
+screen_prompt_expr: '식 '
+screen_prompt_name: '이름 '
+screen_reading_big: '{name} 읽는 중…'
+screen_reading_note: 컬럼 요약을 만들고 있습니다. 데이터 값은 읽지 않습니다
+screen_share_btn: CLI→웹 반영
+screen_pull_btn: CLI에 반영
+screen_shared: CLI 상태 저장됨 ({step} 단계 · 체크 {n}개) — 웹에서 [CLI→웹 반영]을 누르면 이 화면이 됩니다
+screen_pulled: 웹→CLI 반영됨 ({by} 저장) — 가져온 컬럼 {n}개 · 체크 {p}개
+screen_pull_no_view: 웹이 저장한 화면 상태가 없어 조작 기록만 반영했습니다 — 가져온 컬럼 {n}개. 웹에서 [웹→CLI 반영]을 먼저 누르세요
+screen_eta: 남은 시간 약 {t}
+screen_types_btn: 타입 확정
+screen_types_title: 의미 타입 확정 — {ok}/{total} 확정
+screen_types_header: '     컬럼                   타입                분포'
+screen_types_hint: 미확정 {pending}개 — space 로 후보를 바꾸고 Enter 로 확정하세요
+screen_types_inferring: 타입 추론 중
+screen_types_need_columns: 먼저 컬럼을 가져오세요 — 가져온 컬럼의 타입을 확정합니다
+screen_types_cycled: '{column} → {type} (Enter 로 확정)'
+screen_types_confirmed: '확정: {column} = {type}'
+screen_types_confirmed_risky: '확정: {column} = {type} — 이 타입의 계산 위험: {ids} (statop types 로 상세)'
+screen_types_not_inferred: (추론에 없던 타입)
+screen_types_dist_shown: '{column} 분포 — v 를 다시 누르면 접힙니다'
+screen_keys_types: ↑↓ 컬럼 · space/←→ 후보 바꾸기 · Enter 확정 · v 분포 · Esc 뒤로 · F2 드래그복사↔클릭 · Ctrl-Q 종료
+screen_focus_types: 타입 목록
+screen_types_cycle_btn: 후보 바꾸기
+screen_types_confirm_btn: 확정
+screen_types_dist_btn: 분포 보기
+stage_check: 파일 확인
+stage_hash: 원본 등록 — 부분해시 (앞뒤 4MB 읽기)
+stage_session: 세션 기록
+stage_profile: 샘플 읽기·컬럼 통계
+stage_infer: 의미 타입 추론
+screen_types_cands: '후보:'
+screen_types_outside: '추론 밖 (space 로 계속 돌리면 나옵니다):'
+ev_label_name_hint: 컬럼명 {name} — 그룹 변수의 전형적 이름
+ev_label_few_levels: '{n}개 수준 — 그룹 변수일 수 있음'
+screen_role_header: '     역할  컬럼명'
+screen_role_id: id
+screen_role_label: label
+screen_role_hold: hold
+screen_role_auto_held: '{column} = {type} — 분석에서 자동 제외됩니다 (식별·그룹용으로 유지)'
+screen_labels_title: 라벨 매핑 — {column} ({n}개 수준)
+screen_labels_header: '     값                  코드   빈도'
+screen_labels_hint: ←→ 로 코드를 바꾸세요. 같은 코드는 같은 군으로 묶입니다
+screen_labels_grouped: '⚠ {before}수준 → {after}군으로 묶임: {detail}'
+screen_labels_saved: '매핑 저장됨: {column} — {detail}'
+screen_labels_save_btn: 매핑 저장
+screen_labels_skip_btn: 건너뛰기
+screen_keys_labels: ↑↓ 수준 · ←→ 코드 바꾸기 · Enter 저장 · Esc 건너뛰기 · F2 드래그복사↔클릭 · Ctrl-Q 종료
+screen_focus_labels: 라벨 매핑
+screen_derive_eps_up_btn: eps ▴
+screen_derive_flow: '흐름: 식 입력 → [미리보기] (통계·eps 확인) → 이름 입력 → [만들기].  [만들기]만 눌러도 미리보기가 자동으로 돕니다'
+screen_derive_ready: 미리보기 완료 — 이름을 넣고 [만들기]를 누르면 기록됩니다
+ev_from_formula: '수식에서 유도: {expr}'
+spec_bad_question: '질문 유형: {allowed} (받은 값 {q})'
+spec_same_column: y와 group이 같은 컬럼입니다
+spec_bad_direction: '방향: {allowed}'
+spec_bad_contrast: '대비: {allowed}'
+spec_need_control: vs-control이면 --control로 기준 수준을 지정하세요
+spec_bad_ntests: 계획 검정 수는 1 이상이어야 합니다
+spec_control_unknown: '기준 수준 {control}이 군에 없습니다 (있는 수준: {levels})'
+spec_y_unconfirmed: '{col}의 의미 타입이 미확정입니다 — 타입 확정이 먼저입니다'
+spec_group_unconfirmed: '{col}의 의미 타입이 미확정입니다 — label 확정이 먼저입니다'
+spec_compat_gate: '적합성 차단: {ids} — 이 조합으로는 어떤 검정도 신뢰할 수 없습니다'
+spec_recorded: '질문 기록: {q} · y={y}{group} — 이후 후보·가정·보정이 이 전제를 씁니다'
+spec_head: 질문 설계 (A1)
+spec_line_question: '질문: {q} {text}'
+spec_line_target: '대상: y={y} ({y_type}){group_part}'
+spec_line_design: 짝지음 {paired} · 방향 {direction} · 대비 {contrast} · 계획 검정 {n}개
+spec_line_groups: '군 구성: {detail}  (라벨 매핑 반영)'
+spec_problems_head: 진행 전에 풀 것
+cand_head: 검정 후보 (A2) — {q} 기준 {n}개
+cand_reason_best: '{text}'
+cand_reason_best_unmet: 권장 조건({text})에 못 미침 — 지금 최소 군 n={n}
+cand_reason_caution: '{text} (지금 최소 군 n={n})'
+cand_reason_blocked: '{text}'
+cand_reason_scale: '{y}의 타입이 {y_type} — 연속 척도 검정에 쓸 수 없습니다'
+cand_reason_assumptions: 가정 {c} 미확인 — 가정 검사(A3)를 돌리면 판정이 갱신됩니다
+cand_effect: '효과크기: {e}'
+cand_alt: '대안: {a}'
+cand_none: 이 질문 유형에 맞는 후보가 없습니다 — 질문 유형이나 컬럼 지정을 다시 보세요
+cand_color_green: 적합
+cand_color_yellow: 확인 필요
+cand_color_red: 부적합
+spec_group_too_many_levels: '{col}의 수준이 {n}개 — 군 변수가 맞습니까? 연속 변수라면 질문 유형을 Q-03(연관)으로 바꾸세요'
+a3_name_normality: 정규성 (C-01)
+a3_name_variance: 등분산 (C-02)
+a3_name_collinearity: 다중공선성 (C-03)
+a3_name_independence: 독립성 (C-05)
+a3_name_multiplicity: 다중검정 (C-09)
+a3_name_power: 검정력 (C-08)
+a3_norm_ok: 모든 군에서 정규 근사에 문제 없음
+a3_norm_violated: '군 {groups}에서 위배 — 원인: {cause}'
+a3_norm_caution: 표본이 너무 작거나 커서 검정 대신 왜도·QQ로 판단하세요
+a3_cause_outliers: 소수 outlier (빼면 정규로 돌아옴 — 해당 값 확인 권장)
+a3_cause_skew: 분포 틸팅(왜도) — log 등 변환 또는 비모수 전환
+a3_cause_shape: 분포 형태 자체 (이봉·꼬리) — 비모수 전환 권장
+a3_cause_mixed_shapes: 군마다 위배 원인이 다름 — 형태 상이, 순위 기반 검정 권장
+a3_var_ok: 군 간 분산 차이 증거 없음 (Brown–Forsythe p={p:.3f})
+a3_var_violated: 군 간 분산이 다름 — SD 비 {ratio:.1f}배 (p={p:.2e}). Welch 계열을 쓰세요
+a3_vif_ok: VIF 최대 {vmax:.1f} — 공선성 문제 없음
+a3_vif_violated: '공선성 높음: {cols} — 해당 변수 중 하나를 빼거나 합치세요'
+a3_indep_unknown: 그룹 구조가 확정되지 않아 독립성을 판단할 수 없습니다 — statop groups 로 확정하세요
+a3_indep_clustered: '군집/반복 구조 있음: {detail} — 관측이 독립이 아니므로 혼합모형·군집 보정이 필요합니다'
+a3_indep_ok: 확정된 구조상 군집·반복 없음
+a3_multi: 계획 검정 {n}개 → Bonferroni 보정 α = {alpha}/{n} = {adj:.4g}
+a3_power: 이 표본(n={n1}/{n2})으로 80% 검정력이 되는 최소 효과크기 d ≈ {d:.2f}
+a3_power_short: d=0.5를 잡으려면 군당 n≥{need} 필요 — {group} 군 쪽 표본이 부족합니다
+a3_skip_groups: 군이 2개 미만 — 건너뜀
+a3_skip_two_groups: 2군일 때만 계산 — 건너뜀
+a3_skip_columns: 수치 컬럼이 2개 미만 — 건너뜀
+a3_need_spec: 질문 설계(analyze plan --apply)가 먼저입니다 — 무엇을 물을지 정해야 어떤 가정을 볼지 정해집니다
+a3_head: 가정 검사 (A3) — {q} 기준
+a3_verdict_ok: 충족
+a3_verdict_violated: 위배
+a3_verdict_caution: 주의
+a3_verdict_skipped: 건너뜀
+run_need_two_groups: 2군이어야 합니다 (지금 {n}군)
+run_paired_unequal: 대응 검정인데 두 군의 n이 다릅니다 ({a} vs {b}) — 짝이 맞는 데이터인지 확인하세요
+run_fisher_needs_2x2: Fisher exact는 2×2 표에만 씁니다 (지금 {shape})
+run_not_implemented: '{id}는 아직 실행을 지원하지 않습니다 — 지원: {available}'
+run_note_meandiff: 평균차 {value:.4g} (95% CI {ci_low:.4g} ~ {ci_high:.4g})
+run_note_alpha: 계획 검정 {n}개 기준 보정 α = {adj:.4g} — p는 이 값과 비교하세요
+run_note_verdict_sig: p={p:.3g} < 보정 α({adj:.4g}) — 보정 후에도 유의
+run_note_verdict_ns: p={p:.3g} ≥ 보정 α({adj:.4g}) — 보정 기준으로는 유의하지 않음
+run_head: '검정 실행: {id} {name}'
+run_line_stat: 통계량 {stat:.4g} · p = {p:.3g}
+run_line_effect: '{name} = {value:.3g}{ci}'
+run_line_ci: ' (95% CI {lo:.3g} ~ {hi:.3g})'
+run_line_n: 'n: {detail}'
+a3_skew_label: 왜도 {skew:+.2f}
+hypo_need_result: 실행된 검정이 없습니다 — analyze run 으로 검정을 먼저 실행하세요. 가설은 실제로 본 것에서만 만듭니다
+hypo_p1_title: 1안 (효과 중심)
+hypo_p2_title: 2안 (관측 중심)
+hypo_mag_negligible: 무시할 만한
+hypo_mag_small: 작은
+hypo_mag_medium: 중간 크기의
+hypo_mag_large: 큰
+hypo_ci: ' (95% CI {lo:.3g}~{hi:.3g})'
+hypo_p1_assoc_sig: '{x}와 {y} 사이에 {mag} 연관이 있다 ({effect}={value:.3g}{ci}, {test} p={p:.3g} < 보정 α {alpha:.3g})'
+hypo_p1_assoc_ns: '{x}와 {y}의 연관은 보정 α({alpha:.3g}) 기준으로 유의하지 않다 ({effect}={value:.3g}{ci}, p={p:.3g})'
+hypo_p1_diff_sig: '{x} 군 간에 {y}의 {mag} 차이가 있다 ({effect}={value:.3g}{ci}, {test} p={p:.3g} < 보정 α {alpha:.3g})'
+hypo_p1_diff_ns: '{x} 군 간 {y} 차이는 보정 α({alpha:.3g}) 기준으로 유의하지 않다 ({effect}={value:.3g}{ci}, p={p:.3g})'
+hypo_p1_interp_sig: 효과크기 {effect}가 {mag} 수준 — 유의성과 실질 크기를 함께 보고하세요 (2축 원칙)
+hypo_p1_interp_ns: 유의하지 않음은 '차이가 없다'의 증명이 아니라 '이 표본으로는 구분 못 했다'입니다 — CI 폭을 함께 보세요
+hypo_p2_assoc_sig: '{dir} — 이 경향이 {test}에서 우연으로 보기 어려운 수준(p={p:.3g})으로 관측되었다'
+hypo_p2_assoc_ns: '{dir} 경향이 관측되었으나 우연 범위를 벗어나지 못했다 (p={p:.3g})'
+hypo_p2_diff_sig: '{dir} — {test} 기준 우연으로 보기 어렵다 (p={p:.3g})'
+hypo_p2_diff_ns: '{dir} 방향의 차이가 관측되었으나 우연 범위 안이다 (p={p:.3g})'
+hypo_p2_interp_assoc: 연관의 존재를 말할 뿐 크기 예측이나 원인은 말하지 않습니다
+hypo_p2_interp_diff: 군 간 위치 차이를 말할 뿐 개별 표본의 우열은 말하지 않습니다
+hypo_dir_positive: '{x}가 클수록 {y}도 큰 양의 방향'
+hypo_dir_negative: '{x}가 클수록 {y}는 작은 음의 방향'
+hypo_dir_none: 일관된 방향 없음
+hypo_dir_group: '{hi} 군의 {y}가 {lo} 군보다 큰 방향'
+hypo_dir_unknown: 방향 정보 없음
+hypo_caution_clr: '{col}은 CLR 변환값 — 이 효과크기를 원척도 배수(몇 배)로 읽으면 안 됩니다. 성분 간 상대적 로그비의 차이입니다'
+hypo_caution_log: '{col}은 log 척도({expr}) — 차이는 원척도의 ''배수''로 읽습니다 (차이 1 = 원척도 2배, log2 기준)'
+hypo_caution_eps: '{col} 계산에 eps={eps:g}가 쓰였습니다 — 0 근처 값의 순위·비율에 영향이 있을 수 있습니다'
+hypo_caution_merged: 군이 라벨 매핑으로 묶였습니다 ({detail}) — 결론은 묶인 군 정의에 대한 것입니다
+hypo_caution_small_n: 최소 군 n={n} — 효과크기 추정이 불안정합니다. CI 폭을 우선하세요
+hypo_caution_alpha: 계획 검정 {k}개로 보정 α={adj:.3g} — 개별 p를 0.05와 비교하지 마세요
+hypo_caution_causal: 연관은 인과가 아닙니다 — 방향·교란은 이 검정이 답하지 않습니다
+hypo_comp_r_vs_rho: '보조로 Spearman ρ를 보면: r≫ρ면 선형 관계가 소수 값에 끌려간 것, ρ≫r이면 단조지만 비선형입니다'
+hypo_comp_rho_vs_r: '보조로 Pearson r를 보면: ρ≫r이면 단조·비선형 관계, r≫ρ면 outlier가 r을 끌어올렸는지 보세요'
+hypo_comp_cosine: cosine 유사도는 평균을 빼지 않습니다 — 두 변수가 모두 양수면 관계가 없어도 값이 큽니다. 상관의 대체가 아닙니다
+hypo_comp_other_result: '같이 실행한 {name}: {effect}={value:.3g} — 주지표와 방향이 같은지 확인하세요'
+hypo_comp_g_vs_rb: '보조로 rank-biserial을 보면: g와 부호가 다르면 꼬리·outlier가 평균을 끌고 있는 것입니다'
+hypo_comp_rb_vs_g: '보조로 Hedges g를 보면: rank 지표와 부호가 다르면 분포 꼬리가 평균을 끌고 있는 것입니다'
+hypo_guard_gate: '가드레일 차단 [{rule}]: {detail} — 이 가설을 근거로 쓰기 전에 반드시 해소하세요'
+hypo_guard_diag: '가드레일 진단 [{rule}]: {detail} — 결론의 일반화 범위를 좁혀 읽으세요'
+hypo_head: 가설 (A7) — {test} 결과 기준, 기계 생성
+hypo_cautions_head: 주의사항
+hypo_companions_head: 보조지표 해석
+hypo_guard_head: 가드레일 반영
+hypo_ask_hint: '이 가설이 맞지 않으면: statop ask 로 Qwen에게 대안 가설을 요청할 수 있습니다 (GPU 서버 필요)'
+qwen_no_endpoint: '서버 주소 미설정 — {env} 에 주소를 넣으세요 (예: http://gpu-node:8001/v1)'
+qwen_remote_refused: '{url}은 사설망 주소가 아닙니다 — 외부 유출 방지를 위해 거부합니다. 정말 허용하려면 {env}=1'
+qwen_call_failed: 'Qwen 호출 실패 ({url}): {err}'
+qwen_head: Qwen 제안 (모델 {model}) — 규칙 결과에 대한 코멘트이며 단독 판정이 아닙니다
+qwen_sent_log: '전송 내용 로그: {path}'
+qwen_parse_failed: 모델 출력이 형식을 벗어났습니다 — 원문 그대로 표시합니다
+qwen_dry_head: 전송될 내용 (미리보기 — 아직 아무것도 보내지 않았습니다)
+ask_opinion_hint: 의견 없이도 됩니다 — 기계 가설이 마음에 안 드는 이유를 적으면 그걸 반영합니다
+hypo_direction_label: '방향: {d}'
+qwen_proposal_label: 제안
+report_title: STATOP 리포트 — {name}
+report_session: 세션 {sid} (시작 {created})
+report_source: 원본 {path} · 해시 {hash12}… ({mode})
+report_generated: 리포트 생성 {ts}
+report_ops_head: 조작 이력 ({n}건)
+report_filter_line: '행 필터: `{expr}` — 사유: {reason}'
+report_missing_line: '결측 처리 {op}: {detail}'
+report_derive_line: 파생 컬럼 {name} = `{expr}`{eps}
+report_labelmap_line: '라벨 매핑 {col}: {mapping}'
+report_relabel_line: 개별 샘플 라벨 수정 {n}건 — 원본 불변, 결과에 표식이 남습니다
+report_types_head: 확정된 의미 타입 ({n}개)
+report_guard_head: 가드레일 (리포트 생성 시점 계산)
+report_guard_skipped: 검사 안 함
+report_spec_head: 질문 설계 (A1)
+report_spec_line: '{q} · y={y} · group={group} · 짝지음 {paired} · 방향 {direction} · 계획 검정 {n}개'
+report_tests_head: 실행한 검정 ({n}건)
+report_tests_cols: 검정 | 통계량 | p | 효과 (95% CI) | 보정 α
+report_hypo_head: 가설 (기계 생성)
+report_bad_format: '형식: {allowed} (받은 값 {fmt})'
+report_written: '리포트 저장: {path} ({fmt}, {kb:.0f}KB)'
+session_none_active: 작업 중인 세션이 없습니다 — statop session new --data <파일> 로 시작하거나 --session 으로 지정하세요
+session_auto_selected: '세션: {name} (최근 작업 세션 자동 선택 — 다른 세션은 --session)'
+screen_an_btn: 분석
+screen_an_title: 분석 (모듈 A) — 질문 → 후보 → 실행 → 가설
+screen_an_flow: ↑↓ 이동 · ←→ 값 바꾸기 · [계획 확인] 후 후보에서 Enter 로 실행
+screen_an_hint: 질문 유형과 컬럼을 ←→ 로 고르고 [계획 확인]을 누르세요
+screen_an_need_columns: 먼저 컬럼을 가져오고 타입을 확정하세요
+an_f_question: 질문 유형
+an_f_y: 측정값 y
+an_f_group: 군/변수 x
+an_f_paired: 짝지음
+an_f_ntests: 계획 검정 수
+an_none: (없음)
+screen_an_changed: '{label} → {value}'
+screen_an_blocked: 진행 전에 풀 것 {n}건 — 아래를 해결하고 다시 [계획 확인]
+screen_an_planned: 후보 {n}개 — ↑↓ 로 고르고 Enter 로 실행합니다
+screen_an_cands_head: 검정 후보 ({n}개) — ✅적합 ⚠확인 필요 ⛔부적합
+screen_an_pick_candidate: 후보 위에서 Enter — 먼저 [계획 확인]을 누르세요
+screen_an_ran: '{id} 실행 완료 — 아래 가설을 확인하세요'
+screen_keys_analyze: ↑↓ 이동 · ←→ 값 · Enter 실행(후보 위) · Esc 뒤로 · F2 드래그복사↔클릭 · Ctrl-Q 종료
+screen_focus_analyze: 분석 설계
+screen_an_plan_btn: 계획 확인
+screen_an_run_btn: 실행
+screen_an_checks_btn: 가정 검사
+screen_an_result_title: 검정 결과와 가설
+screen_an_result_spec: '{q} · y={y} · x={x} — 설계·후보로 돌아가려면 Esc 또는 [다시 설계]'
+screen_an_result_keys: Esc 다시 설계 (후보 유지 — 다른 검정도 바로 실행 가능)
+screen_an_redesign_btn: 다시 설계
+run_need_three_levels: 추세 검정은 순서 있는 3군 이상이 필요합니다 — 지금 {n}군
+run_need_second_column: 두 번째 컬럼(군/변수 x)을 지정해야 합니다
+run_need_numeric: '숫자로 읽을 수 있는 값이 없습니다: {cols}'
+run_need_binary_y: '{col}이 두 값이어야 합니다 — 지금 {n}가지'
+run_need_positive: 로그를 쓰려면 양수인 행이 3개 이상 필요합니다 — 지금 {n}개
+run_note_order: 군 순서를 {order} 로 보고 계산했습니다 — 순서가 다르면 결과의 방향이 뒤집힙니다
+run_note_ca_rates: '군별 비율: {rates}'
+run_note_mk_tau: Kendall tau = {tau:.4f}, S = {s:.0f}
+run_note_r2: R² = {r2:.4f}, 절편 = {intercept:.6g}
+run_note_shape_only: 위치(중앙값)뿐 아니라 퍼짐·치우침이 달라도 유의해집니다 — 무엇이 다른지는 분포를 함께 보세요
+run_note_perm_p: p는 순열 {n}회로 구한 근사값입니다
+run_note_prop: φ = {phi:.4f} (0에 가까울수록 비례), 로그비 분산 = {vr:.4f}
+run_note_no_p: 이 지표에는 표준적인 p값이 없습니다 — 크기로 판단하세요
+run_note_dropped_nonpositive: 0 또는 음수인 {n}행을 뺐습니다 (로그를 씌울 수 없음)
+run_need_two_categories: 범주가 2개 이상이어야 합니다 — 지금 {n}개
+run_note_icc_model: ICC(2,1) 이원 랜덤·절대일치 모형입니다 — 두 측정의 평균이 서로 달라도(치우침) 값이 내려갑니다
+run_note_loa: 일치 한계(95% LoA) {lo:.6g} ~ {hi:.6g} — 개별 측정은 이 범위만큼 어긋날 수 있습니다
+run_note_ba_proportional: 평균과 차이의 상관 r={r:.4f} (p={p:.4g}) — 유의하면 값이 클수록 차이도 커진다는 뜻이라 고정 LoA를 쓸 수 없습니다
+run_note_ccc_parts: 정밀도(상관) {r:.4f} × 정확도(치우침 보정) {cb:.4f} — 어느 쪽이 낮은지가 원인입니다
+run_note_kappa_weighted: 선형 가중 κ = {kw:.4f} — 범주에 순서가 있으면 이 값을 보세요
+run_note_kappa_prevalence: 단순 일치율 {po:.4f} — κ가 이보다 훨씬 낮으면 한 범주에 쏠린 탓입니다
+run_note_fleiss_two: 평가자 2명에 대한 Fleiss κ입니다 — 이 경우 Cohen's κ(T-604)와 사실상 같은 값을 봅니다
+run_need_counts: '{col}이 0 이상의 정수(개수)여야 합니다'
+run_need_unit_interval: '{col}이 0~1 범위여야 합니다 — 지금 {cols}'
+run_need_positive_time: '{col}이 양수(시간)여야 합니다'
+run_note_coef: '{name}: {value:.6g} [{lo:.6g}, {hi:.6g}]'
+run_note_logit_ref: '''{pos}''를 사건으로, ''{neg}''를 기준으로 두고 계산했습니다'
+run_note_pseudo_r2: pseudo R² = {r2:.4f} — 보통 R²보다 훨씬 작게 나오므로 같은 기준으로 읽지 마세요
+run_note_epv: 사건 하나당 변수 수가 {epv:.1f}로 10 미만입니다 — 계수와 CI가 과장될 수 있습니다
+run_note_r2_adj: R² = {r2:.4f} (수정 R² {adj:.4f})
+run_note_hc3: '등분산을 가정하지 않은 강건 표준오차(HC3): SE={se:.6g}, p={p:.4g} — 위 p와 크게 다르면 등분산이 깨진 것입니다'
+run_note_dispersion: 산포 = {disp:.3f} (1이 기준) → {model}으로 계산했습니다
+run_note_ordinal_order: y의 순서를 {order} 로 보고 계산했습니다
+run_note_proportional_odds: 비례 오즈를 가정합니다 — 구간마다 효과가 다르면 이 값 하나로 요약할 수 없습니다
+run_note_beta_link: logit 연결함수 기준이라 계수는 비율 자체가 아니라 오즈의 배수입니다
+run_note_beta_squeeze: 0 또는 1인 {n}행이 있어 표준 축소로 안쪽으로 밀었습니다 — 원값 그대로가 아닙니다
+run_note_robust_vs_ols: OLS 기울기 {ols:.6g} vs 강건 {rob:.6g} — 차이가 크면 몇몇 점이 직선을 끌고 있었다는 뜻입니다
+run_note_downweighted: '{total}행 중 {n}행의 가중치가 낮아졌습니다 (이상점으로 취급)'
+run_note_cox_no_censor: 중도절단 컬럼이 설계에 없어 모든 행을 사건 발생으로 보았습니다 — 추적 중 관찰이 끊긴 대상이 있으면 이 결과는 쓸 수 없습니다
+run_note_ph_assumption: 위험비가 시간에 따라 일정하다고 가정합니다 — 생존곡선이 교차하면 성립하지 않습니다
+run_note_ordinal_lexical: y가 글자라서 사전 순으로 늘어놓았습니다 — 의도한 순서와 다르면 [라벨 매핑]에서 0,1,2… 코드를 먼저 붙이세요
+run_need_composition: '{col}이 속한 조성 세트를 찾지 못했습니다 — 행 합이 1(또는 100)로 닫히는 컬럼들이 함께 있어야 합니다'
+run_need_count_composition: '이 검정은 개수(정수)가 필요합니다 — 지금은 비율입니다: {cols}'
+run_note_comp_set: '조성 세트 {n}개 전체를 써서 변환했습니다: {cols}'
+run_note_clr_read: CLR 값의 차이는 기하평균 대비 로그 차이입니다 — 원래 비율의 몇 배라고 읽으면 안 됩니다
+run_note_alr_ref: '{ref}를 기준 성분으로 두고 log({y}/{ref})를 비교했습니다 — 기준을 바꾸면 값이 달라집니다'
+run_note_logratio_diff: 로그비 평균 차이 ({a}-{b}) = {d:.4f}
+run_note_aldex_mc: Dirichlet 인스턴스 {k}회의 p 중앙값입니다 (최댓값 {pmax:.4g}) — 최댓값이 크면 개수의 불확실성만으로도 결론이 뒤집힙니다
+run_note_ancombc_simple: 군별 채취량 치우침 {corr:.4f}를 빼고 계산한 간이 구현입니다 — 구조적 0 판정과 성분 전체에 대한 다중검정 보정은 하지 않습니다
+run_note_marginal: '전체 P(Y): {dist}'
+run_note_conditional: 'P(Y | {z}): {dist}'
+run_note_simpson: 전체와 군별 방향이 다르면 전체 비율로 결론 내면 안 됩니다 (심슨의 역설)
+cand_reason_not_implemented: 아직 계산기가 없습니다 — 값을 구할 수 없습니다
+screen_an_not_runnable: '{id}은 아직 계산기가 없습니다 — 다른 후보를 고르세요'
+an_unimplemented_head: 계산기 없음
+run_name_icc: ICC (2,1) 절대일치
+run_name_clr_compare: CLR 변환 후 군 비교
+run_name_alr_compare: ALR 변환 후 군 비교
+run_name_aldex: ALDEx2-형 (CLR + Monte Carlo)
+run_name_ancombc: ANCOM-BC-형 (간이)
+run_name_prop_comp: Proportionality (조성)
+run_name_marginal: 주변 분포 vs 조건 분포
+run_name_poisson_over: Poisson regression (과산포)
+run_eff_ks_d: D (최대 누적차)
+run_eff_marginal_gap: 최대 |P(Y|Z)-P(Y)|
+run_eff_clr_diff: CLR 차이 ({a}-{b})
+run_eff_ancombc_diff: 보정 로그차 ({a}-{b})
+run_too_many_levels: '{col}의 수준이 {n}개입니다 — 순서형이 아니라 연속으로 보입니다. 연속형 회귀(T-802)를 쓰거나 구간을 먼저 나누세요'
+hypo_p1_slope_sig: '{x}가 변할 때 {y}가 함께 변한다 ({effect}={value:.3g}{ci}, {test} p={p:.3g} < 보정 α {alpha:.3g})'
+hypo_p1_slope_ns: '{x}에 따른 {y}의 변화는 보정 α({alpha:.3g}) 기준으로 유의하지 않다 ({effect}={value:.3g}{ci}, p={p:.3g})'
+hypo_p2_slope_sig: '{dir} — {test} 기준 우연으로 보기 어렵다 (p={p:.3g})'
+hypo_p2_slope_ns: '{dir} 방향의 변화가 관측되었으나 우연 범위 안이다 (p={p:.3g})'
+hypo_p2_interp_slope: '{x} 한 단위당 평균 변화량을 말할 뿐, {x}를 바꾸면 {y}가 바뀐다는 뜻은 아닙니다'
+hypo_p1_agree_sig: '{y}와 {x}는 {mag} 수준으로 일치한다 ({effect}={value:.3g}{ci}, {test})'
+hypo_p1_agree_ns: '{y}와 {x}의 일치도가 높다고 보기 어렵다 ({effect}={value:.3g}{ci}, {test})'
+hypo_p2_agree_sig: 두 측정이 같은 값을 준다고 볼 수 있는 수준이다 ({effect}={value:.3g})
+hypo_p2_agree_ns: 두 측정을 서로 바꿔 쓰기는 어렵다 ({effect}={value:.3g})
+hypo_p2_interp_agree: 상관이 높아도 치우침이 있으면 일치는 아닙니다 — 일치 한계(LoA)를 함께 보세요
+hypo_p1_shape_sig: '{x} 군 간에 {y}의 분포 형태가 다르다 ({effect}={value:.3g}{ci}, {test} p={p:.3g} < 보정 α {alpha:.3g})'
+hypo_p1_shape_ns: '{x} 군 간 {y}의 분포 차이는 보정 α({alpha:.3g}) 기준으로 유의하지 않다 (p={p:.3g})'
+hypo_p2_shape_sig: 두 분포가 같은 모집단에서 나왔다고 보기 어렵다 ({test}, p={p:.3g})
+hypo_p2_shape_ns: 분포가 다르다고 할 만한 근거가 부족하다 (p={p:.3g})
+hypo_p2_interp_shape: 중앙값·퍼짐·치우침 중 무엇이 다른지는 말하지 않습니다 — 분포 그림을 함께 보세요
+hypo_p1_interp_sig_nomag: '{effect}={value:.3g}는 원단위 값이라 통용되는 대·중·소 기준이 없습니다 — 이 크기가 실질적으로 의미 있는지는 분야 기준으로 판단하세요 (2축 원칙)'
+screen_an_missing_head: 결측 있음 — 이 설계로 실제 쓰이는 행은 {total}행 중 {kept}행입니다
+screen_an_missing_col: '{col}: {n}행 비어 있음 ({ratio:.1%})'
+screen_an_impute_hint: '[결측 대치] = {method} 방식 (←→로 변경)'
+screen_an_impute_method: '대치 방법: {method}'
+screen_an_impute_btn: 결측 대치
+screen_an_imputed: '{method}로 {n}칸을 채웠습니다 ({cols}) — 세션에 기록했습니다'
+screen_an_no_missing: 이 설계에 쓰이는 컬럼에 결측이 없습니다
+screen_an_impute_group_missing: '{col} 자체가 비어 있어 그룹별 대치를 쓸 수 없습니다 — 다른 방법을 고르세요'
+spec_event_same_column: 사건 컬럼 {col}이 측정값이나 군 컬럼과 같습니다 — 다른 컬럼을 고르세요
+run_name_logrank: Kaplan–Meier + 로그순위
+run_name_gehan: Gehan–Breslow–Wilcoxon
+run_name_rmst: RMST 차이 (제한평균생존시간)
+run_name_cox_adj: Cox 비례위험 (공변량 조정)
+run_eff_hr: HR ({name})
+run_eff_rmst: RMST 차이 ({a}-{b})
+run_note_censor_col: '{col}을 사건 여부로 썼습니다 — 사건 {events}건, 중도절단 {censored}건'
+run_note_median_surv: '{level}: n={n}, 사건 {events}건, 중앙생존 {median:.4g}'
+run_note_hr_companion: 로그순위 검정 자체에는 크기가 없어 같은 자료의 Cox 위험비를 효과크기로 붙였습니다
+run_note_logrank_crossing: 생존곡선이 교차하면 로그순위는 차이를 놓칩니다 — 그때는 T-903 RMST 차이를 보세요
+run_note_gehan_early: 초기 시점에 더 큰 가중을 둡니다 — 후기에만 갈리는 차이는 놓칠 수 있습니다
+run_note_rmst_tau: 관측이 남아 있는 {tau:.4g}까지 넓이를 비교했습니다 (각각 {a:.4g}, {b:.4g})
+run_note_rmst_why: 비례위험을 가정하지 않으므로 곡선이 교차해도 쓸 수 있습니다 — 단위는 시간 그대로입니다
+run_eff_hr_vs: HR ({name} vs {ref})
+run_note_median_unreached: '{level}: n={n}, 사건 {events}건, 중앙생존 도달 안 함 (절반 이상이 아직 사건을 겪지 않음, 마지막 생존율 {low:.3f})'
+an_f_event: 사건 여부 (생존)
+run_note_rows_used: '{total}행 중 {used}행으로 계산했습니다 (결측 {dropped}행 제외)'
+screen_an_ignoring_missing: 결측 행 제외 — {total}행 중 {used}행 사용 (채우지 않음)
+screen_an_ignore_btn: 결측 무시하고 보기
+spec_by_same_column: 층화 컬럼 {col}이 측정값과 같습니다 — 다른 컬럼을 고르세요
+run_note_strata: '{col} 기준으로 {n}개 수준에서 각각 따로 계산했습니다 — 전체값과 함께 보세요'
+run_note_strata_flip: '전체와 방향이 반대인 수준이 있습니다: {levels} — 전체값만으로 결론 내면 안 됩니다 (심슨의 역설)'
+run_need_two_factors: 상호작용을 보려면 군 컬럼과 층화 컬럼(label)이 둘 다 필요합니다
+run_name_two_way_anova: 이원 분산분석 (교호작용)
+run_name_art_anova: 정렬 순위 변환 ANOVA (교호작용)
+run_name_interaction_glm: 회귀 + 교호작용 항
+run_eff_interaction: 교호작용 계수 ({term})
+run_note_factors: '요인 두 개: {a} × {b}'
+run_note_cell: '{a} × {b}: 평균 {mean:.4g} (n={n})'
+run_note_main_effect: '{name} 주효과 F={f:.4g}, p={p:.4g}'
+run_note_interaction_first: 교호작용이 유의하므로 주효과를 단독으로 해석하면 안 됩니다 — 칸별 평균을 보세요
+run_note_cell_empty: 가장 작은 칸이 {n}행입니다 — 이 조합은 사실상 비어 있어 교호작용을 추정할 수 없습니다
+run_note_unbalanced: 칸 크기가 {lo}~{hi}행으로 크게 다릅니다 — 불균형 설계라 제곱합 방식에 따라 결과가 달라질 수 있습니다
+run_note_art: 순위로 바꾼 뒤 본 교호작용입니다 — 정규성을 가정하지 않지만 효과크기는 원단위가 아닙니다
+run_note_centered: '{col}을 평균 {mean:.4g} 기준으로 중심화했습니다 — 주효과를 ''상대가 평균일 때''로 읽으세요'
+run_need_weights: '사전지정 대비는 가중치가 필요합니다 — 군 순서 {levels} 에 맞춰 {k}개를 합이 0이 되게 주세요 (예: 1,1,-2)'
+run_bad_weights: '가중치를 숫자로 읽을 수 없습니다: {raw}'
+run_weights_count: 가중치 {got}개를 받았지만 군은 {k}개입니다 — 순서 {levels}
+run_weights_sum: 가중치 합이 {total:.4g} 입니다 — 대비는 합이 0이어야 합니다
+run_weights_need_both_signs: 양수 가중치와 음수 가중치가 모두 있어야 두 덩어리로 묶을 수 있습니다
+run_need_control_level: '대조군 수준을 지정하세요 — 가능한 값: {levels}'
+run_name_planned_contrast: 사전지정 대비
+run_name_dunnett: Dunnett (대조군 vs 각 군)
+run_name_orthogonal: 직교 대비 집합 (Helmert)
+run_name_nonparam_contrast: 비모수 대비 (묶은 군 Mann–Whitney)
+run_eff_contrast: 대비값
+run_eff_vs_control: '{level} − {ctrl}'
+run_eff_helmert: '{level} vs 이후 군 평균'
+run_note_contrast_spec: '대비 가중치: {spec}'
+run_note_group_means: '군 평균: {means}'
+run_note_contrast_single: 미리 정한 대비 하나만 본 것입니다 — 데이터를 보고 가중치를 고쳤다면 다중검정 보정이 필요합니다
+run_note_dunnett_ctrl: '{ctrl} 을 대조군으로 두고 나머지를 각각 비교했습니다'
+run_note_dunnett_row: '{level} − 대조군 = {diff:.4g} [{lo:.4g}, {hi:.4g}], p={p:.4g}'
+run_note_dunnett_adjusted: p와 구간은 대조군과의 비교 횟수에 맞춰 이미 보정된 값입니다 — 다시 보정하지 마세요
+run_note_helmert_set: 서로 겹치지 않는 대비 {k}개로 쪼갰습니다 (각 군 vs 그 뒤 군들의 평균)
+run_note_helmert_row: '{level} vs 이후 평균 = {value:.4g} [{lo:.4g}, {hi:.4g}], p={p:.4g}'
+run_note_orthogonal_why: 직교라서 대비끼리 같은 차이를 중복해 세지 않습니다 — 다만 대비 수만큼 보정은 필요합니다
+run_note_pooled: '양수 쪽 묶음: {plus} / 음수 쪽 묶음: {minus}'
+run_note_pooled_caveat: 묶은 군 안의 차이는 사라집니다 — 묶어도 되는지는 가설이 정합니다
+an_f_by: 층화 라벨
+screen_an_strata_head: '{col} 수준별 ({n}개) — 전체와 함께 보세요'
+screen_an_strata_row: '{level} (n={n}): {name}={value:.4g}, p={p:.3g}'
+run_need_2x2: 2×2 표가 필요합니다 — 지금 결과 {y}가지 × 군 {g}가지
+run_need_control_var: 편상관은 통제할 변수가 필요합니다 — 층화 라벨을 지정하세요
+run_name_prop_diff: 비율 차이 (Newcombe 구간)
+run_eff_prop_positive: + 방향 비율
+run_eff_discordant: 불일치 쌍 비율 차
+run_eff_prop_diff: 비율 차 ({a}-{b})
+run_eff_partial_r: 부분 r ({ctrl} 통제)
+run_note_sign_only_direction: 부호만 봅니다 — 차이의 크기는 무시하므로 검정력이 낮습니다 (크기를 쓰려면 T-112)
+run_note_welch_anova: 군별 분산이 달라도 되는 ANOVA입니다 — 등분산 가정이 깨졌을 때 T-121 대신 씁니다
+run_note_small_expected: 기대도수가 5 미만인 칸이 {n}개입니다 — 근사가 약해지므로 Fisher 정확검정(T-202)을 함께 보세요
+run_note_mcnemar_discordant: 불일치 쌍만 씁니다 — 한쪽만 바뀐 {b}쌍 vs {c}쌍. 일치 쌍의 수는 결과에 영향이 없습니다
+run_note_prop_rates: '''{hit}'' 비율: {a}={pa:.4f}, {b}={pb:.4f}'
+run_note_newcombe: 구간은 Newcombe 방식이라 0 또는 1 근처에서도 범위를 벗어나지 않습니다
+run_note_dcor: 직선이 아닌 관계도 잡습니다 — 0이면 독립이지만 방향(양·음)은 없습니다
+run_note_bicor_vs_pearson: Pearson r={pearson:.4f} vs bicor={bicor:.4f} — 차이가 크면 몇몇 점이 상관을 끌고 있었다는 뜻입니다
+run_note_partial_vs_raw: 원래 상관 {raw:.4f} → {ctrl} 통제 후 {partial:.4f} — 무엇을 통제했는지가 이 값의 의미를 정합니다
+run_name_gtest: G-test (우도비)
+run_need_subject: 반복측정에는 대상 ID 컬럼이 필요합니다 — 같은 대상이 여러 번 나오는 id 컬럼을 고르세요
+run_need_occasion: 회차(시점·배치) 컬럼을 군으로 지정하세요
+run_need_two_occasions: 회차가 2개 이상이어야 합니다 — 지금 {n}개
+run_need_three_occasions: 회차가 3개 이상이어야 합니다 — 지금 {n}개 (2개면 대응 검정을 쓰세요)
+run_need_subjects: 대상이 3명 이상이어야 합니다 — 지금 {n}명
+run_name_mixed_interaction: 혼합모형 교호작용
+run_eff_rate_range: 회차 간 비율 최대차
+run_eff_vs_first: '{term} (기준 {base})'
+run_note_occasions: '{col} 기준 대상 {n}명, 회차 순서 {order}'
+run_note_incomplete_subjects: 회차가 빠진 대상 {n}명을 뺐습니다 — 반복측정 검정은 모든 회차가 있어야 합니다 (빼기 싫으면 T-133 혼합모형)
+run_note_means_by_occasion: '회차별 평균: {means}'
+run_note_mean_ranks: '회차별 평균 순위: {ranks}'
+run_note_prop_by_occasion: '회차별 ''{hit}'' 비율: {rates}'
+run_note_sphericity: 구형성을 가정합니다 — 회차 간 차이의 분산이 다르면 p가 낙관적으로 나옵니다 (그때는 T-132 Friedman)
+run_note_friedman_ranks: 대상 안에서 순위만 봅니다 — 값의 크기 차이는 무시합니다
+run_note_lmm_unbalanced: 회차가 빠진 대상도 그대로 씁니다 — 반복측정 ANOVA와 달리 버리지 않습니다
+run_note_icc_subject: 대상 간 분산이 전체의 {icc:.1%}입니다 — 높을수록 같은 대상의 측정끼리 비슷하다는 뜻입니다
+run_note_random_subject: '{col} 을 대상 변량효과로 두어 개인차를 빼고 계산했습니다 (대상 {n}명)'
+an_f_subject: 대상 ID (반복측정)
+screen_an_repeat_hint: '{col}에 같은 값이 여러 번 있습니다 — 대상 {subjects}명 × 총 {rows}행. 반복측정 검정을 쓰려면 [대상 ID]로 지정하세요'
+screen_an_flip_warn: '전체와 방향이 반대인 수준: {levels}'
+screen_an_flip_why: 전체값만 보면 결론이 뒤집힙니다 (심슨의 역설) — 수준별 값을 반드시 함께 보고하세요
+hypo_caution_simpson: ⛔ {by}의 {levels} 수준에서는 방향이 전체와 반대입니다 — 전체값으로 쓴 결론은 층별로 보면 뒤집힙니다 (심슨의 역설). 층별 값을 반드시 함께 보고하세요
+hypo_dir_overall_only: 전체로는 {dir}이지만 {by}의 {levels}에서는 반대
+hypo_p2_interp_simpson: 전체 방향과 층별 방향이 다릅니다 — 어느 쪽이 답인지는 통계가 아니라 설계가 정합니다. 층이 교란요인이면 층별 값이, 층이 결과의 일부라면 전체값이 맞습니다
+points_outlier_iqr: IQR 기준 {side} 바깥 (정상 범위 {lo:.4g} ~ {hi:.4g})
+points_side_low: 아래
+points_side_high: 위
+points_x_index: 행 번호
+points_note_required: 제외 사유를 적어야 합니다 — 나중에 왜 뺐는지 설명할 수 있어야 합니다
+screen_an_plot_btn: 개별 점 보기
+screen_an_plot_title: '개별 점 — {y} (군: {x})'
+screen_an_plot_flow: ↑↓ 점 고르기 · 사유를 적고 Enter 로 제외 · 이미 뺀 점에서 Enter 는 되돌리기 · Esc 뒤로
+screen_an_plot_hint: 점 {n}개 — 결과를 끌고 있는 샘플을 찾아 뺄 수 있습니다
+screen_an_point_row: '{key}  {x}  {y:.4g}  — {why}'
+screen_an_excluded_row: '{key}  (뺀 상태) 사유: {reason} — Enter 로 되돌리기'
+screen_an_no_candidates: 눈에 띄는 점이 없습니다 (IQR 바깥 없음)
+screen_an_need_reason: 제외 사유를 먼저 적으세요 — 나중에 왜 뺐는지 설명할 수 있어야 합니다
+screen_an_excluded: '{key} 제외 — 사유: {reason}'
+screen_an_included: '{key} 되돌림'
+screen_an_reason_label: '제외 사유 (아래 칸에 적으세요):'
+screen_an_exclude_btn: 제외
+screen_keys_plot: ↑↓ 점 · Enter 제외/되돌리기 · Esc 뒤로 · F2 드래그복사↔클릭 · Ctrl-Q 종료
+report_excluded_line: 제외한 개별 샘플 {n}건 — 아래 사유와 함께 검정·가설에 반영되었습니다
+report_excluded_row: '{col}={key} — {reason}'
+points_alt_why: 이상점에 둔한 방법입니다 — 빼기 전에 이걸 먼저 써 보세요
+points_excl_red: 전체 {total}행 중 {n}행({ratio:.1%})을 뺐습니다 — 10%를 넘으면 분석이 아니라 표본을 고른 것입니다
+points_excl_yellow: 전체 {total}행 중 {n}행({ratio:.1%})을 뺐습니다 — 제외 전 결과와 반드시 함께 보고하세요
+points_both_head: 제외 전 / 제외 후 (둘 다 보고해야 합니다)
+points_both_row: '{when}: {name} 통계량={stat:.4g}, p={p:.4g}, {eff}={val:.4g}'
+points_when_before: 제외 전
+points_when_after: 제외 후
+points_flipped: ⛔ 제외 때문에 결론이 바뀌었습니다 (한쪽만 유의) — 어느 쪽을 쓸지는 제외가 정당한지에 달려 있습니다
+points_alt_head: 빼기 전에 권하는 대안
+metrics_need_result: 먼저 검정을 하나 실행하세요 — 무엇을 병기할지는 본 지표에 달려 있습니다
+metrics_not_computable: '{id}은 값을 계산하는 항목이 아니라 확인 안내입니다'
+metrics_p203_why: 표준화 값은 '몇 배인지'를 알려주지 않습니다 — 원척도 차이를 항상 함께 보고하세요 (registry 기본 Support)
+metrics_group_mean: '{level}: 평균 {mean:.6g} (SD {sd:.4g}, n={n})'
+metrics_group_ci: '{level}: 평균 {mean:.6g} [95% CI {lo:.6g}, {hi:.6g}] (n={n})'
+metrics_raw_diff: '{a} − {b} = {diff:.6g} [95% CI {lo:.6g}, {hi:.6g}] ({unit} 원단위)'
+metrics_alpha: 계획 검정 {n}개 → 보정 α = {adj:.4g} (보정 없으면 최소 하나가 우연히 유의할 확률 {any_err:.1%})
+metrics_alpha_verdict: p={p:.4g} → 보정 전 {before}, 보정 후 {after}
+metrics_alpha_flipped: 보정 후 결론이 바뀝니다 — 가설을 다시 보세요
+metrics_sig: 유의
+metrics_ns: 유의하지 않음
+metrics_excluded: '{total}행 중 {n}행 제외 ({ratio:.1%}) — 남은 {left}행으로 계산했습니다'
+metrics_comp_head: 조성 {n}개 성분의 군 평균 ({a} − {b})
+metrics_comp_row: '{col}: {a:.6g} vs {b:.6g}  (차 {d:+.6g})'
+metrics_comp_sum: 차의 합 = {total:.3g} — 합이 0에 가까운 것은 조성이라 당연합니다. 한 성분이 오르면 다른 성분은 반드시 내립니다
+metrics_no_event_col: 사건 컬럼이 설계에 없어 추적손실을 셀 수 없습니다 — [사건 여부]를 지정하세요
+metrics_censor: 사건 {events}건 / 중도절단 {censored}건 (절단 비율 {ratio:.1%})
+metrics_censor_group: '{level}: 절단 비율 {ratio:.1%} (n={n})'
+metrics_omnibus: '전체차 {name}: 통계량 {stat:.4g}, p={p:.4g}, {eff}={val:.4g}'
+metrics_transformed_note: '{col}은 변환된 값입니다 — 아래 평균은 변환 척도 기준이며 원래 비율의 배수로 읽으면 안 됩니다'
+metrics_head_support: 보조 지표 (Support) — 같은 방향을 쉬운 값으로
+metrics_head_guardrail: 가드레일 (Guardrail) — 놓치면 결론이 뒤집힘
+metrics_head_triad: 이 상황의 3종 세트
+metrics_triad_row: '{id} {situation} — Goal {goal} / Support {support} / Guardrail {guardrail}'
+metrics_none: 추천 없음 — Goal 하나로 충분한 경우도 정상입니다
+metrics_check_only: 확인 안내 (값 계산 없음)
+metrics_goal_line: '목표 지표 (Goal) — {test} {name}: {eff}={val:.4g}, p={p:.4g}'
+scores_unset_no_input: 요구 조건이 규칙에 없어 판정 안 함
+scores_fit: '쓸 수 있는 컬럼: {cols}'
+scores_partial: 요구 조건({need})을 일부만 만족하는 컬럼이 있습니다 — 변환이 필요할 수 있습니다
+scores_no_fit: 요구 조건({need})을 만족하는 컬럼이 없습니다
+scores_unspecified_cell: · 규칙표의 {cells} 칸이 비어 있어 그 등급은 확인되지 않았습니다
+scores_var_share: '{col}의 비율'
+scores_ent_picked: '{name} 공식을 씁니다 — 적용 조건: {green}'
+scores_ent_cond_unmet: 이 데이터가 그 분포의 조건을 만족하지 않습니다
+scores_head: 점수 목록 ({n}종) — ✅문제없음 ⚠별로 ⛔안됨 ○미지정
+scores_row: '{id}  {name}'
+scores_grade_green: 문제없음
+scores_grade_yellow: 별로
+scores_grade_red: 안됨
+scores_grade_unset: 미지정
+scores_unset_meaning: 미지정 = 판정 근거 없음 (적합하다는 뜻 아님)
+scores_ent_head: '{col}의 엔트로피 — 연속 분포는 공식이 분포마다 다릅니다'
+scores_ent_facts: n={n} · 양수={positive} · [0,1]={unit} · 왜도={skewed} · 중꼬리={heavy_tail} · 정규={normal}
+scores_ent_rejected: '쓰지 않은 공식: {items}'
+scores_ent_discrete: '{col}은 {type} 이라 연속 분포 엔트로피(4.3절) 대상이 아닙니다 — 이산 분포는 SC-DIV-01 Shannon H 를 쓰세요'
+metrics_goal_need_one: 점수 ID·검정 ID·효과크기 이름 중 하나는 주어야 합니다
+metrics_goal_unknown_score: '{id}는 점수 목록에 없습니다'
+metrics_goal_set: Goal 지표를 {name}(으)로 지정했습니다 — 이제 이 기준으로 병기를 추천합니다
+metrics_goal_auto: Goal 을 지정하지 않아 마지막에 실행한 검정을 기준으로 봅니다
+scores_more: … 외 {n}종 (--limit 으로 더 보기)
+screen_scores_btn: 점수 목록
+screen_scores_cycle: ←→ 로 등급 바꾸기
+screen_scores_shown: 점수 {n}종 — 다시 누르면 접습니다
+metrics_roles_unknown: '규칙표에 없는 관계 id 입니다: {ids} — 관계는 base 고정이라 새로 만들 수 없습니다 '
+metrics_roles_saved: Goal {key} 에 대한 선택을 저장했습니다 — 보조 {ns}건, 가드레일 {ng}건
+metrics_chosen_mark: 보고서에 포함
+a5_goal: '{name} — {eff}={val:.4g}'
+a5_with_support: 보조 지표({items})로 같은 방향을 원척도에서 확인한다.
+a5_with_guardrail: 가드레일({items})을 함께 보고하며, 이것이 무너지면 위 결론은 성립하지 않는다.
+a5_with_caution: '단, 주의사항 {n}건이 있다: {first}'
+a5_snippet_head: '# 이 분석을 그대로 재현하는 명령 (순서대로)'
+a5_snippet_excluded: '제외한 샘플: {key} — {reason}'
+a5_snippet_guardrail: '함께 보고할 가드레일: {items}'
+a5_head: 재작성된 가설 (A5)
+a5_snippet_title: 재현 스니펫
+a5_triad_line: 3종 세트 {id} ({situation}) — Goal {goal} / Support {support} / Guardrail {guardrail}
+metrics_goal_line_pending: '목표 지표 (Goal) — {score} {name}: 아직 이 지표로 계산한 값이 없습니다 (지금 실행한 검정은 {measured})'
+find_need_query: '찾을 말을 입력하세요 (예: 상관, correlation, 생존)'
+find_where_test: 검정 — {q} {qname} 질문에 속합니다
+find_how_test: 분석 화면에서 질문 유형을 {q} 로 고르면 후보에 뜹니다 · statop analyze run --test {id}
+find_where_score: 점수 목록 — {section}
+find_how_score: statop scores --latex 에서 볼 수 있습니다 ({id})
+find_where_post: 보고 규칙 — {kind}
+find_how_post: 검정 결과에 자동으로 붙습니다
+find_where_relation: 지표 역할 관계 (Goal ↔ Support/Guardrail)
+find_how_relation: statop metrics 에서 조건이 맞으면 자동으로 제안됩니다
+find_head: '''{query}'' 검색 결과 {n}건'
+find_none: '''{query}'' 로 찾은 것이 없습니다 — 다른 말로 해보세요 (상관/correlation, 생존/survival)'
+find_kind_test: 검정
+find_kind_score: 점수
+find_kind_post: 보고 규칙
+find_kind_relation: 역할 관계
+prog_head: 진행 단계 — 파생 컬럼 → 타입 확정 → 분석 (뒤로 와도 여기서 확인)
+prog_import: 컬럼 가져오기
+prog_derive: 파생 컬럼 만들기 (선택)
+prog_types: 의미 타입 확정
+prog_analyze: 분석 실행
+prog_import_detail: '{n}개 가져옴'
+prog_derive_detail: '{n}개 만듦 — 안 만들어도 됩니다'
+prog_types_detail: '{done}/{total} 확정 — 남은 것: {left}'
+prog_analyze_detail: 검정 {n}회 실행
+screen_an_list_open: '{label} 선택지 {n}개 — ↑↓ 로 고르고 Enter 로 확정, Esc 로 접기'
+screen_an_choices_n: 개 중 선택 · Enter 로 목록 펼치기
+screen_an_list_btn: 목록 펼치기
+formula_needs_step: '{func}는 구간 크기가 필요합니다 — 예: floor_to(age, 10)'
+formula_step_positive: '{func}의 구간 크기는 0보다 커야 합니다'
+formula_needs_edges: '{func}는 경계를 2개 이상 주어야 합니다 — 예: bin(age, 0, 20, 40, 65)'
+pad_head: 클릭해서 넣기 — 함수 이름을 외울 필요 없습니다
+pad_cols: 컬럼
+pad_ops: 연산
+pad_bin: 구간·자리수
+pad_row_func: 행 함수
+pad_scalar_func: 컬럼 스칼라
+pad_set_func: 조성 함수
+pad_hint: ↑↓←→ 로 고르고 Enter 로 식에 넣기 (마우스면 클릭)
+derive_lossy: 값이 뭉개집니다 — 고유값 {before}개 → {after}개. 되돌릴 수 없습니다
+derive_levels: '생기는 값: {levels}'
+pad_btn: 키패드 넣기
+tablediff_no_key: '{file} 에 키 컬럼 {key} 가 없습니다'
+tablediff_dup_key: 키 {key} 가 중복입니다 ({a}건 / {b}건) — 행을 1:1로 맞출 수 없어 셀 대조는 건너뜁니다. 다른 컬럼을 --key 로 지정하세요
+tablediff_head: 표 대조 — 키 {key} 기준 (전체 읽기)
+tablediff_same: 두 표가 같습니다 — 행 {rows}개, 키 {key}
+tablediff_rows: '행: 같은 키 {common}개 · + 추가 {added}개 · − 빠짐 {removed}개'
+tablediff_cols: '컬럼: + 추가 {added} · − 빠짐 {removed}'
+tablediff_cells: ~ 바뀐 셀 {n}개
+tablediff_by_col: '  ~ {col}: {n}개'
+tablediff_more: '  … 외 {n}개'
+tablediff_example: '  ~ {key} · {column}: {from_} → {to}'
+tablediff_values_hint: 바뀐 값을 더 보려면 --show-values 를 붙이세요
+mb_bad_question: '모델링 질문 {q}를 모릅니다 — 가능한 값: {allowed}'
+mb_bad_tier: '모델 티어 {t}를 모릅니다 — 가능한 값: {allowed}'
+mb_bad_validation: '검증 방식 {v}를 모릅니다 — 가능한 값: {allowed}'
+mb_need_k: '{v} 는 분할 수(k)가 필요합니다 (2 이상)'
+mb_need_group: '{v} 는 그룹 컬럼이 필요합니다 — 같은 대상이 train/test 를 넘나들면 누수입니다'
+mb_need_time: '{v} 는 시간 컬럼이 필요합니다'
+mb_bad_role: '모르는 세트 역할: {roles} — 가능한 값: {allowed}'
+mb_need_label: 라벨 컬럼을 지정하세요 — 무엇을 맞히려 한 것인지 알아야 감사가 됩니다
+mb_not_v1: 이 조합은 지금 판정하지 않습니다 ({q}={qv}, {t}={tv}) — 항목만 등록된 상태입니다
+mb_note_question: '{id} {text} — 감사 대상 출력: {output}'
+mb_note_tier: '{id} {tier} — 필요한 감사 입력: {need}'
+mb_set_missing: '{role} 세트 파일이 없습니다: {path}'
+mb_set_unreadable: '{role} 세트를 읽을 수 없습니다 — {detail}'
+mb_holdout_needs_test: holdout 인데 test 세트가 없습니다
+mb_loocv_large: 행이 {n}개인데 LOOCV 입니다 — 학습을 n번 돌리게 되고 분산도 큽니다 (MB-C14)
+mb_group_hint: '{col} 있는데 일반 KFold — GroupKFold 필요 (MB-C02)'
+mb_seed_missing: seed 미기록 — 재현성 감사에서 Gate (MB-C25)
+mb_head: 모듈 B 구성 확인 (B1)
+mb_sets_line: '세트: {sets}'
+mb_valid_line: '검증: {v}{k}{group}{time}'
+mb_recorded: 구성을 세션에 기록했습니다 — 이제 누수·불균형·평가 감사를 진행할 수 있습니다
+mb_questions_head: 모델링 질문 (MB-Q)
+mb_tiers_head: 모델 티어 (MB-M)
+mb_q_row: '{mark} {id} {text}  → {output}'
+mb_t_row: '{mark} {id} {tier} ({examples})  — 감사 입력: {need}'
+mb_mark_legend: ● 판정함 · ○ 일부 · — 항목만 등록(판정 안 함)
+mb_check_row: '{grade} {id} {check}{tier}'
+mb_check_detail: '감지: {detect} → {action}'
+mb_check_total: 총 {n}건
+mb_valid_group: ' · 그룹 {col}'
+mb_valid_time: ' · 시간 {col}'
+mb_valid_k: ' (k={k})'
+mb_rows_cell: '{role}={n:,}행'
+screen_tp_title: 전치 (행/열 뒤집기)
+screen_tp_flow: 보는 방향만 뒤집습니다 — 두 번 하면 원래대로
+screen_tp_hint: 메모리 예상치를 보고 [전치 실행]을 누르세요
+screen_tp_shape: '지금 모양: {rows:,}행 × {cols:,}컬럼{est}'
+screen_tp_cost: '예상 메모리: {mb:,.0f}MB (전체 로드 + 전치 사본)'
+screen_tp_state: '현재 상태: {state}'
+screen_tp_warn: 컬럼 구성이 달라집니다 — 가져오기·타입 확정 다시
+screen_tp_done_on: 전치했습니다 — 컬럼 목록을 다시 불러왔습니다
+screen_tp_done_off: 전치를 해제했습니다 (원래 방향)
+screen_tp_btn: 전치
+screen_tp_run_btn: 전치 실행
+screen_copy_title: 사본 저장 (가공 파일)
+screen_copy_flow: 원본은 건드리지 않고, 대치·제외·수정이 반영된 사본을 만듭니다
+screen_copy_hint: 이름을 비우면 <원본>_trimmed 로 저장합니다
+screen_copy_pending: 저장하지 않은 값 변경 {n}건 — {detail}
+screen_copy_nothing: 값을 바꾼 조작 없음
+screen_copy_use_main: 이 사본을 다음 기준으로
+screen_copy_origin: '원본: {path}'
+screen_copy_saved: '저장: {path} ({rows:,}행 × {cols}컬럼)'
+screen_copy_sidecar: '사이드카: {path}'
+screen_copy_done: '사본 저장: {path} ({rows:,}행)'
+screen_copy_btn: 사본 저장
+screen_copy_save_btn: 저장
+screen_copy_main_btn: 기준 전환 ▲▼
+op_impute: 결측 대치
+op_missing_drop: 결측 행 제거
+op_relabel: 라벨 수정
+op_exclude_row: 샘플 제외
+op_filter_rows: 행 필터
+screen_verify_title: 무결성 검증 (두 파일 대조)
+screen_verify_flow: 비교 파일을 열고 → 컬럼 고르고 → [대조]
+screen_verify_hint: 비교할 파일을 하나 더 여세요
+screen_verify_a: '기준(A): {path}'
+screen_verify_b: '비교(B): {path}'
+screen_verify_loaded: '비교 파일: {path}'
+screen_verify_need_file: 비교할 파일을 먼저 여세요
+screen_verify_cols: 비교할 컬럼 고르기 ({n}개 공통) — 클릭으로 체크
+screen_verify_all_cols: 안 고르면 공통 컬럼 전부
+screen_verify_same: 두 표가 같습니다
+screen_verify_diff: 차이가 있습니다 — 아래를 보세요
+screen_verify_btn: 무결성 검증
+screen_verify_open_btn: 비교 파일 열기
+screen_verify_run_btn: 대조
+screen_open_first: 먼저 파일을 여세요
+screen_keys_simple: 번호키로 버튼 · Esc 뒤로 · F2 드래그복사↔클릭 · Ctrl-Q 종료
+a3_manual_check: '자동 검사 없음 — 사람이 확인: {method}'
+a3_manual_action: '어긋나면: {action}'
+a3_auto_head: 이 검정이 요구하는 가정 ({n}건)
+compat_auto_head: 이 조합의 적합성 판정
+compat_auto_none: 걸리는 적합성 규칙 없음
+metrics_ratio_corr_goal: 비율끼리의 상관 (S-R01)
+metrics_ratio_corr_support: CLR·ALR 변환 후 상관
+metrics_ratio_corr_why: 조성은 합이 고정이라 원값 상관에 음의 편향이 낍니다 — 변환 후 값과 나란히 봐야 합니다
+metrics_corr_raw: '원값 상관 {a}~{b}: r={r:.4f} — Ratio-Ratio는 절대적인 상관관계를 나타내므로 인위적인 상관(Closure effect)이 발생할 수 있습니다'
+metrics_corr_clr: CLR 변환 후 r={r:.4f} — 전체(세트 {n}개의 기하평균)를 고려한 상대적 상관관계입니다 ({cols})
+metrics_corr_alr: ALR 변환 후 r={r:.4f} — 기준 성분({ref}) 대비 상대적 상관관계입니다. 기준을 무엇으로 잡느냐에 따라 상관의 부호가 역전될 수 있어 해석에 주의가 필요합니다
+metrics_corr_alr_need_third: ALR은 기준으로 쓸 제3 성분이 필요합니다 (지금은 2성분)
+metrics_corr_no_set: '{col}이 속한 조성 세트를 못 찾아 변환 상관을 낼 수 없습니다'
+metrics_corr_read: 세 값은 계산 오류가 아니라 묻는 질문이 다른 것입니다 — 절대적 관계(원값) / 전체 대비(CLR) / 기준 대비(ALR). 부호가 갈리면 '무엇 대비인가'를 정한 뒤 해석하세요
+metrics_corr_prop: 비례성 ρ_p={rho:.4f} · φ={phi:.4f} (T-321) — 조성 데이터에서 둘 또는 그 이상의 성분이 같은 방향으로 증감하는지에 대한 비례관계를 봅니다
+qwen_unreachable: '{url} 에 닿지 않음 ({err})'
+qwen_bad_status: 서버 응답 코드 {code}
+qwen_ready: '{model} · {ms}ms'
+qwen_model_missing: '{model} 미적재 — 올라온 모델: {served}'
+qwen_stage_no_endpoint: 주소 미설정
+qwen_stage_unreachable: 서버에 닿지 않음
+qwen_stage_model_missing: 모델 미적재
+qwen_stage_ready: 준비됨
+qwen_wait_known: 평균 {sec}초 (최근 {last}초, {n}회)
+qwen_wait_unknown: 이전 호출 기록 없음 — 첫 로딩은 수십 초 걸릴 수 있습니다
+qwen_asking: Qwen 에게 묻는 중…
+mb_leak_need_train: train 세트가 필요합니다
+mb_leak_need_other: 비교할 test·external 세트가 필요합니다
+mb_leak_no_shared_cols: 양쪽에 공통인 피처 컬럼이 없습니다
+mb_c01_fail: 세트 간 중복 {n}행 — 외운 것을 맞히게 됩니다
+mb_c01_pass: 세트 간 중복 없음
+mb_c01_row: '{role}: {n}행 중 정확중복 {exact}행 ({ratio:.1%}) · 근사중복 {near}행'
+mb_c01_action: 중복 제거 또는 external 재정의
+mb_c02_no_group: 그룹 컬럼 미지정 — 환자·배치가 있으면 [대상 ID]로 지정하세요
+mb_c02_fail: '{col} {n}개가 train/test 를 가로지릅니다 — 사실상 같은 행이 섞였습니다'
+mb_c02_pass: '{col} 이 split 을 가로지르지 않음'
+mb_c02_row: '{role}: 가로지른 그룹 {n}개 · {rows}행 (예: {sample})'
+mb_c02_action: GroupKFold 로 바꾸거나 split 을 그룹 단위로
+mb_c03_no_time: 시간 컬럼 미지정
+mb_c03_unparsable: '{col} 을 날짜로 읽을 수 없습니다'
+mb_c03_fail: '{col} 기준 시간 겹침 — 미래를 보고 과거를 맞히게 됩니다'
+mb_c03_pass: '{col} 기준 시간 겹침 없음'
+mb_c03_row: '{role} {tlo}~{tro} 가 train {alo}~{ahi} 과 겹칩니다'
+mb_c03_action: 시간 기준 split (train 이 test 보다 과거)
+mb_c05_fail: 라벨을 거의 그대로 담은 피처 {n}개
+mb_c05_pass: 라벨 대리변수 없음 (피처 {n}개 확인)
+mb_c05_row: '{col}: {kind}={value:.4f}'
+mb_c05_action: 해당 피처 제거 — 결과에서 유도된 값인지 확인
+mb_leak_head: B2 누수·중복 검사 (모두 Gate)
+mb_leak_all_pass: 누수 통로 없음
+mb_leak_blocked: Gate {n}건 — 해결 전에는 결과를 믿을 수 없습니다
+mb_c01_truncated: 근사중복은 각 세트 앞 {n}행만 비교했습니다
+mb_c01_low_dim: 수치 피처가 {n}개뿐이라 근사중복 판정의 신뢰도가 낮습니다 — 정확중복만 보세요
+mb_need_spec: 모델링 구성을 먼저 확정하세요 — statop model plan … --apply
+mb_code_head: B2 코드 정적 감지 (split 이전 전처리·피처선택)
+mb_code_missing: '코드 파일이 없습니다: {path}'
+mb_code_unparsable: 파이썬 구문을 읽을 수 없습니다 — {detail}
+mb_code_no_split: 나누는 곳을 찾지 못했습니다 — train/test 를 나누는 코드가 있어야 앞뒤를 가릅니다
+mb_code_split_at: '나누는 곳: {line}줄 {name}'
+mb_code_limit: 이 코드에서 보이는 범위입니다 — 못 찾았다고 누수가 없다는 뜻은 아닙니다
+mb_code_pipeline: Pipeline 안에 들어간 전처리 {n}개는 fold 안에서 학습되므로 통과로 봅니다
+mb_code_hit: '{line}줄 {cls}.{method} — 나누기 전에 학습했습니다'
+mb_c04_fail: 나누기 전에 학습한 피처선택·전처리 {n}곳 — 전체를 보고 고른 피처입니다
+mb_c04_pass: 나누기 전에 학습한 피처선택·전처리 없음
+mb_c04_action: Pipeline 에 넣어 fold 안에서 학습되게 하세요
+mb_c09_fail: 나누기 전에 학습한 표준화·정규화 {n}곳 — test 의 분포가 train 에 섞입니다
+mb_c09_pass: 나누기 전에 학습한 표준화·정규화 없음
+mb_c09_action: Pipeline 에 넣어 fold 안에서 학습되게 하세요
+mb_split_head: B2 세트 비율·손실 검사 (MB-C06 · MB-C07)
+mb_c06_need_sets: 세트가 2개 이상이어야 비율을 봅니다
+mb_c06_no_expected: 기대한 분할 비율을 주지 않아 검사하지 않았습니다 (균등으로 가정하면 8:2 분할이 전부 이상으로 나옵니다)
+mb_c06_no_label: 라벨 컬럼이 세트에 없어 세트별 클래스 비율은 보지 못했습니다
+mb_c06_one_class: 전체 라벨이 한 종류뿐이라 클래스 비율을 볼 수 없습니다
+mb_c06_set_one_class: '{role}: 라벨이 한 종류뿐입니다'
+mb_c06_detail: 계획 {expected} / 실제 {observed} ({rows}행) 으로 세트 크기가 유의하게 다릅니다 (p={p:.2e}). 계획한 의도와 맞는지 재검토하세요
+mb_c06_action: 분할 코드의 비율·seed를 확인하거나, 계획한 비율 자체를 다시 보십시오
+mb_c06_strat_detail: '{roles} 의 클래스 비율이 전체와 유의하게 다릅니다 (임계 {adj:.2e}). 층화 분할이 제대로 이루어지지 않거나 학습 대비 결과가 왜곡될 우려가 존재합니다 — 계획한 의도와 맞는지 확인하세요'
+mb_c06_strat_action: 층화 분할(stratified split)로 다시 나누거나, 의도한 구성이면 그대로 두십시오
+mb_c07_no_key: 원본과 세트의 행을 맞출 키 컬럼이 없어 검사하지 않았습니다 (맞출 수 없는데 맞춘 척하면 없는 손실을 만듭니다)
+mb_c07_no_source: 원본 파일이 없어 검사하지 않았습니다
+mb_c07_need_sets: 비교할 세트가 없습니다
+mb_c07_key_missing: 키 컬럼 {col} 이 {path} 에 없습니다
+mb_c07_key_dup: 키 컬럼 {col} 에 중복이 {n}건 있어 행을 1:1로 맞출 수 없습니다
+mb_c07_funnel_label: 원본 → 세트
+mb_c07_set_row: '{role}: {n}행 (원본과 일치 {matched}행)'
+mb_c07_no_loss: 원본 {n}행이 모두 세트에 들어갔습니다
+mb_c07_action: 어느 단계에서 빠졌는지 퍼널을 확인하십시오
+mb_c07_bias_pass: '{cols} 의 분포는 결측정리 전후로 유의하게 달라지지 않았습니다'
+mb_c07_bias_action: 정리 전후 분포를 비교해 이 변형이 타당한지 확인하십시오
+mb_c07_no_bias_cols: 라벨·그룹 컬럼이 원본에 없어 손실의 편향은 보지 못했습니다
+mb_c13_head: B3 라벨 인코딩 방향·매핑 (MB-C13)
+mb_c13_need_sets: 라벨을 볼 세트가 없습니다
+mb_c13_set_row: '{role}: {levels}'
+mb_c13_levels_ok: 세트마다 같은 {n}개 수준입니다
+mb_c13_level_mismatch: train 에 없는 수준이 다른 세트에 있습니다 — {detail}
+mb_c13_level_mismatch_row: '{role}: {values}'
+mb_c13_level_mismatch_action: 학습된 적 없는 클래스는 맞힐 수 없습니다 — 세트 구성을 다시 보십시오
+mb_c13_no_mapping: 라벨 {col} 의 수준별 코드가 기록되지 않았습니다 — label을 재확인해주세요
+mb_c13_implied: 수준별 코드가 기록되지 않아, 학습 코드가 알파벳 순으로 붙일 때를 가정한 값입니다
+mb_c13_recorded: 세션에 기록된 수준별 코드입니다
+mb_c13_no_positive: 어느 수준이 양성인지 지정되지 않았습니다
+mb_c13_pass: 양성 클래스 {pos} = {code} 로 기록되어 있습니다
+mb_c13_action: 수준별 코드를 정하고 기록하십시오 (라벨 매핑)
+mb_c13_positive_action: 양성 클래스를 지정하십시오
+mb_diag_found: 진단 {n}건 — 막지는 않지만 결과를 읽을 때 함께 봐야 합니다
+mb_c06_pass: 계획 {expected} / 실제 {observed} ({rows}행) — 계획과 다르다고 볼 근거가 없습니다
+mb_c06_strat_pass: '클래스 불균형 (예: Mis-stratified) 이 있다는 증거가 없습니다'
+mb_split_all_pass: 세트 비율·손실 모두 이상 없음
+mb_c13_all_pass: 라벨 인코딩 방향 이상 없음
+screen_model_title: 모델링 감사 (모듈 B)
+screen_model_flow: 학습은 실행하지 않습니다 — 세트 파일과 설정, 코드 구문만 읽습니다
+screen_model_btn: 모델링 감사
+screen_model_run_btn: 검사 실행
+screen_model_code_btn: 코드 검사
+screen_model_audit_head: 세트 비율·손실 · 누수 · 라벨 방향
+screen_model_hint: '[검사 실행] 을 누르면 세트 비율·손실, 누수, 라벨 방향을 한 번에 봅니다'
+screen_model_prompt_key: '  키 컬럼 ▏ '
+screen_model_prompt_expect: '  기대 비율 (예 train=8,test=2) ▏ '
+screen_model_prompt_code: '  학습 코드 파일 (.py) ▏ '
+screen_next_model: statop model split --session {session} --key <키컬럼>
+mb_screen_done: 검사 완료 — 문제 {n}건
+mb_screen_need_code: 학습 코드 파일 경로를 입력하세요
+mb_c06_class_cell: '{body} ({n:,}행)'
+mb_c06_axis_set: 세트별 — {body}
+mb_c06_axis_devext: 개발/외부 — {body}   (개발=train·valid·test, 외부=external)
+mb_c06_axis_no_ext: 개발/외부 — external 세트가 없어 두 번째 축은 보지 못했습니다
+mb_c06_group_note: 특정 그룹을 일부러 external 로 뺀 경우라면 이 결과 대신 재확인(그룹 제외)이 필요합니다 — 행 필터로 {col} 의 해당 수준을 빼고 다시 보십시오
+mb_c07_shift: '{cols} ({n}개 컬럼) — 해당 컬럼이 결측정리(제거/Impute) 후 분포가 유의하게 변형되었습니다'
+mb_c07_shift_why: 결측이 비무작위적이거나, 해당 분포 변환이 타당한지 검증이 필요합니다
+mb_c07_shift_risk: 이 과정이 생략될 시, 신규생산 데이터에서 적용 성능이 달라질 수 있습니다
+mb_c07_shift_see: 두 분포를 겹쳐 보려면 분포 비교를 여십시오 ({cols})
+mb_c07_shift_cat: '{col} (p={p:.2e}): 정리 전 {before} → 정리 후 {after}'
+mb_c07_shift_num: '{col} (p={p:.2e}): 정리 전 평균 {mb:.3g} (SD {sb:.3g}) → 정리 후 평균 {ma:.3g} (SD {sa:.3g})'
+mb_c13_flipped_maybe: 양성 클래스의 일부 또는 전부가 0으로 인코딩 가능성이 있습니다 ({pos} = {code})
+mb_c13_flipped: 양성 클래스가 0으로 인코딩되어 있습니다 ({pos} = {code})
+mb_c13_flip_risk: 민감도-특이도 역할이 뒤바뀌어 잘못 해석될 우려가 존재합니다 — label을 재확인해주세요
+mb_c13_table: 코드 — {body}
+mb_c13_table_cell: '{value}={code}{role}'
+mb_c13_role_pos: (양성)
+mb_c13_positive_unknown: 지정한 양성 클래스 {pos} 가 라벨 값에 없습니다
+mb_c06_not_planned: 계획 비율에 없는 세트는 이 검정에서 뺐습니다 — {roles}
+mb_c06_expect_mismatch: 계획 비율({given})과 세트({sets})가 맞지 않아 검사하지 않았습니다
+mb_c07_view_head: '{col} — 결측정리 전/후 분포'
+mb_c07_view_before: 정리 전
+mb_c07_view_after: 정리 후
+mb_c07_view_row: '  {value:<18s} {kind} {bar} {ratio:>5.1%} ({n:,})'
+mb_shift_head: 결측정리 전/후 분포 비교 (MB-C07)
+screen_model_shift_btn: 분포 비교
+mb_screen_no_shift: 분포가 달라졌다고 지목된 컬럼이 없습니다 — 먼저 [검사 실행]
+mb_screen_shift_done: 정리 전/후 분포 {n}개 컬럼
+mb_balance_head: B4 균형·분포 진단 (MB-C08 · MB-C12)
+mb_balance_all_pass: 클래스 균형·메타 연관·세트 간 분포 모두 이상 없음
+mb_c08_no_dev: 개발 세트(train·valid·test)가 없어 클래스 비율을 보지 못했습니다
+mb_c08_no_meta: 함께 볼 메타 컬럼이 지정되지 않아 숨은 불균형은 보지 못했습니다
+mb_c08_dev_row: 개발 — {body}
+mb_c08_set_row: '{role} — {body}'
+mb_c08_imbalanced: 클래스가 치우쳐 있습니다 — 가장 드문 {minority} 가 {n:,}개, 최다:최소 {ratio:.1f}배
+mb_c08_why: 불균형 데이터에서는 정확도(Accuracy)가 다수 클래스를 맞추는 것만으로 높아질 수 있습니다 — 균형 성능 지표를 Guardrail metric 에서 확인하세요
+mb_c08_pass: 클래스 비율이 치우쳐 있다고 볼 근거가 없습니다 (최다:최소 {ratio:.1f}배)
+mb_c08_action: 의도된 불균형 데이터셋이면 학습 전략을 확인하십시오 (층화 분할·클래스 가중)
+mb_c08_multiclass: 라벨이 {n}종류라 숨은 불균형(SMD)은 보지 못했습니다 — 3군 이상은 정의가 갈려 v1에서 판정하지 않습니다
+mb_c08_meta: '{cols} — 지름길 학습(Shortcut learning) 위험'
+mb_c08_meta_row: '{col}: SMD {smd:.2f} (표본 크기만으로 생기는 수준 {chance:.2f}){note}'
+mb_c08_meta_why: 해당 컬럼의 분포가 라벨 간 차이가 존재합니다. 라벨과 연관된 데이터 특성이 모델에 학습될 경우, 일반화 성능 저하 요인이 될 수 있습니다
+mb_c08_meta_pass: '{cols} 의 분포가 라벨 간 다르다고 볼 근거가 없습니다'
+mb_c08_meta_action: 해당 컬럼 보정 전/후 성능을 비교하십시오 — 의도한 설계라면 그대로 두어도 됩니다
+mb_c12_balanced: 클래스가 치우치지 않아 가중·샘플링 여부는 보지 않았습니다
+mb_c12_missing: 클래스가 {ratio:.1f}배 치우쳐 있습니다 — 의도된 불균형 데이터셋은 학습 전략을 확인하십시오
+mb_c12_how: 가중·샘플링을 썼다면 구성에 남기십시오 — {allowed}
+mb_c12_pass: 가중·샘플링이 {how} 로 기록되어 있습니다
+mb_c12_action: 균형 성능 지표를 함께 보고하십시오 (균형 정확도·MCC·PR-AUC)
+mb_shift_no_ext: external 세트가 없어 세트 간 분포 차이는 보지 못했습니다
+mb_shift_fail: 외부 세트의 구성이 학습 데이터와 다릅니다 (피처 {total}개 중 {n}개, SMD 기준 {limit})
+mb_shift_row: '{col}: SMD {smd:.2f} (표본 크기만으로 생기는 수준 {chance:.2f}){note}'
+mb_shift_why: 외부가 실제 population 을 더 잘 관찰하도록 의도된 설계인지 확인이 필요합니다
+mb_shift_pass: 외부 세트의 구성이 학습 데이터와 다르다고 볼 근거가 없습니다 (피처 {n}개)
+mb_shift_action: 외부 성능 해석 시 이 차이를 의도에 맞게 관찰하거나, 의도에 맞는 지표로 재산출해 해석하십시오
+mb_smd_at_chance: ' — 우연만으로도 나올 수 있는 크기입니다'
+mb_shift_ids: 식별자로 보이는 컬럼은 피처에서 뺐습니다 — {cols}
+mb_shift_only_ids: 비교할 피처가 없습니다 — 공통 컬럼이 모두 식별자입니다 ({cols})
+mb_c13_level_absent: 어떤 세트에는 아예 없는 수준이 있습니다 — {detail}
+mb_c13_level_absent_action: 그 세트에서는 해당 클래스의 성능을 잴 수 없습니다 — 의도한 구성인지 확인하세요
+mb_c08_metrics: 균형 성능 지표 — 균형 정확도(Balanced accuracy) · MCC · PR-AUC + 기저율
+metrics_shortcut_goal: 라벨과 연관된 컬럼이 있는 분류 (MB-C08)
+metrics_shortcut_guard: '{cols} 보정 전/후 성능 비교'
+metrics_shortcut_why: 라벨과 연관된 데이터 특성이 모델에 학습되면 일반화 성능 저하 요인이 됩니다 — 보정 전후를 나란히 봐야 그 몫이 보입니다
+mb_prep_head: B5 전처리·모델 적합 (MB-C10 · MB-C11 · MB-C15)
+mb_prep_all_pass: 전처리·모델 조합에 이상 없음
+mb_c10_no_family: 모델 계열이 지정되지 않아 표준화 필요 여부를 보지 못했습니다 — {allowed}
+mb_c10_not_needed: '{family} ({examples}) 는 표준화가 필요하지 않습니다'
+mb_c10_recorded: 표준화가 {how} 로 기록되어 있습니다 ({family})
+mb_c10_missing: '{family} ({examples}) 는 표준화가 필요한데 기록되어 있지 않습니다 — 척도가 최대 {ratio:.0f}배 벌어져 있습니다'
+mb_c10_spread: 척도 차이가 큰 컬럼 — {body}
+mb_c10_cell: '{col} SD {sd:.3g} ({ratio:.0f}배)'
+mb_c10_action: 표준화를 적용했다면 구성에 남기고, 안 했다면 fold 안에서 적용하십시오 (MB-C09)
+mb_c11_no_reduction: 차원축소를 쓰지 않아 보지 않았습니다
+mb_c11_need_features: 비교할 수치 피처가 2개 미만입니다
+mb_c11_recorded: '{reduction} 전에 표준화가 {how} 로 기록되어 있습니다'
+mb_c11_missing: '{reduction} 전 표준화 여부가 기록되어 있지 않습니다 — {col} 이 전체 분산의 {share:.0%} 를 차지합니다 (척도 {ratio:.0f}배)'
+mb_c11_action: 큰 분산을 가진 변수가 PCA 의 첫 축에 큰 영향을 줄 수 있습니다 — 표준화 여부를 구성에 명시하십시오
+mb_c15_not_applicable: '{family} 는 EPV 판정 대상이 아닙니다 (로지스틱·선형 계열만)'
+mb_c15_binary_only: 라벨이 {n}종류라 EPV 를 보지 않았습니다 (이진만)
+mb_c15_pass: 변수당 사건 수(EPV) {epv:.1f} — 사건 {events:,}개 / 변수 {variables}개
+mb_c15_low: 변수당 사건 수(EPV) {epv:.1f} 로 기준 {limit} 미만입니다 — 사건 {events:,}개 / 변수 {variables}개
+mb_c15_why: 사건에 비해 변수가 많으면 계수가 표본에 따라 크게 흔들려 재현되지 않을 수 있습니다
+mb_c15_room: 지금 사건 수로 기준을 맞추려면 변수는 {n}개 안쪽입니다
+mb_c15_action: 변수를 줄이거나, 벌점 회귀·Firth 보정을 검토하십시오
+mb_compare_head: 모델 비교 가능 여부 (MB-C34)
+mb_c34_need_two: 비교할 모델이 2개 이상이어야 합니다
+mb_c34_row: '{pair}: {comparable}{allowed} ({why})'
+mb_c34_pass: 모델쌍 {n}개 모두 견줄 수 있습니다
+mb_c34_action: 같은 자료·같은 결과변수로 다시 적합하거나, 비교 자체를 보고에서 빼십시오
+mb_c34_limited_action: 쓸 수 있는 방법만 쓰고, 행 수가 다른 쌍은 공통 행으로 다시 적합해 견주십시오
+mb_compare_bad_model: '모델 형식이 잘못되었습니다 — "이름: 항1+항2 [n=480] [y=결과] [family=binomial]"'
+mb_c34_allowed: ' — 쓸 수 있는 것 {allowed}'
+mb_family_required: 필요
+mb_family_optional: 불필요
+mb_c10_depends: '{family} ({examples}) 는 표준화 여부가 목적·구조에 따라 달라집니다 — 어느 쪽을 택했는지 기록되어 있지 않습니다'
+mb_c10_depends_action: 표준화를 했는지 안 했는지만 구성에 남기십시오 — 어느 쪽이 옳은지는 목적에 따라 다릅니다
+mb_c34_gap: '  ({body} · {diff:,}행 차이 {ratio:.0%})'
+mb_c34_flagged: 확인이 필요한 모델쌍 {n}개 — {pairs}
+mb_c34_gap_cell: '{name} {n:,}행'
+mb_eval_head: B5 평가 감사 (MB-C16~C20 · C22 · C23)
+mb_eval_all_pass: 평가 방식에 이상 없음
+mb_eval_need_probability: 의미 타입이 probability 로 확정된 컬럼이 없어 평가를 보지 못했습니다 — 예측 확률 컬럼을 먼저 확정하세요
+mb_eval_score_not_probability: '지정한 점수 컬럼 {col} 이 probability 로 확정되어 있지 않습니다 (확정된 것: {found})'
+mb_eval_many_probability: probability 로 확정된 컬럼이 여럿입니다 — 어느 것이 예측 확률인지 구성에 지정하세요 ({cols})
+mb_eval_no_test: 평가할 세트에 {col} 또는 라벨이 없습니다 (test·external 을 봅니다)
+mb_eval_binary_only: 라벨이 {n}종류라 이 검사는 보지 못했습니다 (이진만)
+mb_c16_values: '{role} {n:,}행 — ROC-AUC {roc:.3f} · PR-AUC {pr:.3f} · 양성 비율 {base:.1%}'
+mb_c16_balanced: 양성 비율 {base:.1%} — ROC-AUC 를 그대로 읽어도 크게 어긋나지 않습니다
+mb_c16_imbalanced: 양성이 {n_pos:,}개로, AUC {ref:.2f} 를 탐지할 검정력이 {power:.0%} 수준입니다 — ROC-AUC {roc:.3f} 와 PR-AUC {pr:.3f} 가 벌어집니다
+mb_c16_why: PR-AUC 로 특이도·민감도 타겟을 조절해 비교가 필요합니다
+mb_c16_action: 보조 지표(Support)로 임계값에서의 민감도·특이도를 함께 보고하십시오
+mb_c20_recorded: 임계값 {thr} 이 기록되어 있습니다
+mb_c20_missing: 임계값이 기록되어 있지 않습니다 — 아래 클래스별 성능은 {thr} 를 가정한 값입니다
+mb_c20_why: 민감도·특이도는 임계값마다 달라지므로, 임계값이 없으면 어느 지점의 값인지 알 수 없습니다
+mb_c20_action: 보고한 민감도·특이도가 어느 임계값의 값인지 구성에 남기십시오
+mb_c18_positive: 양성
+mb_c18_negative: 음성
+mb_c18_row: '{name} {n:,}개 — 맞힌 비율(재현율) {recall:.1%}'
+mb_c18_assumed: 임계값이 기록되지 않아 {thr} 를 가정했습니다
+mb_c18_pass: 임계값 {thr} 에서 어느 클래스도 전부 놓치지는 않았습니다
+mb_c18_collapsed: 전부 놓친 클래스 — {names} (임계값 {thr}) · 해당 클래스의 영향을 파악할 수 없습니다
+mb_c18_action: 클래스별 재현율과 혼동행렬을 함께 보고하고, 임계값 조정·가중을 검토하십시오
+mb_c19_bins: 확률 구간 {n}개에서 예측과 실제를 비교했습니다
+mb_c19_worst: 가장 벌어진 구간 — 예측 {conf:.0%} 인데 실제 {actual:.0%} ({n:,}개)
+mb_c19_pass: 보정 오차(ECE) {ece:.3f} 로 기준 {limit} 이내입니다
+mb_c19_high: 보정 오차(ECE) {ece:.3f} 로 기준 {limit} 을 넘습니다
+mb_c19_why: 예측 확률을 그대로 실제 가능성으로 해석하기 어렵습니다 — 순위는 잘 맞아도 "70%"라는 숫자 자체는 실제 발생 확률과 다를 수 있습니다
+mb_c19_action: 확률을 수치로 쓸 것이면 보정(Platt·isotonic)을 검토하고, 순위만 쓸 것이면 그 사실을 적으십시오
+mb_c17_binary: 라벨이 {n}종류라 평균 방식은 보지 않았습니다 (다중분류만)
+mb_c17_recorded: 평균 방식이 {how} 로 기록되어 있습니다 ({n}개 클래스)
+mb_c17_missing: 클래스가 {n}개인데 평균 방식이 기록되어 있지 않습니다
+mb_c17_why: macro 는 클래스마다 같은 무게, micro·weighted 는 큰 클래스에 무게가 실립니다 — 같은 모델이라도 값이 달라집니다
+mb_c17_action: macro·micro·weighted 중 무엇으로 평균했는지 구성에 남기십시오
+mb_c22_no_folds: fold 별 성능이 없어 보지 못했습니다
+mb_c22_values: fold {n}개 — 평균 {mean:.3f} · 표준편차 {sd:.3f} · 가장 낮은 fold {worst:.3f}
+mb_c22_pass: fold 간 편차 {sd:.3f} 로 기준 {limit} 이내입니다
+mb_c22_wide: fold 간 편차가 {sd:.3f} 입니다 — 평균 {mean:.3f} 인데 가장 낮은 fold 는 {worst:.3f} 입니다
+mb_c22_why: 평균 하나만 보고하면 어느 fold 에서 무너졌는지 가려집니다
+mb_c22_action: 평균과 함께 편차·가장 낮은 fold 를 적으십시오
+mb_c23_no_test: test 세트가 없어 보지 못했습니다
+mb_c23_pass: 이 test 세트로 구성을 바꾼 기록이 한 번뿐입니다
+mb_c23_repeated: 같은 test 세트로 구성을 {n}번 바꿨습니다
+mb_c23_why: 결과를 보고 설정을 고치기를 반복하면 test 는 사실상 검증셋이 되어, 보고한 성능이 낙관적이 됩니다
+mb_c23_limit: 세션에 남은 구성 기록만 센 값입니다 — 세션 밖에서 돌린 것은 알 수 없습니다
+mb_c23_action: 최종 보고용 홀드아웃을 따로 떼어 두고, 조정은 검증셋에서 하십시오
+mb_c19_thin_bins: 구간마다 {limit}개가 안 되어 대표 구간은 고르지 않았습니다
+mb_repro_head: 지표 변경·재현성 감사 (MB-C21 · C25~C27)
+mb_repro_all_pass: 지표 변경·재현성에 이상 없음
+mb_c21_no_metric: 보고한 지표가 기록되지 않아 변경 여부를 보지 못했습니다
+mb_c21_same: 보고 지표가 {metric} 로 유지되고 있습니다
+mb_c21_changed: 보고 지표를 {old} 에서 {new} 로 바꿨는데 사유가 기록되어 있지 않습니다
+mb_c21_why: 지표 차이로 인해 동등 비교가 불가합니다
+mb_c21_change_action: 바꾼 사유를 기록하고, 이전 지표 값을 함께 보고하십시오
+mb_c21_reason_given: 보고 지표를 {old} 에서 {new} 로 바꿨고 사유가 기록되어 있습니다
+mb_c21_reason: 사유 — {reason}
+mb_c21_both: 이전 지표 {old} 값도 함께 보고하십시오 — 두 보고를 놓고 볼 수 있어야 합니다
+mb_c25_recorded: seed {seed} 가 기록되어 있습니다
+mb_c25_missing: seed 가 기록되어 있지 않습니다
+mb_c25_why: split·초기화·샘플링이 매번 달라져, 같은 코드로 돌려도 같은 결과가 나오지 않습니다
+mb_c25_action: seed 를 구성에 남기십시오 — 고정 코드는 statop model seed 로 받을 수 있습니다
+mb_c26_recorded: 환경이 기록되어 있습니다 — {env}
+mb_c26_missing: 라이브러리·하드웨어 환경이 기록되어 있지 않습니다
+mb_c26_why: 같은 seed 라도 라이브러리 버전이 다르면 값이 달라질 수 있습니다
+mb_c26_action: 파이썬·주요 라이브러리 버전과 실행 장치를 구성에 남기십시오
+mb_seed_script_head: 재현용 seed 고정 — 세션 {session}
+mb_seed_script_note: 이 파일은 seed 를 어디에 심어야 하는지만 적습니다. 학습 코드는 사용자의 것입니다.
+mb_seed_script_assumed: seed 가 기록되지 않아 {seed} 를 예시로 넣었습니다 — 실제로 쓴 값으로 바꾸십시오.
+mb_seed_script_env: 기록된 환경 — {env}
+mb_seed_script_split: 분할에도 같은 seed 를 넘기십시오
+mb_seed_saved: seed 고정 코드를 저장했습니다 — {path}
+mb_family_depends: 조건부
+mb_specific_head: 모델특유 검사 (MB-C28~C31 · T0)
+mb_specific_all_pass: 모델특유 검사에 이상 없음
+mb_c28_not_applicable: '{family} 는 완전분리 판정 대상이 아닙니다 (계수를 적합하는 계열만)'
+mb_c28_binary_only: 라벨이 이진이 아니라 완전분리를 보지 못했습니다
+mb_c28_pass: 라벨을 완벽히 가르는 변수는 없습니다
+mb_c28_found: '{n}개 변수가 라벨을 거의 완전히 가릅니다 — {cols}'
+mb_c28_row: '{col}: {kind} (두 군의 값이 겹치는 폭 {overlap:.1%})'
+mb_c28_complete: 완전분리
+mb_c28_quasi: 준완전분리
+mb_c29_not_applicable: '{family} 는 다중공선성 판정 대상이 아닙니다 (계수를 적합하는 계열만)'
+mb_c29_pass: 가장 큰 VIF 가 {vmax:.1f} 입니다 (참고 기준 {limit})
+mb_c29_found: VIF 가 {limit} 이상인 변수가 있습니다 — {cols}
+mb_c29_row: '{col}: VIF {vif:.1f}'
+mb_c29_why: 둘 이상의 변수 간 상관관계로 인해 표본 추출에 따라 변동이 존재할 수 있으며, 변수 간의 효과가 분리되지 않아 독립적인 해석이 불가합니다 (다중공선성)
+mb_c29_action: 겹치는 변수를 묶거나 하나만 남기고, 그대로 두려면 계수를 개별 해석하지 마십시오
+mb_c31_not_reported: 특성중요도를 보고하지 않아 보지 않았습니다
+mb_c31_pass: 중요도({how}) 보고 — 상관 {limit} 이상인 변수쌍은 없습니다
+mb_c31_correlated: 중요도({how}) 보고 — 서로 상관이 높은 변수쌍이 {n}개 있습니다
+mb_c31_row: '{a} ↔ {b}: |r| {r:.2f}'
+mb_c27_noted: 비결정 연산을 고지했습니다 — {note}
+mb_c27_suspected: 환경에 {found} 가 있는데 비결정 연산 고지가 없습니다
+mb_c27_why: GPU·병렬 연산은 seed 를 고정해도 실행마다 값이 조금씩 달라질 수 있습니다
+mb_c27_action: 재현 범위를 함께 적으십시오 — 완전히 같은 값인지, 근사값인지
+mb_c27_unknown: 환경 기록에 비결정 연산의 흔적이 없어 판단하지 않았습니다 — 없다는 뜻은 아닙니다
+mb_seed_script_torch: PyTorch 를 쓴다면
+mb_c28_why_unpenalized: 하나의 변수만으로 label 을 분리 가능한(완전분리) 경우로 인해 계수가 발산할 수 있습니다. 해당 변수의 효과 크기나 표준오차를 신뢰·해석하기 어렵습니다
+mb_c28_why_penalized: 규제(L1·L2)가 발산을 억제하지만, 한 변수만으로 label 이 분리되므로 예측 기여도를 별도 측정해야 합니다
+mb_c28_action_unpenalized: 그 변수가 결과에서 유도된 값인지 확인하고, 아니라면 Firth 보정·벌점 회귀를 검토하십시오
+mb_c28_action_penalized: 그 변수가 결과에서 유도된 값인지 확인하고, 그 변수를 뺀 모델과 예측 성능을 견주어 기여도를 재십시오
+mb_c29_rule_of_thumb: VIF {limit} 은 관행적 기준(rule of thumb)이며 절대 기준이 아닙니다 — 값의 크기와 함께 보십시오
+mb_c31_why_impurity: 분할에서 둘 중 하나가 먼저 뽑히면 나머지에는 기여가 남지 않아, 같은 정보가 여러 변수로 나뉘어 실립니다 — 순위를 그대로 읽기 어렵습니다
+mb_c31_why_permutation: 한쪽을 섞어도 상관된 다른 변수에 같은 정보가 남아 성능이 덜 떨어집니다 — 실제로는 중요한 변수가 둘 다 낮게 나올 수 있습니다
+mb_c31_why_unknown: 상관이 높으면 중요도가 어긋납니다 — impurity 계열은 나뉘어 실리고, permutation 계열은 둘 다 낮게 나옵니다. 어느 방식인지 구성에 적어 주십시오
+mb_c31_action_impurity: permutation importance 로 다시 재거나, 겹치는 변수를 묶은 뒤 순위를 보십시오
+mb_c31_action_permutation: 상관된 변수를 묶어 한꺼번에 섞는 방식(grouped permutation)으로 재거나, 묶은 단위로 순위를 보십시오
+mb_c31_action_unknown: 중요도를 어떤 방식으로 구했는지 구성에 적어 주십시오 — 방식마다 어긋나는 방향이 다릅니다
+mb_scope_note: STATOP 는 학습 전 방향만 제시합니다 — 조기중단·학습곡선·최적화처럼 학습 과정에서 확인할 것은 판단하지 않습니다
+mb_scope_why: 학습 중 값을 보고 방향을 고치면 그 선택이 결과에 맞춰져, 판단이 자료가 아니라 결과를 따라가게 됩니다 (편향)
+mb_triad_head: 3-metric 트리아드 (MB-C24)
+mb_triad_all_pass: 지표 구성에 이상 없음
+mb_c24_no_triad: '{q} 에 걸리는 트리아드가 규칙표에 없습니다 — 지어내지 않습니다'
+mb_c24_goal: 목표 (Goal)
+mb_c24_support: 보조 (Support)
+mb_c24_guardrail: 가드레일 (Guardrail)
+mb_c24_row: '{role} — {what}'
+mb_c24_basis: 최다:최소 클래스 비 {ratio:.1f}배 (기준 {limit}) → "{which}" 줄을 골랐습니다
+mb_c24_not_recorded: 보고할 지표가 기록되지 않았습니다 — "{q}" 기준으로 아래 3-metric 을 권합니다
+mb_c24_action: 목표 지표 하나만 두지 말고, 보조와 가드레일을 함께 보고하십시오
+mb_c24_aligned: 보고 지표 {metric} 이 "{q}" 의 목표 지표와 같습니다
+mb_c24_differs: 보고 지표는 {metric} 인데 "{q}" 의 목표 지표는 {goal} 입니다
+mb_c24_differs_why: 다른 지표를 고른 것 자체는 문제가 아닙니다 — 다만 왜 그 지표인지와, 가드레일을 무엇으로 둘지는 함께 적어야 합니다
+mb_c24_differs_action: 고른 이유를 남기고, 그 지표의 반례가 될 지표를 가드레일로 함께 보고하십시오
+mb_snippet_head: '# 이 감사를 그대로 다시 돌리는 명령 묶음'
+mb_snippet_tail: '# 전체를 한 장으로 보려면: statop model report --out audit.md'
+mb_report_title: 모델링 감사 보고 (모듈 B)
+mb_report_session: 세션 {id}
+mb_report_spec: 구성 {q} · {t} · 검증 {v}
+mb_report_summary: 요약
+mb_report_counts: 차단 {gate}건 · 진단 {diag}건 · 보지 못한 것 {skip}건
+mb_report_triad: 권하는 3-metric
+mb_report_what: 무엇을
+mb_report_triad_basis: 규칙표(registry-models 5절)의 "{q}" 줄
+mb_report_findings: 검사 결과
+mb_report_snippet: 재현 명령
+mb_report_snippet_note: 이 감사를 그대로 다시 돌립니다 — 구성에 적어 둔 값이 판정의 전제입니다
+mb_report_saved: 보고서를 저장했습니다 — {path}
+mb_eval_score_not_in_main: 예측 확률 컬럼 {col} 이 세션의 분석 대상 파일에 없어 타입을 확정할 수 없습니다 — 예측이 담긴 파일을 분석 대상으로 연 뒤 probability 로 확정하세요
+qwen_nothing_to_ask: 물을 것이 없습니다 — 검정을 돌리거나 모델 구성을 확정한 뒤에 눌러 주세요
+qwen_stance_optimal: 최적 (Optimal)
+qwen_stance_conservative: 보수적 (Conservative)
+qwen_stance_broad: 넓게 (Broad)
+qwen_line_hypothesis: 가설
+qwen_line_test: 확인·반증 방법
+qwen_line_limit: 한계
+qwen_family_analysis: 검정 결과를 읽는 가설
+qwen_family_modeling: 모델링 계획을 읽는 가설
+prompt_block_missing: '{file}: 절 "{section}" 의 코드블록을 찾지 못했습니다 — 문서 구조가 바뀌었습니다'
+prompt_missing_fields: '{family}: 프롬프트에 채우지 않은 자리가 있습니다 — {fields}'
+qwen_loaded: '{model} 준비됐습니다 ({s:.0f}초 걸렸습니다) — 이제 [가설 받기]를 누를 수 있습니다'
+qwen_already_loaded: '{model} 이 이미 올라와 있습니다 — 바로 [가설 받기]를 누르세요'
+qwen_load_failed: 모델을 올리지 못했습니다 — {url} · {err}
+qwen_load_btn: 모델 불러오기
+qwen_ask_btn: 가설 받기
+qwen_ask_disabled: 모델을 먼저 불러오세요
+qwen_three_head: 가설 3종 — {family}
+qwen_raw_head: 형식이 어긋나 원문을 그대로 보여줍니다 (지어내지 않습니다)
+origin_line: '가공 전 파일 위치: {path}'
+origin_unknown: '가공 전 파일 위치: 알 수 없음 (사이드카가 없어 표식 컬럼으로만 감지했습니다)'
+derive_prefer_arcsinh: 0 이 있습니다 — eps 를 더하기 전에 arcsinh({col}) 를 먼저 보십시오. 0 에서 정의되고 큰 값에서는 log 처럼 거동합니다 (더하는 값에 따라 결과가 달라지지 않습니다)
+scores_groups_head: 같은 목적으로 묶인 지표 {n}묶음 — 묶음마다 하나만 고릅니다
+scores_group_line: '[{pid}] {name} ({n}종)'
+scores_measures: '재는 것: {text}'
+scores_scale: '읽는 법: {text}'
+scores_robust: 강건성 {grade} — {why}
+scores_robust_draft: 강건성 {grade}(초안, 작성자 검토 전) — {why}
+scores_pick_one: 묶음 안의 선택은 사용자가 합니다. 도구는 무엇이 같은 것을 재는지만 보여 줍니다
+scores_robust_legend: 강건성 A=가정·이상치에 잘 안 흔들림 · B=조건 벗어나면 흔들림 · C=조율 모수 선택이 곧 결론
+scores_robust_all_draft: 강건성 등급은 전건 초안입니다 — 작성자 검토 전 ({file})
+represent_no_columns: 볼 컬럼이 없습니다 — 컬럼을 먼저 고르세요
+represent_bad_n: n 은 1보다 크고 전체 {total}행보다 작아야 합니다 (받은 값 {n})
+represent_head: 부분표집 곡선 — 전체 {total:,}행 중 몇 행이면 전체를 닮는가
+represent_repeats: n 마다 {r}번 다시 뽑아 평균냈습니다 (seed {seed}). 한 번만 뽑으면 그 한 번의 운을 곡선으로 봅니다
+represent_col_head: '{col} ({kind}) — {metric}'
+represent_col_enough: n≈{n:,} 부터 거리가 {th} 아래로 내려와 다시 올라오지 않습니다
+represent_col_never: 끝까지 {th} 아래로 내려오지 않았습니다
+represent_enough: n≈{n:,} 이면 고른 컬럼 전부가 전체와의 거리 {th} 이하입니다 (전체의 {pct}%)
+represent_limiting: 필요한 n 을 정하는 것은 {cols} 입니다 — 이 컬럼이 가장 늦게 내려왔습니다
+represent_never: '{cols} 은 끝까지 {th} 아래로 내려오지 않았습니다 — 이 컬럼은 부분표집으로 대표되지 않습니다'
+represent_unit_bound: 1-Wasserstein 거리는 단위가 원변수입니다 — 컬럼끼리 더하거나 한 축에 놓을 수 없습니다. 컬럼 하나씩 읽으십시오
+represent_verify_head: 고른 n={n:,} 검증 — 뽑은 {n:,}행 vs 남은 {rest:,}행
+represent_verify_line: '{col}: 거리 {d:.4f} ({metric})'
+represent_verify_p: '{col}: 거리 {d:.4f} · p={p:.3g}'
+represent_verify_not_full: 전체와 대조하지 않습니다 — 뽑은 행이 전체에 들어 있어 독립적인 비교가 아닙니다
+represent_hypothesis: '가설: 무작위로 고른 {n:,}행은 남은 {rest:,}행과 분포에서 구별되지 않는다'
+screen_represent_btn: 표본 크기
+screen_represent_running: 부분표집 곡선을 재는 중입니다
+screen_represent_shown: 컬럼 {n}개의 곡선을 냈습니다
+represent_bad_metric: 거리는 KS distance 또는 1-Wasserstein distance 중 하나여야 합니다 (받은 값 {got})
+represent_verify_p_note: 두 집단의 분포 차이(거리)가 작은지 먼저 확인하고, p 값은 그 작은 차이가 통계적으로 검출될 정도로 일관된 차이인지 보조적으로 확인합니다
+represent_verify_p_small: '{col}: 유의한 차이가 있지만(p={p:.3g}) 거리 자체는 {d:.4f} 로 작은 규모입니다'
+represent_hypothesis_how: '검증 방법: 두 집단의 분포 거리를 계산하고, 그 차이가 통계적으로 유의한지도 함께 확인합니다'
+represent_threshold_convention: 거리 {th} 은 관행일 뿐입니다 — 어디에 선을 그을지는 실제로 잰 거리들의 분포를 보고 정하십시오
+represent_spread_head: n={n:,} 에서 {draws}번 다시 뽑았을 때 나온 거리들의 분포
+represent_spread_why: 우연만으로도 이만큼은 나옵니다. 임계는 이 분포보다 위에 그어야 '우연이 아니다'라고 말할 수 있습니다
+represent_spread_q: '{col} ({metric}): 가운데값 {p50:.4f} · 가운데 절반 {p25:.4f}~{p75:.4f} · 20번에 1번은 {p95:.4f} 넘음'
+represent_spread_suggest: '{col}: 우연으로 {p95:.4f} 까지 나오므로 임계를 그보다 위에 두십시오 (지금 {th})'
+represent_skipped_ids: '식별자로 보이는 컬럼은 뺐습니다: {cols} (행마다 값이 달라 어떤 n 으로도 전체를 닮을 수 없습니다)'
+hypo_p1_diff_sig_nomag: '{x} 군 간에 {y}의 차이가 있다 ({effect}={value:.3g}{ci}, {test} p={p:.3g} < 보정 α {alpha:.3g})'
+hypo_p1_assoc_sig_nomag: '{x}와 {y} 사이에 연관이 있다 ({effect}={value:.3g}{ci}, {test} p={p:.3g} < 보정 α {alpha:.3g})'
+hypo_p1_agree_sig_nomag: '{y}와 {x}는 일치하는 방향이다 ({effect}={value:.3g}{ci}, {test})'
+list_page: '{page}/{pages} 쪽 · 전체 {n}개'
+list_page_next: '다음 쪽: {how}'
+list_detail_hint: '한 항목을 자세히 보려면: {how}'
+list_page_out_of_range: '{page} 쪽은 없습니다 — {pages} 쪽까지 있습니다'
+screen_scores_page_keys: PgUp·PgDn 으로 쪽 넘기기
+serve_web_at: '웹 화면: {url}   ← 브라우저에 이 주소를 치세요'
+serve_web_missing: '웹 화면은 아직 빌드되지 않았습니다 — API 만 씁니다 (빌드: {how})'
+serve_root_hint: 여기는 API 입니다. 웹 화면은 {url} 입니다
+screen_mouse_off: 'F2 · 드래그 복사 O / 클릭·선택 X  (F2 로 다시 전환)'
+screen_mouse_on: 'F2 · 드래그 복사 X / 클릭·선택 O  (F2 로 다시 전환)'
+screen_web_failed_why: 웹 서버를 띄우지 못했습니다 (포트 {port}) — {why}
+screen_web_ports_busy: '{first}~{last} 포트가 모두 남의 것이거나 막혀 있습니다'
+web_port_foreign: '{port}: 다른 프로그램이 쓰는 중'
+web_port_stale: '{port}: 낡은 STATOP 서버가 잡고 있습니다 (그 서버를 끄고 다시 누르세요)'
+web_port_no_answer: '{port}: 서버를 띄웠지만 {wait:.0f}초 안에 응답이 없었습니다'
+web_port_died: '{port}: 서버가 바로 종료됐습니다 — {tail}'
+web_why_head: 포트별로 이렇습니다 — {detail}
+doctor_head: 이 장비({host})에 남아 있는 STATOP 프로세스
+doctor_clean: 남은 것이 없습니다 — 정상입니다
+doctor_server: 웹 서버 {n}개 (포트 {ports}) — 살아 있는 창이 없는데 남아 있으면 유령입니다
+doctor_worker: 계산 일꾼 {n}개 · 약 {gb:.1f} GB
+doctor_orphan: 그중 부모 없는 것(유령) {n}개
+doctor_how_stop: 정리하려면 같은 명령에 --stop 을 붙이세요
+doctor_stopped: '{n}개를 정리했습니다'
+doctor_nothing_to_stop: 정리할 것이 없습니다
+scores_recommend: '함께 볼 것: {text}'
+scores_source: '근거: {text}'
+robust_need_result: 흔들어 볼 결과가 없습니다 — 검정을 먼저 실행하세요
+robust_head: 강건성 — 지금 결론이 얼마나 버티나
+robust_base: '{test} {name} · {eff}={value:.4g} · p={p:.3g} · {n:,}행'
+robust_boot_head: ① 표본을 다시 뽑으면 ({draws}회, seed {seed}) — 우연만으로 생기는 폭
+robust_band: 가운데 90% 가 {lo:.4g} ~ {hi:.4g} · 가운데 절반 {q25:.4g} ~ {q75:.4g} ({n}회)
+robust_outlier_head: ② 이상치를 빼면 — 소수의 극단값이 결론을 만들고 있나
+robust_choice_head: ③ 고른 것을 바꾸면 — 방법 선택이 결론을 만들고 있나
+robust_trim_label: 상·하위 {pct:.0f}% 제거
+robust_trim_not_numeric: '{col} 이 수치형이 아니라 잘라낼 수 없습니다'
+robust_line: '{label}: {eff}={value:.4g} · p={p:.3g}'
+robust_line_failed: '{label}: 돌리지 못했습니다 — {why}'
+robust_flipped_mark: 방향 뒤집힘
+robust_read_head: 읽는 법
+robust_no_flip: '{total}번 중 방향이 뒤집힌 적이 없습니다 — 결론의 방향은 표본 변동으로는 안 바뀝니다'
+robust_flips: '{total}번 중 {n}번 방향이 뒤집혔습니다 — 표본이 조금만 달라도 결론이 바뀝니다'
+robust_within_chance: ②③의 변화가 모두 ①의 폭 안에 있습니다 — 우연으로 생길 수 있는 만큼입니다
+robust_bigger_than_chance: '①의 폭보다 크게 움직인 것: {items} — 우연이 아니라 그 선택이 만든 차이입니다'
+robust_flipped_by: '방향까지 뒤집은 것: {items} — 결론을 그대로 쓰기 전에 확인하세요'
+robust_caveat: 잘라내기는 확인용입니다 — 이 값으로 결과를 바꿔 쓰지 마세요
+robust_choice_note: ③은 검정마다 효과크기의 종류가 달라(P(X>Y)·Hedges g·rank-biserial…) 크기를 견줄 수 없습니다 — 방향과 유의 여부만 봅니다
+robust_line_named: '{label}: {eff}={value:.4g} · p={p:.3g}'
+screen_robust_btn: 강건성
+screen_robust_running: 결론을 흔들어 보는 중입니다
+screen_robust_shown: 강건성 — 표본 {n}회 · 이상치 {o}종 · 다른 검정 {c}종
+scores_shaken_by: '흔들림: {text}'
+scores_shaken_note: 어느 것이 더 강건한지는 여기서 정하지 않습니다 — 자료마다 다르므로 '강건성'에서 이 자료로 직접 잽니다
+run_note_or_for_2x2: 2×2 라 방향이 있는 오즈비(OR)를 효과크기로 씁니다 — Cramér V({v:.3f})는 크기만 말하고 어느 쪽이 큰지는 말하지 않습니다
+cand_reason_assump_ok: 가정 {c} 확인됨 — 가정 검사(A3)에서 문제없음
+cand_reason_assump_violated: 가정 {c} 위배 — 가정 검사(A3)에서 걸렸습니다
+check_c03_name: 이상치
+check_c03_ok: 이상치 {pct:.1f}% — 5% 이하라 평균 기반 지표가 버팁니다
+check_c03_bad: 이상치 {pct:.1f}% ({n}개) — 5% 를 넘으면 순위·강건 방법을 먼저 보세요
+check_c04_name: 분포 형태 유사성
+check_c04_ok: 군별 형태가 비슷합니다 (왜도 차 {dskew:.2f} · 첨도 차 {dkurt:.2f})
+check_c04_bad: 군별 형태가 다릅니다 (왜도 차 {dskew:.2f} · 첨도 차 {dkurt:.2f}) — 순위 합 비교가 '위치 차이'를 뜻하지 않게 됩니다
+check_c06_name: 구형성
+check_c06_ok: 시점 쌍 차이의 분산이 비슷합니다 (최대/최소 {ratio:.2f})
+check_c06_bad: 시점 쌍마다 차이의 분산이 다릅니다 (최대/최소 {ratio:.2f}) — 보정(GG/HF)이 필요합니다
+check_c08_name: 선형성
+check_c08_ok: 직선으로 설명되는 정도가 순위로 설명되는 정도와 비슷합니다
+check_c08_bad: 직선보다 순위가 훨씬 잘 맞습니다 (r²={r2:.3f} vs ρ²={s2:.3f}) — 곡선 관계입니다
+check_c10_name: 과산포 / 영과잉
+check_c10_ok: 분산/평균 {ratio:.2f} · 0 비율 {zero:.1%} — Poisson 가정에 가깝습니다
+check_c10_bad: 분산/평균 {ratio:.2f} · 0 비율 {zero:.1%} — 과산포입니다. Poisson 대신 음이항을 쓰세요
+check_c11_name: 비례 위험
+check_c11_skip: 시간·사건 컬럼이 지정되어야 비례위험을 볼 수 있습니다
+check_need_numeric: '{col} 이 수치형이 아니라 볼 수 없습니다'
+check_need_two_groups: 군이 둘이어야 형태를 견줄 수 있습니다
+check_need_repeats: 같은 대상을 세 번 이상 잰 자료여야 구형성을 볼 수 있습니다
+cand_reason_assump_variant: '가정 {c} 위배 — 다만 이 검정 안에서 해결됩니다: {how}'
+refs_head: 논문 앵커 (A6) — 비슷한 질문·검정을 다룬 논문
+refs_query: '검색어: {q}'
+refs_line: '{title}'
+refs_meta: PMID {pmid} · {journal} {year} · {url}
+refs_none: 검색 결과가 없습니다 — 검색어를 줄이거나 바꿔 보세요
+refs_offline: 논문을 가져오지 못했습니다 — {why}
+refs_nothing_to_search: 검색할 재료가 없습니다 — 질문 설계나 검정 실행이 먼저입니다
+refs_title_only: v1 은 제목 수준입니다 — 내용이 맞는지는 직접 확인하세요
+refs_privacy: 나가는 것은 질문 유형·검정 이름·군 라벨뿐입니다. 원자료는 나가지 않습니다
+refs_no_labels: 군 라벨을 빼고 검색했습니다
+refs_broadened: 좁은 검색어로는 0건이라 범위를 넓혔습니다 — 결과가 주제에서 멀 수 있습니다
+a7_optional_note: LLM 2차 의견은 덧붙임입니다 — 없어도 나머지 기능(A1~A6)은 그대로 돕니다
+a7_unavailable: LLM 2차 의견은 이 서버에서 쓸 수 없습니다 — {why}
+mb_key_auto: '행 키: {col} — 확정한 행 식별자를 그대로 씁니다 (다시 칠 필요 없습니다)'
+mb_key_none: 행 키를 정하지 못했습니다 — 행 식별자로 확정한 컬럼이 없거나 둘 이상입니다
+semantic_unconfirmed: '확정 취소: {column} — 다시 미확정으로 돌렸습니다'
+semantic_not_confirmed: '{column} 은 아직 확정하지 않았습니다 — 취소할 것이 없습니다'
+screen_types_unconfirm_btn: 확정 취소
+screen_verify_prompt_file: '  비교 파일 경로 ▏ '
+screen_copy_prompt_dir: '  저장할 경로 ▏ '
+screen_an_prompt_reason: '  제외 사유 ▏ '
+tablediff_only_a: '{file} 에 같은 이름의 컬럼이 없습니다 — 이름이 다르면 짝을 지어 주세요'
+tablediff_only_b: '{file} 에 같은 이름의 컬럼이 없습니다 — 이름이 다르면 짝을 지어 주세요'
+screen_verify_title2: 무결성 검증 — 두 파일이 같은가
+screen_verify_side: '{tag}  {name}   {rows}행 × {cols}컬럼'
+screen_verify_side_b_none: 비교(B)  아직 안 열었습니다 — 아래 칸에 경로를 치고 Enter
+screen_verify_key_line: 맞추는 키  {key}   — 행을 1:1 로 맞추는 기준입니다
+screen_verify_key_none: 맞추는 키가 없습니다 — 행 식별자로 확정한 컬럼이 있어야 대조할 수 있습니다
+screen_verify_key_howto: 커서를 그 컬럼에 두고 [행 식별자로 확정] 을 누르세요 (의미 타입 id 로 기록됩니다)
+screen_verify_key_changed: '맞추는 키: {key}'
+screen_verify_key_only_one: 행 식별자로 확정한 컬럼이 하나뿐입니다 — 바꿀 것이 없습니다
+screen_verify_key_not_both: '{col} 은 두 파일 모두에 있어야 키로 쓸 수 있습니다'
+screen_verify_key_dup: '{col} 은 값이 겹칩니다 ({n}건) — 행을 1:1 로 맞출 수 없습니다'
+screen_verify_key_confirmed: '{col} 을 행 식별자로 확정했습니다 — 이제 맞추는 키로 씁니다'
+screen_verify_pick_head: 컬럼 고르기 — 체크한 것만 대조합니다 (안 고르면 짝이 있는 전부)
+screen_verify_page: '{page}/{pages} 쪽 · 컬럼 {n}개'
+screen_verify_paired: ↔ {other}
+screen_verify_same_name: ↔ 같은 이름
+screen_verify_no_pair: ↔ 짝 없음
+screen_verify_pair_set: '짝 지음: {a} ↔ {b}'
+screen_verify_pair_cleared: '짝 해제: {a}'
+screen_verify_pair_none: 짝 지을 상대가 없습니다 — 한쪽에만 있는 컬럼이 더 없습니다
+screen_verify_pair_only_unmatched: 짝은 한쪽에만 있는 컬럼끼리 짓습니다
+screen_verify_verdict_same: ✅ 같습니다 — 행 {rows}개, 컬럼 {cols}개가 모두 같습니다
+screen_verify_verdict_diff: ⛔ 다릅니다 — 행 {rows}곳 · 값 {cells}곳 · 컬럼 {cols}개
+screen_verify_rows_line: 행    양쪽에 다 있는 행 {common} · B에만 {added} · A에만 {removed}
+screen_verify_cols_line: 컬럼  A에만 {only_a} · B에만 {only_b}
+screen_verify_bycol_head: 컬럼별 — 대조한 {n}개 중 {n_diff}개에서 차이
+screen_verify_bycol_num: '{col}  {n_diff}/{n}행 ({ratio})  차이 중앙 {median} · 최대 {max}'
+screen_verify_bycol_other: '{col}  {n_diff}/{n}행 ({ratio})  값이 다름'
+screen_verify_bycol_ex: '예: {key}  {from_} → {to}'
+screen_verify_same_cols: 나머지 {n}개 컬럼은 모두 같습니다
+screen_verify_unmatched_head: 대조하지 않은 컬럼 {n}개 — 왜 빠졌는지
+screen_verify_key_btn: 키 바꾸기
+screen_verify_id_btn: 행 식별자로 확정
+screen_verify_pair_btn: 짝 지정
+screen_verify_all_btn: 전체 선택/해제
+screen_verify_side_cols: '{tag}  {name}   {cols}컬럼'
+screen_verify_bycol_one: '{col}  {n_diff}/{n}행 ({ratio})  차이 {max}'
+q_min: 최소
+q_q1: Q1 (하위 25%)
+q_q2: Q2 (중앙값)
+q_q3: Q3 (상위 25%)
+q_max: 최대
+q_iqr: IQR (Q3−Q1)
+q_fence_lo: Q1−1.5×IQR
+q_fence_hi: Q3+1.5×IQR
+q_fence_note: 울타리 — 이 범위 밖의 값을 IQR 기준 바깥값으로 셉니다
+q_whisker_note: 수염은 최소·최대까지 그립니다 (울타리까지가 아닙니다)
+screen_verify_picked_fold: 컬럼 {n}개로 대조했습니다 — 다시 고르려면 [컬럼 고르기]
+screen_verify_all_fold: 짝이 있는 컬럼 전부로 대조했습니다 — 골라서 보려면 [컬럼 고르기]
+screen_verify_pick_btn: 컬럼 고르기
+screen_mb_plan_head: 모델링 구성 (B1) — 무엇을 학습했는지 먼저 정합니다
+screen_mb_plan_hint: ↑↓ 줄 이동 · space 목록 펼치기 · ←→ 값 바꾸기 · [구성 확정] 을 눌러야 감사가 시작됩니다
+screen_mb_f_question: 무엇을 예측하나
+screen_mb_f_tier: 모델 티어
+screen_mb_f_validation: 검증 방식
+screen_mb_f_k: 폴드 수 (k)
+screen_mb_f_label: 정답 라벨 컬럼
+screen_mb_f_positive: 양성 클래스
+screen_mb_f_score: 점수·확률 컬럼
+screen_mb_f_group: 그룹 컬럼 (같은 환자·배치)
+screen_mb_f_time: 시간 컬럼
+screen_mb_f_seed: 난수 seed
+screen_mb_sets_head: 세트 파일 — 역할마다 경로 하나 (지금 {n}개)
+screen_mb_sets_none: 아직 없습니다 — 아래 칸에 `train=/경로/train.csv` 처럼 치고 Enter
+screen_mb_set_added: '{role} 세트: {path}'
+screen_mb_set_removed: '{role} 세트를 뺐습니다'
+screen_mb_set_format: 역할=경로 로 치세요 — 역할은 train · valid · test · external
+screen_mb_set_missing: '{path} 가 없습니다'
+screen_mb_plan_ok: 모델링 구성을 확정했습니다 — 이제 감사를 돌릴 수 있습니다
+screen_mb_plan_bad: 구성에 빠진 것이 있습니다 ({n}건) — 아래를 보세요
+screen_mb_plan_btn: 구성
+screen_mb_apply_btn: 구성 확정
+screen_mb_prompt_set: '  역할=경로 ▏ '
+screen_tmp_title: 임시본 정리 — 저장하지 않은 작업 기록
+screen_tmp_what: 임시본에는 **조작 기록만** 있습니다 (연 파일 경로·고른 컬럼·확정한 타입). 데이터 값은 들어 있지 않습니다.
+screen_tmp_none: 남아 있는 임시본이 없습니다
+screen_tmp_count: 임시본 {n}개 · 합계 {kb}KB
+screen_tmp_row: '{id}  {when}  조작 {n}개  {ops}'
+screen_tmp_source: '        {path}'
+screen_tmp_current: '        ← 지금 쓰고 있는 세션 (지우지 않습니다)'
+screen_tmp_btn: 임시본 정리
+screen_tmp_del_btn: 진짜 지우기
+screen_tmp_confirm: 정말 지울까요? {n}개를 지웁니다 — 되돌릴 수 없습니다. 한 번 더 누르세요
+screen_tmp_done: 임시본 {n}개를 지웠습니다
+screen_tmp_failed: '{n}개를 지우지 못했습니다 — {why}'
+screen_tmp_keep_note: 저장한 세션(sessions/)은 건드리지 않습니다
+colview_head: '{col} — A 와 B 를 겹쳐 보기 (같은 키 {n}행)'
+colview_paired: '{col} ↔ {other}'
+colview_a: A
+colview_b: B
+colview_same: 값이 다른 행이 없습니다 — 두 컬럼은 같습니다
+colview_stat_head: '           평균      중앙      최소      최대      IQR'
+colview_stat_row: '{who:<8s} {mean:>9s} {med:>9s} {mn:>9s} {mx:>9s} {iqr:>9s}'
+colview_stat_diff: '{who:<8s} {mean:>9s} {med:>9s} {mn:>9s} {mx:>9s} {iqr:>9s}'
+colview_diff_label: B−A
+colview_only_diff: 값이 다른 {n}행만 보면
+colview_dist_head: 분포가 같다고 볼 수 있나
+colview_ks: KS 거리 {v:.4g} — 두 누적분포의 최대 세로 간격 (0 이면 같음)
+colview_w1: 1-Wasserstein {v:.4g} — 한 분포를 다른 쪽으로 옮기는 평균 이동량 (단위는 원래 값)
+colview_tv: 총변동거리 {v:.4g} — 수준별 비율 차이의 절반 합 (0 이면 같음)
+colview_levels_head: 수준별 비율 — A / B
+colview_not_numeric: 숫자가 아니라 개형 대신 수준별 비율로 봅니다
+colview_no_column: '{col} 은 대조한 컬럼이 아닙니다'
+screen_verify_view_btn: 분포 보기
+padj_none: 보정 없음
+padj_bonferroni: Bonferroni — α 를 검정 수로 나눈다 (가장 보수적)
+padj_holm: Holm — 작은 p 부터 차례로 문턱을 낮춘다 (Bonferroni 보다 덜 보수적, 같은 보장)
+padj_bh: Benjamini–Hochberg FDR — 유의하다고 부른 것 중 거짓의 비율을 q 이하로
+padj_head: '{n}개를 함께 보니 — {method}'
+padj_row: '{name}  p {raw:.4g} → {adj:.4g}  {mark}'
+padj_sig: 유의
+padj_ns: 유의하지 않음
+padj_why: 여러 번 재면 우연히 작은 p 가 나온다 — 몇 번 쟀는지를 같이 세야 한다
+padj_unknown: '보정 방법: none · bonferroni · holm · bh 중 하나'
+explore_bad_question: '{q} 는 질문 유형이 아닙니다 — {allowed}'
+explore_not_recorded: 여기서 본 것은 기록되지 않습니다 — 설계를 확정하려면 분석에서 합니다
+step_head: '{y} 를 {group} 로 갈라 봤습니다 — {name}'
+step_now_sig: '차이가 있습니다 (효과크기 {d:.2f} · p {p})'
+step_now_ns: '차이라고 하기 어렵습니다 (효과크기 {d:.2f} · p {p})'
+step_small_effect: '다만 효과크기({d:.2f})는 작습니다 — 유의하다고 해서 큰 차이는 아닙니다'
+step_scan_note: 아래는 같은 군을 다른 컬럼으로 재 본 것입니다 ({n}개) — 둘러보기이므로 기록하지 않고, 여러 번 잰 만큼 보정이 필요합니다
+step_other_column: '{col} 로 보면 훨씬 크게 갈립니다 (효과크기 {d:.2f} · 지금 컬럼은 {d0:.2f})'
+step_derive_log: '{col} 이(가) 한쪽으로 치우쳐 있습니다 (왜도 {s0:.2f}) — 로그를 취하면 펴집니다 (왜도 {s1:.2f}). 파생 컬럼으로 만들어 보십시오'
+step_more_n: '지금 크기({d:.2f})는 이 표본으로 잡히는 크기({cut:.2f})보다 작습니다 — 표본이 더 필요합니다'
+step_none: 지금 결과로 더 권할 것이 없습니다
+step_head_assoc: '{x} 와 {y} 의 관계를 봤습니다 — {name}'
+step_now_sig_assoc: '관계가 있습니다 ({eff} {v:.3f} · p {p})'
+step_now_ns_assoc: '관계라고 하기 어렵습니다 ({eff} {v:.3f} · p {p})'
+step_color_split: '{col} 군마다 관계가 다릅니다 ({a} 에서 {ra:+.2f}, {b} 에서 {rb:+.2f} · 전체는 {r:+.2f}) — 색으로 나눠 보십시오'
+step_bent_group: '{col}={level} 군에서는 직선이 아닙니다 (거리상관 {dcor:.2f} 가 |r| {r:.2f} 보다 큽니다 · n={n}) — 색으로 나눠 그림을 보십시오'
+step_nonlinear: '직선 관계가 아닐 수 있습니다 (거리상관 {dcor:.2f} 가 |r| {r:.2f} 보다 큽니다) — 그림을 먼저 보십시오'
+step_more_n_assoc: '지금 크기({v:.2f})는 이 표본으로 잡히는 크기({cut:.2f})보다 작습니다 — n={need} 쯤 필요합니다'
+explore_need_second_group: 군 컬럼을 하나 더 고르십시오 — 무엇과 무엇을 비교할지가 있어야 계산됩니다
+explore_need_second_value: 수치 컬럼을 하나 더 고르십시오 — 두 값 사이를 보는 질문입니다
+explore_need_second_event: 사건 컬럼을 하나 더 고르십시오 — 일어났는가/아닌가를 가리키는 컬럼입니다
+explore_second_pick: 이 중에서 고를 수 있습니다
+explore_second_none: 이 자리에 쓸 만한 컬럼이 없습니다 — 의미 타입을 먼저 확정해 보십시오
+explore_head: '{question} · {cols}'
+explore_none: 이 조합에 쓸 수 있는 검정이 없습니다 — 아래 이유를 보세요
+explore_result: '{name}  {eff_name} {eff}  p {p:.4g}  n {n}'
+explore_result_nop: '{name}  {eff_name} {eff}  (p 없음)  n {n}'
+explore_sig: p {p:.4g} — α {alpha} 기준 유의합니다
+explore_ns: p {p:.4g} — α {alpha} 기준 유의하지 않습니다
+explore_run_failed: '{name} 을 돌리지 못했습니다 — {why}'
+screen_find_title: 지표 찾기 — 무엇을 알고 싶은가 → 어느 컬럼으로 → 무엇을 쓸까
+screen_find_step1: 1 · 질문
+screen_find_step2: 2 · 컬럼
+screen_find_step3: 3 · 무엇을 쓸까
+screen_find_pick_q: 질문 유형을 고르세요 (↑↓ 이동 · Enter 고르기)
+screen_find_pick_col: 컬럼을 두 개까지 고르세요 (space 로 켜고 끄기) — 첫째가 보려는 값입니다
+screen_find_none: 이 조합에 쓸 수 있는 검정이 없습니다
+screen_find_row: '{flag} {id:<8s} {name}'
+screen_find_value: '        {eff_name} {eff}  ·  p {p}  ·  n {n}'
+screen_find_value_adj: '        {eff_name} {eff}  ·  p {p} → {adj}  {mark}  ·  n {n}'
+screen_find_run_hint: Enter 로 그 검정을 계산합니다 (누를 때만 돕니다)
+screen_find_not_runnable: 실행 함수가 없어 값을 구할 수 없습니다
+screen_find_ran: '{name} — {eff_name} {eff}, p {p}'
+screen_find_adj_head: '{n}번 쟀습니다 — 함께 보정 ({method})'
+screen_find_btn: 지표 찾기
+screen_find_run_btn: 계산
+screen_find_goal_btn: Goal로
+screen_find_adj_btn: 보정 방법
+screen_keys_find: ↑↓ 이동 · space 컬럼 켜기 · Enter 고르기·계산 · Tab 단계 이동 · Esc 뒤로 · Ctrl-Q 종료
+derive_dropped: 파생 컬럼 {name} 을 지웠습니다 — 수식 기록은 남습니다
+drop_err_unknown: '{cols} 은 작업 영역에 없습니다'
+screen_verify_sum_head: 컬럼별 — 고른 {n}개 중 {n_diff}개가 다릅니다
+screen_verify_sum_same: 같음
+screen_verify_sum_diff: 다름
+screen_verify_sum_skip: 대조 못 함
+screen_verify_sum_row: '{mark} {col:<24s} {state}  {detail}'
+screen_verify_sum_hint: ↑↓ 로 고르고 Enter 로 그 컬럼을 자세히 · [◂ 이전] [다음 ▸] 로 넘기기
+screen_verify_detail_of: '{col} — {i}/{n}'
+screen_verify_back_sum: 요약으로
+screen_verify_repick: 컬럼 재선택
+screen_verify_rerun: 다시 대조
+screen_verify_detail_btn: 자세히
+screen_verify_bycol_short: '{n_diff}/{n}행 ({ratio})'
+screen_verify_bycol_max: ' · 최대 차이 {max}'
+screen_find_rule_btn: 수식·근거
+rule_design: 설계
+rule_assumptions: 가정
+rule_best_when: 이럴 때 좋다
+rule_blocked_when: 이럴 땐 쓰지 않는다
+rule_caution: 주의
+rule_effect_size: 효과크기
+rule_alternatives: 대안
+rule_post: 함께 할 것
+rule_section: 규칙표
+metrics_custom_added: 내 추천에 넣었습니다 — {name} ({role})
+metrics_custom_removed: 내 추천에서 뺐습니다 — {name}
+metrics_custom_tag: 사용자 지정
+metrics_custom_need_name: 무엇을 함께 볼지 이름을 쓰세요
+metrics_custom_bad_role: role 은 support 또는 guardrail 입니다
+metrics_custom_head: 내가 더한 것 — 다음에도 이 Goal 에서 추천으로 뜹니다
+metrics_custom_hint: 규칙표에 없는 것도 넣을 수 있습니다. 출처가 '사용자 지정'으로 남습니다
+screen_find_plot_btn: 그림
+screen_find_plot_head: '{x} × {y} — {n}행'
+screen_find_plot_groups: '{x} 를 군별로 — {by}'
+screen_find_plot_none: 그릴 것이 없습니다 — 컬럼을 두 개 고르세요
+screen_find_color_btn: 색으로 나누기
+screen_find_aim_btn: 목표 검정력
+screen_find_next: 다음에 볼 것
+screen_find_power_what: 고른 컬럼 {cols} · 지금 보는 지표 {name}
+screen_find_power_one: 한 번에 하나씩 봅니다 — 다른 지표는 그 줄에서 [다시] 를 누르면 그쪽으로 바뀝니다 ({others})
+screen_find_aim_prompt: 목표 검정력 %
+screen_find_aim_bad: '숫자를 넣어 주십시오 — 예: 95'
+screen_find_color_set: '색으로 나눌 군: {col}'
+screen_find_color_off: 색으로 나누지 않습니다
+screen_find_color_none: 색으로 나눌 라벨 컬럼이 없습니다 — 먼저 라벨로 확정하세요
+explore_power_corr: 지금 n={n} 으로는 |상관| ≥ {r:.2f} 만 80% 로 잡습니다 — 그보다 작은 관계는 있어도 놓칩니다
+explore_power_tight: 지금 재는 값이 그 경계에 가깝습니다 — 표본을 더 모으면 결론이 달라질 수 있습니다
+explore_power_small: 표본이 작습니다 (n={n})
+power_head_corr: n={n} — |상관| {r:.2f} 이상만 {pw}% 확률로 잡힙니다
+power_head_diff: n={n} — 효과크기 d {d:.2f} 이상만 {pw}% 확률로 잡힙니다
+power_band: 이 표본으로는 잡기 어려운 크기
+power_why: 작은 표본에서 "유의하지 않다"는 "관계가 없다"가 아닙니다 — 있어도 못 잡았을 수 있습니다
+power_row_ok: 잡을 수 있는 크기입니다
+power_row_short: 이 크기는 n={need} 쯤 되어야 {pw}% 로 잡힙니다 (지금 {n})
+power_row_edge: 경계에 걸쳐 있습니다 — 표본이 조금만 달라져도 결론이 바뀔 수 있습니다
+power_need_huge: 이 크기를 잡으려면 표본이 아주 많이 필요합니다
+power_ladder_head: 표본을 더 모으면 — n 별로 잡히는 가장 작은 크기
+power_note_alpha: α=0.05 양측 · 목표 검정력 {pw}%
+power_target_label: 목표 검정력
+power_target_hint: 선을 옮겨 보십시오 — 더 확실히 잡으려 할수록 필요한 크기가 커집니다
+power_not_comparable: '{eff} 는 상관계수와 다른 척도입니다 — 이 선과 직접 비교하지 않습니다'
+power_scale_note: 선은 **상관계수(r·ρ) 척도**입니다. τ·dCor 처럼 다른 척도의 값은 이 선에 얹지 않습니다
+power_this_value: 이 값

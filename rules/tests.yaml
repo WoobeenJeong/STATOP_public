@@ -1,0 +1,962 @@
+# 자동 생성 파일 — schema/registry-tests.md 에서 생성됨. 수기 편집 금지 (statop rules build).
+# rules_version: 72d1381d2131
+questions:
+- id: Q-01
+  question: 차이 (그룹 간 위치 비교)
+  user_words: '"A군과 B군이 다른가", "처리 전후"'
+  prism: Column
+- id: Q-02
+  question: 비율/빈도 차이
+  user_words: '"양성 비율이 다른가"'
+  prism: Contingency
+- id: Q-03
+  question: 연관 (두 변수 관계 강도)
+  user_words: '"X가 크면 Y도 큰가"'
+  prism: XY (correlation)
+- id: Q-04
+  question: 상호작용/조절
+  user_words: '"약효가 성별에 따라 다른가"'
+  prism: Grouped (two-way)
+- id: Q-05
+  question: 경향/추세 (순서 있는 그룹, 시간)
+  user_words: '"용량이 늘면 반응이 단조 증가하나"'
+  prism: (없음, 회귀로 우회)
+- id: Q-06
+  question: 일치도/재현성
+  user_words: '"두 측정자가 같은 값을 내는가"'
+  prism: Column (Bland-Altman)
+- id: Q-07
+  question: 분포 비교 (형태 자체)
+  user_words: '"두 분포가 같은가" (위치 아님)'
+  prism: Column (KS)
+- id: Q-08
+  question: 예측/설명 (회귀)
+  user_words: '"Y를 X들로 설명"'
+  prism: XY / Multiple variables
+- id: Q-09
+  question: 생존/사건 시간
+  user_words: '"생존 곡선이 다른가"'
+  prism: Survival
+- id: Q-10
+  question: 조성 데이터 (bio 특화)
+  user_words: '"motif 비율이 군 간 다른가" (합이 고정)'
+  prism: (없음)
+- id: Q-11
+  question: 사전지정 대비 (Planned contrast)
+  user_words: '"정상=교란≠암"'
+  prism: (없음, 사후검정으로 우회)
+- id: Q-12
+  question: 표본 크기·대표성 (분석 전 설계)
+  user_words: '"30만 행을 다 안 봐도 되나", "몇 개를 골라야 전체를 대표하나"'
+  prism: (없음)
+tests:
+- id: T-101
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Welch t-test
+  design: 2군 독립, 연속
+  assumptions: C-01 정규성(군별)
+  best_when: 정규 근사 OK, 분산 다름, n≥15/군
+  blocked_when: 척도가 순위·범주
+  caution: 소표본(n<15)이면 정규성 확신 어려움
+  alternatives: T-103, T-104
+  post: P-201
+  effect_size: Cohen d / Hedges g
+  sources: null
+- id: T-102
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Student t-test
+  design: 2군 독립, 연속
+  assumptions: C-01, C-02 등분산
+  best_when: 등분산 확인됨
+  blocked_when: 등분산 위배 (→T-101이 기본)
+  caution: null
+  alternatives: T-101
+  post: P-201
+  effect_size: Hedges g
+  sources: null
+- id: T-103
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Mann–Whitney U
+  design: 2군 독립, 연속/순위
+  assumptions: C-04 분포 형태 유사
+  best_when: 다수 outlier, 비정규, 순위 척도
+  blocked_when: 두 분포 형태가 크게 다름(분산·왜도) → 해석 불가
+  caution: 동점 많음
+  alternatives: T-104
+  post: P-201
+  effect_size: Cliff's δ / rank-biserial
+  sources: null
+- id: T-104
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Brunner–Munzel
+  design: 2군 독립
+  assumptions: 거의 없음
+  best_when: 비정규 + 분산 다름 + 형태 다름
+  blocked_when: n<10/군
+  caution: null
+  alternatives: T-105
+  post: P-201
+  effect_size: 확률적 우위 P(X>Y)
+  sources: null
+- id: T-105
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Permutation t
+  design: 2군 독립
+  assumptions: 교환 가능성
+  best_when: 소표본, 분포 불명
+  blocked_when: 그룹 구조 있음(C-05)
+  caution: 계산 시간
+  alternatives: T-104
+  post: P-203
+  effect_size: mean diff + CI
+  sources: null
+- id: T-111
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Paired t-test
+  design: 2군 대응, 연속
+  assumptions: C-01 차이값 정규성
+  best_when: 차이값 정규
+  blocked_when: 대응 깨짐(결측 짝)
+  caution: 소표본
+  alternatives: T-112
+  post: P-201
+  effect_size: dz
+  sources: null
+- id: T-112
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Wilcoxon signed-rank
+  design: 2군 대응
+  assumptions: 차이 분포 대칭
+  best_when: 차이 비정규, outlier
+  blocked_when: 차이 분포 비대칭 심함
+  caution: 동점·0 차이 많음
+  alternatives: T-113
+  post: P-201
+  effect_size: matched-pairs rank-biserial
+  sources: null
+- id: T-113
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Sign test
+  design: 2군 대응
+  assumptions: 없음
+  best_when: 극소표본, 순위만
+  blocked_when: null
+  caution: 검정력 낮음
+  alternatives: null
+  post: null
+  effect_size: 비율
+  sources: null
+- id: T-121
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: One-way ANOVA
+  design: ≥3군 독립
+  assumptions: C-01, C-02
+  best_when: 등분산·정규
+  blocked_when: 등분산 위배 → T-122
+  caution: 그룹 n 불균형
+  alternatives: T-122, T-123
+  post: P-211 + P-202
+  effect_size: η², ω²
+  sources: null
+- id: T-122
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Welch ANOVA
+  design: ≥3군 독립
+  assumptions: C-01
+  best_when: 분산 다름
+  blocked_when: null
+  caution: 소표본 군
+  alternatives: T-123
+  post: P-212 Games-Howell
+  effect_size: ω²
+  sources: null
+- id: T-123
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Kruskal–Wallis
+  design: ≥3군 독립
+  assumptions: C-04
+  best_when: 비정규, outlier
+  blocked_when: 분포 형태 상이
+  caution: null
+  alternatives: T-124
+  post: P-213 Dunn
+  effect_size: ε²
+  sources: null
+- id: T-124
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Permutation ANOVA
+  design: ≥3군 독립
+  assumptions: 교환 가능성
+  best_when: 소표본
+  blocked_when: 그룹 구조
+  caution: 계산 시간
+  alternatives: null
+  post: P-203
+  effect_size: null
+  sources: null
+- id: T-131
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: RM ANOVA
+  design: ≥3 조건 반복측정
+  assumptions: C-01, C-06 구형성
+  best_when: 균형 반복
+  blocked_when: 결측 있는 반복 → T-133
+  caution: 구형성 위배 시 GG 보정
+  alternatives: T-132, T-133
+  post: P-211
+  effect_size: partial η²
+  sources: null
+- id: T-132
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Friedman
+  design: ≥3 조건 반복
+  assumptions: 없음
+  best_when: 비정규 반복측정
+  blocked_when: 결측
+  caution: null
+  alternatives: T-133
+  post: P-213
+  effect_size: Kendall W
+  sources: null
+- id: T-133
+  question: Q-01
+  section: 2.1 Q-01 차이
+  name: Linear mixed model
+  design: 반복·군집 구조 일반
+  assumptions: 잔차 정규, 랜덤효과 구조
+  best_when: 결측·불균형 반복, 그룹 구조(C-05) 있는 모든 경우
+  blocked_when: null
+  caution: 모형 지정 필요
+  alternatives: null
+  post: P-202
+  effect_size: 고정효과 계수 + CI
+  sources: null
+- id: T-201
+  question: Q-02
+  section: 2.2 Q-02 비율/빈도
+  name: Chi-square (독립성)
+  design: r×c 독립
+  assumptions: 기대빈도 ≥5 (80% 셀)
+  best_when: 큰 표본
+  blocked_when: 기대빈도 <5 다수 → T-202
+  caution: 2×2는 연속성 보정 논쟁
+  alternatives: T-202, T-203
+  post: null
+  effect_size: Cramér V, OR
+  sources: null
+- id: T-202
+  question: Q-02
+  section: 2.2 Q-02 비율/빈도
+  name: Fisher exact
+  design: 2×2(및 r×c 확장)
+  assumptions: 없음
+  best_when: 소표본, 희소 셀
+  blocked_when: null
+  caution: r×c 대형은 계산 비용
+  alternatives: T-203
+  post: null
+  effect_size: OR + CI
+  sources: null
+- id: T-203
+  question: Q-02
+  section: 2.2 Q-02 비율/빈도
+  name: G-test / 우도비
+  design: r×c
+  assumptions: 기대빈도
+  best_when: 중간 표본
+  blocked_when: null
+  caution: null
+  alternatives: T-201
+  post: null
+  effect_size: null
+  sources: null
+- id: T-211
+  question: Q-02
+  section: 2.2 Q-02 비율/빈도
+  name: McNemar
+  design: 2×2 대응
+  assumptions: 불일치 셀 ≥10
+  best_when: 전후 이진
+  blocked_when: 불일치 셀 <10 → 정확 McNemar
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: OR
+  sources: null
+- id: T-212
+  question: Q-02
+  section: 2.2 Q-02 비율/빈도
+  name: Cochran Q
+  design: ≥3 조건 대응 이진
+  assumptions: null
+  best_when: 반복 이진
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-221
+  question: Q-02
+  section: 2.2 Q-02 비율/빈도
+  name: 비율 차이 z / 신뢰구간 (Newcombe)
+  design: 2군 비율
+  assumptions: np≥5
+  best_when: 비율 차이 자체가 목적
+  blocked_when: 극소 표본
+  caution: null
+  alternatives: T-202
+  post: null
+  effect_size: RD, RR
+  sources: null
+- id: T-301
+  question: Q-03
+  section: 2.3 Q-03 연관
+  name: Pearson r
+  design: 두 연속
+  assumptions: C-01 이변량 정규, 선형(C-08), outlier 없음(C-03)
+  best_when: 선형·정규·outlier 없음
+  blocked_when: outlier 비율 > 5% (C-03) → T-302
+  caution: 비선형 시 과소추정
+  alternatives: T-302, T-303, T-304
+  post: null
+  effect_size: r + CI (Fisher z / bootstrap)
+  sources: null
+- id: T-302
+  question: Q-03
+  section: 2.3 Q-03 연관
+  name: Spearman ρ
+  design: 두 연속/순위
+  assumptions: 단조성
+  best_when: 다수 outlier, 비정규, 순위
+  blocked_when: 단조 아닌 관계
+  caution: 동점
+  alternatives: T-303
+  post: null
+  effect_size: ρ + CI
+  sources: null
+- id: T-303
+  question: Q-03
+  section: 2.3 Q-03 연관
+  name: Kendall τ
+  design: 두 순위
+  assumptions: null
+  best_when: 소표본, 동점 많음
+  blocked_when: null
+  caution: null
+  alternatives: T-302
+  post: null
+  effect_size: τ
+  sources: null
+- id: T-304
+  question: Q-03
+  section: 2.3 Q-03 연관
+  name: Distance correlation
+  design: 두 변수(다변량 가능)
+  assumptions: 없음
+  best_when: 비선형·비단조 의심
+  blocked_when: null
+  caution: 해석 어려움(방향 없음) → Support metric 필수
+  alternatives: null
+  post: null
+  effect_size: dCor
+  sources: null
+- id: T-305
+  question: Q-03
+  section: 2.3 Q-03 연관
+  name: Biweight midcorrelation
+  design: 두 연속
+  assumptions: null
+  best_when: outlier 있는데 선형 유지
+  blocked_when: null
+  caution: 보급도 낮음
+  alternatives: T-302
+  post: null
+  effect_size: bicor
+  sources: null
+- id: T-311
+  question: Q-03
+  section: 2.3 Q-03 연관
+  name: Partial correlation
+  design: 셋 이상
+  assumptions: T-301 가정
+  best_when: 혼란변수 통제 필요(#5)
+  blocked_when: null
+  caution: 통제 변수 선택 근거 필요
+  alternatives: T-801
+  post: null
+  effect_size: partial r
+  sources: null
+- id: T-321
+  question: Q-03
+  section: 2.3 Q-03 연관
+  name: Proportionality (ρ_p, φ)
+  design: 조성 데이터 두 성분
+  assumptions: CLR 변환 후
+  best_when: 조성 데이터(Q-10)에서 연관
+  blocked_when: 비조성 데이터에 적용
+  caution: null
+  alternatives: T-301 on CLR
+  post: null
+  effect_size: ρ_p
+  sources: null
+- id: T-401
+  question: Q-04
+  section: 2.4 Q-04 상호작용
+  name: Two-way ANOVA (교호작용 항)
+  design: 2 요인 독립
+  assumptions: C-01, C-02
+  best_when: 균형 설계
+  blocked_when: 불균형 심함 → Type II/III SS 선택
+  caution: 교호작용 유의 시 주효과 해석 보류
+  alternatives: T-402, T-403
+  post: null
+  effect_size: null
+  sources: null
+- id: T-402
+  question: Q-04
+  section: 2.4 Q-04 상호작용
+  name: Aligned rank transform ANOVA
+  design: 2 요인
+  assumptions: 없음
+  best_when: 비정규 상호작용
+  blocked_when: null
+  caution: null
+  alternatives: T-403
+  post: null
+  effect_size: null
+  sources: null
+- id: T-403
+  question: Q-04
+  section: 2.4 Q-04 상호작용
+  name: 회귀 + 교호작용 항 (GLM)
+  design: 연속·범주 혼합
+  assumptions: 모형 가정
+  best_when: 연속 조절변수
+  blocked_when: null
+  caution: 중심화 필요 (C-07)
+  alternatives: T-133
+  post: null
+  effect_size: null
+  sources: null
+- id: T-404
+  question: Q-04
+  section: 2.4 Q-04 상호작용
+  name: Mixed model 교호작용
+  design: 반복 + 요인
+  assumptions: null
+  best_when: 그룹 구조
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-501
+  question: Q-05
+  section: 2.5 Q-05 경향/추세
+  name: Jonckheere–Terpstra
+  design: 순서 있는 ≥3군, 연속
+  assumptions: null
+  best_when: 단조 추세 가설 (용량-반응)
+  blocked_when: 순서 없는 그룹
+  caution: null
+  alternatives: T-502
+  post: null
+  effect_size: null
+  sources: null
+- id: T-502
+  question: Q-05
+  section: 2.5 Q-05 경향/추세
+  name: Cochran–Armitage
+  design: 순서 있는 군, 이진
+  assumptions: null
+  best_when: 비율의 단조 추세
+  blocked_when: null
+  caution: null
+  alternatives: T-801 (로지스틱, 순서 코딩)
+  post: null
+  effect_size: null
+  sources: null
+- id: T-503
+  question: Q-05
+  section: 2.5 Q-05 경향/추세
+  name: Mann–Kendall
+  design: 시계열 단조 추세
+  assumptions: null
+  best_when: 시간 순서 자료
+  blocked_when: 자기상관 강함 → 수정판
+  caution: null
+  alternatives: T-802
+  post: null
+  effect_size: null
+  sources: null
+- id: T-504
+  question: Q-05
+  section: 2.5 Q-05 경향/추세
+  name: 선형 회귀 기울기
+  design: 연속 X
+  assumptions: null
+  best_when: 선형 추세
+  blocked_when: 비선형
+  caution: null
+  alternatives: T-501
+  post: null
+  effect_size: null
+  sources: null
+- id: T-601
+  question: Q-06
+  section: 2.6 Q-06 일치도
+  name: 'ICC (모형 지정: 1/2/3, 일치/절대)'
+  design: ≥2 측정자, 연속
+  assumptions: null
+  best_when: 신뢰도
+  blocked_when: null
+  caution: ICC 유형 선택이 결과를 바꿈, 명시 필수
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-602
+  question: Q-06
+  section: 2.6 Q-06 일치도
+  name: Bland–Altman
+  design: 2 측정법, 연속
+  assumptions: null
+  best_when: 방법 비교
+  blocked_when: null
+  caution: 차이가 크기에 비례하면 비율/log 척도
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-603
+  question: Q-06
+  section: 2.6 Q-06 일치도
+  name: Lin's CCC
+  design: 2 측정, 연속
+  assumptions: null
+  best_when: 정확도+정밀도 동시
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-604
+  question: Q-06
+  section: 2.6 Q-06 일치도
+  name: Cohen's κ / weighted κ
+  design: 2 평가자, 범주/순서
+  assumptions: null
+  best_when: 범주 일치
+  blocked_when: null
+  caution: 유병률 효과 (κ 역설) → PABAK 병기
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-605
+  question: Q-06
+  section: 2.6 Q-06 일치도
+  name: Fleiss' κ / Krippendorff α
+  design: ≥3 평가자
+  assumptions: null
+  best_when: null
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-701
+  question: Q-07
+  section: 2.7 Q-07 분포 비교
+  name: Kolmogorov–Smirnov 2-sample
+  design: 두 연속
+  assumptions: null
+  best_when: 형태 전체 비교
+  blocked_when: null
+  caution: 꼬리 민감도 낮음, 이산 자료 부적합
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-702
+  question: Q-07
+  section: 2.7 Q-07 분포 비교
+  name: Anderson–Darling k-sample
+  design: ≥2 연속
+  assumptions: null
+  best_when: 꼬리 차이
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-703
+  question: Q-07
+  section: 2.7 Q-07 분포 비교
+  name: Energy distance / MMD permutation
+  design: 다변량 가능
+  assumptions: null
+  best_when: 다변량 분포 비교, 세트 간 분포 차이(P1)
+  blocked_when: null
+  caution: 계산 비용
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-704
+  question: Q-07
+  section: 2.7 Q-07 분포 비교
+  name: Cramér–von Mises
+  design: 두 연속
+  assumptions: null
+  best_when: KS 대안
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-801
+  question: Q-08
+  section: 2.8 Q-08 예측/설명
+  name: Logistic regression
+  design: 이진
+  assumptions: 선형 로짓, 독립, 다중공선성 없음(C-07), EPV≥10 (C-09)
+  best_when: null
+  blocked_when: null
+  caution: 완전분리, 소표본 → Firth
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-802
+  question: Q-08
+  section: 2.8 Q-08 예측/설명
+  name: Linear regression (OLS)
+  design: 연속
+  assumptions: 잔차 정규·등분산·독립·선형
+  best_when: null
+  blocked_when: null
+  caution: outlier/leverage (C-03) → robust
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-803
+  question: Q-08
+  section: 2.8 Q-08 예측/설명
+  name: Poisson / Negative binomial
+  design: 카운트
+  assumptions: 평균-분산 관계, 영과잉(C-10)
+  best_when: null
+  blocked_when: null
+  caution: 과산포 → NB, 영과잉 → ZIP/ZINB
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-804
+  question: Q-08
+  section: 2.8 Q-08 예측/설명
+  name: Ordinal logistic
+  design: 순서
+  assumptions: 비례 오즈
+  best_when: null
+  blocked_when: null
+  caution: 비례 오즈 위배 → partial PO
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-805
+  question: Q-08
+  section: 2.8 Q-08 예측/설명
+  name: Beta regression / logit-변환 회귀
+  design: (0,1) 비율·확률
+  assumptions: null
+  best_when: null
+  blocked_when: null
+  caution: 확률값 변동성(#3)은 여기서 처리, logit 방향 주의
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-806
+  question: Q-08
+  section: 2.8 Q-08 예측/설명
+  name: Robust regression (Huber, MM)
+  design: 연속
+  assumptions: null
+  best_when: null
+  blocked_when: null
+  caution: outlier 많을 때 T-802 대안
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-807
+  question: Q-08
+  section: 2.8 Q-08 예측/설명
+  name: Cox PH
+  design: 사건 시간
+  assumptions: 비례 위험(C-11)
+  best_when: null
+  blocked_when: null
+  caution: 위배 시 시간의존 계수 / 층화
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-901
+  question: Q-09
+  section: 2.9 Q-09 생존
+  name: Kaplan–Meier + Log-rank
+  design: null
+  assumptions: null
+  best_when: 군 간 생존 곡선
+  blocked_when: null
+  caution: 곡선 교차 시 log-rank 검정력 낮음 → T-902
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-902
+  question: Q-09
+  section: 2.9 Q-09 생존
+  name: Gehan–Breslow–Wilcoxon
+  design: null
+  assumptions: null
+  best_when: 초기 차이 강조
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-903
+  question: Q-09
+  section: 2.9 Q-09 생존
+  name: RMST 차이
+  design: null
+  assumptions: null
+  best_when: 비례 위험 위배 시
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-904
+  question: Q-09
+  section: 2.9 Q-09 생존
+  name: Cox PH (T-807)
+  design: null
+  assumptions: null
+  best_when: 공변량 조정
+  blocked_when: null
+  caution: C-11
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: null
+- id: T-1001
+  question: Q-10
+  section: 2.10 Q-10 조성 데이터 (bio 특화)
+  name: CLR 변환 후 T-101/T-121
+  design: null
+  assumptions: null
+  best_when: 성분 비율 군 간 차이
+  blocked_when: 0이 많음 → 의사카운트/Bayesian-multiplicative 대체 필요
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: Gloor 2017, Quinn 2019
+- id: T-1002
+  question: Q-10
+  section: 2.10 Q-10 조성 데이터 (bio 특화)
+  name: ALR / ILR 변환
+  design: null
+  assumptions: null
+  best_when: 참조 성분 있음
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: Aitchison
+- id: T-1003
+  question: Q-10
+  section: 2.10 Q-10 조성 데이터 (bio 특화)
+  name: ALDEx2-형 (CLR + Monte Carlo)
+  design: null
+  assumptions: null
+  best_when: 카운트 조성, 소표본
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: Fernandes 2014
+- id: T-1004
+  question: Q-10
+  section: 2.10 Q-10 조성 데이터 (bio 특화)
+  name: ANCOM-BC-형
+  design: null
+  assumptions: null
+  best_when: 차등 풍부도
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: Lin & Peddada 2020
+- id: T-1005
+  question: Q-10
+  section: 2.10 Q-10 조성 데이터 (bio 특화)
+  name: Proportionality (T-321)
+  design: null
+  assumptions: null
+  best_when: 성분 간 연관
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: Lovell 2015
+- id: T-1006
+  question: Q-10
+  section: 2.10 Q-10 조성 데이터 (bio 특화)
+  name: 주변 합 vs 조건 분포 병기 P(Y), P(Y|Z)
+  design: null
+  assumptions: null
+  best_when: motif × size 집계(#5)
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: Pearl 2014
+- id: T-1101
+  question: Q-11
+  section: 2.11 Q-11 사전지정 대비
+  name: Planned contrast (t on contrast weights)
+  design: ≥3군, 가설이 특정 패턴
+  assumptions: null
+  best_when: '"정상=교란≠암" 같은 단일 대비 (#9)'
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: omnibus ANOVA 없이 직접 검정. 방향 있으면 one-sided 허용
+- id: T-1102
+  question: Q-11
+  section: 2.11 Q-11 사전지정 대비
+  name: Dunnett (대조군 vs 각 군)
+  design: 1 대조군
+  assumptions: null
+  best_when: 모든 군을 대조군과만 비교
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: Tukey보다 검정력 높음
+- id: T-1103
+  question: Q-11
+  section: 2.11 Q-11 사전지정 대비
+  name: 직교 대비 집합
+  design: k−1개 대비
+  assumptions: null
+  best_when: 여러 사전 대비
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: 다중검정 보정 불필요(직교) 또는 P-221
+- id: T-1104
+  question: Q-11
+  section: 2.11 Q-11 사전지정 대비
+  name: 비모수 대비 (Mann–Whitney on pooled groups)
+  design: 비정규
+  assumptions: null
+  best_when: 정상+교란 vs 암
+  blocked_when: null
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: 형태 유사 가정
+- id: T-1201
+  question: Q-12
+  section: 2.12 Q-12 표본 크기·대표성
+  name: 부분표집 곡선 — KS distance (SC-DIST-18)
+  design: null
+  assumptions: null
+  best_when: 연속 컬럼. 단위가 다른 여러 컬럼을 한 축에 놓아야 할 때
+  blocked_when: 범주 컬럼
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: 0~1 무단위라 컬럼 간 비교가 된다. 기본값
+- id: T-1202
+  question: Q-12
+  section: 2.12 Q-12 표본 크기·대표성
+  name: 부분표집 곡선 — 총변동거리 TV (SC-DIST-19)
+  design: null
+  assumptions: null
+  best_when: 범주 컬럼
+  blocked_when: 연속을 bin 없이
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: KS 의 범주판. 같은 0~1 축에 놓인다
+- id: T-1203
+  question: Q-12
+  section: 2.12 Q-12 표본 크기·대표성
+  name: 부분표집 곡선 — 1-Wasserstein 거리 (SC-DIST-13)
+  design: null
+  assumptions: null
+  best_when: 차이의 크기를 원 단위로 알아야 할 때
+  blocked_when: 범주
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: 단위가 원변수라 컬럼끼리 더할 수 없다
+- id: T-1204
+  question: Q-12
+  section: 2.12 Q-12 표본 크기·대표성
+  name: 고른 n 의 검증 — 뽑은 n 행 vs 남은 N−n 행
+  design: null
+  assumptions: null
+  best_when: n 을 정한 뒤 확인
+  blocked_when: n 이 N 에 가까움 (남은 쪽이 너무 작음)
+  caution: null
+  alternatives: null
+  post: null
+  effect_size: null
+  sources: 전체와 대조하지 않는다 — 뽑은 것이 전체에 포함돼 있어 독립 비교가 아니다

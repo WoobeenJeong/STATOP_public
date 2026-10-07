@@ -1,0 +1,97 @@
+# 자동 생성 파일 — schema/registry-tests.md 에서 생성됨. 수기 편집 금지 (statop rules build).
+# rules_version: 72d1381d2131
+- id: P-201
+  kind: effect_size
+  name: 표준화 차이 (Cohen d, Hedges g, Cliff's δ, rank-biserial)
+  applies_to: 2군
+  note: null
+- id: P-202
+  kind: effect_size
+  name: 분산 설명 (η², ω², partial η², ε²)
+  applies_to: ≥3군, 회귀
+  note: null
+- id: P-203
+  kind: effect_size
+  name: 원척도 차이 + 신뢰구간
+  applies_to: 전부. Support metric 기본값
+  note: null
+- id: P-204
+  kind: effect_size
+  name: 범주 (Cramér V, φ, OR, RR, RD)
+  applies_to: Q-02
+  note: null
+- id: P-205
+  kind: effect_size
+  name: 연관 (r, ρ, τ + CI)
+  applies_to: Q-03
+  note: null
+- id: P-211
+  kind: posthoc
+  name: Tukey HSD
+  applies_to: 모든 쌍, 등분산
+  note: null
+- id: P-212
+  kind: posthoc
+  name: Games–Howell
+  applies_to: 모든 쌍, 분산 다름
+  note: null
+- id: P-213
+  kind: posthoc
+  name: Dunn (Bonferroni/Holm 보정)
+  applies_to: 비모수 모든 쌍
+  note: null
+- id: P-214
+  kind: posthoc
+  name: Dunnett
+  applies_to: 대조군 vs 각 군 (T-1102)
+  note: null
+- id: P-215
+  kind: posthoc
+  name: Šidák / Holm–Šidák
+  applies_to: 선택된 쌍
+  note: null
+- id: P-221
+  kind: correction
+  name: Holm
+  applies_to: FWER, 검정 수 소
+  note: 기본값
+- id: P-222
+  kind: correction
+  name: Bonferroni
+  applies_to: FWER, 보수적
+  note: 검정 수 ≤3
+- id: P-223
+  kind: correction
+  name: Benjamini–Hochberg
+  applies_to: FDR, 검정 수 대 (오믹스)
+  note: 독립/양의 상관 가정
+- id: P-224
+  kind: correction
+  name: Benjamini–Yekutieli
+  applies_to: FDR, 임의 상관
+  note: 매우 보수적
+- id: P-225
+  kind: correction
+  name: 보정 전/후 병기 규칙
+  applies_to: 전부
+  note: 보정 후 결론이 바뀌면 "가설 재검토" 메시지 (#8)
+- id: P-231
+  kind: interval
+  name: Bootstrap BCa CI (B≥2000)
+  applies_to: 모든 점추정
+  note: seed 기록 필수, `seed_<id>.py`
+- id: P-232
+  kind: interval
+  name: Permutation p (B≥5000)
+  applies_to: T-105, T-124, T-703
+  note: 그룹 구조 있으면 층화 permutation
+- id: P-233
+  kind: interval
+  name: 2σ 밴드 표시
+  applies_to: 확률값 변동성 plot (#3)
+  note: SD 기준, p(1−p) 정규화 값과 병기
+- id: P-234
+  kind: interval
+  name: 추정 오차 %p 표기
+  applies_to: 비율·확률 추정
+  note: Wilson/Newcombe 구간

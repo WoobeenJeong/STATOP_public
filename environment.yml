@@ -1,0 +1,17 @@
+name: statop
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pandas=3.0
+  - pyarrow=25.0
+  - scipy=1.18
+  - statsmodels=0.15
+  - scikit-learn
+  - pytest
+  - fastapi
+  - uvicorn
+  - httpx
+  - typer
+  - prompt_toolkit
+  - pyyaml

@@ -1,0 +1,94 @@
+# 자동 생성 파일 — schema/registry-tests.md 에서 생성됨. 수기 편집 금지 (statop rules build).
+# rules_version: 72d1381d2131
+- id: C-01
+  check: 정규성
+  method: n<50 Shapiro–Wilk / 50~300 D'Agostino K² / >300 검정 무의미 → QQ·왜도·첨도만
+  plot: QQ plot, 히스토그램+밀도
+  linked_tests: T-1xx, T-301, T-802
+  on_violation: '"군 {g}의 {측면(꼬리·이봉)}이 위배 원인. 해당 구간 샘플 보충 또는 비모수(T-1xx) 전환"'
+- id: C-02
+  check: 등분산
+  method: Levene(중위수) / Brown–Forsythe / Fligner–Killeen
+  plot: 잔차 vs 그룹 박스플롯
+  linked_tests: T-102, T-121
+  on_violation: '"분산 큰 군 {g}, 기여 샘플 상위 {k}개 표시. Welch(T-101/122)로 전환"'
+- id: C-03
+  check: Outlier
+  method: IQR 1.5 / MAD 3 / Grubbs(정규 가정) / ROUT(Q=1%)
+  plot: 박스플롯 + 점 라벨(hold id)
+  linked_tests: T-301, T-802
+  on_violation: 비율 >5% → Spearman/robust 초록. 제외는 A4 제약 하에서만
+- id: C-04
+  check: 분포 형태 유사성
+  method: 왜도·첨도 차, KS on standardized
+  plot: 겹친 밀도
+  linked_tests: T-103, T-123
+  on_violation: 형태 다르면 T-104 초록
+- id: C-05
+  check: 독립성 / 그룹 구조
+  method: M0-7 감지 컬럼(환자·batch·기관)별 ICC
+  plot: 그룹 색 산점도
+  linked_tests: 모든 검정
+  on_violation: ICC>0.1 → 혼합모형(T-133) 또는 집계 단위 변경
+- id: C-06
+  check: 구형성
+  method: 'Mauchly + 엡실론(ε: GG/HF)'
+  plot: 시점 쌍(T2−T1 등) 차이값 분산 막대 + 평균 분산 점선, ε 하한선 표시. 주의 문구 "분산이 달라 보여도 구형성은 성립할 수 있습니다(공분산 구조)"
+  linked_tests: T-131
+  on_violation: 'p<α면 구형성 위반. ε 기준 3단계: 문제없음/경미한 이탈/완전 이탈 → GG/HF 보정 자동. p는 정상인데 ε가 문제면 "구형성 판단 실패 — 데이터
+    확인/다른 검증 요망"'
+- id: C-07
+  check: 다중공선성
+  method: VIF>5 경고, >10 red
+  plot: VIF 표, 상관 히트맵
+  linked_tests: T-8xx
+  on_violation: 변수 제거/결합, 능형
+- id: C-08
+  check: 선형성
+  method: 잔차 vs 적합값, LOESS
+  plot: 산점도+LOESS
+  linked_tests: T-301, T-802
+  on_violation: 변환 또는 T-302/T-304
+- id: C-09
+  check: 표본 크기 / 검정력
+  method: 군별 n, EPV(로지스틱), 근사 검정력
+  plot: 검정력 곡선
+  linked_tests: 전부
+  on_violation: '"효과크기 {d}를 80%로 잡으려면 군당 {n} 필요, 현재 {n0}"'
+- id: C-10
+  check: 영과잉 / 과산포
+  method: 0 비율, 분산/평균 비
+  plot: 히스토그램
+  linked_tests: T-803
+  on_violation: NB / ZIP 전환
+- id: C-11
+  check: 비례 위험
+  method: Schoenfeld 잔차
+  plot: 잔차 vs 시간
+  linked_tests: T-807
+  on_violation: 층화 / 시간의존
+- id: C-12
+  check: 조성 감지
+  method: 행 합 상수 여부, 컬럼명 패턴
+  plot: 행 합 히스토그램
+  linked_tests: Q-10
+  on_violation: CLR 경로 제안
+- id: C-13
+  check: 결측 패턴
+  method: MCAR/MAR 근사(Little), 결측 vs 라벨 연관
+  plot: 결측 히트맵
+  linked_tests: 전부
+  on_violation: 결측이 라벨과 연관되면 red
+- id: C-14
+  check: 척도 조건 검증 (S-T 전제)
+  method: S-T 확정 타입을 참조해 그 타입의 조건 충족 여부만 검증 — 범위·정수 여부·음수 허용. 타입을 다시 판정하지 않음(Single Source of Truth)
+  plot: M0-3 히스토그램 참조 (별도 plot 없음)
+  linked_tests: T-805, T-803, S-T 전체
+  on_violation: '근거 요소를 함께 표시: `의미 타입: Probability(S-T) / 범위[0,1] 위반 3건 / 음수 없음 / 정수값 없음 → 조건과 일부 불일치`.
+    확률값이면 p(1−p) 정규화 변동성을 SD 옆에 병기 (#3, S-R05)'
+- id: C-15
+  check: 다중검정 필요 여부
+  method: A1 계획 검정 수, 실제 실행 검정 수 카운트
+  plot: 보정 전/후 α 표
+  linked_tests: 전부
+  on_violation: ≥2면 P-22x 강제 (#8). 1개인데 3군 boxplot이면 "실제 3쌍 비교"로 카운트
