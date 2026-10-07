@@ -1812,7 +1812,7 @@ screen_find_not_runnable: 실행 함수가 없어 값을 구할 수 없습니다
 screen_find_ran: '{name} — {eff_name} {eff}, p {p}'
 screen_find_adj_head: '{n}번 쟀습니다 — 함께 보정 ({method})'
 screen_find_btn: 지표 찾기
-screen_find_run_btn: 계산
+screen_find_run_btn: 고르기
 screen_find_goal_btn: Goal로
 screen_find_adj_btn: 보정 방법
 screen_keys_find: ↑↓ 이동 · space 컬럼 켜기 · Enter 고르기·계산 · Tab 단계 이동 · Esc 뒤로 · Ctrl-Q 종료

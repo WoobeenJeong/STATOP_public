@@ -1812,7 +1812,7 @@ screen_find_not_runnable: no runner, so no value
 screen_find_ran: '{name} — {eff_name} {eff}, p {p}'
 screen_find_adj_head: measured {n} times — adjusted together ({method})
 screen_find_btn: find a metric
-screen_find_run_btn: run
+screen_find_run_btn: pick
 screen_find_goal_btn: set Goal
 screen_find_adj_btn: correction
 screen_keys_find: up/down move · space pick column · Enter choose/run · Tab step · Esc back · Ctrl-Q
