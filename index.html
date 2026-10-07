@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STATOP — 발표 스냅샷</title>
+<style>
+  :root{--bg:#fff;--text:#1c1f22;--muted:#5b6166;--border:#dde0e3;--brand:#35566b;--ok:#0b6e6e}
+  @media (prefers-color-scheme:dark){:root{--bg:#14171a;--text:#e7e9ea;--muted:#a2a9af;
+    --border:#2c3136;--brand:#7ba3bd;--ok:#3fb0ad}}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font:15px/1.65 "Malgun Gothic",-apple-system,"Segoe UI",Roboto,"Noto Sans KR",sans-serif}
+  .wrap{max-width:720px;margin:0 auto;padding:48px 20px 80px}
+  .brand{font-family:Georgia,"Times New Roman",serif;font-size:28px;font-weight:700;
+    letter-spacing:-.035em}
+  .brand i{font-style:normal;color:var(--ok)}
+  .sub{color:var(--muted);margin:4px 0 28px}
+  a.card{display:block;border:1px solid var(--border);border-radius:10px;
+    padding:16px 18px;margin-top:12px;text-decoration:none;color:var(--text)}
+  a.card:hover{border-color:var(--brand)}
+  a.card b{color:var(--brand)}
+  a.card span{display:block;color:var(--muted);font-size:13px;margin-top:3px}
+  .note{color:var(--muted);font-size:13px;margin-top:28px;border-top:1px solid var(--border);
+    padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">STAT<i>OP</i></div>
+  <div class="sub">STATistic Ontology Platform — 발표 스냅샷 (자료는 전부 합성입니다)</div>
+
+  <a class="card" href="001.html"><b>01 · 군별 상관</b>
+    <span>라벨 코드 지정 → 지표 찾기 → 결론 카드 — 군마다 모양이 다른 관계를 거리상관이 잡는다</span></a>
+  <a class="card" href="002.html"><b>02 · 분포에 맞는 공식</b>
+    <span>정규로 보면 겹치는 엔트로피 — 파생 컬럼 하나(1 + ln(평균))로 차이가 벌어진다</span></a>
+  <a class="card" href="003.html"><b>03 · 무결성 검증</b>
+    <span>이름도 척도도 다른 두 파일 — 짝을 지어야 보이는 것 (터미널 화면 그대로)</span></a>
+
+  <div class="note">각 페이지는 파일 하나로 완결됩니다 — 내려받아 더블클릭해도 똑같이 돕니다.
+    통계는 열어 본 브라우저 안에서 그 자리에서 계산됩니다.</div>
+</div>
+</body>
+</html>

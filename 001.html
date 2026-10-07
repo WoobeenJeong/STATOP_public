@@ -1,0 +1,1664 @@
+<title>STATOP 001 — 군별 상관 (스냅샷)</title>
+<style>
+
+:root {
+  --font-sans: "Malgun Gothic", -apple-system, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
+  --font-mono: Consolas, "SF Mono", "DejaVu Sans Mono", monospace;
+
+  
+  --bg: #ffffff;
+  --bg-subtle: #f5f6f7;
+  --border: #dde0e3;
+  --border-strong: #b8bcc0;
+  --text: #1c1f22;
+  --text-muted: #5b6166;
+  --text-faint: #8a9096;
+  --brand: #35566b;
+
+  
+  --ok: #0b6e6e;        --ok-bg: #e1efef;      --ok-text: #0b6e6e;
+  --neutral: #1c1f22;   --neutral-bg: #f0f1f2;
+  --warn: #e8912e;      --warn-bg: #fbeedd;    --warn-text: #7a4a12;
+  --danger: #b23a17;    --danger-bg: #f6e1d9;  --danger-text: #b23a17;
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171a;
+    --bg-subtle: #1b1f23;
+    --border: #2c3136;
+    --border-strong: #444a50;
+    --text: #e7e9ea;
+    --text-muted: #a2a9af;
+    --text-faint: #767d84;
+    --brand: #7ba3bd;
+    --ok: #3fb0ad;        --ok-bg: #10302f;     --ok-text: #55c3c0;
+    --neutral: #e7e9ea;   --neutral-bg: #22262a;
+    --warn: #e8912e;      --warn-bg: #382a16;   --warn-text: #e0a961;
+    --danger: #e06a45;    --danger-bg: #3a1d14; --danger-text: #e8805e;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.6 var(--font-sans);
+}
+.wrap { max-width: 980px; margin: 0 auto; padding: 28px 16px 72px; }
+
+.brand { font-family: Georgia, "Times New Roman", serif; font-size: 20px;
+         font-weight: 700; color: var(--text); letter-spacing: -.035em;
+         margin-bottom: 14px; }
+.brand-v { color: var(--ok); }
+
+.frame { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+
+.card { padding: 18px 20px; border-bottom: 1px solid var(--border); }
+.card:last-child { border-bottom: none; }
+.card.quiet { background: var(--bg-subtle); }
+.ttl { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+input[type="text"] {
+  flex: 1; min-width: 240px; padding: 9px 11px;
+  border: 1px solid var(--border); border-radius: 7px;
+  background: var(--bg); color: var(--text); font: 13px var(--font-mono);
+}
+input[type="text"]:focus { outline: none; border-color: var(--border-strong); }
+button {
+  padding: 8px 13px; border: 1px solid var(--border); border-radius: 7px;
+  background: var(--bg); color: var(--text); font: 13px var(--font-sans); cursor: pointer;
+}
+button:hover:not(:disabled) { border-color: var(--border-strong); }
+button:disabled { color: var(--text-faint); cursor: default; }
+button.pri { background: var(--brand); color: #fff; border-color: var(--brand); }
+button.pri:disabled { background: var(--bg-subtle); color: var(--text-faint); border-color: var(--border); }
+button.sm { padding: 5px 10px; font-size: 12px; }
+button.on { border-color: var(--brand); color: var(--brand); }
+
+.hint { color: var(--text-muted); font-size: 12.5px; margin-top: 10px; }
+.err { color: var(--danger-text); font-size: 13px; margin-top: 10px; }
+
+.fx-alt { color: var(--brand); border-left: 3px solid var(--brand); padding-left: 10px; }
+
+.sc-axes { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; line-height: 1.55; }
+.sc-axk { display: inline-block; min-width: 54px; color: var(--brand); font-weight: 600; }
+.sc-group > summary { cursor: pointer; padding: 5px 0; font-weight: 600; }
+.sc-alt { padding: 6px 0; border-top: 1px solid var(--border); }
+.sc-alt:first-child { border-top: none; }
+
+.rp-spread { margin-top: 8px; font-size: 12.5px; }
+.rp-bar { display: flex; align-items: center; gap: 6px; line-height: 1.5; }
+.rp-range { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-muted);
+            min-width: 128px; }
+.rp-fill { background: var(--brand); height: 9px; border-radius: 2px; min-width: 1px; }
+
+.rb-sec { margin-top: 12px; font-size: 13px; line-height: 1.6; }
+.rb-sec > b { display: block; margin-bottom: 3px; }
+.rb-read { color: var(--brand); }
+
+.fn-step { display: flex; gap: 10px; margin-top: 12px; }
+.fn-no { flex: 0 0 22px; height: 22px; border-radius: 50%; text-align: center;
+         font-size: 12px; line-height: 22px; background: var(--brand); color: #fff; }
+.fn-body { flex: 1; min-width: 0; }
+.fn-row { border: 1px solid var(--border); border-left-width: 4px; border-radius: 7px;
+          padding: 7px 9px; margin-top: 6px; }
+.fn-row.v-green { border-left-color: var(--ok); }
+.fn-row.v-yellow { border-left-color: var(--warn); }
+.fn-row.v-red { border-left-color: var(--danger); }
+.fn-top { display: flex; gap: 7px; align-items: baseline; flex-wrap: wrap; }
+.fn-val { margin-left: auto; font-variant-numeric: tabular-nums; font-size: 13px; }
+.fn-flag { font-size: 12px; }
+.fn-acts { display: flex; gap: 6px; align-items: center; margin-top: 5px; }
+.fn-adj { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
+.fx-chip.on { border-color: var(--brand); color: var(--brand); }
+
+
+.fn-sum { margin-top: 12px; padding: 10px 12px; border: 1px solid var(--brand);
+          border-radius: 8px; }
+.fn-sumttl { font-size: 11.5px; color: var(--brand); letter-spacing: .04em;
+             margin-bottom: 6px; }
+.fn-sumhead { font-size: 13.5px; font-weight: 600; }
+.fn-sumline { font-size: 13px; margin-top: 2px; }
+.fn-next { margin-top: 8px; padding-top: 7px; border-top: 1px solid var(--border);
+           font-size: 12.5px; display: grid; gap: 5px; }
+.fn-nextrow { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.fn-nextrow > span { flex: 1; min-width: 220px; }
+
+
+.pw { margin-top: 10px; padding: 10px 12px; border: 1px solid var(--border);
+      border-radius: 8px; display: grid; gap: 6px; }
+.pw-head { font-size: 13px; font-weight: 600; }
+.pw-aim { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pw-aim input[type="range"] { flex: 0 1 180px; accent-color: var(--brand); }
+.pw-aimin { width: 58px; font-family: var(--font-mono); font-size: 12.5px;
+             text-align: right; }
+.pw-axis { position: relative; height: 26px; background: var(--bg-subtle);
+           border-radius: 4px; }
+.pw-dead { position: absolute; left: 0; top: 0; bottom: 0;
+           background: var(--danger-bg); border-radius: 4px 0 0 4px; }
+.pw-cut { position: absolute; top: -2px; bottom: -2px; width: 2px;
+          background: var(--danger); }
+.pw-mark { position: absolute; top: 2px; transform: translateX(-50%);
+           font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);
+           text-align: center; }
+.pw-mark i { display: block; width: 9px; height: 9px; margin: 0 auto 1px;
+             border-radius: 50%; background: var(--text-faint); }
+.pw-mark.ok i { background: var(--ok); }
+.pw-mark.ok { color: var(--ok-text); }
+.pw-scale { position: relative; display: flex; justify-content: space-between;
+            font-size: 11px; font-family: var(--font-mono); color: var(--text-faint); }
+.pw-cutlab { position: absolute; transform: translateX(-50%); color: var(--danger-text); }
+.pw-swatch { display: inline-block; width: 11px; height: 11px; vertical-align: -1px;
+             background: var(--danger-bg); border: 1px solid var(--danger);
+             border-radius: 2px; margin-right: 4px; }
+.pw-row { font-size: 12.5px; }
+.pw-row.short { color: var(--warn-text); }
+.pw-off { border-top: 1px dashed var(--border); padding-top: 5px; }
+.pw-more > summary { cursor: pointer; font-size: 12.5px; color: var(--brand); }
+.pw-more table { margin-top: 4px; }
+
+.fx-ex { margin: 8px 0; display: grid; gap: 4px; }
+.fx-exrow { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.fx-exrow code { font-family: var(--font-mono); font-size: 12px; color: var(--brand); }
+.fn-plot { margin-top: 10px; display: grid; gap: 6px; }
+.fn-plot canvas { max-width: 100%; height: auto; border: 1px solid var(--border);
+                  border-radius: 7px; background: var(--bg); }
+.fn-rule { margin-top: 6px; padding: 6px 8px; background: var(--bg-subtle);
+           font-size: 12.5px; display: grid; gap: 2px; }
+.fn-mine { color: var(--brand); font-size: 11.5px; }
+.fn-role { display: flex; gap: 6px; align-items: flex-start; font-size: 12.5px;
+           margin-top: 3px; }
+
+
+.sc-goal { margin: 8px 0; padding: 7px 10px; border: 1px solid var(--border);
+           border-radius: 8px; font-size: 13px; }
+.sc-ison { margin-left: 6px; color: var(--brand); font-size: 12px; }
+.sc-branch > summary { cursor: pointer; font-size: 13px; margin-top: 10px; }
+
+
+.ty-fives { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px;
+            font-size: 13px; }
+.ty-fives i { font-style: normal; color: var(--text-faint); margin-right: 5px; }
+
+
+.stopbar { display: flex; align-items: center; gap: 10px;
+           margin: 0 0 10px; padding: 6px 10px;
+           border: 1px solid var(--border); border-radius: 8px; }
+
+
+.rf-item { padding: 7px 0; border-top: 1px solid var(--border); font-size: 13px; }
+.rf-item:first-of-type { border-top: none; }
+.a7-off { opacity: .72; }
+div.mid { color: var(--warn-text); }
+.kv { display: flex; gap: 26px; flex-wrap: wrap; font-size: 13px; }
+.kv span { color: var(--text-muted); font-size: 12px; display: block; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th {
+  text-align: left; font-weight: 600; color: var(--text-muted); font-size: 11.5px;
+  border-bottom: 1px solid var(--border); padding: 7px 8px;
+}
+td { padding: 6px 8px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+td.num { text-align: right; font-family: var(--font-mono); }
+.col { font-family: var(--font-mono); }
+
+
+tr.high td { color: var(--danger-text); }
+tr.mid td { color: var(--warn-text); }
+.flag { font-family: var(--font-mono); width: 24px; font-weight: 600; }
+.chk { width: 22px; }
+
+
+details { border-bottom: 1px solid var(--border); }
+details:last-of-type { border-bottom: none; }
+summary { padding: 13px 20px; color: var(--text-muted); font-size: 13px; cursor: pointer; }
+summary b { color: var(--text); font-weight: 600; }
+details .inner { padding: 0 20px 16px; color: var(--text-muted); font-size: 12.5px; }
+
+
+.warnbox {
+  background: var(--warn-bg); border: 1px solid var(--warn);
+  color: var(--warn-text); padding: 8px 12px; border-radius: 5px;
+  font-size: 12.5px; margin-bottom: 8px;
+}
+.dangerbox {
+  background: var(--danger-bg); border: 1px solid var(--danger);
+  color: var(--danger-text); padding: 8px 12px; border-radius: 5px;
+  font-size: 12.5px; margin-bottom: 8px;
+}
+.okbox {
+  background: var(--ok-bg); border: 1px solid var(--ok);
+  color: var(--ok-text); padding: 8px 12px; border-radius: 5px; font-size: 12.5px;
+}
+
+
+:root {
+  --r-column: #35566b;
+  --r-row: #0b6e6e;
+  --r-scalar: #7a3d8f;      
+  --r-set: #1f5fa8;
+  --r-eps: #7a4a12;
+  --r-const: #7a3d8f;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --r-column: #7ba3bd; --r-row: #3fb0ad; --r-scalar: #c08ad4;
+    --r-set: #6fa6e0; --r-eps: #e0a961; --r-const: #c89ae0;
+  }
+}
+
+.fx-input { flex: 1; min-width: 240px; font-family: var(--font-mono); }
+
+.fx-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+.fx-chip {
+  font-family: var(--font-mono); font-size: 12px; padding: 2px 8px;
+  border: 1px solid var(--border); border-radius: 2px;
+  background: var(--bg-subtle); color: var(--r-column); cursor: pointer;
+}
+.fx-chip:hover { border-color: var(--r-column); }
+
+.fx-pad { display: flex; flex-direction: column; gap: 4px; margin-top: 10px; }
+.fx-padrow { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.fx-tag {
+  font-size: 11px; color: var(--text-muted); min-width: 82px;
+  letter-spacing: .02em;
+}
+.fx-key {
+  font-family: var(--font-mono); font-size: 12px; padding: 2px 7px;
+  border: 1px solid var(--border); border-radius: 2px;
+  background: var(--bg); color: var(--text); cursor: pointer;
+}
+.fx-key:hover { border-color: var(--border-strong); }
+
+.fx-math {
+  margin-top: 12px; padding: 12px; background: var(--bg-subtle);
+  border: 1px solid var(--border); overflow-x: auto;
+}
+
+.fx-tokens {
+  font-family: var(--font-mono); font-size: 13px; margin-top: 8px;
+  padding: 6px 8px; background: var(--bg-subtle); white-space: pre-wrap;
+  word-break: break-all;
+}
+.fx-tokens span, .fx-tag, .fx-key, .fx-legend i { }
+
+.r-column, .fx-key.r-column, .fx-tag.r-column { color: var(--r-column); }
+.r-row_func, .fx-key.r-row_func, .fx-tag.r-row_func { color: var(--r-row); }
+.r-set_func, .r-pair_func,
+.fx-key.r-set_func, .fx-key.r-pair_func,
+.fx-tag.r-set_func, .fx-tag.r-pair_func { color: var(--r-set); }
+.r-eps, .fx-key.r-eps, .fx-tag.r-eps { color: var(--r-eps); }
+.r-const, .fx-key.r-const { color: var(--r-const); }
+.r-column_scalar_func, .fx-key.r-column_scalar_func, .fx-tag.r-column_scalar_func {
+  color: var(--r-scalar);
+  text-decoration: underline dotted;      
+  text-underline-offset: 3px;
+}
+
+.fx-legend {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px;
+  font-size: 11px; color: var(--text-muted);
+}
+.fx-legend i { display: inline-block; width: 9px; height: 9px; margin-right: 4px; }
+.fx-legend .r-column { background: var(--r-column); }
+.fx-legend .r-row_func { background: var(--r-row); }
+.fx-legend .r-column_scalar_func { background: var(--r-scalar); }
+.fx-legend .r-set_func { background: var(--r-set); }
+.fx-legend .r-eps { background: var(--r-eps); }
+
+.fx-note {
+  margin-top: 8px; font-size: 12px; color: var(--warn-text);
+  background: var(--warn-bg); border: 1px solid var(--warn);
+  padding: 6px 9px;
+}
+.fx-eps { margin-top: 10px; }
+
+.fx-stats {
+  display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.fx-stats .bad { color: var(--danger-text); font-weight: 600; }
+.fx-rtype { color: var(--r-row); }
+
+.fx-done {
+  margin-top: 10px; font-size: 13px; color: var(--ok-text);
+  background: var(--ok-bg); border: 1px solid var(--ok); padding: 6px 9px;
+}
+
+
+.gd-headline {
+  background: var(--danger-bg); border: 2px solid var(--danger);
+  color: var(--danger-text); font-weight: 700; font-size: 14px;
+  padding: 10px 14px; margin-bottom: 14px;
+}
+.gd-tier { font-size: 12px; font-weight: 700; margin-left: 8px; }
+.gd-tier.t-gate { color: var(--danger-text); }
+.gd-tier.t-diagnostic { color: var(--warn-text); }
+.gd-tier.t-ok { color: var(--ok-text); }
+
+.gd-rule { margin-top: 14px; }
+.gd-rulename {
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+  color: var(--text-muted); letter-spacing: .03em; margin-bottom: 4px;
+}
+.gd-item {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline;
+  padding: 5px 8px; border-left: 3px solid var(--border); font-size: 13px;
+}
+.gd-item.t-gate { border-left-color: var(--danger); background: var(--danger-bg); }
+.gd-item.t-diagnostic { border-left-color: var(--warn); background: var(--warn-bg); }
+.gd-badge { font-size: 11px; font-weight: 700; flex: 0 0 auto; }
+.gd-item.t-gate .gd-badge { color: var(--danger-text); }
+.gd-item.t-diagnostic .gd-badge { color: var(--warn-text); }
+.gd-check { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+.gd-detail { flex: 1 1 240px; }
+.gd-links { font-size: 11px; color: var(--text-muted); flex-basis: 100%; }
+
+.gd-cause {
+  margin-top: 14px; padding: 8px 10px; font-size: 13px;
+  border: 1px solid var(--border); background: var(--bg-subtle);
+}
+.gd-causehead { font-weight: 700; font-size: 12px; margin-bottom: 4px; }
+.gd-over {
+  margin-top: 12px; padding: 6px 9px; font-size: 12px;
+  color: var(--warn-text); background: var(--warn-bg); border: 1px solid var(--warn);
+}
+
+
+.sessbar {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  padding: 6px 10px; margin-bottom: 12px;
+  border: 1px solid var(--border); background: var(--bg-subtle);
+  font-size: 12px;
+}
+.sessid { font-family: var(--font-mono); font-weight: 600; color: var(--brand); }
+
+
+.ty-ev { font-size: 11px; color: var(--text-faint); font-family: var(--font-sans); }
+.ty-need { font-size: 11px; color: var(--warn-text); }
+.ty-dist {
+  margin-top: 12px; padding: 10px; border: 1px solid var(--border);
+  background: var(--bg-subtle);
+}
+.ty-plot { display: flex; gap: 6px; }
+.ty-plotbody { flex: 1; min-width: 0; }
+.ty-yaxis { display: flex; flex-direction: column; justify-content: space-between;
+  height: 90px; font-size: 11px; color: var(--text-muted); text-align: right;
+  font-variant-numeric: tabular-nums; }
+.ty-hist { display: flex; align-items: flex-end; gap: 2px; height: 90px;
+  border-left: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.ty-bar { flex: 1; background: var(--brand); min-width: 3px; }
+.ty-xaxis { display: flex; justify-content: space-between; font-size: 11px;
+  color: var(--text-muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.ty-level { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 12px; }
+.ty-level .col { width: 130px; overflow: hidden; text-overflow: ellipsis; }
+.ty-lvbar { height: 10px; background: var(--brand); min-width: 2px; max-width: 45%; }
+
+
+.an-form { align-items: flex-end; }
+.an-form label { display: flex; flex-direction: column; gap: 3px; font-size: 12px;
+  color: var(--text-muted); }
+.an-problems { margin-top: 10px; padding: 8px 10px; font-size: 13px;
+  background: var(--danger-bg); border: 1px solid var(--danger);
+  color: var(--danger-text); }
+.an-result { margin-top: 12px; padding: 8px 10px; font-size: 13px;
+  border: 1px solid var(--border); background: var(--bg-subtle);
+  font-variant-numeric: tabular-nums; }
+.an-hypo { margin-top: 12px; }
+.an-prop { padding: 6px 10px; border-left: 3px solid var(--ok); margin: 6px 0;
+  background: var(--ok-bg); font-size: 13px; }
+.an-cautions { margin-top: 8px; padding: 6px 10px; font-size: 12px;
+  background: var(--warn-bg); border: 1px solid var(--warn);
+  color: var(--warn-text); }
+tbody tr.off td { opacity: .5; }
+.an-missing { margin-top: 10px; padding: 8px 10px; font-size: 13px;
+  background: var(--warn-bg); border: 1px solid var(--warn); color: var(--warn-text); }
+.an-strata { margin-top: 8px; padding: 6px 10px; font-size: 12px;
+  border-left: 3px solid var(--brand); background: var(--bg-subtle); }
+
+.an-alarm { margin-top: 12px; padding: 10px 12px; font-size: 14px;
+  background: var(--danger); color: #fff; border-radius: 2px; }
+.an-alarm div { font-size: 12px; margin-top: 4px; opacity: .95; }
+.an-strata .flip { color: var(--danger-text); font-weight: 600; }
+
+
+.pt-wrap { margin-top: 12px; padding: 10px; border: 1px solid var(--border); }
+.pt-svg { width: 100%; height: auto; display: block; }
+.pt-axis { stroke: var(--border); stroke-width: 1; }
+.pt-tick { font-size: 10px; fill: var(--text-muted); }
+.pt-dot { cursor: pointer; opacity: .65; }
+.pt-dot:hover { opacity: 1; }
+.pt-dot.out { opacity: .9; stroke: var(--danger); stroke-width: 1.5; }
+.pt-dot.on { stroke: #000; stroke-width: 2; opacity: 1; }
+.pt-legend { display: flex; gap: 12px; font-size: 12px; color: var(--text-muted);
+  margin-top: 4px; }
+.pt-legend i { display: inline-block; width: 9px; height: 9px; margin-right: 4px; }
+.pt-row { font-size: 12px; padding: 2px 4px; cursor: pointer; }
+.pt-row:hover, .pt-row.on { background: var(--bg-subtle); }
+.pt-excluded { margin-top: 8px; padding: 6px 10px; font-size: 12px;
+  background: var(--warn-bg); border: 1px solid var(--warn); color: var(--warn-text); }
+.pt-alts { margin-top: 8px; padding: 6px 10px; font-size: 12px;
+  border-left: 3px solid var(--ok); background: var(--ok-bg); }
+
+
+.an-metrics { margin-top: 12px; font-size: 13px; }
+.mt-support, .mt-guardrail { padding: 8px 10px; margin-top: 6px;
+  border-left: 3px solid var(--ok); background: var(--bg-subtle); }
+.mt-guardrail { border-left-color: var(--warn); }
+.mt-item { margin: 6px 0 0 0; font-variant-numeric: tabular-nums; }
+.mt-triad { margin-top: 8px; padding: 6px 10px; font-size: 12px;
+  border: 1px dashed var(--border); }
+
+
+.sc-detail { background: var(--bg-subtle); padding: 8px 10px; }
+.sc-tex { margin: 4px 0; overflow-x: auto; }
+.sc-raw { font-size: 12px; color: var(--text-muted); }
+.sc-ent { margin-top: 10px; padding: 8px 10px; font-size: 13px;
+  border-left: 3px solid var(--brand); background: var(--bg-subtle); }
+
+
+.an-gate > summary { cursor: pointer; list-style: none; padding: 2px 0; }
+.an-gate > summary::-webkit-details-marker { display: none; }
+.an-gate > summary::before { content: "▸ "; color: var(--text-muted); }
+.an-gate[open] > summary::before { content: "▾ "; }
+
+.col-name { display: inline-block; max-width: 320px; overflow-wrap: anywhere;
+  word-break: break-word; }
+.sc-found { margin-top: 8px; padding: 8px 10px; font-size: 13px;
+  border-left: 3px solid var(--brand); background: var(--bg-subtle); }
+.sc-hit { margin-top: 6px; }
+
+
+.fd-results { margin-top: 6px; }
+.fd-hit { padding: 6px 0; border-bottom: 1px solid var(--border); }
+.fd-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.fd-chip { font-size: 12px; padding: 4px 9px; border: 1px solid var(--border);
+  background: var(--bg); cursor: pointer; }
+.fd-chip:hover { background: var(--bg-subtle); }
+.fd-chip.on { background: var(--brand); color: #fff; border-color: var(--brand); }
+.fd-tests { margin-top: 10px; padding: 8px 10px; background: var(--bg-subtle);
+  border-left: 3px solid var(--brand); }
+.fd-scroll { max-height: 340px; overflow-y: auto; margin-top: 6px; }
+.fd-test { padding: 6px 0; border-bottom: 1px solid var(--border); }
+
+.fx-lossy { margin-top: 8px; padding: 6px 10px; font-size: 12px;
+  background: var(--warn-bg); border: 1px solid var(--warn); color: var(--warn-text); }
+.fx-key.r-binning, .fx-tag.r-binning { border-color: var(--warn); }
+
+.sm.danger { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+
+.cli-only { border-left: 3px solid var(--text-muted); }
+.cli-item { margin-top: 8px; font-size: 13px; }
+.cli-how { font-family: var(--font-mono); font-size: 12px; margin-top: 2px;
+  padding: 3px 6px; background: var(--bg-subtle); display: inline-block; }
+
+
+.pending { margin-top: 12px; padding: 10px 12px; font-size: 13px;
+  background: var(--warn-bg); border: 1px solid var(--warn); color: var(--warn-text); }
+.pending div { margin-top: 4px; }
+.pending-steps { margin: 6px 0 0 18px; padding: 0; }
+.pending-steps li { margin: 2px 0; }
+
+
+.qw-status { display: flex; align-items: center; gap: 8px; margin-top: 8px;
+  font-size: 13px; flex-wrap: wrap; }
+.qw-dot { font-size: 14px; }
+.qw-dot.s-ready { color: var(--ok); }
+.qw-dot.s-model_missing { color: var(--warn); }
+.qw-dot.s-unreachable, .qw-dot.s-no_endpoint { color: var(--text-faint); }
+.qw-wait { margin-top: 8px; padding: 8px 10px; font-size: 13px;
+  background: var(--bg-subtle); border-left: 3px solid var(--brand); }
+.qw-bar { height: 4px; background: var(--border); margin-top: 6px; }
+.qw-bar span { display: block; height: 100%; background: var(--brand);
+  transition: width .5s linear; }
+.qw-dry pre { font-size: 11px; max-height: 240px; overflow: auto;
+  background: var(--bg-subtle); padding: 8px; white-space: pre-wrap; }
+.qw-answer { margin-top: 8px; }
+.gl-rule { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); }
+.gl-limit { margin-top: 4px; font-size: 12px; }
+
+.an-assump { margin-top: 8px; padding: 6px 10px; font-size: 12px;
+  background: var(--bg-subtle); border-left: 3px solid var(--border); }
+.an-assump .as-violated { color: var(--danger-text); font-weight: 600; }
+.an-assump .as-caution { color: var(--warn-text); }
+.an-assump .as-skipped { color: var(--text-muted); }
+
+
+.lk-badge { margin-left: 8px; padding: 1px 6px; font-size: 11px;
+  background: var(--danger); color: #fff; }
+.lk-item { margin-top: 8px; padding: 6px 10px; font-size: 13px;
+  border-left: 3px solid var(--border); }
+.lk-item.v-fail { border-left-color: var(--danger); background: var(--danger-bg); }
+.lk-item.v-pass { border-left-color: var(--ok); }
+
+.lk-item.v-fail.lk-diag { border-left-color: var(--warn); background: var(--warn-bg); }
+.lk-action { font-size: 12px; margin-top: 2px; }
+
+.mb-shift { font-family: var(--font-mono); font-size: 12px; line-height: 1.35;
+  margin: 6px 0 0; padding: 8px 10px; overflow-x: auto;
+  background: var(--bg-subtle); border-left: 3px solid var(--border); }
+
+.an-prop.st-optimal { border-left: 3px solid var(--ok); padding-left: 8px; }
+.an-prop.st-conservative { border-left: 3px solid var(--brand); padding-left: 8px; }
+.an-prop.st-broad { border-left: 3px solid var(--warn); padding-left: 8px; }
+
+</style>
+
+<div class="wrap">
+  <div class="snapnote"><b>발표 스냅샷 001</b> — 실제 STATOP 웹과 같은 화면·같은 계산입니다. 파일은 이미 열려 있고, 여기서부터 <b>원하는 대로 고르면 됩니다</b>. 값은 누를 때 그 자리에서 계산합니다. (이 상자만 실제 앱에 없는 안내입니다)</div>
+  <div class="brand">STAT<span class="brand-v">OP</span></div>
+  <div class="stopbar">
+    <button class="sm" disabled>중지</button>
+    <span class="hint" style="margin:0">진행 중인 작업 없음</span>
+  </div>
+  <div class="frame" id="frame"></div>
+</div>
+
+<script>
+
+const S = {
+  num(v) { return typeof v === "number" && isFinite(v); },
+
+  mean(a) { return a.reduce((s, x) => s + x, 0) / a.length; },
+  sd(a) {
+    const m = S.mean(a);
+    return Math.sqrt(a.reduce((s, x) => s + (x - m) ** 2, 0) / (a.length - 1));
+  },
+  quantile(sorted, q) {
+    const i = (sorted.length - 1) * q, lo = Math.floor(i), hi = Math.ceil(i);
+    return lo === hi ? sorted[lo] : sorted[lo] + (sorted[hi] - sorted[lo]) * (i - lo);
+  },
+  five(a) {
+    const s = [...a].sort((x, y) => x - y);
+    const q1 = S.quantile(s, .25), q2 = S.quantile(s, .5), q3 = S.quantile(s, .75);
+    return { min: s[0], q1, q2, q3, max: s[s.length - 1], iqr: q3 - q1 };
+  },
+  skew(a) {
+    const m = S.mean(a), sd = S.sd(a), n = a.length;
+    if (!sd) return 0;
+    return (n / ((n - 1) * (n - 2))) * a.reduce((s, x) => s + ((x - m) / sd) ** 3, 0);
+  },
+
+  
+  ranks(a) {
+    const idx = a.map((v, i) => [v, i]).sort((p, q) => p[0] - q[0]);
+    const r = new Array(a.length);
+    let i = 0;
+    while (i < idx.length) {
+      let j = i;
+      while (j + 1 < idx.length && idx[j + 1][0] === idx[i][0]) j++;
+      const avg = (i + j) / 2 + 1;
+      for (let k = i; k <= j; k++) r[idx[k][1]] = avg;
+      i = j + 1;
+    }
+    return r;
+  },
+
+  pearson(x, y) {
+    const n = x.length, mx = S.mean(x), my = S.mean(y);
+    let sxy = 0, sxx = 0, syy = 0;
+    for (let i = 0; i < n; i++) {
+      sxy += (x[i] - mx) * (y[i] - my);
+      sxx += (x[i] - mx) ** 2; syy += (y[i] - my) ** 2;
+    }
+    const r = sxy / Math.sqrt(sxx * syy || 1e-300);
+    const t = r * Math.sqrt((n - 2) / Math.max(1e-12, 1 - r * r));
+    return { v: r, p: S.tP(Math.abs(t), n - 2) };
+  },
+  spearman(x, y) {
+    const r = S.pearson(S.ranks(x), S.ranks(y));
+    return { v: r.v, p: r.p };
+  },
+  kendall(x, y) {
+    const n = x.length;
+    let c = 0, d = 0, tx = 0, ty = 0;
+    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
+      const a = Math.sign(x[i] - x[j]), b = Math.sign(y[i] - y[j]);
+      if (a === 0 && b === 0) continue;
+      if (a === 0) { tx++; continue; }
+      if (b === 0) { ty++; continue; }
+      a * b > 0 ? c++ : d++;
+    }
+    const n0 = n * (n - 1) / 2;
+    const tau = (c - d) / Math.sqrt((n0 - tx) * (n0 - ty) || 1);
+    const z = 3 * (c - d) / Math.sqrt(n * (n - 1) * (2 * n + 5) / 2);
+    return { v: tau, p: 2 * (1 - S.normCdf(Math.abs(z))) };
+  },
+  
+  dcor(x, y, perms = 300, seed = 7) {
+    const Ax = S._dmat(x);
+    const stat = (A, b) => {
+      const n = b.length, B = S._dmat(b);
+      let ab = 0, aa = 0, bb = 0;
+      for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+        ab += A[i][j] * B[i][j]; aa += A[i][j] ** 2; bb += B[i][j] ** 2;
+      }
+      const n2 = n * n;
+      const da = aa / n2, db = bb / n2;
+      return da * db > 0
+        ? Math.sqrt(Math.max(0, ab / n2)) / Math.pow(da * db, 0.25) : 0;
+    };
+    const v = stat(Ax, y);
+    let rng = seed, ge = 1;
+    const rand = () => (rng = (rng * 1103515245 + 12345) % 2147483648) / 2147483648;
+    for (let k = 0; k < perms; k++) {
+      const sh = [...y];
+      for (let i = sh.length - 1; i > 0; i--) {
+        const j = Math.floor(rand() * (i + 1));
+        [sh[i], sh[j]] = [sh[j], sh[i]];
+      }
+      if (stat(Ax, sh) >= v) ge++;
+    }
+    return { v, p: ge / (perms + 1) };
+  },
+  _dmat(a) {
+    const n = a.length, M = [];
+    for (let i = 0; i < n; i++) { M.push([]); for (let j = 0; j < n; j++) M[i].push(Math.abs(a[i] - a[j])); }
+    const rm = M.map(r => S.mean(r)), cm = [];
+    for (let j = 0; j < n; j++) cm.push(S.mean(M.map(r => r[j])));
+    const gm = S.mean(rm);
+    return M.map((r, i) => r.map((v, j) => v - rm[i] - cm[j] + gm));
+  },
+
+  
+  welch(a, b) {
+    const ma = S.mean(a), mb = S.mean(b);
+    const va = S.sd(a) ** 2 / a.length, vb = S.sd(b) ** 2 / b.length;
+    const t = (mb - ma) / Math.sqrt(va + vb);
+    const df = (va + vb) ** 2 / (va * va / (a.length - 1) + vb * vb / (b.length - 1));
+    const sp = Math.sqrt((S.sd(a) ** 2 + S.sd(b) ** 2) / 2);
+    return { t, p: S.tP(Math.abs(t), df), diff: mb - ma, d: (mb - ma) / sp,
+             ma, mb, sa: S.sd(a), sb: S.sd(b) };
+  },
+  mwu(a, b) {
+    const all = [...a, ...b], r = S.ranks(all);
+    const ra = r.slice(0, a.length).reduce((s, x) => s + x, 0);
+    const u = ra - a.length * (a.length + 1) / 2;
+    const mu = a.length * b.length / 2;
+    const sg = Math.sqrt(a.length * b.length * (a.length + b.length + 1) / 12);
+    const z = (u - mu) / sg;
+    return { u, p: 2 * (1 - S.normCdf(Math.abs(z))), auc: u / (a.length * b.length) };
+  },
+
+  normCdf(z) {
+    const t = 1 / (1 + .2316419 * Math.abs(z));
+    const d = .3989423 * Math.exp(-z * z / 2);
+    const p = d * t * (.3193815 + t * (-.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    return z > 0 ? 1 - p : p;
+  },
+  
+  tP(t, df) {
+    const x = df / (df + t * t);
+    return Math.min(1, S.ibeta(x, df / 2, .5));
+  },
+  ibeta(x, a, b) {
+    if (x <= 0) return 0; if (x >= 1) return 1;
+    const lbeta = S.lgamma(a) + S.lgamma(b) - S.lgamma(a + b);
+    const front = Math.exp(Math.log(x) * a + Math.log(1 - x) * b - lbeta) / a;
+    let f = 1, c = 1, d = 0;
+    for (let i = 0; i <= 250; i++) {
+      const m = Math.floor(i / 2);
+      let num;
+      if (i === 0) num = 1;
+      else if (i % 2 === 0) num = (m * (b - m) * x) / ((a + 2 * m - 1) * (a + 2 * m));
+      else num = -((a + m) * (a + b + m) * x) / ((a + 2 * m) * (a + 2 * m + 1));
+      d = 1 + num * d; if (Math.abs(d) < 1e-30) d = 1e-30; d = 1 / d;
+      c = 1 + num / c; if (Math.abs(c) < 1e-30) c = 1e-30;
+      const cd = c * d; f *= cd;
+      if (Math.abs(1 - cd) < 1e-10) break;
+    }
+    return front * (f - 1);
+  },
+  lgamma(z) {
+    const g = [676.5203681218851, -1259.1392167224028, 771.32342877765313,
+               -176.61502916214059, 12.507343278686905, -0.13857109526572012,
+               9.9843695780195716e-6, 1.5056327351493116e-7];
+    if (z < .5) return Math.log(Math.PI / Math.sin(Math.PI * z)) - S.lgamma(1 - z);
+    z -= 1; let x = 0.99999999999980993;
+    for (let i = 0; i < g.length; i++) x += g[i] / (z + i + 1);
+    const t = z + g.length - .5;
+    return .5 * Math.log(2 * Math.PI) + (z + .5) * Math.log(t) - t + Math.log(x);
+  },
+
+  hist(a, bins, lo, hi) {
+    const out = new Array(bins).fill(0);
+    const w = (hi - lo) / bins || 1;
+    for (const v of a) out[Math.min(bins - 1, Math.max(0, Math.floor((v - lo) / w)))]++;
+    return out;
+  },
+  fmtP(p) { return p < 0.001 ? p.toExponential(2) : p.toFixed(4); },
+  fmt(v, n = 4) {
+    if (v === null || v === undefined || !isFinite(v)) return "—";
+    if (v !== 0 && Math.abs(v) < 1e-4) return v.toExponential(3);
+    return Number(v.toPrecision(n)).toLocaleString("en-US", { maximumSignificantDigits: n });
+  },
+};</script>
+<script>
+
+const $ = (s) => document.querySelector(s);
+const el = (h) => { const d = document.createElement("div"); d.innerHTML = h.trim(); return d.firstChild; };
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+const APP = {
+  rows: [], cols: [], types: {}, held: new Set(), derived: [],
+  q: "", picked: [], ran: {}, goal: null, custom: [], method: "holm", adj: null,
+  color: null, target: 0.80,
+};
+
+function isNum(c) { return APP.rows.every(r => r[c] === "" || !isNaN(+r[c])); }
+function vals(c, rows) { return (rows || APP.rows).map(r => +r[c]).filter(v => isFinite(v)); }
+
+function workspace() {
+  const body = APP.cols.map(c => {
+    const u = new Set(APP.rows.map(r => r[c])).size;
+    const miss = APP.rows.filter(r => r[c] === "" || r[c] === undefined).length / APP.rows.length;
+    const dt = APP.derived.includes(c) ? "derived" : (isNum(c) ? "float64" : "str");
+    return `<tr>
+      <td class="col"${APP.held.has(c) ? ' style="color:var(--text-faint)"' : ""}>
+        <span class="col-name" title="${c}">${c}</span></td>
+      <td class="hint" style="margin:0">${dt}</td>
+      <td class="num">${(miss * 100).toFixed(1)}%</td>
+      <td class="num">${u.toLocaleString()}</td>
+      <td><input type="checkbox" ${APP.held.has(c) ? "checked" : ""}
+           onchange="toggleHold('${c}')"></td>
+      <td style="text-align:right"><button class="sm" onclick="dropCol('${c}')">제외</button></td>
+    </tr>`;
+  }).join("");
+  return `<div class="card" id="cWs">
+    <div class="ttl">작업 영역 — 가져온 컬럼 ${APP.cols.length}개
+      <span style="color:var(--text-faint)"> (분석에 씀 ${APP.cols.length - APP.held.size}
+        · 분석에서 뺌 ${APP.held.size})</span></div>
+    <table><thead><tr><th>컬럼명</th><th>타입</th>
+      <th style="text-align:right">결측률</th><th style="text-align:right">고유값</th>
+      <th style="width:70px;white-space:nowrap">분석 제외</th><th style="width:56px"></th>
+    </tr></thead><tbody>${body}</tbody></table>
+    <div class="hint">체크하면 <b>분석에서 빠집니다</b> — 다만 그림에서 색·점을 가르는 데는
+      계속 씁니다 (환자 번호·기관 코드처럼 분석 변수가 아닌 것). 아예 빼려면 [제외] 입니다.</div>
+  </div>`;
+}
+function toggleHold(c) { APP.held.has(c) ? APP.held.delete(c) : APP.held.add(c); render(); }
+function dropCol(c) {
+  APP.cols = APP.cols.filter(x => x !== c);
+  APP.derived = APP.derived.filter(x => x !== c);
+  APP.picked = APP.picked.filter(x => x !== c);
+  delete APP.types[c]; APP.held.delete(c); APP.ran = {}; render();
+}
+
+const KNOWN = ["continuous", "count", "proportion", "probability", "percent", "label",
+               "id", "nominal code", "ordinal code", "log-scale", "z-score", "datetime",
+               "composition set", "normalized score", "expression index"];
+
+function guess(c) {
+  if (APP.derived.includes(c)) return ["log-scale", "continuous"];
+  const u = new Set(APP.rows.map(r => r[c]));
+  if (!isNum(c)) return u.size === APP.rows.length ? ["id", "label"]
+                       : u.size <= 6 ? ["label", "nominal code"] : ["nominal code", "label"];
+  const v = vals(c);
+  if (v.every(x => Number.isInteger(x))) return u.size <= 8 ? ["nominal code", "count"] : ["count", "continuous"];
+  if (v.every(x => x >= 0 && x <= 1)) return ["proportion", "probability"];
+  return ["continuous", "z-score"];
+}
+
+function typesCard() {
+  const rows = APP.cols.map(c => {
+    const g = guess(c), cur = APP.types[c] || g[0];
+    const opts = [...g, ...KNOWN.filter(k => !g.includes(k))]
+      .map(k => `<option value="${k}" ${k === cur ? "selected" : ""}>${
+        g.includes(k) ? (g.indexOf(k) + 1) + ". " + k : k + " (추론 밖)"}</option>`).join("");
+    const five = isNum(c) ? S.five(vals(c)) : null;
+    return `<tr class="${APP.types[c] ? "" : "mid"}">
+      <td class="flag">${APP.types[c] ? "✔" : "→"}</td>
+      <td class="col"><span class="col-name">${c}</span>
+        ${APP.derived.includes(c) ? '<div class="ty-ev">· 수식에서 — ln(frag_len_sd)</div>' : ""}</td>
+      <td class="hint" style="margin:0">${five ? (S.skew(vals(c)) > .8 ? "한쪽으로 치우침" : "단봉형") : "범주형"}</td>
+      <td><select onchange="setType('${c}', this.value)">${opts}</select></td>
+      <td style="text-align:right;white-space:nowrap">
+        <button class="sm" onclick="confirmType('${c}')">${APP.types[c] ? "다시 확정" : "확정"}</button>
+        ${APP.types[c] ? ` <button class="sm" onclick="unconfirm('${c}')">확정 취소</button>` : ""}
+        <button class="sm" onclick="showDist('${c}')">분포</button>
+        ${APP.types[c] === "label" || APP.types[c] === "nominal code"
+          ? ` <button class="sm" onclick="openMap('${c}')">코드 지정</button>` : ""}
+      </td></tr>`;
+  }).join("");
+  const n = Object.keys(APP.types).length;
+  return `<div class="card" id="cTypes">
+    <div class="ttl">의미 타입 확정</div>
+    <div class="row"><button class="pri" onclick="reinfer()">다시 추론</button>
+      <span class="hint" style="margin:0">확정 ${n}개 · 미확정 ${APP.cols.length - n}개${
+        APP._reinfer ? ` · ${APP._reinfer}` : ""}</span></div>
+    <table><thead><tr><th></th><th>컬럼</th><th>분포</th><th>타입</th>
+      <th style="width:190px"></th></tr></thead><tbody>${rows}</tbody></table>
+    ${mapBox()}
+    <div id="distBox"></div></div>`;
+}
+function setType(c, v) { APP._pend = APP._pend || {}; APP._pend[c] = v; }
+
+function reinfer() {
+  APP._pend = {};
+  const open = APP.cols.filter(c => !APP.types[c]);
+  APP._reinfer = open.length ? `다시 추론함: ${open.join(", ")}` : "모두 확정되어 있습니다";
+  render();
+}
+function confirmType(c) {
+  APP.types[c] = (APP._pend && APP._pend[c]) || guess(c)[0];
+  APP.ran = {};
+  if (APP.types[c] === "label" || APP.types[c] === "nominal code") openMap(c);
+  else render();
+}
+
+function openMap(c) {
+  const vc = {};
+  APP.rows.forEach(r => { vc[r[c]] = (vc[r[c]] || 0) + 1; });
+  const order = Object.entries(vc).sort((a, b) => b[1] - a[1]).map(x => x[0]);
+  APP.maps = APP.maps || {};
+  if (!APP.maps[c]) APP.maps[c] = Object.fromEntries(order.map((v, i) => [v, i]));
+  APP.mapCol = c; render();
+}
+function setCode(v, code) {
+  const c = APP.mapCol;
+  APP.maps[c][v] = Math.max(0, Math.min(9, code));
+  render();
+}
+function closeMap(save) {
+  if (!save) delete APP.maps[APP.mapCol];
+  APP.mapCol = null; render();
+}
+function mapBox() {
+  const c = APP.mapCol;
+  if (!c) return "";
+  const m = APP.maps[c], vc = {};
+  APP.rows.forEach(r => { vc[r[c]] = (vc[r[c]] || 0) + 1; });
+  const rows = Object.keys(m).map(v => `<tr>
+    <td class="col">${esc(v)}</td>
+    <td class="num">${vc[v] || 0}</td>
+    <td class="num">${((vc[v] || 0) / APP.rows.length * 100).toFixed(1)}%</td>
+    <td>${[0, 1, 2, 3].map(k => `<button class="sm${m[v] === k ? " on" : ""}"
+      onclick="setCode('${esc(v)}', ${k})">${k}</button>`).join(" ")}</td></tr>`).join("");
+  const groups = {};
+  Object.entries(m).forEach(([v, k]) => (groups[k] = groups[k] || []).push(v));
+  return `<div class="ty-dist">
+    <div class="ttl" style="margin-bottom:6px">${c} — 코드 지정 (어느 값이 0 인가)</div>
+    <table><thead><tr><th>값</th><th style="text-align:right">n</th>
+      <th style="text-align:right">비율</th><th style="width:180px">코드</th>
+    </tr></thead><tbody>${rows}</tbody></table>
+    <div class="hint">묶으면 이렇게 됩니다 — ${Object.entries(groups)
+      .map(([k, vs]) => `${k}=${vs.join("+")}`).join(" · ")}</div>
+    <div class="hint" style="margin-top:4px">같은 코드를 주면 **두 수준이 한 군으로 묶입니다**.
+      양성 클래스가 0 이면 AUC·민감도가 반대 방향을 가리킵니다</div>
+    <div class="row" style="margin-top:6px">
+      <button class="sm" onclick="closeMap(true)">이대로 저장</button>
+      <button class="sm" onclick="closeMap(false)">취소</button></div></div>`;
+}
+function unconfirm(c) { delete APP.types[c]; APP.ran = {}; render(); }
+function showDist(c) {
+  if (!isNum(c)) {
+    const vc = {};
+    APP.rows.forEach(r => { vc[r[c]] = (vc[r[c]] || 0) + 1; });
+    const tot = APP.rows.length;
+    const levels = Object.entries(vc).sort((a, b) => b[1] - a[1]);
+    $("#distBox").innerHTML = `<div class="ty-dist">
+      <div class="ttl" style="margin-bottom:6px">${c} — 범주형 · 수준 ${levels.length}개</div>
+      ${levels.slice(0, 12).map(([k, n]) => `<div class="ty-level">
+        <span class="col">${esc(k)}</span>
+        <span class="ty-lvbar" style="width:${(n / tot * 100).toFixed(1)}%"></span>
+        <span class="hint" style="margin:0">${(n / tot * 100).toFixed(1)}% (${n})</span>
+      </div>`).join("")}
+      ${levels.length > 12 ? `<div class="hint">나머지 ${levels.length - 12}개 수준은 접었습니다</div>` : ""}
+    </div>`;
+    return;
+  }
+  const v = vals(c), f = S.five(v);
+  const lo = f.min, hi = f.max, h = S.hist(v, 20, lo, hi), top = Math.max(...h);
+  const bars = h.map(b => `<div class="ty-bar" style="height:${Math.max(2, b / top * 100)}%"></div>`).join("");
+  const five = [["최소", f.min], ["Q1 (하위 25%)", f.q1], ["Q2 (중앙값)", f.q2],
+                ["Q3 (상위 25%)", f.q3], ["최대", f.max], ["IQR (Q3−Q1)", f.iqr],
+                ["Q1−1.5×IQR", f.q1 - 1.5 * f.iqr], ["Q3+1.5×IQR", f.q3 + 1.5 * f.iqr]];
+  $("#distBox").innerHTML = `<div class="ty-dist">
+    <div class="ttl" style="margin-bottom:6px">${c}</div>
+    <div class="ty-plot"><div class="ty-yaxis"><span>${top}</span><span>0</span></div>
+      <div class="ty-plotbody"><div class="ty-hist">${bars}</div>
+        <div class="ty-xaxis"><span>${S.fmt(lo)}</span><span>${S.fmt((lo + hi) / 2)}</span>
+          <span>${S.fmt(hi)}</span></div></div></div>
+    <div class="ty-fives">${five.map(([k, v2]) =>
+      `<span><i>${k}</i>${S.fmt(v2)}</span>`).join("")}</div>
+    <div class="hint">울타리 — 이 범위 밖의 값을 IQR 기준 바깥값으로 셉니다</div>
+    <div class="hint" style="margin-top:4px">왜도 ${S.fmt(S.skew(v), 3)}</div></div>`;
+}
+
+const QUESTIONS = [
+  ["Q-01", "차이 (그룹 간 위치 비교)", '"A군과 B군이 다른가", "처리 전후"'],
+  ["Q-02", "비율/빈도 차이", '"양성 비율이 다른가"'],
+  ["Q-03", "연관 (두 변수 관계 강도)", '"X가 크면 Y도 큰가"'],
+  ["Q-04", "상호작용/조절", '"약효가 성별에 따라 다른가"'],
+  ["Q-05", "경향/추세", '"용량이 늘면 반응이 단조 증가하나"'],
+  ["Q-06", "일치도/재현성", '"두 측정자가 같은 값을 내는가"'],
+  ["Q-07", "분포 비교 (형태 자체)", '"두 분포가 같은가"'],
+  ["Q-08", "예측/설명 (회귀)", '"Y를 X들로 설명"'],
+  ["Q-09", "생존/사건 시간", '"생존 곡선이 다른가"'],
+  ["Q-10", "조성 데이터", '"비율이 군 간 다른가"'],
+  ["Q-11", "사전지정 대비", '"정상=교란≠암"'],
+  ["Q-12", "표본 크기·대표성", '"몇 개를 골라야 전체를 대표하나"'],
+];
+
+const TESTS = {
+  "Q-03": [
+    ["T-302", "Spearman ρ", "rho", "green", "다수 outlier, 비정규, 순위", "단조성",
+     (x, y) => S.spearman(x, y)],
+    ["T-303", "Kendall τ", "tau", "green", "소표본, 동점 많음", "단조성",
+     (x, y) => S.kendall(x, y)],
+    ["T-304", "Distance correlation", "dCor", "green", "비선형·비단조 의심", "독립성",
+     (x, y) => S.dcor(x, y, 300)],
+    ["T-301", "Pearson r", "r", "yellow", "직선 관계, 정규에 가까움",
+     "정규성·등분산·선형성 (C-01, C-03, C-08 미확인)", (x, y) => S.pearson(x, y)],
+  ],
+  "Q-01": [
+    ["T-101", "Welch t", "Hedges g", "green", "두 군, 분산이 달라도", "정규성 (C-01)",
+     (a, b) => { const w = S.welch(a, b); return { v: w.d, p: w.p, extra: w }; }],
+    ["T-104", "Brunner–Munzel", "P(X>Y)", "green", "정규 아님, 분산 달라도", "없음",
+     (a, b) => { const m = S.mwu(a, b); return { v: m.auc, p: m.p }; }],
+  ],
+};
+
+function finder() {
+  const cols = APP.cols.filter(c => !APP.held.has(c));
+  const chips = QUESTIONS.map(([id, q, w]) =>
+    `<button class="fd-chip${APP.q === id ? " on" : ""}" onclick="pickQ('${id}')">${q}</button>`).join("");
+  const colChips = cols.map(c =>
+    `<button class="fx-chip${APP.picked.includes(c) ? " on" : ""}" onclick="pickCol('${c}')">${
+      APP.picked.includes(c) ? (APP.picked.indexOf(c) + 1) + ". " + c : c}</button>`).join("");
+  const words = (QUESTIONS.find(q => q[0] === APP.q) || [])[2] || "";
+
+  return `<div class="card" id="cFind">
+    <div class="ttl">지표 찾기 — 무엇을 알고 싶은가 → 어느 컬럼으로 → 무엇을 쓸까</div>
+    <div class="fn-step"><span class="fn-no">1</span><div class="fn-body">
+      <div class="row"><input type="text" placeholder="이름을 알면 여기서 — 상관, 생존, 일치도…"
+        oninput="filterQ(this.value)"></div>
+      <div class="fd-chips" id="qChips" style="margin-top:6px">${chips}</div>
+      ${APP.q ? `<div class="hint" style="margin-top:4px">${words}</div>` : ""}
+    </div></div>
+
+    <div class="fn-step"><span class="fn-no">2</span><div class="fn-body">
+      <div class="fd-chips">${colChips}</div>
+      <div class="hint" style="margin-top:4px">두 개까지 고릅니다 · 순서가 의미를 가집니다
+        (첫째가 보려는 값)</div>
+      <div class="row" style="margin-top:4px">
+        <span class="hint" style="margin:0">색으로 나눌 군</span>
+        <button class="sm${!APP.color ? " on" : ""}" onclick="setColor('')">나누지 않음</button>
+        ${colorCols().map(c => `<button class="sm${APP.color === c ? " on" : ""}"
+            onclick="setColor('${c}')">${c}</button>`).join("")}
+        ${colorCols().length ? "" :
+          `<span class="hint" style="margin:0">나눌 군 컬럼이 없습니다</span>`}
+      </div>
+    </div></div>
+
+    <div class="fn-step"><span class="fn-no">3</span><div class="fn-body">
+      ${step3()}
+    </div></div>
+  </div>`;
+}
+
+function filterQ(t) {
+  const f = t.trim().toLowerCase();
+  $("#qChips").innerHTML = QUESTIONS.filter(([id, q, w]) =>
+    !f || (id + q + w).toLowerCase().includes(f)).map(([id, q]) =>
+    `<button class="fd-chip${APP.q === id ? " on" : ""}" onclick="pickQ('${id}')">${q}</button>`).join("")
+    || '<span class="hint">맞는 갈래가 없습니다</span>';
+}
+
+const GROUPY = ["label", "nominal code", "ordinal code"];
+function isGroupy(c) {
+  const t = APP.types[c];
+  if (t) return GROUPY.includes(t);
+  return !isNum(c);
+}
+function colorCols() {
+  const y = APP.picked[0];
+  return APP.cols.filter(c => c !== y && isGroupy(c)
+    && new Set(APP.rows.map(r => r[c])).size >= 2
+    && new Set(APP.rows.map(r => r[c])).size <= 8);
+}
+function setColor(c) { APP.color = c || null; render(); }
+function pickQ(id) { APP.q = APP.q === id ? "" : id; APP.ran = {}; APP.adj = null; render(); }
+function pickCol(c) {
+  APP.picked = APP.picked.includes(c) ? APP.picked.filter(x => x !== c)
+             : [...APP.picked, c].slice(-2);
+  APP.ran = {}; APP.adj = null; render();
+}
+
+const SECOND_ROLE = { "Q-03": "value", "Q-06": "value", "Q-08": "value", "Q-09": "event" };
+const ROLE_ASK = {
+  group: "군 컬럼을 하나 더 고르십시오 — 무엇과 무엇을 비교할지가 있어야 계산됩니다",
+  value: "수치 컬럼을 하나 더 고르십시오 — 두 값 사이를 보는 질문입니다",
+  event: "사건 컬럼을 하나 더 고르십시오 — 일어났는가/아닌가를 가리키는 컬럼입니다",
+};
+function secondCols() {
+  const role = SECOND_ROLE[APP.q] || "group";
+  return APP.cols.filter(c => !APP.picked.includes(c) && !APP.held.has(c)).filter(c => {
+    const k = new Set(APP.rows.map(r => r[c])).size;
+    if (role === "value") return isNum(c) && !isGroupy(c) && k > 2;
+    if (role === "event") return k === 2;
+    return isGroupy(c) && k >= 2 && k <= 12;
+  });
+}
+
+function candidates() {
+  if (!APP.q) return { problems: [], list: [] };
+  if (APP.picked.length === 1) {
+    const role = SECOND_ROLE[APP.q] || "group", cs = secondCols();
+    return { problems: [ROLE_ASK[role] + (cs.length
+      ? `<div class="row" style="margin-top:6px"><span class="hint" style="margin:0">이 중에서 고를 수 있습니다</span>`
+        + cs.map(c => `<button class="sm" onclick="pickCol('${c}')">${c}</button>`).join("") + "</div>"
+      : ` — 쓸 만한 컬럼이 없습니다`)], list: [] };
+  }
+  if (APP.picked.length < 2) return { problems: [], list: [] };
+  const [a, b] = APP.picked;
+  const unconf = APP.picked.filter(c => !APP.types[c]);
+  if (unconf.length) return { problems: [`의미 타입을 먼저 확정하세요 — ${unconf.join(", ")} (S-R14)`], list: [] };
+  const list = TESTS[APP.q];
+  if (!list) return { problems: [`이 스냅샷은 ${APP.q} 를 계산하지 않습니다 — 실제 STATOP 는 12종 전부 돕니다`], list: [] };
+  if (APP.q === "Q-03" && !(isNum(a) && isNum(b)))
+    return { problems: ["연관은 두 변수가 모두 수치여야 합니다 (S-R09)"], list: [] };
+  if (APP.q === "Q-01") {
+    const lab = APP.types[b];
+    if (!(isNum(a) && (lab === "label" || lab === "nominal code")))
+      return { problems: ["차이는 [값 컬럼] × [군 컬럼] 입니다 — 둘째를 라벨로 확정하세요"], list: [] };
+  }
+  return { problems: [], list };
+}
+
+function step3() {
+  if (!APP.q || !APP.picked.length)
+    return `<div class="hint" style="margin-top:0">질문과 컬럼을 고르면 여기에
+      쓸 수 있는 것들이 뜹니다.</div>`;
+  const { problems, list } = candidates();
+  if (problems.length) return problems.map(p => `<div class="warnbox">${p}</div>`).join("");
+
+  const head = plotCard();
+  const rows = list.map(t => {
+    const [id, name, eff, verdict, why, assume] = t;
+    const r = APP.ran[id];
+    const adj = APP.adj ? (APP.adj.find(x => x.id === id) || {}).p_adjusted : null;
+    return `<div class="fn-row v-${verdict}">
+      <div class="fn-top">
+        <span class="fn-flag">${verdict === "green" ? "✅ 문제없음" : "⚠ 별로"}</span>
+        <b>${name}</b><span class="hint" style="margin:0">${id}</span>
+        <span class="fn-val">${r
+          ? `${eff} ${S.fmt(r.v)} · p ${S.fmtP(r.p)}${adj != null ? ` → ${S.fmtP(adj)}` : ""}`
+          : `<button class="sm" onclick="runTest('${id}')">검정</button>`}
+          <button class="sm" onclick="toggleRule('${id}')">수식·근거</button></span>
+      </div>
+      <div class="hint" style="margin:0">${why}</div>
+      ${APP._rule === id ? `<div class="fn-rule">
+        <div><span class="sc-axk">가정</span>${assume}</div>
+        <div><span class="sc-axk">효과크기</span>${eff}</div>
+        <div class="hint" style="margin:0">규칙표 2.3 Q-03 연관</div></div>` : ""}
+      ${r ? `<div class="fn-acts">
+        <span class="hint" style="margin:0">n ${r.n}</span>
+        <button class="sm" ${APP.goal === id ? "disabled" : ""}
+          onclick="setGoal('${id}','${name}')">${APP.goal === id ? "★ Goal" : "Goal로"}</button>
+        <button class="sm" onclick="runTest('${id}')">다시</button>
+        <button class="sm${APP.focus === id ? " on" : ""}" onclick="focusTest('${id}')">${
+          APP.focus === id ? "검정력에서 보는 중" : "검정력에서 보기"}</button></div>` : ""}
+    </div>`;
+  }).join("");
+
+  const n = Object.keys(APP.ran).length;
+  const adjBox = n >= 2 ? `<div class="fn-adj">
+      <div class="row"><span class="hint" style="margin:0">${n}번 쟀습니다 — 함께 보정</span>
+        ${["holm:Holm (기본)", "bh:BH (FDR)", "bonferroni:Bonferroni", "none:보정 없음"]
+          .map(x => { const [k, l] = x.split(":");
+            return `<button class="sm${APP.method === k ? " on" : ""}" onclick="adjust('${k}')">${l}</button>`;
+          }).join("")}</div>
+      ${APP.adj ? `<div class="hint" style="margin-top:4px">여러 번 재면 우연히 작은 p 가
+        나온다 — 몇 번 쟀는지를 같이 세야 한다</div>` : ""}</div>` : "";
+
+  setTimeout(drawPlot, 0);
+  return head + rows + sumCard() + adjBox + goalBox();
+}
+
+function runTest(id) {
+  const t = TESTS[APP.q].find(x => x[0] === id);
+  const [a, b] = APP.picked;
+  let out, n;
+  if (APP.q === "Q-03") {
+    const rows = APP.rows.filter(r => isFinite(+r[a]) && isFinite(+r[b]));
+    out = t[6](rows.map(r => +r[a]), rows.map(r => +r[b]));
+    n = `pairs ${rows.length}`;
+  } else {
+    const g = [...new Set(APP.rows.map(r => r[b]))];
+    const A = APP.rows.filter(r => r[b] === g[0]).map(r => +r[a]);
+    const B = APP.rows.filter(r => r[b] === g[1]).map(r => +r[a]);
+    out = t[6](A, B);
+    n = `${g[0]} ${A.length} · ${g[1]} ${B.length}`;
+  }
+  APP.ran[id] = { ...out, n };
+  APP.focus = id;
+  APP.adj = null;
+  render();
+}
+function toggleRule(id) { APP._rule = APP._rule === id ? null : id; render(); }
+function focusTest(id) { APP.focus = id; render(); }
+function adjust(m) {
+  APP.method = m;
+  const items = Object.entries(APP.ran).map(([id, r]) => ({ id, p: r.p }));
+  if (items.length < 2 || m === "none") { APP.adj = m === "none" ? null : APP.adj; render(); return; }
+  const n = items.length;
+  const order = [...items].sort((a, b) => a.p - b.p);
+  let out = [];
+  if (m === "bonferroni") out = items.map(x => ({ ...x, p_adjusted: Math.min(1, x.p * n) }));
+  else if (m === "holm") {
+    let run = 0;
+    out = order.map((x, i) => { run = Math.max(run, x.p * (n - i)); return { ...x, p_adjusted: Math.min(1, run) }; });
+  } else {
+    let run = 1;
+    out = [...order].reverse().map((x, i) => {
+      run = Math.min(run, x.p * n / (n - i)); return { ...x, p_adjusted: Math.min(1, run) };
+    }).reverse();
+  }
+  APP.adj = out; render();
+}
+function setGoal(id, name) { APP.goal = id; APP.goalName = name; render(); }
+
+const RECS = {
+  "T-304": { support: [["MR-S10", "산점도·Pearson r", "방향 없는 연관 → 그림·단순 상관으로"]],
+             guardrail: [] },
+  "T-101": { support: [["MR-S15", "원척도 평균차 + CI (P-203)", "표준화 효과 → 원단위"]],
+             guardrail: [] },
+};
+function toggleRec(id) {
+  APP.roles = APP.roles || {};
+  APP.roles[id] = !APP.roles[id];
+  render();
+}
+function goalBox() {
+  if (!APP.goal) return "";
+  APP.roles = APP.roles || {};
+  const base = RECS[APP.goal] || { support: [], guardrail: [] };
+  const list = (kind, head) => base[kind].length ? `<div style="margin-top:6px">
+      <div class="hint" style="margin:0">${head}</div>
+      ${base[kind].map(([id, name, why]) => `<label class="fn-role">
+        <input type="checkbox" ${APP.roles[id] ? "checked" : ""} onchange="toggleRec('${id}')">
+        <span><b>${name}</b> <span class="hint" style="margin:0">${id}</span> — ${why}</span>
+      </label>`).join("")}</div>` : "";
+  const mine = APP.custom.map((c) => `<label class="fn-role">
+      <input type="checkbox" checked> <span><b>${esc(c.name)}</b>
+      <span class="fn-mine">✎ 사용자 지정</span>${c.why ? " — " + esc(c.why) : ""}</span></label>`).join("");
+  const nPicked = Object.values(APP.roles).filter(Boolean).length + APP.custom.length;
+  return `<div class="fn-adj">
+    <div class="hint" style="margin-top:0"><b>목표 지표(Goal)</b> ${APP.goalName}
+      — 함께 볼 것을 고르세요</div>
+    ${list("support", "함께 볼 것 (support)")}
+    ${list("guardrail", "틀어지면 막을 것 (guardrail)")}
+    ${base.support.length || base.guardrail.length ? ""
+      : `<div class="hint">규칙표가 이 조합에 정해 둔 짝은 없습니다 (짝을 강제하지 않습니다)</div>`}
+    ${mine}
+    ${nPicked ? `<button class="sm" style="margin-top:6px">함께 보고할 것으로 저장</button>` : ""}
+    <div class="row" style="margin-top:8px">
+      <select id="myRole"><option value="support">support (함께 볼 것)</option>
+        <option value="guardrail" selected>guardrail (틀어지면 막을 것)</option></select>
+      <input type="text" id="myName" placeholder="무엇을 함께 볼까요 — 예: Spearman ρ"
+             style="min-width:120px">
+      <input type="text" id="myWhy" placeholder="왜 (선택)" style="min-width:120px">
+      <button class="sm" onclick="addMine()">내 추천에 넣기</button></div>
+    <div class="hint" style="margin:0">규칙표에 없는 것도 넣을 수 있습니다.
+      출처가 '사용자 지정'으로 남습니다</div></div>`;
+}
+function addMine() {
+  const name = $("#myName").value.trim();
+  if (!name) return;
+  APP.custom.push({ role: $("#myRole").value, name, why: $("#myWhy").value.trim() });
+  render();
+}
+
+const FUNCS = ["log", "ln", "log2", "log10", "sqrt", "abs", "pow", "exp", "round",
+               "zscore", "rank", "arcsinh"];
+const CONSTS = { pi: Math.PI, e: Math.E };
+
+function deriveCard() {
+  const cols = APP.cols.filter(c => isNum(c));
+  const chips = cols.map(c => `<button class="fx-chip" onclick="ins('${c}')">${c}</button>`).join("");
+  const keys = FUNCS.map(f => `<button class="fx-key r-row_func" onclick="ins('${f}()', 1)">${f}</button>`).join("");
+  return `<div class="card" id="cDerive">
+    <div class="ttl">파생 컬럼 만들기</div>
+    ${(typeof DATA !== "undefined" && DATA.examples || []).length ? `
+    <div class="fx-ex">
+      <div class="hint" style="margin:0">이 자료에서 쓸 만한 식 — 누르면 칸에 들어갑니다</div>
+      ${DATA.examples.map((e, i) => `<div class="fx-exrow">
+        <button class="sm" onclick="useExample(${i})">예${i + 1}</button>
+        <code>${esc(e.expr)}</code>
+        <span class="hint" style="margin:0">${e.why}</span></div>`).join("")}
+    </div>` : ""}
+    <div class="row">
+      <input type="text" id="expr" spellcheck="false" placeholder="log2(frac_A + eps)"
+             value="${APP._expr || ""}" oninput="preview()">
+      <button class="sm" onclick="setExpr('')">지우기</button></div>
+    <div class="fx-chips">${chips}</div>
+    <div class="fx-pad"><div class="fx-padrow"><span class="fx-tag r-row_func">행 단위 함수</span>${keys}</div>
+      <div class="fx-padrow"><span class="fx-tag">연산</span>
+        ${["+", "-", "*", "/", "**"].map(o => `<button class="fx-key" onclick="ins(' ${o} ')">${o}</button>`).join("")}
+        <button class="fx-key" onclick="ins('()', 1)">( )</button>
+        <button class="fx-key r-eps" onclick="ins('eps')">eps</button>
+        <button class="fx-key r-const" onclick="ins('pi')">pi</button>
+        <button class="fx-key r-const" onclick="ins('e')">e</button></div></div>
+    <div id="fxOut"></div>
+    <div class="row" style="margin-top:12px">
+      <input type="text" id="newName" placeholder="새 컬럼 이름" style="min-width:160px"
+             value="${APP._name || ""}" oninput="APP._name=this.value">
+      <button class="pri" id="mkBtn" onclick="commit()">파생 컬럼 만들기</button>
+      <span class="hint" id="mkWhy" style="margin:0"></span></div>
+  </div>`;
+}
+function setExpr(v) { APP._expr = v; render(); }
+function useExample(i) {
+  const e = DATA.examples[i];
+  APP._expr = e.expr; APP._name = e.name; render();
+  preview();
+}
+function ins(t, back = 0) {
+  const e = $("#expr");
+  const at = e.selectionStart ?? e.value.length;
+  e.value = e.value.slice(0, at) + t + e.value.slice(e.selectionEnd ?? at);
+  APP._expr = e.value;
+  e.focus(); e.setSelectionRange(at + t.length - back, at + t.length - back);
+  preview();
+}
+
+function evalExpr(expr) {
+  const names = [...new Set(expr.match(/[A-Za-z_][A-Za-z0-9_]*/g) || [])];
+  const used = names.filter(n => APP.cols.includes(n));
+  const bad = names.filter(n => !APP.cols.includes(n) && !FUNCS.includes(n)
+    && !(n in CONSTS) && n !== "eps");
+  if (bad.length) throw new Error(`모르는 이름: ${bad.join(", ")}`);
+  if (!used.length) throw new Error("컬럼이 하나도 없습니다");
+  const F = { log: Math.log, ln: Math.log, log2: Math.log2, log10: Math.log10,
+              sqrt: Math.sqrt, abs: Math.abs, pow: Math.pow, exp: Math.exp,
+              round: (x, k = 0) => Math.round(x * 10 ** k) / 10 ** k,
+              arcsinh: Math.asinh };
+  const body = "return " + expr.replace(/\b([A-Za-z_][A-Za-z0-9_]*)\b/g,
+    (m) => APP.cols.includes(m) ? `(+r["${m}"])`
+         : (FUNCS.includes(m) ? `F.${m}` : (m in CONSTS ? `C.${m}` : m)));
+  const fn = new Function("r", "F", "C", "eps", body);
+  return APP.rows.map(r => fn(r, F, CONSTS, 1e-6));
+}
+
+function preview() {
+  const expr = ($("#expr") || {}).value || "";
+  APP._expr = expr;
+  const out = $("#fxOut"), why = $("#mkWhy");
+  if (!expr.trim()) { out.innerHTML = ""; if (why) why.textContent = "식을 먼저 쓰세요"; return; }
+  try {
+    const v = evalExpr(expr).filter(x => isFinite(x));
+    const f = S.five(v);
+    out.innerHTML = `<div class="fx-stats">
+      <span>n ${APP.rows.length.toLocaleString()}</span>
+      <span>유한 ${v.length.toLocaleString()}</span>
+      <span class="${APP.rows.length - v.length ? "bad" : ""}">NaN ${APP.rows.length - v.length}</span>
+      <span>${S.fmt(f.min)} ~ ${S.fmt(f.max)}</span>
+      <span class="fx-rtype">${/log|ln/.test(expr) ? "log-scale" : "continuous"}</span></div>
+      <div class="hint">왜도 ${S.fmt(S.skew(v), 3)} · 중앙 ${S.fmt(f.q2)}</div>`;
+    if (why) why.textContent = APP._name ? "" : "새 컬럼 이름을 쓰세요";
+  } catch (e) {
+    out.innerHTML = `<div class="err">${esc(e.message)}</div>`;
+    if (why) why.textContent = "식에 오류가 있습니다";
+  }
+}
+
+function commit() {
+  const expr = ($("#expr") || {}).value || "", name = ($("#newName") || {}).value.trim();
+  if (!expr.trim() || !name) return;
+  let v;
+  try { v = evalExpr(expr); } catch (e) { return; }
+  APP.rows.forEach((r, i) => r[name] = isFinite(v[i]) ? Number(v[i].toFixed(6)) : "");
+  APP.cols.push(name); APP.derived.push(name);
+  APP._expr = ""; APP._name = ""; APP.ran = {};
+  render();
+}
+
+const GROUP_MIN = 15, DCOR_GAP = .15, SKEW_HIGH = .8, SKEW_OK = .5, SMALL_D = .5;
+
+function stepsDiff(focus) {
+  const [y, g] = APP.picked, lv = [...new Set(APP.rows.map(r => r[g]))];
+  if (lv.length !== 2) return null;
+  const by = c => lv.map(l => vals(c, APP.rows.filter(r => r[g] === l)));
+  const dOf = c => { const [a, b] = by(c); return S.hedges ? S.hedges(a, b) : hedges(a, b); };
+  const [a0, b0] = by(y), d0 = Math.abs(hedges(a0, b0));
+  const sig = focus.p < .05;
+  const out = { head: `${y} 를 ${g} 로 갈라 봤습니다 — ${focus.name}`, lines: [], steps: [], scan: [] };
+  out.lines.push(sig ? `차이가 있습니다 (효과크기 ${d0.toFixed(2)} · p ${S.fmtP(focus.p)})`
+                     : `차이라고 하기 어렵습니다 (효과크기 ${d0.toFixed(2)} · p ${S.fmtP(focus.p)})`);
+  if (sig && d0 < SMALL_D)
+    out.lines.push(`다만 효과크기(${d0.toFixed(2)})는 작습니다 — 유의하다고 해서 큰 차이는 아닙니다`);
+  APP.cols.forEach(c => {
+    if (c === y || c === g || !isNum(c) || isGroupy(c)) return;
+    const [a, b] = by(c);
+    if (a.length < 3 || b.length < 3) return;
+    const v = vals(c), sk = S.skew(v);
+    const row = { column: c, effect: hedges(a, b), skew: sk };
+    if (Math.abs(sk) >= SKEW_HIGH && v.every(x => x > 0)) {
+      row.log_skew = S.skew(v.map(Math.log));
+      row.log_helps = Math.abs(row.log_skew) <= SKEW_OK;
+    }
+    out.scan.push(row);
+  });
+  out.scan.sort((p1, p2) => Math.abs(p2.effect) - Math.abs(p1.effect));
+  const best = out.scan[0];
+  if (best && Math.abs(best.effect) > d0 * 1.5) {
+    out.steps.push({ kind: "other_column", column: best.column,
+      text: `${best.column} 로 보면 훨씬 크게 갈립니다 (효과크기 ${Math.abs(best.effect).toFixed(2)}`
+          + ` · 지금 컬럼은 ${d0.toFixed(2)})` });
+    if (best.log_helps)
+      out.steps.push({ kind: "derive", column: best.column, expr: `1 + ln(${best.column})`,
+        text: `${best.column} 이(가) 한쪽으로 치우쳐 있습니다 (왜도 ${Math.abs(best.skew).toFixed(2)})`
+            + ` — 로그를 취하면 펴집니다 (왜도 ${Math.abs(best.log_skew).toFixed(2)}).`
+            + ` 파생 컬럼으로 만들어 보십시오` });
+  }
+  if (out.scan.length)
+    out.lines.push(`아래는 같은 군을 다른 컬럼으로 재 본 것입니다 (${out.scan.length}개)`
+                 + ` — 둘러보기이므로 기록하지 않고, 여러 번 잰 만큼 보정이 필요합니다`);
+  return out;
+}
+
+function stepsAssoc(focus) {
+  const [x, y] = APP.picked;
+  const rows = APP.rows.filter(r => isFinite(+r[x]) && isFinite(+r[y]));
+  const rAll = S.pearson(rows.map(r => +r[x]), rows.map(r => +r[y])).v;
+  const sig = focus.p < .05;
+  const out = { head: `${x} 와 ${y} 의 관계를 봤습니다 — ${focus.name}`,
+                lines: [], steps: [], scan: [] };
+  out.lines.push(sig ? `관계가 있습니다 (${focus.eff} ${S.fmt(focus.v)} · p ${S.fmtP(focus.p)})`
+                     : `관계라고 하기 어렵습니다 (${focus.eff} ${S.fmt(focus.v)} · p ${S.fmtP(focus.p)})`);
+  let split = null, bent = null;
+  colorCols().forEach(c => {
+    const gs = [];
+    [...new Set(APP.rows.map(r => r[c]))].forEach(l => {
+      const s = rows.filter(r => r[c] === l);
+      if (s.length < GROUP_MIN) return;
+      const xs = s.map(r => +r[x]), ys = s.map(r => +r[y]);
+      gs.push({ level: l, r: S.pearson(xs, ys).v, n: s.length, dcor: S.dcor(xs, ys, 0).v });
+    });
+    if (gs.length < 2) return;
+    out.scan.push({ column: c, overall: rAll, groups: gs });
+    for (let i = 0; i < gs.length; i++) for (let j = i + 1; j < gs.length; j++) {
+      const z = Math.abs(Math.atanh(gs[i].r) - Math.atanh(gs[j].r)) /
+                Math.sqrt(1 / (gs[i].n - 3) + 1 / (gs[j].n - 3));
+      if (z >= 1.96 && !split) split = [c, gs[i], gs[j]];
+    }
+    gs.forEach(u => { if (u.dcor - Math.abs(u.r) >= DCOR_GAP && !bent) bent = [c, u]; });
+  });
+  if (split) out.steps.push({ kind: "color_split", column: split[0],
+    text: `${split[0]} 군마다 관계가 다릅니다 (${split[1].level} 에서 ${split[1].r.toFixed(2)},`
+        + ` ${split[2].level} 에서 ${split[2].r.toFixed(2)} · 전체는 ${rAll.toFixed(2)})`
+        + ` — 색으로 나눠 보십시오` });
+  if (bent) out.steps.push({ kind: "bent_group", column: bent[0], level: bent[1].level,
+    text: `${bent[0]}=${bent[1].level} 군에서는 직선이 아닙니다 (거리상관 ${bent[1].dcor.toFixed(2)} 가`
+        + ` |r| ${Math.abs(bent[1].r).toFixed(2)} 보다 큽니다 · n=${bent[1].n})`
+        + ` — 색으로 나눠 그림을 보십시오` });
+  return out;
+}
+
+function hedges(a, b) {
+  const m = v => v.reduce((s, x) => s + x, 0) / v.length;
+  const va = v => { const u = m(v); return v.reduce((s, x) => s + (x - u) ** 2, 0) / (v.length - 1); };
+  const s = Math.sqrt((va(a) + va(b)) / 2);
+  return s ? (m(a) - m(b)) / s : 0;
+}
+
+function sumCard() {
+  const done = Object.entries(APP.ran);
+  if (!done.length) return "";
+  const list = TESTS[APP.q] || [];
+  const all = done.map(([id, r]) => {
+    const t = list.find(z => z[0] === id) || [];
+    return { id, name: t[1], eff: t[2], v: r.v, p: r.p };
+  });
+  const focus = all.find(r => r.id === APP.focus) || all[all.length - 1];
+  const nx = APP.q === "Q-01" ? stepsDiff(focus) : stepsAssoc(focus);
+  if (!nx) return "";
+  const act = s => s.kind === "color_split" || s.kind === "bent_group"
+    ? `<button class="sm" onclick="setColor('${s.column}')">${s.column} 으로 색 나누기</button>`
+    : s.kind === "other_column"
+      ? `<button class="sm" onclick="pickCol('${s.column}')">${s.column} 로 보기</button>`
+      : s.kind === "derive"
+        ? `<button class="sm" onclick="useSuggested('${s.expr}','ln_${s.column}')">${s.expr} 만들기</button>`
+        : "";
+  return `<div class="fn-sum">
+    <div class="fn-sumttl">결론 — 재고 난 다음</div>
+    <div class="fn-sumhead">${nx.head}</div>
+    ${nx.lines.map(x => `<div class="fn-sumline">${x}</div>`).join("")}
+    ${powerCard()}
+    ${nx.steps.length ? `<div class="fn-next"><b>다음에 볼 것</b>
+      ${nx.steps.map(s => `<div class="fn-nextrow"><span>${s.text}</span>${act(s)}</div>`).join("")}
+    </div>` : ""}
+    ${nx.scan.length ? `<details class="pw-more"><summary>다른 컬럼·군으로 재 본 것</summary>
+      <table><tbody>${nx.scan.map(s => `<tr><td class="col">${s.column}</td><td>${
+        s.groups ? s.groups.map(g => `${g.level} r ${g.r.toFixed(2)} (n=${g.n})`).join(" · ")
+                 : `효과 ${s.effect.toFixed(2)}` + (s.skew !== undefined
+                     ? ` · 왜도 ${s.skew.toFixed(2)}` : "")}</td></tr>`).join("")}
+      </tbody></table></details>` : ""}
+  </div>`;
+}
+function useSuggested(expr, name) {
+  APP._expr = expr; APP._name = name; render();
+  const e = document.getElementById("expr");
+  if (e) { e.value = expr; preview(); }
+  const n = document.getElementById("newName");
+  if (n) n.value = name;
+}
+
+const SERIES_COL = ["#2f6f6f", "#b26a17", "#4a4ab2", "#8a2f6f"];
+const MARKS = ["circle", "square", "triangle", "diamond"];
+
+function plotCard() {
+  if (!APP.q || APP.picked.length < 2) return "";
+  const { problems } = candidates();
+  if (problems.length) return "";
+  return `<div class="fn-plot">
+    <canvas id="fnPlot" width="560" height="260"></canvas>
+    <div class="hint" id="fnPlotCap" style="margin:0"></div></div>`;
+}
+
+function drawPlot() {
+  const c = document.getElementById("fnPlot");
+  if (!c) return;
+  const g = c.getContext("2d"), W = c.width, H = c.height;
+  const PAD = { l: 56, r: 14, t: 14, b: 36 };
+  const css = getComputedStyle(document.documentElement);
+  const line = css.getPropertyValue("--border").trim();
+  const faint = css.getPropertyValue("--text-faint").trim();
+  const ink = css.getPropertyValue("--text").trim();
+  g.clearRect(0, 0, W, H);
+  g.font = "11px ui-monospace, monospace";
+  g.strokeStyle = line;
+  g.beginPath(); g.moveTo(PAD.l, PAD.t); g.lineTo(PAD.l, H - PAD.b);
+  g.lineTo(W - PAD.r, H - PAD.b); g.stroke();
+
+  const [a, b] = APP.picked;
+  const cap = document.getElementById("fnPlotCap");
+  if (APP.q === "Q-03") {
+    const by = APP.color;
+    const groups = by ? [...new Set(APP.rows.map(r => r[by]))] : [""];
+    const all = APP.rows.filter(r => isFinite(+r[a]) && isFinite(+r[b]));
+    const xs = all.map(r => +r[a]), ys = all.map(r => +r[b]);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs);
+    const y0 = Math.min(...ys), y1 = Math.max(...ys);
+    const X = v => PAD.l + (v - x0) / (x1 - x0 || 1) * (W - PAD.l - PAD.r);
+    const Y = v => H - PAD.b - (v - y0) / (y1 - y0 || 1) * (H - PAD.t - PAD.b);
+    groups.forEach((lv, i) => {
+      g.fillStyle = SERIES_COL[i % 4];
+      all.filter(r => !by || r[by] === lv).forEach(r => mk(g, X(+r[a]), Y(+r[b]), MARKS[i % 4]));
+    });
+    g.fillStyle = faint;
+    g.fillText(S.fmt(x0), PAD.l, H - PAD.b + 15);
+    g.fillText(S.fmt(x1), W - PAD.r - 44, H - PAD.b + 15);
+    g.fillText(S.fmt(y1), 4, PAD.t + 9); g.fillText(S.fmt(y0), 4, H - PAD.b);
+    g.fillStyle = ink; g.fillText(a, W / 2 - 28, H - 6);
+    let lx = PAD.l + 6;
+    groups.forEach((lv, i) => {
+      if (!lv) return;
+      g.fillStyle = SERIES_COL[i % 4]; mk(g, lx, PAD.t + 4, MARKS[i % 4]);
+      g.fillStyle = ink; g.fillText(lv, lx + 9, PAD.t + 8);
+      lx += 24 + String(lv).length * 7;
+    });
+    cap.textContent = `${all.length}행 · ${a} × ${b}` + (by ? ` · 색 = ${by}` : "");
+  } else {
+    const lv = [...new Set(APP.rows.map(r => r[b]))];
+    const vv = APP.rows.map(r => +r[a]).filter(isFinite);
+    const lo = Math.min(...vv), hi = Math.max(...vv);
+    const nb = 20, top = Math.max(...lv.map(l =>
+      Math.max(...S.hist(APP.rows.filter(r => r[b] === l).map(r => +r[a]), nb, lo, hi))));
+    const bw = (W - PAD.l - PAD.r) / nb;
+    lv.forEach((l, i) => {
+      const h = S.hist(APP.rows.filter(r => r[b] === l).map(r => +r[a]), nb, lo, hi);
+      g.fillStyle = SERIES_COL[i % 4]; g.globalAlpha = .58;
+      h.forEach((v, j) => {
+        const bh = v / top * (H - PAD.t - PAD.b);
+        g.fillRect(PAD.l + j * bw + i * bw / lv.length + 1, H - PAD.b - bh,
+                   bw / lv.length - 1.5, bh);
+      });
+      g.globalAlpha = 1;
+    });
+    g.fillStyle = faint;
+    g.fillText(S.fmt(lo), PAD.l, H - PAD.b + 15);
+    g.fillText(S.fmt(hi), W - PAD.r - 44, H - PAD.b + 15);
+    g.fillText(String(top), 4, PAD.t + 9);
+    g.fillStyle = ink; g.fillText(a, W / 2 - 28, H - 6);
+    let lx = PAD.l + 6;
+    lv.forEach((l, i) => {
+      g.fillStyle = SERIES_COL[i % 4]; g.fillRect(lx, PAD.t, 9, 9);
+      g.fillStyle = ink; g.fillText(l, lx + 13, PAD.t + 8);
+      lx += 30 + String(l).length * 7;
+    });
+    cap.textContent = `${a} 를 ${b} 군별로 — ` + lv.map(l => {
+      const f = S.five(APP.rows.filter(r => r[b] === l).map(r => +r[a]).filter(isFinite));
+      return `${l}: 중앙 ${S.fmt(f.q2)}`;
+    }).join(" · ");
+  }
+}
+function mk(g, x, y, kind) {
+  const r = 3.2; g.beginPath();
+  if (kind === "square") g.rect(x - r, y - r, r * 2, r * 2);
+  else if (kind === "triangle") { g.moveTo(x, y - r); g.lineTo(x + r, y + r); g.lineTo(x - r, y + r); }
+  else if (kind === "diamond") { g.moveTo(x, y - r); g.lineTo(x + r, y); g.lineTo(x, y + r); g.lineTo(x - r, y); }
+  else g.arc(x, y, r, 0, Math.PI * 2);
+  g.fill();
+}
+
+const R_LIKE = ["r", "rho", "bicor"];
+
+function probit(p) {
+  const a = [-39.69683028665376, 220.9460984245205, -275.9285104469687,
+             138.3577518672690, -30.66479806614716, 2.506628277459239];
+  const b = [-54.47609879822406, 161.5858368580409, -155.6989798598866,
+             66.80131188771972, -13.28068155288572];
+  const c = [-.007784894002430293, -.3223964580411365, -2.400758277161838,
+             -2.549732539343734, 4.374664141464968, 2.938163982698783];
+  const d = [.007784695709041462, .3224671290700398, 2.445134137142996, 3.754408661907416];
+  const lo = .02425;
+  if (p < lo) { const q = Math.sqrt(-2 * Math.log(p));
+    return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5]) /
+           ((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1); }
+  if (p > 1 - lo) return -probit(1 - p);
+  const q = p - .5, r = q * q;
+  return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5]) * q /
+         (((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+}
+const zSum = (target) => 1.959963985 + probit(Math.min(.99, Math.max(.5, target)));
+const minR = (n, target = APP.target) =>
+  Math.tanh(zSum(target) / Math.sqrt(Math.max(1, n - 3)));
+const nForR = (r, target = APP.target) => {
+  const a = Math.abs(r);
+  if (a <= 1e-6 || a >= .999) return 0;
+  return Math.ceil(3 + (zSum(target) / Math.atanh(a)) ** 2);
+};
+function setTarget(v) { APP.target = Math.min(.99, Math.max(.5, v / 100)); render(); }
+
+function powerCard() {
+  if (APP.q !== "Q-03" || APP.picked.length < 2) return "";
+  const done = Object.entries(APP.ran);
+  if (!done.length) return "";
+  const n = APP.rows.filter(r => APP.picked.every(c => isFinite(+r[c]))).length;
+  if (n < 5) return "";
+  const cut = minR(n);
+  const list = TESTS["Q-03"];
+  const all = done.map(([id, r]) => {
+    const t = list.find(x => x[0] === id);
+    return { id, name: t[1], eff: t[2], v: r.v, p: r.p, comparable: R_LIKE.includes(t[2]) };
+  });
+  const focus = all.find(r => r.id === APP.focus) || all[all.length - 1];
+  const onLine = focus.comparable ? [focus] : [], off = focus.comparable ? [] : [focus];
+  const top = Math.max(1, cut * 1.2, ...onLine.map(r => Math.abs(r.v) * 1.2));
+  const pct = v => Math.min(100, v / top * 100);
+  const pw = (APP.target * 100).toFixed(0);
+  const lane = { [focus.id]: 0 }, lanes = [0];
+
+  return `<div class="pw">
+    <div class="pw-head">n=${n} — |상관| ${cut.toFixed(2)} 이상만 ${pw}% 확률로 잡힙니다
+      <span class="hint" style="margin:0"> · α=0.05 양측 · 목표 검정력 ${pw}%</span></div>
+    <div class="hint" style="margin:0">고른 컬럼 <b>${APP.picked.join(" × ")}</b>
+      ${APP.color ? ` · 색 = ${APP.color}` : ""} · 지금 보는 지표 <b>${focus.name}</b>
+      (${focus.eff} ${S.fmt(focus.v)} · p ${S.fmtP(focus.p)})</div>
+    ${all.length > 1 ? `<div class="row" style="margin-top:0">
+      <span class="hint" style="margin:0">바꿔 보기</span>
+      ${all.map(r => `<button class="sm${r.id === focus.id ? " on" : ""}"
+        onclick="focusTest('${r.id}')">${r.name}</button>`).join("")}
+      <span class="hint" style="margin:0">한 번에 하나씩 봅니다 — 잰 값은 그대로 남습니다</span>
+    </div>` : ""}
+    <div class="pw-aim">
+      <span class="hint" style="margin:0">목표 검정력</span>
+      <input type="range" min="50" max="99" step="1" value="${pw}"
+             oninput="setTarget(+this.value)" aria-label="목표 검정력 끌기">
+      <input class="pw-aimin" type="number" min="50" max="99" value="${pw}"
+             aria-label="목표 검정력 입력"
+             onkeydown="if(event.key==='Enter'){setTarget(+this.value);}"
+             onblur="setTarget(+this.value)">
+      <span class="hint" style="margin:0">% · 엔터</span>
+      <span class="hint" style="margin:0">더 확실히 잡으려 할수록 필요한 크기가 커집니다</span>
+    </div>
+    <div class="pw-axis" style="height:${26 + (Math.max(1, lanes.length) - 1) * 15}px">
+      <div class="pw-dead" style="width:${pct(cut)}%"></div>
+      <div class="pw-cut" style="left:${pct(cut)}%"></div>
+      ${onLine.map(r => `<div class="pw-mark${Math.abs(r.v) >= cut ? " ok" : ""}"
+        style="left:${pct(Math.abs(r.v))}%;top:${2 + lane[r.id] * 15}px"
+        title="${r.name}"><i></i>${Math.abs(r.v).toFixed(2)}</div>`).join("")}
+    </div>
+    <div class="pw-scale"><span>0</span>
+      <span class="pw-cutlab" style="left:${pct(cut)}%">${cut.toFixed(2)}</span>
+      <span>${top.toFixed(1)}</span></div>
+    <div class="hint" style="margin:0"><span class="pw-swatch"></span>
+      이 표본으로는 잡기 어려운 크기</div>
+    ${onLine.map(r => {
+      const ok = Math.abs(r.v) >= cut;
+      const need = ok ? "" : nForR(r.v);
+      return `<div class="pw-row${ok ? "" : " short"}"><b>${r.name}</b>
+        ${r.v.toFixed(4)} — ${ok ? "잡을 수 있는 크기입니다"
+          : `이 크기는 n=${need.toLocaleString()} 쯤 되어야 ${pw}% 로 잡힙니다 (지금 ${n})`}</div>`;
+    }).join("")}
+    ${off.length ? `<div class="pw-off">${off.map(r =>
+      `<div class="hint" style="margin:0"><b>${r.name}</b> ${r.v.toFixed(4)} —
+       ${r.eff} 는 상관계수와 다른 척도입니다 — 이 선과 직접 비교하지 않습니다</div>`).join("")}</div>` : ""}
+    <div class="hint" style="margin:0">작은 표본에서 "유의하지 않다"는 "관계가 없다"가
+      아닙니다 — 있어도 못 잡았을 수 있습니다</div>
+    <div class="hint" style="margin:0">선은 <b>상관계수(r·ρ) 척도</b>입니다.
+      τ·dCor 처럼 다른 척도의 값은 이 선에 얹지 않습니다</div></div>`;
+}</script>
+<script>
+const DATA = {"rows": [{"sample_id": "T1000", "group": "normal", "subtype": "eap3", "cfdna_conc": "9.493", "immune_ratio": "0.1848"}, {"sample_id": "T1001", "group": "normal", "subtype": "eap2", "cfdna_conc": "13.914", "immune_ratio": "0.3918"}, {"sample_id": "T1002", "group": "normal", "subtype": "eap3", "cfdna_conc": "7.54", "immune_ratio": "0.3741"}, {"sample_id": "T1003", "group": "normal", "subtype": "eap2", "cfdna_conc": "10.625", "immune_ratio": "0.3694"}, {"sample_id": "T1004", "group": "normal", "subtype": "eap2", "cfdna_conc": "17.478", "immune_ratio": "0.4097"}, {"sample_id": "T1005", "group": "normal", "subtype": "eap2", "cfdna_conc": "8.254", "immune_ratio": "0.3301"}, {"sample_id": "T1006", "group": "normal", "subtype": "eap3", "cfdna_conc": "11.342", "immune_ratio": "0.4846"}, {"sample_id": "T1007", "group": "normal", "subtype": "eap2", "cfdna_conc": "23.676", "immune_ratio": "0.4129"}, {"sample_id": "T1008", "group": "normal", "subtype": "eap2", "cfdna_conc": "22.131", "immune_ratio": "0.4194"}, {"sample_id": "T1009", "group": "normal", "subtype": "eap2", "cfdna_conc": "6.181", "immune_ratio": "0.3076"}, {"sample_id": "T1010", "group": "normal", "subtype": "eap3", "cfdna_conc": "8.801", "immune_ratio": "0.4489"}, {"sample_id": "T1011", "group": "normal", "subtype": "eap3", "cfdna_conc": "14.153", "immune_ratio": "0.316"}, {"sample_id": "T1012", "group": "normal", "subtype": "eap2", "cfdna_conc": "8.144", "immune_ratio": "0.4176"}, {"sample_id": "T1013", "group": "normal", "subtype": "eap2", "cfdna_conc": "11.51", "immune_ratio": "0.5781"}, {"sample_id": "T1014", "group": "normal", "subtype": "eap3", "cfdna_conc": "11.974", "immune_ratio": "0.552"}, {"sample_id": "T1015", "group": "normal", "subtype": "eap2", "cfdna_conc": "9.907", "immune_ratio": "0.1977"}, {"sample_id": "T1016", "group": "normal", "subtype": "eap3", "cfdna_conc": "25.294", "immune_ratio": "0.6638"}, {"sample_id": "T1017", "group": "normal", "subtype": "eap2", "cfdna_conc": "11.522", "immune_ratio": "0.4327"}, {"sample_id": "T1018", "group": "normal", "subtype": "eap3", "cfdna_conc": "19.738", "immune_ratio": "0.1947"}, {"sample_id": "T1019", "group": "normal", "subtype": "eap3", "cfdna_conc": "16.218", "immune_ratio": "0.3921"}, {"sample_id": "T1020", "group": "normal", "subtype": "eap3", "cfdna_conc": "22.111", "immune_ratio": "0.2121"}, {"sample_id": "T1021", "group": "normal", "subtype": "eap3", "cfdna_conc": "7.687", "immune_ratio": "0.3465"}, {"sample_id": "T1022", "group": "normal", "subtype": "eap3", "cfdna_conc": "11.292", "immune_ratio": "0.2454"}, {"sample_id": "T1023", "group": "normal", "subtype": "eap2", "cfdna_conc": "10.47", "immune_ratio": "0.2829"}, {"sample_id": "T1024", "group": "normal", "subtype": "eap2", "cfdna_conc": "17.931", "immune_ratio": "0.3976"}, {"sample_id": "T1025", "group": "normal", "subtype": "eap2", "cfdna_conc": "6.648", "immune_ratio": "0.3202"}, {"sample_id": "T1026", "group": "normal", "subtype": "eap3", "cfdna_conc": "5.094", "immune_ratio": "0.2369"}, {"sample_id": "T1027", "group": "normal", "subtype": "eap3", "cfdna_conc": "11.75", "immune_ratio": "0.3722"}, {"sample_id": "T1028", "group": "normal", "subtype": "eap3", "cfdna_conc": "10.232", "immune_ratio": "0.3938"}, {"sample_id": "T1029", "group": "normal", "subtype": "eap3", "cfdna_conc": "17.587", "immune_ratio": "0.3136"}, {"sample_id": "T1030", "group": "normal", "subtype": "eap2", "cfdna_conc": "16.041", "immune_ratio": "0.4511"}, {"sample_id": "T1031", "group": "normal", "subtype": "eap2", "cfdna_conc": "12.268", "immune_ratio": "0.1513"}, {"sample_id": "T1032", "group": "normal", "subtype": "eap2", "cfdna_conc": "31.23", "immune_ratio": "0.4005"}, {"sample_id": "T1033", "group": "normal", "subtype": "eap2", "cfdna_conc": "11.518", "immune_ratio": "0.4236"}, {"sample_id": "T1034", "group": "normal", "subtype": "eap3", "cfdna_conc": "26.133", "immune_ratio": "0.2429"}, {"sample_id": "T1035", "group": "normal", "subtype": "eap3", "cfdna_conc": "6.381", "immune_ratio": "0.2828"}, {"sample_id": "T1036", "group": "normal", "subtype": "eap2", "cfdna_conc": "12.68", "immune_ratio": "0.21"}, {"sample_id": "T1037", "group": "normal", "subtype": "eap2", "cfdna_conc": "7.658", "immune_ratio": "0.3241"}, {"sample_id": "T1038", "group": "normal", "subtype": "eap3", "cfdna_conc": "16.942", "immune_ratio": "0.3457"}, {"sample_id": "T1039", "group": "normal", "subtype": "eap3", "cfdna_conc": "6.145", "immune_ratio": "0.4308"}, {"sample_id": "T1040", "group": "normal", "subtype": "eap3", "cfdna_conc": "13.357", "immune_ratio": "0.3968"}, {"sample_id": "T1041", "group": "normal", "subtype": "eap3", "cfdna_conc": "18.968", "immune_ratio": "0.37"}, {"sample_id": "T1042", "group": "normal", "subtype": "eap3", "cfdna_conc": "30.139", "immune_ratio": "0.3056"}, {"sample_id": "T1043", "group": "normal", "subtype": "eap3", "cfdna_conc": "11.14", "immune_ratio": "0.1876"}, {"sample_id": "T1044", "group": "normal", "subtype": "eap3", "cfdna_conc": "18.277", "immune_ratio": "0.4504"}, {"sample_id": "T1045", "group": "normal", "subtype": "eap2", "cfdna_conc": "8.15", "immune_ratio": "0.226"}, {"sample_id": "T1046", "group": "normal", "subtype": "eap3", "cfdna_conc": "8.969", "immune_ratio": "0.4434"}, {"sample_id": "T1047", "group": "normal", "subtype": "eap3", "cfdna_conc": "5.358", "immune_ratio": "0.3892"}, {"sample_id": "T1048", "group": "normal", "subtype": "eap3", "cfdna_conc": "19.71", "immune_ratio": "0.289"}, {"sample_id": "T1049", "group": "normal", "subtype": "eap3", "cfdna_conc": "16.631", "immune_ratio": "0.2177"}, {"sample_id": "T1050", "group": "normal", "subtype": "eap3", "cfdna_conc": "13.787", "immune_ratio": "0.249"}, {"sample_id": "T1051", "group": "normal", "subtype": "eap3", "cfdna_conc": "3.301", "immune_ratio": "0.5175"}, {"sample_id": "T1052", "group": "normal", "subtype": "eap3", "cfdna_conc": "5.778", "immune_ratio": "0.4927"}, {"sample_id": "T1053", "group": "normal", "subtype": "eap3", "cfdna_conc": "13.639", "immune_ratio": "0.4756"}, {"sample_id": "T1054", "group": "normal", "subtype": "eap3", "cfdna_conc": "17.307", "immune_ratio": "0.371"}, {"sample_id": "T1055", "group": "normal", "subtype": "eap3", "cfdna_conc": "10.946", "immune_ratio": "0.3466"}, {"sample_id": "T1056", "group": "normal", "subtype": "eap3", "cfdna_conc": "5.425", "immune_ratio": "0.1279"}, {"sample_id": "T1057", "group": "normal", "subtype": "eap2", "cfdna_conc": "5.976", "immune_ratio": "0.4983"}, {"sample_id": "T1058", "group": "normal", "subtype": "eap2", "cfdna_conc": "8.639", "immune_ratio": "0.2449"}, {"sample_id": "T1059", "group": "normal", "subtype": "eap3", "cfdna_conc": "9.883", "immune_ratio": "0.4381"}, {"sample_id": "T1060", "group": "normal", "subtype": "eap3", "cfdna_conc": "18.082", "immune_ratio": "0.4655"}, {"sample_id": "T1061", "group": "normal", "subtype": "eap2", "cfdna_conc": "18.128", "immune_ratio": "0.5684"}, {"sample_id": "T1062", "group": "normal", "subtype": "eap2", "cfdna_conc": "14.538", "immune_ratio": "0.6564"}, {"sample_id": "T1063", "group": "normal", "subtype": "eap2", "cfdna_conc": "12.386", "immune_ratio": "0.2466"}, {"sample_id": "T1064", "group": "normal", "subtype": "eap3", "cfdna_conc": "12.443", "immune_ratio": "0.3188"}, {"sample_id": "T1065", "group": "normal", "subtype": "eap2", "cfdna_conc": "13.954", "immune_ratio": "0.178"}, {"sample_id": "T1066", "group": "normal", "subtype": "eap3", "cfdna_conc": "8.245", "immune_ratio": "0.5206"}, {"sample_id": "T1067", "group": "normal", "subtype": "eap2", "cfdna_conc": "11.483", "immune_ratio": "0.5299"}, {"sample_id": "T1068", "group": "normal", "subtype": "eap2", "cfdna_conc": "14.482", "immune_ratio": "0.394"}, {"sample_id": "T1069", "group": "normal", "subtype": "eap2", "cfdna_conc": "7.445", "immune_ratio": "0.5757"}, {"sample_id": "T1070", "group": "normal", "subtype": "eap3", "cfdna_conc": "7.082", "immune_ratio": "0.5585"}, {"sample_id": "T1071", "group": "normal", "subtype": "eap3", "cfdna_conc": "17.616", "immune_ratio": "0.3089"}, {"sample_id": "T1072", "group": "normal", "subtype": "eap3", "cfdna_conc": "5.503", "immune_ratio": "0.2707"}, {"sample_id": "T1073", "group": "normal", "subtype": "eap2", "cfdna_conc": "8.823", "immune_ratio": "0.3322"}, {"sample_id": "T1074", "group": "normal", "subtype": "eap2", "cfdna_conc": "9.517", "immune_ratio": "0.2036"}, {"sample_id": "T1075", "group": "normal", "subtype": "eap3", "cfdna_conc": "7.565", "immune_ratio": "0.3259"}, {"sample_id": "T1076", "group": "normal", "subtype": "eap2", "cfdna_conc": "8.161", "immune_ratio": "0.4777"}, {"sample_id": "T1077", "group": "normal", "subtype": "eap3", "cfdna_conc": "9.774", "immune_ratio": "0.3718"}, {"sample_id": "T1078", "group": "normal", "subtype": "eap2", "cfdna_conc": "10.854", "immune_ratio": "0.4076"}, {"sample_id": "T1079", "group": "normal", "subtype": "eap2", "cfdna_conc": "7.678", "immune_ratio": "0.2497"}, {"sample_id": "T1080", "group": "normal", "subtype": "eap2", "cfdna_conc": "15.517", "immune_ratio": "0.3337"}, {"sample_id": "T1081", "group": "normal", "subtype": "eap2", "cfdna_conc": "14.1", "immune_ratio": "0.5803"}, {"sample_id": "T1082", "group": "normal", "subtype": "eap3", "cfdna_conc": "11.909", "immune_ratio": "0.4467"}, {"sample_id": "T1083", "group": "normal", "subtype": "eap3", "cfdna_conc": "8.337", "immune_ratio": "0.2305"}, {"sample_id": "T1084", "group": "normal", "subtype": "eap2", "cfdna_conc": "27.713", "immune_ratio": "0.3627"}, {"sample_id": "T1085", "group": "normal", "subtype": "eap3", "cfdna_conc": "7.606", "immune_ratio": "0.1799"}, {"sample_id": "T1086", "group": "normal", "subtype": "eap2", "cfdna_conc": "7.313", "immune_ratio": "0.4136"}, {"sample_id": "T1087", "group": "normal", "subtype": "eap2", "cfdna_conc": "11.984", "immune_ratio": "0.1774"}, {"sample_id": "T1088", "group": "normal", "subtype": "eap3", "cfdna_conc": "15.972", "immune_ratio": "0.3567"}, {"sample_id": "T1089", "group": "normal", "subtype": "eap2", "cfdna_conc": "7.888", "immune_ratio": "0.3063"}, {"sample_id": "T1090", "group": "normal", "subtype": "eap3", "cfdna_conc": "13.967", "immune_ratio": "0.298"}, {"sample_id": "T1091", "group": "normal", "subtype": "eap2", "cfdna_conc": "4.201", "immune_ratio": "0.3836"}, {"sample_id": "T1092", "group": "normal", "subtype": "eap2", "cfdna_conc": "7.14", "immune_ratio": "0.3879"}, {"sample_id": "T1093", "group": "normal", "subtype": "eap2", "cfdna_conc": "11.047", "immune_ratio": "0.3158"}, {"sample_id": "T1094", "group": "normal", "subtype": "eap2", "cfdna_conc": "5.364", "immune_ratio": "0.5555"}, {"sample_id": "T1095", "group": "normal", "subtype": "eap3", "cfdna_conc": "6.062", "immune_ratio": "0.2753"}, {"sample_id": "T1096", "group": "normal", "subtype": "eap3", "cfdna_conc": "7.269", "immune_ratio": "0.5236"}, {"sample_id": "T1097", "group": "normal", "subtype": "eap2", "cfdna_conc": "10.928", "immune_ratio": "0.7449"}, {"sample_id": "T1098", "group": "normal", "subtype": "eap2", "cfdna_conc": "10.476", "immune_ratio": "0.5107"}, {"sample_id": "T1099", "group": "normal", "subtype": "eap2", "cfdna_conc": "6.642", "immune_ratio": "0.7081"}, {"sample_id": "T1100", "group": "normal", "subtype": "eap2", "cfdna_conc": "7.305", "immune_ratio": "0.5215"}, {"sample_id": "T1101", "group": "normal", "subtype": "eap3", "cfdna_conc": "11.2", "immune_ratio": "0.1498"}, {"sample_id": "T1102", "group": "normal", "subtype": "eap2", "cfdna_conc": "11.941", "immune_ratio": "0.5607"}, {"sample_id": "T1103", "group": "normal", "subtype": "eap2", "cfdna_conc": "6.007", "immune_ratio": "0.2266"}, {"sample_id": "T1104", "group": "normal", "subtype": "eap2", "cfdna_conc": "5.578", "immune_ratio": "0.3454"}, {"sample_id": "T1105", "group": "normal", "subtype": "eap2", "cfdna_conc": "5.116", "immune_ratio": "0.1833"}, {"sample_id": "T1106", "group": "normal", "subtype": "eap3", "cfdna_conc": "9.101", "immune_ratio": "0.4161"}, {"sample_id": "T1107", "group": "normal", "subtype": "eap2", "cfdna_conc": "13.379", "immune_ratio": "0.4233"}, {"sample_id": "T1108", "group": "normal", "subtype": "eap2", "cfdna_conc": "9.179", "immune_ratio": "0.5324"}, {"sample_id": "T1109", "group": "normal", "subtype": "eap2", "cfdna_conc": "16.31", "immune_ratio": "0.3381"}, {"sample_id": "T1110", "group": "normal", "subtype": "eap3", "cfdna_conc": "5.451", "immune_ratio": "0.4511"}, {"sample_id": "T1111", "group": "normal", "subtype": "eap2", "cfdna_conc": "25.788", "immune_ratio": "0.4295"}, {"sample_id": "T1112", "group": "normal", "subtype": "eap2", "cfdna_conc": "9.007", "immune_ratio": "0.699"}, {"sample_id": "T1113", "group": "normal", "subtype": "eap2", "cfdna_conc": "11.375", "immune_ratio": "0.3904"}, {"sample_id": "T1114", "group": "normal", "subtype": "eap3", "cfdna_conc": "7.114", "immune_ratio": "0.4795"}, {"sample_id": "T1115", "group": "normal", "subtype": "eap2", "cfdna_conc": "8.551", "immune_ratio": "0.4193"}, {"sample_id": "T1116", "group": "normal", "subtype": "eap2", "cfdna_conc": "13.424", "immune_ratio": "0.2873"}, {"sample_id": "T1117", "group": "normal", "subtype": "eap3", "cfdna_conc": "24.019", "immune_ratio": "0.3372"}, {"sample_id": "T1118", "group": "cancer", "subtype": "paad", "cfdna_conc": "16.746", "immune_ratio": "0.1379"}, {"sample_id": "T1119", "group": "cancer", "subtype": "paad", "cfdna_conc": "16.448", "immune_ratio": "0.1306"}, {"sample_id": "T1120", "group": "cancer", "subtype": "paad", "cfdna_conc": "42.317", "immune_ratio": "0.1612"}, {"sample_id": "T1121", "group": "cancer", "subtype": "lihc", "cfdna_conc": "19.071", "immune_ratio": "0.1213"}, {"sample_id": "T1122", "group": "cancer", "subtype": "paad", "cfdna_conc": "14.775", "immune_ratio": "0.1315"}, {"sample_id": "T1123", "group": "cancer", "subtype": "lihc", "cfdna_conc": "31.865", "immune_ratio": "0.15"}, {"sample_id": "T1124", "group": "cancer", "subtype": "paad", "cfdna_conc": "25.668", "immune_ratio": "0.1493"}, {"sample_id": "T1125", "group": "cancer", "subtype": "paad", "cfdna_conc": "20.135", "immune_ratio": "0.124"}, {"sample_id": "T1126", "group": "cancer", "subtype": "paad", "cfdna_conc": "22.753", "immune_ratio": "0.1442"}, {"sample_id": "T1127", "group": "cancer", "subtype": "lihc", "cfdna_conc": "11.807", "immune_ratio": "0.1327"}, {"sample_id": "T1128", "group": "cancer", "subtype": "lihc", "cfdna_conc": "18.392", "immune_ratio": "0.1287"}, {"sample_id": "T1129", "group": "cancer", "subtype": "lihc", "cfdna_conc": "17.573", "immune_ratio": "0.1235"}, {"sample_id": "T1130", "group": "cancer", "subtype": "lihc", "cfdna_conc": "6.14", "immune_ratio": "0.1607"}, {"sample_id": "T1131", "group": "cancer", "subtype": "lihc", "cfdna_conc": "28.247", "immune_ratio": "0.1451"}, {"sample_id": "T1132", "group": "cancer", "subtype": "lihc", "cfdna_conc": "22.658", "immune_ratio": "0.1585"}, {"sample_id": "T1133", "group": "cancer", "subtype": "lihc", "cfdna_conc": "19.74", "immune_ratio": "0.1144"}, {"sample_id": "T1134", "group": "cancer", "subtype": "paad", "cfdna_conc": "26.602", "immune_ratio": "0.1589"}, {"sample_id": "T1135", "group": "cancer", "subtype": "paad", "cfdna_conc": "13.61", "immune_ratio": "0.1364"}, {"sample_id": "T1136", "group": "cancer", "subtype": "lihc", "cfdna_conc": "21.067", "immune_ratio": "0.1157"}, {"sample_id": "T1137", "group": "cancer", "subtype": "lihc", "cfdna_conc": "14.167", "immune_ratio": "0.142"}, {"sample_id": "T1138", "group": "cancer", "subtype": "paad", "cfdna_conc": "26.25", "immune_ratio": "0.1352"}, {"sample_id": "T1139", "group": "cancer", "subtype": "paad", "cfdna_conc": "17.249", "immune_ratio": "0.116"}, {"sample_id": "T1140", "group": "cancer", "subtype": "lihc", "cfdna_conc": "21.675", "immune_ratio": "0.1507"}, {"sample_id": "T1141", "group": "cancer", "subtype": "paad", "cfdna_conc": "19.967", "immune_ratio": "0.1433"}, {"sample_id": "T1142", "group": "cancer", "subtype": "lihc", "cfdna_conc": "9.131", "immune_ratio": "0.1564"}, {"sample_id": "T1143", "group": "cancer", "subtype": "paad", "cfdna_conc": "10.553", "immune_ratio": "0.159"}, {"sample_id": "T1144", "group": "cancer", "subtype": "lihc", "cfdna_conc": "15.768", "immune_ratio": "0.1403"}], "cols": ["sample_id", "group", "subtype", "cfdna_conc", "immune_ratio"], "sid": "s_20261002-1030_a41c", "path": "001_group_correlation.csv · 145행", "types": {}};
+APP.rows = DATA.rows;
+APP.cols = DATA.cols;
+APP.types = DATA.types || {};
+APP.derived = DATA.derived || [];
+const CARDS = [workspace, typesCard, finder];
+function render() {
+  $("#frame").innerHTML = `
+    <div class="sessbar"><span class="sessid">세션 ${DATA.sid}</span>
+      <button class="sm" disabled>웹→CLI 반영</button>
+      <button class="sm" disabled>CLI→웹 반영</button>
+      <span class="hint" style="margin:0">${DATA.path}</span></div>
+    ` + CARDS.map(f => f()).join("");
+}
+render();</script>
