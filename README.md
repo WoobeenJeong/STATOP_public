@@ -72,27 +72,8 @@ Check: `statop --help` works, `pytest -q` says 949 passed.
 
 ## Two ways to drive it
 
-**Terminal** — `statop`
-
-<img width="720" alt="STATOP terminal UI" src="https://github.com/user-attachments/assets/48d53d2a-f8a2-417b-909c-344c4a3d4209" />
-
-**Web** — `statop serve`
-
-<img width="720" alt="STATOP web — work area" src="https://github.com/user-attachments/assets/662a3d45-9ca4-49f9-a3f8-76bac9b68f74" />
-
-<details>
-<summary>그림 열기 — 타입 추론 및 분포 관찰</summary>
-
-<img width="720" alt="type inference and distribution" src="https://github.com/user-attachments/assets/bd96fc31-6896-4772-b6c8-9c1769e2f663" />
-
-</details>
-
-<details>
-<summary>그림 열기 — 통계량 및 가설 저장</summary>
-
-<img width="720" alt="statistic and hypothesis" src="https://github.com/user-attachments/assets/53f03ab0-a4d6-43f4-a5a7-f26fa2334b87" />
-
-</details>
+**Terminal** — `statop` · **Web** — `statop serve`
+Screenshots are in the Korean section below.
 
 Everything below is clicking. Nothing has to be typed except a file path.
 
