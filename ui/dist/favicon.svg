@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- 글자만 쓴다. 기호는 뜻을 하나 더 만드는데, 이 도구에 번개는 뜻이 없다. -->
+  <style>
+    .w { fill: #1c1f22 }
+    .v { fill: #0b6e6e }
+    /* 브라우저 탭이 어두우면 검은 글자가 안 보인다 */
+    @media (prefers-color-scheme: dark) {
+      .w { fill: #e7e9ea }
+      .v { fill: #3fb0ad }
+    }
+  </style>
+  <text x="32" y="41" class="w" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', 'Nimbus Roman', serif"
+        font-size="25" font-weight="700" letter-spacing="-1.6"
+  >E<tspan class="v">V</tspan>ID</text>
+</svg>

@@ -410,7 +410,9 @@ def save_as(doc: dict, out_dir: str | Path | None = None, suffix: str | None = N
     name = auto_name(doc)
     if suffix:
         name = name.replace(".json", f"__{suffix}.json")
-    target = Path(out_dir or doc.get("project_path") or sessions_dir()) / name
+    where = Path(out_dir or doc.get("project_path") or sessions_dir())
+    where.mkdir(parents=True, exist_ok=True)   # 없는 폴더를 주면 경로만 뱉고 끝났다
+    target = where / name
     if target.exists():
         if not overwrite:
             from statop.messages import msg

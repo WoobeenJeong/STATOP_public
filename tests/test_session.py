@@ -407,3 +407,17 @@ def test_hold_cli(statop_home):
 
     bad = runner.invoke(app, ["hold", "--cols", "nope", "--session", sess])
     assert bad.exit_code != 0     # 가져온 적 없는 컬럼은 hold 불가
+
+
+def test_saving_into_a_new_folder_creates_it(tmp_path, monkeypatch):
+    """없는 폴더를 --out-dir 로 주면 경로만 뱉고 아무것도 남지 않았다."""
+    monkeypatch.setenv("STATOP_HOME", str(tmp_path / "home"))
+    import pandas as pd
+
+    from statop.session.core import new_session, save_as
+
+    src = tmp_path / "d.csv"
+    pd.DataFrame({"a": [1, 2, 3]}).to_csv(src, index=False)
+    doc = new_session(str(src))
+    out = save_as(doc, out_dir=str(tmp_path / "sessions"), suffix="DB519_q1")
+    assert out.exists() and out.name.endswith("__DB519_q1.json")
