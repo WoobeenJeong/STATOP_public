@@ -237,9 +237,7 @@ export default function FinderPanel({ sessionFile, columns, onGoalSet,
               </button>
             ))}
           </div>
-          <div className="hint" style={{ marginTop: 4 }}>
-            두 개까지 고릅니다 · 순서가 의미를 가집니다 (첫째가 보려는 값)
-          </div>
+          <div className="hint" style={{ marginTop: 4 }}>두 개까지 · 첫째가 보려는 값</div>
           {/* 군으로 색을 나누면 "섞여서 생긴 관계"가 그 자리에서 보인다 */}
           <div className="row" style={{ marginTop: 4 }}>
             <span className="hint" style={{ margin: 0 }}>색으로 나눌 군</span>

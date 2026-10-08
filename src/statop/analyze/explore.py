@@ -268,7 +268,8 @@ def power(session_file: str, question: str, columns: list,
     pw = f"{target * 100:g}"
     out = {"n": n, "alpha": ALPHA, "target": target, "kind": "",
            "target_min": TARGET_MIN, "target_max": TARGET_MAX,
-           "note": msg("power_note_alpha", pw=pw), "why": msg("power_why"),
+           # 설명을 늘 깔지 않는다 — 해당되는 줄에만 그 이유가 붙는다
+           "note": msg("power_note_alpha", pw=pw),
            "band": msg("power_band"), "rows": [], "ladder": []}
     if n < 5:
         return out
@@ -294,7 +295,6 @@ def power(session_file: str, question: str, columns: list,
     else:
         return out
 
-    out["scale_note"] = msg("power_scale_note")
     for e in (effects or []):
         v = e.get("value")
         if v is None:

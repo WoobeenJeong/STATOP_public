@@ -1630,17 +1630,11 @@ class Screen:
                         name=seen["name"]) if seen else ""
             if where:
                 out.append(f"  <mut>{_esc(where)}</mut>")
-            if len(self.find_ran) > 1:
-                out.append("  <mut>" + _esc(msg(
-                    "screen_find_power_one",
-                    others=", ".join(v["name"] for k, v in self.find_ran.items()
-                                     if k != self.find_focus))) + "</mut>")
             for r in pw.get("rows", []):
                 st = "err" if r.get("comparable") is False else (
                     "ok" if r.get("catchable") else "warn")
                 out.append(f"  <{st}>{_esc(r['name'])}  {_g(r['value'])}"
                            f"  — {_esc(r['line'])}</{st}>")
-            out.append(f"  <mut>{_esc(pw['why'])}</mut>")
         if self.find_roles:
             out.append("")
             for role, names in self.find_roles.items():

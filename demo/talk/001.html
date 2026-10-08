@@ -555,7 +555,6 @@ tbody tr.off td { opacity: .5; }
 </style>
 
 <div class="wrap">
-  <div class="snapnote"><b>발표 스냅샷 001</b> — 실제 STATOP 웹과 같은 화면·같은 계산입니다. 파일은 이미 열려 있고, 여기서부터 <b>원하는 대로 고르면 됩니다</b>. 값은 누를 때 그 자리에서 계산합니다. (이 상자만 실제 앱에 없는 안내입니다)</div>
   <div class="brand">STAT<span class="brand-v">OP</span></div>
   <div class="stopbar">
     <button class="sm" disabled>중지</button>
@@ -803,8 +802,7 @@ function workspace() {
       <th style="text-align:right">결측률</th><th style="text-align:right">고유값</th>
       <th style="width:70px;white-space:nowrap">분석 제외</th><th style="width:56px"></th>
     </tr></thead><tbody>${body}</tbody></table>
-    <div class="hint">체크하면 <b>분석에서 빠집니다</b> — 다만 그림에서 색·점을 가르는 데는
-      계속 씁니다 (환자 번호·기관 코드처럼 분석 변수가 아닌 것). 아예 빼려면 [제외] 입니다.</div>
+    <div class="hint">체크하면 분석에서 빠집니다 (그림에서 색·점을 가르는 데는 계속 씁니다).</div>
   </div>`;
 }
 function toggleHold(c) { APP.held.has(c) ? APP.held.delete(c) : APP.held.add(c); render(); }
@@ -1014,8 +1012,7 @@ function finder() {
 
     <div class="fn-step"><span class="fn-no">2</span><div class="fn-body">
       <div class="fd-chips">${colChips}</div>
-      <div class="hint" style="margin-top:4px">두 개까지 고릅니다 · 순서가 의미를 가집니다
-        (첫째가 보려는 값)</div>
+      <div class="hint" style="margin-top:4px">두 개까지 · 첫째가 보려는 값</div>
       <div class="row" style="margin-top:4px">
         <span class="hint" style="margin:0">색으로 나눌 군</span>
         <button class="sm${!APP.color ? " on" : ""}" onclick="setColor('')">나누지 않음</button>
@@ -1253,8 +1250,7 @@ function goalBox() {
       <button class="sm" onclick="savePick(${i})">저장</button>
       <button class="sm" onclick="dropPick(${i})">빼기</button>
     </div>`).join("")}
-    <div class="hint" style="margin:0">고른 것은 출처가 '사용자 지정'으로 남습니다 —
-      규칙표(base)는 그대로입니다</div></div>`;
+</div>`;
 }
 /** 고를 수 있는 것 — 이 질문의 다른 검정에서 Goal 과 이미 넣은 것을 뺀다 */
 function pickable() {
@@ -1680,7 +1676,6 @@ function powerCard() {
       <span class="hint" style="margin:0">바꿔 보기</span>
       ${all.map(r => `<button class="sm${r.id === focus.id ? " on" : ""}"
         onclick="focusTest('${r.id}')">${r.name}</button>`).join("")}
-      <span class="hint" style="margin:0">한 번에 하나씩 봅니다 — 잰 값은 그대로 남습니다</span>
     </div>` : ""}
     <div class="pw-aim">
       <span class="hint" style="margin:0">목표 검정력</span>
@@ -1691,7 +1686,6 @@ function powerCard() {
              onkeydown="if(event.key==='Enter'){setTarget(+this.value);}"
              onblur="setTarget(+this.value)">
       <span class="hint" style="margin:0">% · 엔터</span>
-      <span class="hint" style="margin:0">더 확실히 잡으려 할수록 필요한 크기가 커집니다</span>
     </div>
     <div class="pw-axis" style="height:${26 + (Math.max(1, lanes.length) - 1) * 15}px">
       <div class="pw-dead" style="width:${pct(cut)}%"></div>
@@ -1715,10 +1709,7 @@ function powerCard() {
     ${off.length ? `<div class="pw-off">${off.map(r =>
       `<div class="hint" style="margin:0"><b>${r.name}</b> ${r.v.toFixed(4)} —
        ${r.eff} 는 상관계수와 다른 척도입니다 — 이 선과 직접 비교하지 않습니다</div>`).join("")}</div>` : ""}
-    <div class="hint" style="margin:0">작은 표본에서 "유의하지 않다"는 "관계가 없다"가
-      아닙니다 — 있어도 못 잡았을 수 있습니다</div>
-    <div class="hint" style="margin:0">선은 <b>상관계수(r·ρ) 척도</b>입니다.
-      τ·dCor 처럼 다른 척도의 값은 이 선에 얹지 않습니다</div></div>`;
+</div>`;
 }
 
 </script>

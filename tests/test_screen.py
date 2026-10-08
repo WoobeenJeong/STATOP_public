@@ -2779,7 +2779,7 @@ def test_power_shows_one_metric_at_a_time(finder):
 
     body = "\n".join(sc.render_find())
     assert "frac_a × age" in body, "무엇을 보고 있는지 적어야 한다"
-    assert "한 번에 하나씩" in body
+    assert body.count("Pearson r  ") == 1, "선 위에는 하나만 선다"
     assert len(sc.find_ran) == 2, "잰 값은 목록에 그대로 남는다"
 
 

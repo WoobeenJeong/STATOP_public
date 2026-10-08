@@ -93,8 +93,6 @@ export default function PowerCard({ sessionFile, question, columns, colorBy,
             <button key={e.id} className={`sm${e.id === shown?.id ? " on" : ""}`}
                     onClick={() => onFocus(e.id)}>{e.name}</button>
           ))}
-          <span className="hint" style={{ margin: 0 }}>
-            한 번에 하나씩 봅니다 — 잰 값은 그대로 남습니다</span>
         </div>
       )}
 
@@ -111,8 +109,6 @@ export default function PowerCard({ sessionFile, question, columns, colorBy,
                onKeyDown={(e) => { if (e.key === "Enter") applyTyped(); }}
                onBlur={applyTyped} />
         <span className="hint" style={{ margin: 0 }}>% · 엔터</span>
-        <span className="hint" style={{ margin: 0 }}>
-          더 확실히 잡으려 할수록 필요한 크기가 커집니다</span>
       </div>
 
       {/* 잡히는 영역과 못 잡는 영역을 한 줄로 — 잰 값이 어디에 서 있는지 */}
@@ -163,8 +159,6 @@ export default function PowerCard({ sessionFile, question, columns, colorBy,
         </details>
       )}
 
-      <div className="hint" style={{ margin: 0 }}>{p.why}</div>
-      <div className="hint" style={{ margin: 0 }}>{p.scale_note}</div>
     </div>
   );
 }
