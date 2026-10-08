@@ -154,11 +154,9 @@ pip install -e .
 
 ## 성적
 
-<img width="720" alt="answer_score" src="docs/img/answer_score.png" />
+<img width="720" alt="answer score" src="docs/img/answer_score.png" />
 
-<img width="720" alt="by question type" src="docs/img/by_question_type.png" />
-
-<img width="720" alt="by test used" src="docs/img/by_test.png" />
+<img width="720" alt="by question type and test" src="docs/img/by_type_and_test.png" />
 
 <img width="720" alt="timing" src="docs/img/timing.png" />
 
