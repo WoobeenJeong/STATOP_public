@@ -100,6 +100,8 @@ Model : Opus 5.0
 
 [LongDA: Benchmarking LLM Agents for Long-Document Data Analysis](https://arxiv.org/abs/2601.02598)
 
+
+**Evaluation criteria**
 | | |
 |---|---|
 | tolerance here | ±0.1 |
