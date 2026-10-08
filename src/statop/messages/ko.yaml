@@ -1814,6 +1814,10 @@ screen_find_adj_head: '{n}번 쟀습니다 — 함께 보정 ({method})'
 screen_find_btn: 지표 찾기
 screen_find_run_btn: 고르기
 screen_find_goal_btn: Goal로
+screen_find_support_btn: 함께 볼 것
+screen_find_guard_btn: 틀어지면 막을 것
+screen_find_goal_first: 'Goal 을 먼저 정하십시오 — [Goal로]'
+screen_find_roles_now: '{role}: {names}'
 screen_find_adj_btn: 보정 방법
 screen_keys_find: ↑↓ 이동 · space 컬럼 켜기 · Enter 고르기·계산 · Tab 단계 이동 · Esc 뒤로 · Ctrl-Q 종료
 derive_dropped: 파생 컬럼 {name} 을 지웠습니다 — 수식 기록은 남습니다

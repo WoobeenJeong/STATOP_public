@@ -13,7 +13,7 @@ const APP = {
   rows: [], cols: [], types: {}, held: new Set(), derived: [],
   // 지표 찾기
   q: "", picked: [], ran: {}, goal: null, custom: [], method: "holm", adj: null,
-  color: null, target: 0.80,
+  color: null, target: 0.80, myRole: "guardrail",
 };
 
 /** 열 하나가 숫자인가 — 의미 타입 추론의 가장 바깥 */
@@ -478,9 +478,19 @@ function goalBox() {
       : `<div class="hint">규칙표가 이 조합에 정해 둔 짝은 없습니다 (짝을 강제하지 않습니다)</div>`}
     ${mine}
     ${nPicked ? `<button class="sm" style="margin-top:6px">함께 보고할 것으로 저장</button>` : ""}
+    ${pickable().length ? `<div style="margin-top:8px">
+      <div class="row"><span class="hint" style="margin:0">목록에서 고르기 —</span>
+        ${["support", "guardrail"].map(k => `<button class="sm${APP.myRole === k ? " on" : ""}"
+          onclick="setMyRole('${k}')">${k === "support" ? "함께 볼 것" : "틀어지면 막을 것"}</button>`).join("")}
+      </div>
+      <div class="fd-chips" style="margin-top:4px">
+        ${pickable().map(c => `<button class="fx-chip"
+          onclick="addPicked('${esc(c)}')">${esc(c)}</button>`).join("")}
+      </div></div>` : ""}
     <div class="row" style="margin-top:8px">
-      <select id="myRole"><option value="support">support (함께 볼 것)</option>
-        <option value="guardrail" selected>guardrail (틀어지면 막을 것)</option></select>
+      <select id="myRole" onchange="setMyRole(this.value)">
+        <option value="support"${APP.myRole === "support" ? " selected" : ""}>support (함께 볼 것)</option>
+        <option value="guardrail"${APP.myRole !== "support" ? " selected" : ""}>guardrail (틀어지면 막을 것)</option></select>
       <input type="text" id="myName" placeholder="무엇을 함께 볼까요 — 예: Spearman ρ"
              style="min-width:120px">
       <input type="text" id="myWhy" placeholder="왜 (선택)" style="min-width:120px">
@@ -488,10 +498,21 @@ function goalBox() {
     <div class="hint" style="margin:0">규칙표에 없는 것도 넣을 수 있습니다.
       출처가 '사용자 지정'으로 남습니다</div></div>`;
 }
+/** 고를 수 있는 것 — 이 질문의 다른 검정에서 Goal 과 이미 넣은 것을 뺀다 */
+function pickable() {
+  const mine = APP.custom.map(c => c.name);
+  return (TESTS[APP.q] || []).filter(t => t[0] !== APP.goal && !mine.includes(t[1]))
+                             .map(t => t[1]);
+}
+function setMyRole(r) { APP.myRole = r; render(); }
+function addPicked(name) {
+  APP.custom.push({ role: APP.myRole || "guardrail", name, why: "" });
+  render();
+}
 function addMine() {
   const name = $("#myName").value.trim();
   if (!name) return;
-  APP.custom.push({ role: $("#myRole").value, name, why: $("#myWhy").value.trim() });
+  APP.custom.push({ role: APP.myRole || "guardrail", name, why: $("#myWhy").value.trim() });
   render();
 }
 

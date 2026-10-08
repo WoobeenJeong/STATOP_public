@@ -117,6 +117,17 @@ export default function FinderPanel({ sessionFile, columns, onGoalSet,
     }
   }
 
+  /** 목록에서 고른 것을 그대로 넣는다 — 직접 치는 것과 같은 자리로 들어간다 */
+  async function addPicked(name: string) {
+    try {
+      const r = await api.metricsCustom(sessionFile, myRole, name, "");
+      setMyHint(r.notice || r.hint);
+      setPanel(await api.metrics(sessionFile));
+    } catch (e) {
+      fail(e);
+    }
+  }
+
   /** 규칙표에 없는 것도 내 추천으로 — 다음에도 이 Goal 에서 뜬다 */
   async function addMine() {
     try {
@@ -174,6 +185,12 @@ export default function FinderPanel({ sessionFile, columns, onGoalSet,
 
   /** 결론 칸이 말하는 것은 **지금 보고 있는 지표 하나**다 */
   const shownRan = (focus && ran[focus]) || Object.values(ran).slice(-1)[0] || null;
+
+  /** 고를 수 있는 것 — 이 질문의 다른 검정들에서 Goal 과 이미 넣은 것을 뺀다 */
+  const pickable = (found?.candidates ?? []).filter((c) =>
+    c.id !== goal?.test
+    && !(panel?.support ?? []).some((x) => x.name === c.name)
+    && !(panel?.guardrail ?? []).some((x) => x.name === c.name));
 
   const adjOf = (name: string) =>
     adj?.rows.find((r) => r.name === name)?.p_adjusted ?? null;
@@ -394,7 +411,30 @@ export default function FinderPanel({ sessionFile, columns, onGoalSet,
                         onClick={() => void saveRoles()}>함께 보고할 것으로 저장</button>
               )}
 
-              {/* 규칙표에 없어도 내가 넣을 수 있다 — 출처는 '사용자 지정'으로 남는다 */}
+              {/* **고를 목록이 먼저다.** 규칙표가 정해 둔 짝이 없을 때 빈 화면에
+                  타이핑만 남겨 두면 무엇을 적어야 할지 알 수 없다. 이 질문에 쓸 수
+                  있는 다른 검정들을 눌러서 고른다 — 고른 것은 '사용자 지정'이다 */}
+              {pickable.length > 0 && (
+                <div style={{ marginTop: 8 }}>
+                  <div className="row">
+                    <span className="hint" style={{ margin: 0 }}>목록에서 고르기 —</span>
+                    {(["support", "guardrail"] as const).map((k) => (
+                      <button key={k} className={`sm${myRole === k ? " on" : ""}`}
+                              onClick={() => setMyRole(k)}>
+                        {k === "support" ? "함께 볼 것" : "틀어지면 막을 것"}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="fd-chips" style={{ marginTop: 4 }}>
+                    {pickable.map((c) => (
+                      <button key={c.id} className="fx-chip"
+                              onClick={() => void addPicked(c.name)}>{c.name}</button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* 목록에 없는 것도 넣을 수 있다 — 출처는 '사용자 지정'으로 남는다 */}
               <div className="row" style={{ marginTop: 8 }}>
                 <select value={myRole}
                         onChange={(e) => setMyRole(e.target.value as "support" | "guardrail")}>

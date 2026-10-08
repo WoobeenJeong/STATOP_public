@@ -2781,3 +2781,24 @@ def test_power_shows_one_metric_at_a_time(finder):
     assert "frac_a × age" in body, "무엇을 보고 있는지 적어야 한다"
     assert "한 번에 하나씩" in body
     assert len(sc.find_ran) == 2, "잰 값은 목록에 그대로 남는다"
+
+
+def test_support_and_guardrail_are_picked_from_the_list(finder):
+    """검색칸에 이름을 쳐 넣게 두면 무엇을 적어야 할지 알 수 없다 — 목록에서 고른다."""
+    sc = finder
+    _pick_question(sc, "Q-03")
+    _pick_columns(sc, "frac_a", "age")
+    ids = [c["id"] for c in sc.find_cands]
+
+    sc.find_row = ids.index("T-302")
+    sc.find_pick()                                  # 재고
+    assert not sc.find_role("support"), "Goal 없이 고르면 안 된다"
+
+    assert sc.find_goal()
+    sc.find_row = ids.index("T-301")
+    assert sc.find_role("guardrail")
+    assert sc.find_roles["guardrail"] == ["Pearson r"]
+
+    body = "\n".join(sc.render_find())
+    assert body.count("Pearson r") >= 1
+    assert "틀어지면 막을 것" in body

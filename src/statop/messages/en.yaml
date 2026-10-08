@@ -1814,6 +1814,10 @@ screen_find_adj_head: measured {n} times — adjusted together ({method})
 screen_find_btn: find a metric
 screen_find_run_btn: pick
 screen_find_goal_btn: set Goal
+screen_find_support_btn: report alongside
+screen_find_guard_btn: guardrail
+screen_find_goal_first: set the Goal first - [Goal]
+screen_find_roles_now: '{role}: {names}'
 screen_find_adj_btn: correction
 screen_keys_find: up/down move · space pick column · Enter choose/run · Tab step · Esc back · Ctrl-Q
 derive_dropped: removed the derived column {name} — the formula stays in the log

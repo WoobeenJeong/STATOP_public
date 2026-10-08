@@ -154,6 +154,7 @@ class Screen:
     find_power: dict = field(default_factory=dict)     # 이 표본으로 잡히는 크기
     find_target: float = 0.80                         # 목표 검정력 — 옮길 수 있다
     find_focus: str = ""                              # 검정력에서 보는 지표 하나
+    find_roles: dict = field(default_factory=dict)    # 함께 볼 것으로 고른 지표
     verify_top: int = 0                                # 컬럼 목록 첫 줄의 화면 y
     verify_result: object = None
     # 모델링 감사 (모듈 B) — 검사 결과를 한 화면에 쌓아 보여준다
@@ -1481,6 +1482,31 @@ class Screen:
         self.say(msg("metrics_goal_set", name=rows[self.find_row]["name"]), "ok")
         return True
 
+    def find_role(self, role: str) -> bool:
+        """지금 줄의 검정을 **함께 볼 것**으로 — Goal 을 정한 뒤에만.
+
+        목록이 이미 화면에 있으므로 따로 검색칸을 두지 않는다. 고른 것은
+        규칙표(base)를 건드리지 않고 '사용자 지정'으로 남는다.
+        """
+        from statop.analyze.metrics import add_custom, goal_key, suggest
+
+        rows = self.find_rows()
+        if self.find_stage != 2 or not rows or self.find_row >= len(rows):
+            return False
+        try:
+            key = goal_key(suggest(str(self.session_file)))
+        except (ValueError, KeyError) as e:
+            self.say(str(e), "err")
+            return False
+        if not key:
+            self.say(msg("screen_find_goal_first"), "err")
+            return False
+        name = rows[self.find_row]["name"]
+        add_custom(key, role, name, "")
+        self.find_roles.setdefault(role, []).append(name)
+        self.say(msg("metrics_custom_added", name=name, role=role), "ok")
+        return True
+
     def click_find(self, y: int) -> bool:
         i = y - self.find_top
         rows = self.find_rows()
@@ -1614,6 +1640,14 @@ class Screen:
                 out.append(f"  <{st}>{_esc(r['name'])}  {_g(r['value'])}"
                            f"  — {_esc(r['line'])}</{st}>")
             out.append(f"  <mut>{_esc(pw['why'])}</mut>")
+        if self.find_roles:
+            out.append("")
+            for role, names in self.find_roles.items():
+                out.append("  <mut>" + _esc(msg(
+                    "screen_find_roles_now",
+                    role=msg("screen_find_support_btn" if role == "support"
+                             else "screen_find_guard_btn"),
+                    names=", ".join(names))) + "</mut>")
         if self.find_adj:
             out += ["", f"  <head>{_esc(self.find_adj['head'])}</head>",
                     f"  <mut>{_esc(self.find_adj['why'])}</mut>"]
@@ -3996,6 +4030,12 @@ def run_screen() -> None:
                                  msg("screen_find_plot_btn"))
     find_color_button = mk_button(msg("screen_find_color_btn"), sc.find_color_cycle, 0,
                                   msg("screen_find_color_btn"))
+    find_support_button = mk_button(msg("screen_find_support_btn"),
+                                    lambda: do_bg(lambda: sc.find_role("support")), 0,
+                                    msg("screen_find_support_btn"))
+    find_guard_button = mk_button(msg("screen_find_guard_btn"),
+                                  lambda: do_bg(lambda: sc.find_role("guardrail")), 0,
+                                  msg("screen_find_guard_btn"))
     find_aim_button = mk_button(msg("screen_find_aim_btn"),
                                 lambda: do_bg(lambda: sc.set_find_target(find_aim_input.text)),
                                 0, msg("screen_find_aim_btn"))
@@ -4285,7 +4325,8 @@ def run_screen() -> None:
         if sc.step == STEP_FIND:
             return [find_run_button, find_plot_button, find_color_button,
                     find_rule_button, find_goal_button, find_adj_button,
-                    find_aim_button, back11_button]
+                    find_support_button, find_guard_button,
+                    find_aim_button, find_support_button, find_guard_button, back11_button]
         if sc.step == STEP_COLUMNS:
             return [sort_miss, sort_uniq, sort_name, search_button, prev_button,
                     next_button, import_button, share_buttons[0],
@@ -4367,7 +4408,7 @@ def run_screen() -> None:
                verify_rprev_button, verify_rnext_button, back7_button,
                tmp_button, tmp_del_button, back10_button,
                find_button, find_run_button, find_rule_button, find_plot_button,
-               find_aim_button,
+               find_aim_button, find_support_button, find_guard_button,
                find_color_button, find_goal_button, find_adj_button, back11_button,
                model_button, mb_plan_button, mb_apply_button, mb_set_button,
                back9_button, model_run_button, model_shift_button,
@@ -4484,7 +4525,9 @@ def run_screen() -> None:
             find_aim_input,
             VSplit([find_run_button, find_plot_button, find_color_button,
                     find_rule_button, find_goal_button, find_adj_button,
-                    find_aim_button, back11_button], height=1),
+                    find_support_button, find_guard_button,
+                    find_support_button, find_guard_button,
+                    find_aim_button, find_support_button, find_guard_button, back11_button], height=1),
         ]), filter=at(STEP_FIND)),
         ConditionalContainer(HSplit([
             tmp_window,
