@@ -1,0 +1,100 @@
+qid,source,answer_structure,answer
+DB519_q1,NCHS Data Brief No. 519,single_number,9.3
+DB519_q2,NCHS Data Brief No. 519,"[males, females]","[5.5, 13.0]"
+DB519_q3,NCHS Data Brief No. 519,"[age2_11, age12_19, age20_59, age60plus]","[4.7, 9.0, 9.0, 12.5]"
+DB519_q4,NCHS Data Brief No. 519,"[male2_11, male12_19, male20_59, male60plus]","[3.9, 0.9, 3.9, 12.8]"
+DB519_q5,NCHS Data Brief No. 519,"[female2_11, female12_19, female20_59, female60plus]","[5.7, 17.4, 14.0, 12.4]"
+DB519_q6,NCHS Data Brief No. 519,"[Asian, Black, White, Hispanic]","[11.8, 22.0, 6.1, 10.9]"
+DB519_q7,NCHS Data Brief No. 519,"[Asian, Black, White, Hispanic]","[7.0, 10.8, 3.9, 7.1]"
+DB519_q8,NCHS Data Brief No. 519,"[Asian, Black, White, Hispanic]","[15.9, 31.4, 8.3, 15.0]"
+DB519_q9,NCHS Data Brief No. 519,"[lt130, from130to349, gte350]","[14.1, 9.8, 5.7]"
+DB519_q10,NCHS Data Brief No. 519,"[male_lt130, male_130to349, male_gte350]","[8.7, 5.4, 3.5]"
+DB519_q11,NCHS Data Brief No. 519,"[female_lt130, female_130to349, female_gte350]","[18.7, 13.9, 8.1]"
+DB527_q1,NCHS Data Brief No. 527,single_number,13.1
+DB527_q2,NCHS Data Brief No. 527,"[age12_19, age20_39, age40_59, age60plus]","[19.2, 16.6, 10.8, 8.7]"
+DB527_q3,NCHS Data Brief No. 527,"[female, male]","[16.0, 10.1]"
+DB527_q4,NCHS Data Brief No. 527,"[female12_19, female20_39, female40_59, female60plus]","[26.5, 19.0, 13.8, 10.6]"
+DB527_q5,NCHS Data Brief No. 527,"[male12_19, male20_39, male40_59, male60plus]","[12.2, 14.3, 7.9, 6.5]"
+DB527_q6,NCHS Data Brief No. 527,"[lt100FPL, from100to200FPL, from200to400FPL, gte400FPL]","[22.1, 19.2, 13.1, 7.4]"
+DB527_q7,NCHS Data Brief No. 527,"[female_lt100FPL, female_100to200FPL, female_200to400FPL, female_gte400FPL]","[26.0, 24.2, 14.4, 8.8]"
+DB527_q8,NCHS Data Brief No. 527,"[male_lt100FPL, male_100to200FPL, male_200to400FPL, male_gte400FPL]","[17.4, 13.1, 11.7, 6.1]"
+DB527_q9,NCHS Data Brief No. 527,single_number,87.9
+DB527_q10,NCHS Data Brief No. 527,"[not_difficult, somewhat_difficult, very_extremely_difficult]","[12.1, 56.7, 31.2]"
+DB527_q11,NCHS Data Brief No. 527,"[female_not_difficult, female_somewhat_difficult, female_very_extremely_difficult]","[11.8, 57.3, 31.0]"
+DB527_q12,NCHS Data Brief No. 527,"[male_not_difficult, male_somewhat_difficult, male_very_extremely_difficult]","[12.7, 55.8, 31.5]"
+DB527_q13,NCHS Data Brief No. 527,single_number,39.3
+DB527_q14,NCHS Data Brief No. 527,"[female, male]","[43.0, 33.2]"
+DB533_q1,NCHS Data Brief No. 533,single_number,32.0
+DB533_q2,NCHS Data Brief No. 533,"[gt0_lt25, from25_to50, gt50]","[11.4, 12.0, 8.6]"
+DB533_q3,NCHS Data Brief No. 533,single_number,11.7
+DB533_q4,NCHS Data Brief No. 533,"[age20_39, age40_59, age60plus]","[15.2, 11.9, 7.6]"
+DB533_q5,NCHS Data Brief No. 533,"[hs_or_less, some_college, bachelors_plus]","[11.2, 13.4, 10.8]"
+DB533_q6,NCHS Data Brief No. 533,"[under_normal, overweight, obesity]","[9.8, 10.8, 13.7]"
+DB511_q1,NCHS Data Brief No. 511,single_number,47.7
+DB511_q2,NCHS Data Brief No. 511,"[men, women]","[50.8, 44.6]"
+DB511_q3,NCHS Data Brief No. 511,"[age18_39, age40_59, age60plus]","[23.4, 52.5, 71.6]"
+DB511_q4,NCHS Data Brief No. 511,"[men18_39, men40_59, men60plus]","[30.0, 55.9, 72.7]"
+DB511_q5,NCHS Data Brief No. 511,"[women18_39, women40_59, women60plus]","[16.4, 49.0, 70.6]"
+DB511_q6,NCHS Data Brief No. 511,single_number,59.2
+DB511_q7,NCHS Data Brief No. 511,"[age18_39, age40_59, age60plus]","[27.2, 56.7, 73.7]"
+DB511_q8,NCHS Data Brief No. 511,"[men18_39, men40_59, men60plus]","[23.3, 55.1, 72.8]"
+DB511_q9,NCHS Data Brief No. 511,"[women18_39, women40_59, women60plus]","[34.6, 58.5, 74.5]"
+DB511_q10,NCHS Data Brief No. 511,single_number,51.2
+DB511_q11,NCHS Data Brief No. 511,"[age18_39, age40_59, age60plus]","[13.9, 47.1, 69.1]"
+DB511_q12,NCHS Data Brief No. 511,"[men18_39, men40_59, men60plus]","[10.1, 46.3, 67.4]"
+DB511_q13,NCHS Data Brief No. 511,"[women18_39, women40_59, women60plus]","[21.4, 48.0, 70.5]"
+DB511_q14,NCHS Data Brief No. 511,single_number,20.7
+DB511_q15,NCHS Data Brief No. 511,"[age18_39, age40_59, age60plus]","[4.5, 18.1, 29.2]"
+DB511_q16,NCHS Data Brief No. 511,"[men18_39, men40_59, men60plus]","[3.1, 13.6, 32.4]"
+DB511_q17,NCHS Data Brief No. 511,"[women18_39, women40_59, women60plus]","[7.2, 23.2, 26.4]"
+DB508_q1,NCHS Data Brief No. 508,single_number,40.3
+DB508_q2,NCHS Data Brief No. 508,"[men, women]","[39.2, 41.3]"
+DB508_q3,NCHS Data Brief No. 508,"[age20_39, age40_59, age60plus]","[35.5, 46.4, 38.9]"
+DB508_q4,NCHS Data Brief No. 508,"[hs_or_less, some_college, bachelors_plus]","[44.6, 45.0, 31.6]"
+DB508_q5,NCHS Data Brief No. 508,single_number,9.4
+DB508_q6,NCHS Data Brief No. 508,"[age20_39, age40_59, age60plus]","[9.5, 12.0, 6.6]"
+DB508_q7,NCHS Data Brief No. 508,"[men, women]","[6.7, 12.1]"
+DB508_q8,NCHS Data Brief No. 508,"[men20_39, men40_59, men60plus]","[6.1, 9.2, 4.3]"
+DB508_q9,NCHS Data Brief No. 508,"[women20_39, women40_59, women60plus]","[13.0, 14.7, 8.4]"
+DB540_q1,NCHS Data Brief No. 540,single_number,36.4
+DB540_q2,NCHS Data Brief No. 540,"[none, one, two_or_more]","[36.4, 34.9, 28.7]"
+DB540_q3,NCHS Data Brief No. 540,"[men, women]","[31.7, 25.8]"
+DB540_q4,NCHS Data Brief No. 540,"[none, one, two_or_more]","[53.7, 27.0, 19.3]"
+DB540_q5,NCHS Data Brief No. 540,"[none, one, two_or_more]","[29.6, 35.9, 34.5]"
+DB540_q6,NCHS Data Brief No. 540,"[none, one, two_or_more]","[24.7, 42.6, 32.7]"
+DB540_q7,NCHS Data Brief No. 540,"[lt130FPL, mid130_349FPL, ge350FPL]","[32.9, 33.3, 38.9]"
+DB540_q8,NCHS Data Brief No. 540,"[lt130FPL, mid130_349FPL, ge350FPL]","[35.7, 34.1, 36.4]"
+DB540_q9,NCHS Data Brief No. 540,"[lt130FPL, mid130_349FPL, ge350FPL]","[31.3, 32.6, 24.7]"
+DB516_q1,NCHS Data Brief No. 516,single_number,15.8
+DB516_q2,NCHS Data Brief No. 516,single_number,11.3
+DB516_q3,NCHS Data Brief No. 516,single_number,4.5
+DB516_q4,NCHS Data Brief No. 516,"[men, women]","[18.0, 13.7]"
+DB516_q5,NCHS Data Brief No. 516,"[men, women]","[12.9, 9.7]"
+DB516_q6,NCHS Data Brief No. 516,"[men, women]","[5.1, 3.9]"
+DB516_q7,NCHS Data Brief No. 516,"[age20_39, age40_59, age60plus]","[3.6, 17.7, 27.3]"
+DB516_q8,NCHS Data Brief No. 516,"[age20_39, age40_59, age60plus]","[2.2, 12.1, 20.5]"
+DB516_q9,NCHS Data Brief No. 516,"[age20_39, age40_59, age60plus]","[1.3, 5.6, 6.8]"
+DB516_q10,NCHS Data Brief No. 516,"[under_normal, overweight, obesity]","[6.8, 12.3, 24.2]"
+DB516_q11,NCHS Data Brief No. 516,"[under_normal, overweight, obesity]","[5.2, 9.5, 16.3]"
+DB516_q12,NCHS Data Brief No. 516,"[under_normal, overweight, obesity]","[1.6, 2.8, 7.9]"
+DB516_q13,NCHS Data Brief No. 516,"[hs_or_less, some_college, bachelors_plus]","[19.6, 17.2, 10.7]"
+DB516_q14,NCHS Data Brief No. 516,"[hs_or_less, some_college, bachelors_plus]","[14.6, 12.0, 7.3]"
+DB516_q15,NCHS Data Brief No. 516,"[hs_or_less, some_college, bachelors_plus]","[5.0, 5.2, 3.4]"
+DB538_q1,NCHS Data Brief No. 538,single_number,7.7
+DB538_q2,NCHS Data Brief No. 538,single_number,24.3
+DB538_q3,NCHS Data Brief No. 538,"[female, male]","[8.0, 7.4]"
+DB538_q4,NCHS Data Brief No. 538,"[female, male]","[24.9, 23.7]"
+DB538_q5,NCHS Data Brief No. 538,"[lt130FPL, mid130_349FPL, ge350FPL]","[15.8, 20.6, 31.2]"
+DB538_q6,NCHS Data Brief No. 538,"[lt130FPL, mid130_349FPL, ge350FPL]","[7.4, 5.9, 9.9]"
+DB538_q7,NCHS Data Brief No. 538,"[shrimp, salmon, tuna, other_fish, breaded_fish]","[26.0, 19.7, 14.6, 8.0, 7.8]"
+DB538_q8,NCHS Data Brief No. 538,"[shrimp, salmon, tuna, other_fish, breaded_fish]","[44.8, 34.6, 31.9, 16.5, 12.1]"
+DB515_q1,NCHS Data Brief No. 515,single_number,11.3
+DB515_q2,NCHS Data Brief No. 515,"[men, women]","[10.6, 11.9]"
+DB515_q3,NCHS Data Brief No. 515,"[age20_39, age40_59, age60plus]","[6.0, 16.7, 11.3]"
+DB515_q4,NCHS Data Brief No. 515,"[men20_39, men40_59, men60plus]","[7.4, 18.3, 5.6]"
+DB515_q5,NCHS Data Brief No. 515,"[women20_39, women40_59, women60plus]","[4.7, 15.2, 16.4]"
+DB515_q6,NCHS Data Brief No. 515,single_number,13.8
+DB515_q7,NCHS Data Brief No. 515,"[men, women]","[21.5, 6.6]"
+DB515_q8,NCHS Data Brief No. 515,"[age20_39, age40_59, age60plus]","[16.2, 13.8, 11.2]"
+DB515_q9,NCHS Data Brief No. 515,"[men20_39, men40_59, men60plus]","[25.1, 20.8, 17.9]"
+DB515_q10,NCHS Data Brief No. 515,"[women20_39, women40_59, women60plus]","[7.6, 7.0, 5.2]"
