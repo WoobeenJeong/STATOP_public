@@ -86,8 +86,7 @@ Click through them in the browser — nothing to install, all data synthetic.
 - [02 · the distribution decides](https://woobeenjeong.github.io/STATOP_public/002.html)
 - [03 · integrity check](https://woobeenjeong.github.io/STATOP_public/003.html)
 
-
-## Performance 
+## Performance
 
 Dataset : LongDA (NHANES subset, N=99)
 
@@ -100,6 +99,11 @@ Model : Opus 5.0
 <img width="720" alt="time by stage" src="docs/img/timing.png" />
 
 [LongDA: Benchmarking LLM Agents for Long-Document Data Analysis](https://arxiv.org/abs/2601.02598)
+
+| | |
+|---|---|
+| tolerance here | ±0.1 |
+| tolerance in the paper | max(5%, 1) |
 
 ---
 ---
