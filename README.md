@@ -156,9 +156,9 @@ pip install -e .
 
 <img width="720" alt="answer_score" src="docs/img/answer_score.png" />
 
-<img width="720" alt="by_topic" src="docs/img/by_topic.png" />
+<img width="720" alt="by what the question asks" src="docs/img/by_measure.png" />
 
-<img width="720" alt="difference" src="docs/img/difference.png" />
+<img width="720" alt="by how the answer is split" src="docs/img/by_strata.png" />
 
 <img width="720" alt="timing" src="docs/img/timing.png" />
 
