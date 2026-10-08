@@ -1,64 +1,43 @@
 # STATOP — STATistic Ontology Platform
 
-**Closing the statistics gap between AI agents and human users — by keeping the
-reasoning as an ontology, not just the number.**
+**Closing the statistics gap between AI agents and human users**
 
-`v1.0.0-proto` · runs entirely on your machine · no server, no account
+**with an ontology of hypotheses that links data, tests, and metrics, not just the metrics alone.**
+
+`v1.0.0`
 
 ---
 
-## Three ideas
+## Sink · Multiple · Chain
 
-**1 · Same statistics, whoever runs them.**
-An agent call or a click in the UI — one core, one record.
+<img width="720" alt="image" src="https://github.com/user-attachments/assets/d2ee5df1-b37b-4ccf-8afe-e67fb033d485" />
 
-```mermaid
-flowchart LR
-  A["AI agent"] --> C["one core"]
-  B["human user — TUI · Web"] --> C
-  C --> E["same verdict · same record"]
-```
+**1. Sink**
 
-**2 · A hypothesis is more than one number.**
-The Goal metric, the Support metrics that explain it, the Guardrail metrics that
-would break it — on one screen, with correction and power.
+One view of the data, whoever runs it. Agents and people read the same statistics — so the conversation starts at interpretation.
 
-```mermaid
-flowchart TD
-  H["hypothesis"] --> G["Goal"]
-  G --> S["Support"]
-  G --> R["Guardrail"]
-  G --> P["correction · power"]
-```
+**2. Multiple**
 
-**3 · The link is kept.**
-What a column is, what was asked of it, which rule allowed the test — recorded as
-a chain. The same chain runs on other data; the same data runs under other chains;
-two runs are compared by reading two records — by a human user, or by an agent.
+No hypothesis rests on a single number. Goal, Support, and Guardrail metrics, side by side.
 
-```mermaid
-flowchart LR
-  C["data ↔ hypothesis ↔ statistic"]
-  C --> D1["other data"]
-  C --> D2["other chains"]
-  C --> D3["other runs"]
-  U["human user"] --- C
-  A["AI agent"] --- C
-```
+**3. Chain**
 
-## Three questions it answers
+Data, hypothesis, metrics — recorded as one snapshot. Apply the same lens to new data, or ask new questions of the same data.
+
+
+## Ask it
 
 | | |
 |---|---|
-| **Is this data intact?** | two exports of one table — what changed, and where |
-| **Does this statistic fit this hypothesis?** | applicable tests only, each with its reason |
-| **Which statistic fits this hypothesis?** | pick the question in plain words, get candidates |
+| **Is this data intact?** | Compare two exports of a table — what changed, and where |
+| **Which test fits hypothesis?** | Describe the question in plain words. Get candidate tests |
+| **Which statistic fits this hypothesis?** | Check a chosen test against the data — with the reason for every verdict |
 
 ---
 
 ## Install
 
-Needs [conda](https://docs.conda.io/en/latest/miniconda.html).
+Conda : [conda](https://docs.conda.io/en/latest/miniconda.html).
 
 ```bash
 git clone https://github.com/WoobeenJeong/STATOP_public.git statop
@@ -72,36 +51,30 @@ Check: `statop --help` works, `pytest -q` says 949 passed.
 
 ## Two ways to drive it
 
-**Terminal** — `statop` · **Web** — `statop serve`
+**Terminal** / **Web**
 Screenshots are in the Korean section below.
-
-Everything below is clicking. Nothing has to be typed except a file path.
 
 ## Six steps
 
 | | a human user clicks | and gets |
 |---|---|---|
-| 1 | **열기** on a file | the columns, with missing rate and unique count |
-| 2 | **가져오기** after ticking columns | a work area holding only those |
-| 3 | **타입 확정** on each column | what it is — a label opens 0/1 mapping right there |
-| 4 | **지표 찾기** → a question → two columns | the tests that fit, ✅ / ⚠ / ⛔ with reasons |
-| 5 | **고르기** on one test | the value, p, and whether this sample could catch it |
-| 6 | **Goal로** | Support and Guardrail metrics to report alongside |
+| 1 | **OPEN** | the columns, with missing rate and unique count |
+| 2 | **RETRIEVE** | a work area holding only those |
+| 3 | **TYPE CONFIRM** | a label opens 0/1 mapping right there |
+| 4 | **SET METRIC** | the tests that fit, ✅ / ⚠ / ⛔ with reasons |
+| 5 | **CHECK HYPOTHESIS** | the value, p, and whether this sample could catch it |
+| 6 | **SELECT GOAL METRIC** | Support and Guardrail metrics to report alongside |
 
-Along the way: **그림** draws it, **색으로 나누기** splits by group, **목표 검정력**
-moves the power target, **수식·근거** shows the rule that decided it.
+**Integrity check** : Compare two files and see exactly what differs. Columns that don’t match by name can be paired by hand.
 
-Two more screens: **무결성 검증** compares two files, **파생 컬럼** builds a new one
-from a formula — and a saved formula can be reapplied to a different dataset,
-where it is re-judged rather than assumed.
+**Derived column** : Builds a new one from a formula — and a saved formula can be reapplied to a different dataset.
 
 <!-- agent-notes:start -->
 ## With an AI agent
 
 `CLAUDE.md` / `AGENTS.md` ship with the repo, so an agent reads the rules on entry.
 Let STATOP judge and the agent explain — every verdict has written grounds in
-`rules/`, and two saved sessions can simply be handed over: *"name the step that
-differs."*
+`rules/`
 
 <!-- agent-notes:end -->
 
@@ -109,48 +82,48 @@ differs."*
 
 Click through them in the browser — nothing to install, all data synthetic.
 
-- [01 · group correlation](https://woobeenjeong.github.io/STATOP_public/001.html) — a relation only one group bends
-- [02 · the distribution decides](https://woobeenjeong.github.io/STATOP_public/002.html) — one derived column splits what overlapped
-- [03 · integrity check](https://woobeenjeong.github.io/STATOP_public/003.html) — two exports of one table, paired
+- [01 · group correlation](https://woobeenjeong.github.io/STATOP_public/001.html)
+- [02 · the distribution decides](https://woobeenjeong.github.io/STATOP_public/002.html)
+- [03 · integrity check](https://woobeenjeong.github.io/STATOP_public/003.html)
 
 ---
 ---
 
 # 한국어
 
-**STATOP — Agent 와 사람 사이의 통계 이해 격차를 줄이는 온톨로지.**
-숫자만 남기지 않고, 그 숫자가 나온 **근거의 사슬**을 남깁니다.
+**STATOP — AI 에이전트와 사람 사이의 통계 격차를 줄입니다.**
+**통계지표만 남기지 않고, 데이터·가설검정·통계지표를 잇는 온톨로지로.**
 
-## 세 가지 생각
+## Sink · Multiple · Chain
 
-**1 · 누가 돌려도 같은 통계.** 에이전트가 부르든 사람이 화면에서 누르든 —
-같은 코어를 지나 같은 기록을 남깁니다.
+**1. Sink**
 
-**2 · 가설은 숫자 하나가 아닙니다.** 목표 지표(Goal), 설명하는 지표(Support),
-틀어지면 막는 지표(Guardrail)를 보정·검정력과 함께 한 화면에서 봅니다.
+누가 돌려도 데이터를 보는 시각은 하나. 에이전트와 사람이 같은 통계량을, 논의는 해석에서 시작.
 
-**3 · 관계를 남깁니다.** 컬럼이 무엇인지 → 무엇을 물었는지 → 어느 규칙이
-허락했는지가 사슬로 기록됩니다. 같은 사슬을 다른 자료에, 같은 자료를 다른
-사슬로. 두 실행의 비교는 **사람도 두 기록을 열어 직접, 에이전트도 같은 두
-기록으로** — 똑같이 합니다.
+**2. Multiple**
+
+가설은 숫자 하나로 판단하지 않는다. Goal · Support · Guardrail 지표를 나란히.
+
+**3. Chain**
+
+데이터, 가설검정, 통계지표 — 하나의 스냅샷으로 기록. 같은 렌즈를 새 데이터에, 같은 데이터에 새 질문을.
+
 
 ## 세 가지 질문
 
 | | |
 |---|---|
-| **이 데이터, 무결한가?** | 같은 표를 두 번 내보냈을 때 무엇이 어디서 바뀌었나 |
-| **이 가설에 이 통계량이 맞나?** | 쓸 수 있는 검정만, 각각 이유와 함께 |
-| **이 가설엔 어떤 통계량이 맞나?** | 질문을 일상어로 고르면 후보가 나온다 |
+| **이 데이터, 무결한가?** | 같은 표의 두 판본을 대조 — 무엇이 어디서 바뀌었나 |
+| **이 가설엔 어떤 검정이 맞나?** | 질문을 일상어로 쓰면 후보 검정이 나온다 |
+| **고른 검정, 데이터에 맞나?** | 고른 검정을 데이터에 대조 — 모든 판정에 이유와 함께 |
 
 ## 설치
-
-[conda](https://docs.conda.io/en/latest/miniconda.html) 가 필요합니다.
 
 ```bash
 git clone https://github.com/WoobeenJeong/STATOP_public.git statop
 cd statop
-conda env create -f environment.yml    # 몇 분
-conda activate statop                  # 터미널 열 때마다
+conda env create -f environment.yml
+conda activate statop
 pip install -e .
 ```
 
@@ -159,93 +132,70 @@ pip install -e .
 ## 조작은 두 가지
 
 - **터미널**: `statop`
-- **웹**: `statop serve`
+- **웹**: `웹열기 선택`
 
 <img width="720" alt="STATOP 터미널 화면" src="https://github.com/user-attachments/assets/48d53d2a-f8a2-417b-909c-344c4a3d4209" />
 
-<img width="720" alt="STATOP 웹 — 작업 영역" src="https://github.com/user-attachments/assets/662a3d45-9ca4-49f9-a3f8-76bac9b68f74" />
+<img width="720" alt="STATOP 웹작업 영역" src="https://github.com/user-attachments/assets/662a3d45-9ca4-49f9-a3f8-76bac9b68f74" />
 
 <details>
-<summary>그림 열기 — 타입 추론 및 분포 관찰</summary>
+<summary> [OPEN IMAGE] 타입 추론 및 분포 관찰</summary>
 
 <img width="720" alt="타입 추론과 분포" src="https://github.com/user-attachments/assets/bd96fc31-6896-4772-b6c8-9c1769e2f663" />
 
 </details>
 
 <details>
-<summary>그림 열기 — 통계량 및 가설 저장</summary>
+<summary> [OPEN IMAGE] 통계량 및 가설 저장 </summary>
 
 <img width="720" alt="통계량과 가설" src="https://github.com/user-attachments/assets/53f03ab0-a4d6-43f4-a5a7-f26fa2334b87" />
 
 </details>
 
-아래는 전부 클릭입니다. 직접 치는 것은 파일 경로뿐입니다.
-
 ## 성적
 
-[LongDA](https://arxiv.org/abs/2601.02598) 의 NHANES 99문항을, 같은 에이전트가
-**STATOP 없이 한 번 · STATOP 으로 한 번** 풀었습니다. 자료·문항·제출 형식은 같고
-도구만 다릅니다. 문항지와 정답지는 [`NHANES_99_test/`](NHANES_99_test/) 에 있습니다.
+<img width="720" alt="answer_score" src="docs/img/answer_score.png" />
 
-점수는 두 가지입니다 — **답이 맞았나**, 그리고 **풀이가 맞았나**. 답이 틀려도 풀이는
-맞을 수 있어서 따로 셉니다.
+<img width="720" alt="by_topic" src="docs/img/by_topic.png" />
 
-<img width="620" alt="answer score" src="docs/img/answer_score.png" />
+<img width="720" alt="difference" src="docs/img/difference.png" />
 
-| 99문항 중 통과한 비율 | without | with | 차이 |
-|---|---|---|---|
-| 가중치를 썼나 | 100% | 60% | −40 |
-| 그 파일에 맞는 가중치인가 | 92% | 60% | −32 |
-| 층·PSU 를 썼나 | **0%** | **100%** | +100 |
-| 하위집단을 행을 지우지 않고 다뤘나 | **0%** | **100%** | +100 |
-| 문항이 요구한 정의를 지켰나 | 65% | 55% | −10 |
+<img width="720" alt="timing" src="docs/img/timing.png" />
 
-아래 둘이 갈린 곳입니다. STATOP 없이 푼 쪽은 하위집단을 **행을 잘라낸 뒤** 가중합을
-냅니다 — 그러면 PSU 가 사라져 분산이 틀어집니다. 위의 두 줄에서 STATOP 쪽이 낮은 것은
-채점의 한계입니다 (문항별 코드를 문단으로 끊는데, 한쪽이 긴 덩어리로 짜여 있어 가중치
-이름이 그 문단 밖에 있는 경우가 있습니다).
+## 핵심 단계
 
-시간은 총합이 17% 더 깁니다(2,586s vs 2,215s). 다만 **문제를 푸는 시간만 보면
-3.43s → 0.038s** 로 줄고, 그 시간이 온톨로지를 만드는 쪽으로 옮겨 갑니다 — 그건 한 번
-만들면 다음 질문에 다시 쓰입니다.
-
-## 여섯 단계
-
-| | 누르면 | 나오는 것 |
+| | 클릭 | 작동 |
 |---|---|---|
-| 1 | 파일에 **열기** | 컬럼 목록 · 결측률 · 고유값 수 |
-| 2 | 체크 후 **가져오기** | 그 컬럼만 담긴 작업 영역 |
-| 3 | 컬럼마다 **타입 확정** | 그게 무엇인지 — 라벨이면 0/1 코드 지정이 바로 뜸 |
-| 4 | **지표 찾기** → 질문 → 컬럼 둘 | 맞는 검정들, ✅ / ⚠ / ⛔ 과 이유 |
-| 5 | 검정 하나에 **고르기** | 값·p, 그리고 이 표본으로 잡히는 크기인지 |
-| 6 | **Goal로** | 함께 볼 Support · Guardrail 지표 |
+| 1 | **열기** | 컬럼 목록 · 결측률 · 고유값 수 |
+| 2 | **가져오기** | 선택한 특정 컬럼만 담긴 작업 영역 |
+| 3 | **타입 확정** | 분포확인, 라벨이면 0/1 코드 지정 |
+| 4 | **지표 찾기** | 맞는 검정 지표들, ✅ / ⚠ / ⛔ 과 이유 |
+| 5 | **가설 검정** | 값·p, 그리고 이 표본으로 잡히는 크기인지 |
+| 6 | **Goal 선택** | 함께 볼 Support · Guardrail 지표도 선택 |
 
-가는 길에 — **그림**으로 그리고, **색으로 나누기**로 군을 가르고,
-**목표 검정력**으로 기준을 옮기고, **수식·근거**로 그 판정의 규칙을 봅니다.
+**무결성 검증** : 두 파일을 대조해 무엇이 다른지 정확히 봅니다. 이름이 다른 컬럼은 직접 짝지을 수 있습니다.
 
-화면 둘 더 — **무결성 검증**은 두 파일을 대조하고, **파생 컬럼**은 수식으로 새
-컬럼을 만듭니다. 저장한 수식은 다른 자료에 다시 쓸 수 있고, 그때 **새 자료에서
-다시 판정**합니다.
+**파생 컬럼** : 수식으로 새 컬럼을 만듭니다 — 저장한 수식은 다른 자료에 다시 적용할 수 있습니다.
+
 
 ## 에이전트와 함께
 
 `CLAUDE.md` · `AGENTS.md` 가 들어 있어 에이전트가 들어오면 규칙을 읽습니다.
-판정은 STATOP 이, 설명은 에이전트가 — 근거가 `rules/` 에 글로 적혀 있어
-지어내지 않고 인용합니다. 세션 둘을 건네며 *"달라진 단계를 짚어 줘"* 도 됩니다.
+판정은 STATOP 이, 설명은 에이전트가 — 근거가 `rules/` 에 글로 적혀 있어 지어내지 않고 인용합니다.
 
 ## 둘러보기
 
 설치 없이 브라우저에서 클릭만으로. 자료는 전부 합성입니다.
 
-- [01 · 군별 상관](https://woobeenjeong.github.io/STATOP_public/001.html) — 한 군만 휘는 관계
-- [02 · 분포에 맞는 공식](https://woobeenjeong.github.io/STATOP_public/002.html) — 파생 컬럼 하나로 겹쳐 있던 두 군이 갈린다
-- [03 · 무결성 검증](https://woobeenjeong.github.io/STATOP_public/003.html) — 같은 표의 두 판본, 짝을 지어야 보이는 차이
+- [01 · 군별 상관](https://woobeenjeong.github.io/STATOP_public/001.html)
+- [02 · 분포에 맞는 공식](https://woobeenjeong.github.io/STATOP_public/002.html)
+- [03 · 무결성 검증](https://woobeenjeong.github.io/STATOP_public/003.html)
 
 ---
 
-## Troubleshooting · 막히면
+## Troubleshooting
 
-| symptom | 증상 | cause | 까닭 |
+| symptom | 증상 | cause | 원인 |
 |---|---|---|---|
 | `statop: command not found` | 명령을 못 찾음 | `conda activate statop` not run | `conda activate statop` 을 빠뜨림 |
 | web will not open | 웹이 안 열림 | the `statop serve` terminal was closed | `statop serve` 터미널을 닫음 |

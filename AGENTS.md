@@ -6,5 +6,6 @@ Full documentation: README.md
 
 `CLAUDE.md` / `AGENTS.md` ship with the repo, so an agent reads the rules on entry.
 Let STATOP judge and the agent explain — every verdict has written grounds in
-`rules/`, and two saved sessions can simply be handed over: *"name the step that
-differs."*
+`rules/`
+
+<!-- agent-notes:end -->
