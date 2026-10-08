@@ -10,7 +10,7 @@
 
 ## Sink · Multiple · Chain
 
-<img width="720" alt="image" src="https://github.com/user-attachments/assets/d2ee5df1-b37b-4ccf-8afe-e67fb033d485" />
+<img width="720" alt="image" src="figures/concept.png" />
 
 **1. Sink**
 
@@ -92,11 +92,11 @@ Dataset : LongDA (NHANES subset, N=99)
 
 Model : Opus 5.0
 
-<img width="720" alt="answer score" src="docs/img/answer_score.png" />
+<img width="720" alt="answer score" src="figures/answer_score.png" />
 
-<img width="720" alt="by question type and test" src="docs/img/by_type_and_test.png" />
+<img width="720" alt="by question type and test" src="figures/by_type_and_test.png" />
 
-<img width="720" alt="time by stage" src="docs/img/timing.png" />
+<img width="720" alt="time by stage" src="figures/timing.png" />
 
 [LongDA: Benchmarking LLM Agents for Long-Document Data Analysis](https://arxiv.org/abs/2601.02598)
 
@@ -155,21 +155,21 @@ pip install -e .
 - **터미널**: `statop`
 - **웹**: `웹열기 선택`
 
-<img width="720" alt="STATOP 터미널 화면" src="https://github.com/user-attachments/assets/48d53d2a-f8a2-417b-909c-344c4a3d4209" />
+<img width="720" alt="STATOP 터미널 화면" src="figures/ui_terminal.png" />
 
-<img width="720" alt="STATOP 웹작업 영역" src="https://github.com/user-attachments/assets/662a3d45-9ca4-49f9-a3f8-76bac9b68f74" />
+<img width="720" alt="STATOP 웹작업 영역" src="figures/ui_web_workspace.png" />
 
 <details>
 <summary> [OPEN IMAGE] 타입 추론 및 분포 관찰</summary>
 
-<img width="720" alt="타입 추론과 분포" src="https://github.com/user-attachments/assets/bd96fc31-6896-4772-b6c8-9c1769e2f663" />
+<img width="720" alt="타입 추론과 분포" src="figures/ui_web_types.png" />
 
 </details>
 
 <details>
 <summary> [OPEN IMAGE] 통계량 및 가설 저장 </summary>
 
-<img width="720" alt="통계량과 가설" src="https://github.com/user-attachments/assets/53f03ab0-a4d6-43f4-a5a7-f26fa2334b87" />
+<img width="720" alt="통계량과 가설" src="figures/ui_web_stats.png" />
 
 </details>
 
