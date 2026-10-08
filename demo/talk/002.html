@@ -771,7 +771,7 @@ const APP = {
   rows: [], cols: [], types: {}, held: new Set(), derived: [],
   // 지표 찾기
   q: "", picked: [], ran: {}, goal: null, custom: [], method: "holm", adj: null,
-  color: null, target: 0.80, myRole: "guardrail",
+  color: null, target: 0.80, myRole: "support", picks: [],
 };
 
 /** 열 하나가 숫자인가 — 의미 타입 추론의 가장 바깥 */
@@ -1137,7 +1137,7 @@ function step3() {
       ${r ? `<div class="fn-acts">
         <span class="hint" style="margin:0">n ${r.n}</span>
         <button class="sm" ${APP.goal === id ? "disabled" : ""}
-          onclick="setGoal('${id}','${name}')">${APP.goal === id ? "★ Goal" : "Goal로"}</button>
+          onclick="setGoal('${id}','${name}')">${APP.goal === id ? "★ Goal" : "Goal 지정"}</button>
         <button class="sm" onclick="runTest('${id}')">다시</button>
         <button class="sm${APP.focus === id ? " on" : ""}" onclick="focusTest('${id}')">${
           APP.focus === id ? "검정력에서 보는 중" : "검정력에서 보기"}</button></div>` : ""}
@@ -1239,22 +1239,22 @@ function goalBox() {
     ${pickable().length ? `<div style="margin-top:8px">
       <div class="row"><span class="hint" style="margin:0">목록에서 고르기 —</span>
         ${["support", "guardrail"].map(k => `<button class="sm${APP.myRole === k ? " on" : ""}"
-          onclick="setMyRole('${k}')">${k === "support" ? "함께 볼 것" : "틀어지면 막을 것"}</button>`).join("")}
+          onclick="setMyRole('${k}')">${k === "support" ? "Support 지정" : "Guardrail 지정"}</button>`).join("")}
       </div>
       <div class="fd-chips" style="margin-top:4px">
         ${pickable().map(c => `<button class="fx-chip"
           onclick="addPicked('${esc(c)}')">${esc(c)}</button>`).join("")}
       </div></div>` : ""}
-    <div class="row" style="margin-top:8px">
-      <select id="myRole" onchange="setMyRole(this.value)">
-        <option value="support"${APP.myRole === "support" ? " selected" : ""}>support (함께 볼 것)</option>
-        <option value="guardrail"${APP.myRole !== "support" ? " selected" : ""}>guardrail (틀어지면 막을 것)</option></select>
-      <input type="text" id="myName" placeholder="무엇을 함께 볼까요 — 예: Spearman ρ"
-             style="min-width:120px">
-      <input type="text" id="myWhy" placeholder="왜 (선택)" style="min-width:120px">
-      <button class="sm" onclick="addMine()">내 추천에 넣기</button></div>
-    <div class="hint" style="margin:0">규칙표에 없는 것도 넣을 수 있습니다.
-      출처가 '사용자 지정'으로 남습니다</div></div>`;
+    ${(APP.picks || []).map((x, i) => `<div class="row" style="margin-top:6px">
+      <b style="min-width:120px">${esc(x.name)}</b>
+      <span class="hint" style="margin:0">${x.role === "support" ? "Support" : "Guardrail"}</span>
+      <input type="text" value="${esc(x.why)}" style="flex:1;min-width:160px"
+             placeholder="왜 이걸 함께 보나요 (선택)" oninput="setPickWhy(${i}, this.value)">
+      <button class="sm" onclick="savePick(${i})">저장</button>
+      <button class="sm" onclick="dropPick(${i})">빼기</button>
+    </div>`).join("")}
+    <div class="hint" style="margin:0">고른 것은 출처가 '사용자 지정'으로 남습니다 —
+      규칙표(base)는 그대로입니다</div></div>`;
 }
 /** 고를 수 있는 것 — 이 질문의 다른 검정에서 Goal 과 이미 넣은 것을 뺀다 */
 function pickable() {
@@ -1264,15 +1264,19 @@ function pickable() {
 }
 function setMyRole(r) { APP.myRole = r; render(); }
 function addPicked(name) {
-  APP.custom.push({ role: APP.myRole || "guardrail", name, why: "" });
+  APP.picks = APP.picks || [];
+  const role = APP.myRole || "support";
+  if (!APP.picks.some(x => x.name === name && x.role === role))
+    APP.picks.push({ name, role, why: "" });
   render();
 }
-function addMine() {
-  const name = $("#myName").value.trim();
-  if (!name) return;
-  APP.custom.push({ role: APP.myRole || "guardrail", name, why: $("#myWhy").value.trim() });
+function setPickWhy(i, v) { APP.picks[i].why = v; }
+function savePick(i) {
+  const x = APP.picks.splice(i, 1)[0];
+  APP.custom.push(x);
   render();
 }
+function dropPick(i) { APP.picks.splice(i, 1); render(); }
 
 /* ── 파생 컬럼 만들기 (FormulaEditor.tsx) ────────────────── */
 const FUNCS = ["log", "ln", "log2", "log10", "sqrt", "abs", "pow", "exp", "round",

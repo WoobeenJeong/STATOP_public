@@ -1482,7 +1482,7 @@ class Screen:
         self.say(msg("metrics_goal_set", name=rows[self.find_row]["name"]), "ok")
         return True
 
-    def find_role(self, role: str) -> bool:
+    def find_role(self, role: str, why: str = "") -> bool:
         """지금 줄의 검정을 **함께 볼 것**으로 — Goal 을 정한 뒤에만.
 
         목록이 이미 화면에 있으므로 따로 검색칸을 두지 않는다. 고른 것은
@@ -1502,8 +1502,9 @@ class Screen:
             self.say(msg("screen_find_goal_first"), "err")
             return False
         name = rows[self.find_row]["name"]
-        add_custom(key, role, name, "")
-        self.find_roles.setdefault(role, []).append(name)
+        add_custom(key, role, name, why.strip())
+        self.find_roles.setdefault(role, []).append(
+            f"{name} — {why.strip()}" if why.strip() else name)
         self.say(msg("metrics_custom_added", name=name, role=role), "ok")
         return True
 
@@ -4030,11 +4031,17 @@ def run_screen() -> None:
                                  msg("screen_find_plot_btn"))
     find_color_button = mk_button(msg("screen_find_color_btn"), sc.find_color_cycle, 0,
                                   msg("screen_find_color_btn"))
+    def do_role(role: str):  # noqa: ANN202
+        ok = sc.find_role(role, find_why_input.text)
+        if ok:
+            find_why_input.text = ""
+        return ok
+
     find_support_button = mk_button(msg("screen_find_support_btn"),
-                                    lambda: do_bg(lambda: sc.find_role("support")), 0,
+                                    lambda: do_bg(lambda: do_role("support")), 0,
                                     msg("screen_find_support_btn"))
     find_guard_button = mk_button(msg("screen_find_guard_btn"),
-                                  lambda: do_bg(lambda: sc.find_role("guardrail")), 0,
+                                  lambda: do_bg(lambda: do_role("guardrail")), 0,
                                   msg("screen_find_guard_btn"))
     find_aim_button = mk_button(msg("screen_find_aim_btn"),
                                 lambda: do_bg(lambda: sc.set_find_target(find_aim_input.text)),
@@ -4116,6 +4123,10 @@ def run_screen() -> None:
     verify_input = TextArea(height=1, multiline=False, wrap_lines=False,
                             prompt=msg("screen_verify_prompt_file"),
                             focus_on_click=True, style="class:textbox")
+    # 왜 골랐는지 — 비워 둬도 된다. 적으면 그 지표와 함께 남는다
+    find_why_input = TextArea(height=1, multiline=False, wrap_lines=False,
+                              prompt=msg("screen_find_why_prompt"),
+                              focus_on_click=True, style="class:textbox")
     # 목표 검정력 — 80% 는 관습일 뿐이라 쳐서 옮길 자리가 있어야 한다
     find_aim_input = TextArea(height=1, multiline=False, wrap_lines=False,
                               prompt=msg("screen_find_aim_prompt"),
@@ -4522,7 +4533,7 @@ def run_screen() -> None:
         ]), filter=at(STEP_VERIFY)),
         ConditionalContainer(HSplit([
             find_window,
-            find_aim_input,
+            VSplit([find_why_input, find_aim_input]),
             VSplit([find_run_button, find_plot_button, find_color_button,
                     find_rule_button, find_goal_button, find_adj_button,
                     find_support_button, find_guard_button,
@@ -4601,7 +4612,7 @@ def run_screen() -> None:
     # `/storm/.../jwb419/17_...` 가 `/storm/.../jwb/_...` 로 들어갔다.
     # 새 입력칸을 만들면 여기에도 넣는다 (test_screen 이 빠진 칸을 잡는다)
     text_boxes = (path_input, search_input, savedir_input, expr_input, newname_input,
-                  copy_input, verify_input, find_aim_input, mb_key_input, mb_expect_input,
+                  copy_input, verify_input, find_aim_input, find_why_input, mb_key_input, mb_expect_input,
                   mb_code_input, reason_input, mb_set_input)
 
     def typing() -> bool:

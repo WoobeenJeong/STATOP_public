@@ -53,9 +53,9 @@ export default function FinderPanel({ sessionFile, columns, onGoalSet,
   const [panel, setPanel] = useState<Awaited<ReturnType<typeof api.metrics>> | null>(null);
   const [roles, setRoles] = useState<{ support: string[]; guardrail: string[] }>(
     { support: [], guardrail: [] });
-  const [myRole, setMyRole] = useState<"support" | "guardrail">("guardrail");
-  const [myName, setMyName] = useState("");
-  const [myWhy, setMyWhy] = useState("");
+  const [myRole, setMyRole] = useState<"support" | "guardrail">("support");
+  const [picks, setPicks] = useState<
+    { name: string; role: "support" | "guardrail"; why: string }[]>([]);
   const [myHint, setMyHint] = useState("");
   const [err, setErr] = useState("");
 
@@ -117,24 +117,18 @@ export default function FinderPanel({ sessionFile, columns, onGoalSet,
     }
   }
 
-  /** 목록에서 고른 것을 그대로 넣는다 — 직접 치는 것과 같은 자리로 들어간다 */
-  async function addPicked(name: string) {
-    try {
-      const r = await api.metricsCustom(sessionFile, myRole, name, "");
-      setMyHint(r.notice || r.hint);
-      setPanel(await api.metrics(sessionFile));
-    } catch (e) {
-      fail(e);
-    }
+  /** 목록에서 고른 것 — **아직 저장하지 않는다.** 왜 골랐는지 적고 각각 저장한다 */
+  function addPicked(name: string) {
+    setPicks((cur) => cur.some((x) => x.name === name && x.role === myRole)
+      ? cur : [...cur, { name, role: myRole, why: "" }]);
   }
 
-  /** 규칙표에 없는 것도 내 추천으로 — 다음에도 이 Goal 에서 뜬다 */
-  async function addMine() {
+  async function savePick(i: number) {
+    const x = picks[i];
     try {
-      const r = await api.metricsCustom(sessionFile, myRole, myName, myWhy);
+      const r = await api.metricsCustom(sessionFile, x.role, x.name, x.why);
       setMyHint(r.notice || r.hint);
-      setMyName("");
-      setMyWhy("");
+      setPicks((cur) => cur.filter((_, j) => j !== i));
       setPanel(await api.metrics(sessionFile));
     } catch (e) {
       fail(e);
@@ -421,7 +415,7 @@ export default function FinderPanel({ sessionFile, columns, onGoalSet,
                     {(["support", "guardrail"] as const).map((k) => (
                       <button key={k} className={`sm${myRole === k ? " on" : ""}`}
                               onClick={() => setMyRole(k)}>
-                        {k === "support" ? "함께 볼 것" : "틀어지면 막을 것"}
+                        {k === "support" ? "Support 지정" : "Guardrail 지정"}
                       </button>
                     ))}
                   </div>
@@ -434,22 +428,24 @@ export default function FinderPanel({ sessionFile, columns, onGoalSet,
                 </div>
               )}
 
-              {/* 목록에 없는 것도 넣을 수 있다 — 출처는 '사용자 지정'으로 남는다 */}
-              <div className="row" style={{ marginTop: 8 }}>
-                <select value={myRole}
-                        onChange={(e) => setMyRole(e.target.value as "support" | "guardrail")}>
-                  <option value="support">support (함께 볼 것)</option>
-                  <option value="guardrail">guardrail (틀어지면 막을 것)</option>
-                </select>
-                <input type="text" value={myName} style={{ flex: 1, minWidth: 120 }}
-                       placeholder="무엇을 함께 볼까요 — 예: Spearman ρ"
-                       onChange={(e) => setMyName(e.target.value)} />
-                <input type="text" value={myWhy} style={{ flex: 1, minWidth: 120 }}
-                       placeholder="왜 (선택)"
-                       onChange={(e) => setMyWhy(e.target.value)} />
-                <button className="sm" disabled={!myName.trim()}
-                        onClick={() => void addMine()}>내 추천에 넣기</button>
-              </div>
+              {/* 고른 것마다 — 왜 골랐는지, 그리고 저장할지 */}
+              {picks.map((x, i) => (
+                <div className="row" style={{ marginTop: 6 }} key={`${x.role}:${x.name}`}>
+                  <b style={{ minWidth: 120 }}>{x.name}</b>
+                  <span className="hint" style={{ margin: 0 }}>
+                    {x.role === "support" ? "Support" : "Guardrail"}
+                  </span>
+                  <input type="text" value={x.why} style={{ flex: 1, minWidth: 160 }}
+                         placeholder="왜 이걸 함께 보나요 (선택)"
+                         onChange={(e) => setPicks((cur) => cur.map((y, j) =>
+                           j === i ? { ...y, why: e.target.value } : y))} />
+                  <button className="sm" onClick={() => void savePick(i)}>저장</button>
+                  <button className="sm"
+                          onClick={() => setPicks((cur) => cur.filter((_, j) => j !== i))}>
+                    빼기
+                  </button>
+                </div>
+              ))}
               <div className="hint" style={{ margin: 0 }}>{myHint}</div>
             </div>
           )}

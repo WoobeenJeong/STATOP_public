@@ -2796,9 +2796,9 @@ def test_support_and_guardrail_are_picked_from_the_list(finder):
 
     assert sc.find_goal()
     sc.find_row = ids.index("T-301")
-    assert sc.find_role("guardrail")
-    assert sc.find_roles["guardrail"] == ["Pearson r"]
+    assert sc.find_role("guardrail", "직선 가정이 깨지면 이걸로 본다")
+    assert sc.find_roles["guardrail"] == ["Pearson r — 직선 가정이 깨지면 이걸로 본다"]
 
     body = "\n".join(sc.render_find())
-    assert body.count("Pearson r") >= 1
-    assert "틀어지면 막을 것" in body
+    assert "Guardrail 지정: Pearson r" in body
+    assert "직선 가정이 깨지면" in body, "왜 골랐는지가 같이 남아야 한다"

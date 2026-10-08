@@ -1813,10 +1813,10 @@ screen_find_ran: '{name} — {eff_name} {eff}, p {p}'
 screen_find_adj_head: '{n}번 쟀습니다 — 함께 보정 ({method})'
 screen_find_btn: 지표 찾기
 screen_find_run_btn: 고르기
-screen_find_goal_btn: Goal로
-screen_find_support_btn: 함께 볼 것
-screen_find_guard_btn: 틀어지면 막을 것
-screen_find_goal_first: 'Goal 을 먼저 정하십시오 — [Goal로]'
+screen_find_goal_btn: Goal 지정
+screen_find_support_btn: Support 지정
+screen_find_guard_btn: Guardrail 지정
+screen_find_goal_first: 'Goal 을 먼저 지정하십시오 — [Goal 지정]'
 screen_find_roles_now: '{role}: {names}'
 screen_find_adj_btn: 보정 방법
 screen_keys_find: ↑↓ 이동 · space 컬럼 켜기 · Enter 고르기·계산 · Tab 단계 이동 · Esc 뒤로 · Ctrl-Q 종료
@@ -1861,6 +1861,7 @@ screen_find_aim_btn: 목표 검정력
 screen_find_next: 다음에 볼 것
 screen_find_power_what: 고른 컬럼 {cols} · 지금 보는 지표 {name}
 screen_find_power_one: 한 번에 하나씩 봅니다 — 다른 지표는 그 줄에서 [다시] 를 누르면 그쪽으로 바뀝니다 ({others})
+screen_find_why_prompt: 왜 골랐나
 screen_find_aim_prompt: 목표 검정력 %
 screen_find_aim_bad: '숫자를 넣어 주십시오 — 예: 95'
 screen_find_color_set: '색으로 나눌 군: {col}'
