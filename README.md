@@ -86,6 +86,17 @@ Click through them in the browser — nothing to install, all data synthetic.
 - [02 · the distribution decides](https://woobeenjeong.github.io/STATOP_public/002.html)
 - [03 · integrity check](https://woobeenjeong.github.io/STATOP_public/003.html)
 
+## Performance — LongDA (NHANES subset, N=99)
+
+<img width="720" alt="answer score" src="docs/img/answer_score.png" />
+
+<img width="720" alt="by question type and test" src="docs/img/by_type_and_test.png" />
+
+<img width="720" alt="time by stage" src="docs/img/timing.png" />
+
+Questions and answer key: [`NHANES_99_test/`](NHANES_99_test/) · from
+[LongDA: Benchmarking LLM Agents for Long-Document Data Analysis](https://arxiv.org/abs/2601.02598)
+
 ---
 ---
 
@@ -151,14 +162,6 @@ pip install -e .
 <img width="720" alt="통계량과 가설" src="https://github.com/user-attachments/assets/53f03ab0-a4d6-43f4-a5a7-f26fa2334b87" />
 
 </details>
-
-## 성적
-
-<img width="720" alt="answer score" src="docs/img/answer_score.png" />
-
-<img width="720" alt="by question type and test" src="docs/img/by_type_and_test.png" />
-
-<img width="720" alt="timing" src="docs/img/timing.png" />
 
 ## 핵심 단계
 
