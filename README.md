@@ -69,13 +69,6 @@ Screenshots are in the Korean section below.
 
 **Derived column** : Builds a new one from a formula — and a saved formula can be reapplied to a different dataset.
 
-<!-- agent-notes:start -->
-## With an AI agent
-
-`CLAUDE.md` / `AGENTS.md` ship with the repo, so an agent reads the rules on entry.
-Let STATOP judge and the agent explain — every verdict has written grounds in
-`rules/`
-
 <!-- agent-notes:end -->
 
 ## Walkthroughs
@@ -192,25 +185,12 @@ pip install -e .
 ## 에이전트와 함께
 
 `CLAUDE.md` · `AGENTS.md` 가 들어 있어 에이전트가 들어오면 규칙을 읽습니다.
-판정은 STATOP 이, 설명은 에이전트가 — 근거가 `rules/` 에 글로 적혀 있어 지어내지 않고 인용합니다.
+
+ `rules/` 에 글로 적혀 적합한 가설을 인용합니다.
 
 ## 둘러보기
 
-설치 없이 브라우저에서 클릭만으로. 자료는 전부 합성입니다.
 
 - [01 · 군별 상관](https://woobeenjeong.github.io/STATOP_public/001.html)
 - [02 · 분포에 맞는 공식](https://woobeenjeong.github.io/STATOP_public/002.html)
 - [03 · 무결성 검증](https://woobeenjeong.github.io/STATOP_public/003.html)
-
----
-
-## Troubleshooting
-
-| symptom | 증상 | cause | 원인 |
-|---|---|---|---|
-| `statop: command not found` | 명령을 못 찾음 | `conda activate statop` not run | `conda activate statop` 을 빠뜨림 |
-| web will not open | 웹이 안 열림 | the `statop serve` terminal was closed | `statop serve` 터미널을 닫음 |
-| garbled Korean | 한글이 깨짐 | terminal is not UTF-8 | 터미널 인코딩 (Windows `chcp 65001`) |
-| no tests offered | 검정이 안 뜸 | fewer than two columns, or types unconfirmed | 컬럼이 둘 미만이거나 타입 미확정 |
-
-Storage · 저장 위치 `~/.statop/<user>/` (`STATOP_HOME`) · English messages `--lang en`
