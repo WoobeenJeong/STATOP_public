@@ -12,12 +12,6 @@
 
 <img width="720" alt="image" src="figures/concept.png" />
 
-<img width="720" alt="MOVH check" src="figures/movh_check.png" />
-
-Four things we measure on the agent side — MCP, Orchestration, Validation, Harnessing.
-The design table, with the hypothesis and reject condition behind each metric, is in
-[`MOVH_check/mini_check.md`](MOVH_check/mini_check.md).
-
 **1. Sink**
 
 One view of the data, whoever runs it. Agents and people read the same statistics — so the conversation starts at interpretation.
@@ -30,6 +24,11 @@ No hypothesis rests on a single number. Goal, Support, and Guardrail metrics, si
 
 Data, hypothesis, metrics — recorded as one snapshot. Apply the same lens to new data, or ask new questions of the same data.
 
+<img width="720" alt="MOVH check" src="figures/movh_check.png" />
+
+Four things we measure on the agent side — MCP, Orchestration, Validation, Harnessing.
+The design table, with the hypothesis and reject condition behind each metric, is in
+[`MOVH_check/mini_check.md`](MOVH_check/mini_check.md).
 
 ## Ask it
 
