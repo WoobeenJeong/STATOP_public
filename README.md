@@ -26,9 +26,7 @@ Data, hypothesis, metrics — recorded as one snapshot. Apply the same lens to n
 
 <img width="720" alt="MOVH check" src="figures/movh_check.png" />
 
-Four things we measure on the agent side — MCP, Orchestration, Validation, Harnessing.
-The design table, with the hypothesis and reject condition behind each metric, is in
-[`MOVH_check/mini_check.md`](MOVH_check/mini_check.md).
+Four things we measure on the agent side — Integration, Orchestration, Validation, Reliability.
 
 ## Ask it
 
