@@ -83,6 +83,7 @@ Click through them in the browser — nothing to install, all data synthetic.
 - [01 · group correlation](https://woobeenjeong.github.io/STATOP_public/001.html)
 - [02 · the distribution decides](https://woobeenjeong.github.io/STATOP_public/002.html)
 - [03 · integrity check](https://woobeenjeong.github.io/STATOP_public/003.html)
+- [04 · the ontology of data, hypotheses and metrics](https://woobeenjeong.github.io/STATOP_public/004.html)
 
 ## Performance
 
@@ -199,3 +200,4 @@ pip install -e .
 - [01 · 군별 상관](https://woobeenjeong.github.io/STATOP_public/001.html)
 - [02 · 분포에 맞는 공식](https://woobeenjeong.github.io/STATOP_public/002.html)
 - [03 · 무결성 검증](https://woobeenjeong.github.io/STATOP_public/003.html)
+- [04 · 데이터·가설·지표 온톨로지](https://woobeenjeong.github.io/STATOP_public/004.html)
