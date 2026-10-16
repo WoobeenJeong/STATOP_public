@@ -50,6 +50,7 @@ aside p{margin:2px 0 0;white-space:pre-wrap;word-break:break-word}
 .badge.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
 .badge.warn{background:var(--warn-bg);border-color:var(--warn);color:var(--warn-text)}
 .badge.danger{background:var(--danger-bg);border-color:var(--danger);color:var(--danger-text)}
+.badge.none{background:var(--neutral-bg);border-color:var(--none);color:var(--text-muted)}
 .list{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .list button{font-size:11.5px;padding:2px 8px;border-radius:10px;
   border:1px solid var(--border);background:var(--bg)}
@@ -244,7 +245,7 @@ function showNode(n){
   let h='<h2>'+esc(n.text)+'</h2>';
   if(n.kind==='metric'){
     h+='<span class="badge">'+esc(n.role)+'</span>';
-    h+='<span class="badge '+(n.fit==='none'?'':n.fit)+'">'+esc(n.fit_label)+'</span>';
+    h+='<span class="badge '+n.fit+'">'+esc(n.fit_label)+'</span>';
     if(n.risks&&n.risks.length) h+='<p class="mono">'+esc(n.risks.join(' '))+'</p>';
     h+='<div class="k">의미 타입</div><p>'+esc(n.note)+'</p>';
   } else {
@@ -276,7 +277,7 @@ function showEdge(e){
     h+='<div class="list">';
     names.forEach(nm=>{
       const m=byId['m_'+nm];
-      const fit=m?('<span class="badge '+(m.fit==='none'?'':m.fit)+'">'
+      const fit=m?('<span class="badge '+m.fit+'">'
                    +esc(m.fit_label.split(' ')[0])+'</span>'):'';
       h+='<button class="pickn" data-id="m_'+nm+'">'+esc(nm)+'</button>'+fit;
     });
