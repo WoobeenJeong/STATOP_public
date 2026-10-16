@@ -1,0 +1,294 @@
+<title>STATOP 004 — 데이터·가설·지표 온톨로지 (스냅샷)</title>
+<style>
+:root{
+  --font-sans:"Malgun Gothic",-apple-system,"Segoe UI",Roboto,"Noto Sans KR",Arial,sans-serif;
+  --font-mono:Consolas,"SF Mono","DejaVu Sans Mono",monospace;
+  --bg:#ffffff; --bg-subtle:#f5f6f7; --border:#dde0e3; --border-strong:#b8bcc0;
+  --text:#1c1f22; --text-muted:#5b6166; --text-faint:#8a9096; --brand:#35566b;
+  --ok:#0b6e6e; --ok-bg:#e1efef; --neutral:#1c1f22; --neutral-bg:#f0f1f2;
+  --warn:#e8912e; --warn-bg:#fbeedd; --warn-text:#7a4a12;
+  --danger:#b23a17; --danger-bg:#f6e1d9; --danger-text:#b23a17; --none:#9aa0a6;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#14171a; --bg-subtle:#1b1f23; --border:#2c3136; --border-strong:#444a50;
+  --text:#e7e9ea; --text-muted:#a2a9af; --text-faint:#767d84; --brand:#7ba3bd;
+  --ok:#3fb0ad; --ok-bg:#10302f; --neutral:#e7e9ea; --neutral-bg:#22262a;
+  --warn:#e8912e; --warn-bg:#382a16; --warn-text:#e0a961;
+  --danger:#e06a45; --danger-bg:#3a1d14; --danger-text:#e8805e; --none:#767d84;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.6 var(--font-sans)}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 16px 56px}
+.brand{font-family:Georgia,"Times New Roman",serif;font-size:20px;font-weight:700;
+       letter-spacing:-.035em;margin-bottom:4px}
+.brand-v{color:var(--ok)}
+.sub{color:var(--text-muted);font-size:13px;margin-bottom:14px}
+.frame{border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.bar{display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:8px 12px;
+     border-bottom:1px solid var(--border);background:var(--bg-subtle)}
+.bar+.bar{background:var(--bg)}
+.lab{font-size:11.5px;color:var(--text-faint);letter-spacing:.04em;margin-right:5px}
+button{font:12px var(--font-sans);padding:3px 10px;border-radius:13px;cursor:pointer;
+  border:1px solid var(--border-strong);background:var(--bg);color:var(--text)}
+button[aria-pressed="true"]{background:var(--neutral);color:var(--bg);
+  border-color:var(--neutral)}
+button[disabled]{opacity:.3;cursor:default;color:var(--text-faint)}
+button.r[aria-pressed="false"]{opacity:.35;text-decoration:line-through}
+button.reset{border-radius:4px;margin-left:auto}
+.body{display:flex}
+#cv{flex:1;display:block;cursor:grab}
+#cv:active{cursor:grabbing}
+aside{width:320px;border-left:1px solid var(--border);padding:14px;overflow-y:auto;
+      height:560px;background:var(--bg-subtle);font-size:13px}
+aside h2{margin:0 0 6px;font-size:15px}
+.k{color:var(--text-faint);font-size:11px;letter-spacing:.05em;margin-top:12px;
+   text-transform:uppercase}
+aside p{margin:2px 0 0;white-space:pre-wrap;word-break:break-word}
+.mono{font-family:var(--font-mono);font-size:11.5px;color:var(--text-muted)}
+.badge{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11.5px;
+  border:1px solid var(--border);background:var(--bg);margin:0 4px 4px 0}
+.badge.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.badge.warn{background:var(--warn-bg);border-color:var(--warn);color:var(--warn-text)}
+.badge.danger{background:var(--danger-bg);border-color:var(--danger);color:var(--danger-text)}
+.list{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.list button{font-size:11.5px;padding:2px 8px;border-radius:10px;
+  border:1px solid var(--border);background:var(--bg)}
+.list button:hover{border-color:var(--text);background:var(--neutral-bg)}
+.foot{padding:7px 12px;border-top:1px solid var(--border);font-size:11.5px;
+      color:var(--text-muted)}
+.sw{display:inline-block;margin:0 5px 0 12px;vertical-align:1px}
+.sw.d{width:15px;height:15px;border-radius:3px;background:var(--brand)}
+.sw.c{width:12px;height:12px;background:var(--text-muted);transform:rotate(45deg);
+      margin-right:8px}
+.sw.m{width:9px;height:9px;border-radius:50%;background:var(--ok)}
+.note{margin-top:12px;font-size:12.5px;color:var(--text-muted)}
+</style>
+
+<div class="wrap">
+  <div class="brand">STAT<span class="brand-v">OP</span></div>
+  <div class="sub">데이터 · 축 · 지표가 노드, <b>가설이 간선</b>.
+    한 연구의 세션 13개를 그대로 옮긴 스냅샷입니다.</div>
+
+  <div class="frame">
+    <div class="bar"><span class="lab">질문 유형</span><span id="qs"></span>
+      <button class="reset" id="reset">초기화</button></div>
+    <div class="bar"><span class="lab">지표 역할</span><span id="rs"></span></div>
+    <div class="body">
+      <canvas id="cv" width="760" height="560"></canvas>
+      <aside id="side"><h2>노드나 선을 클릭</h2>
+        <p class="mono">네모 = 데이터 · 마름모 = 축 · 동그라미 = 지표 · 선 = 가설</p></aside>
+    </div>
+    <div class="foot">
+      <span class="sw d"></span>데이터<span class="sw c"></span>축<span class="sw m"></span>지표
+      <span style="margin-left:14px">지표 색 = 그 의미 타입에 걸린 위험규칙 수</span>
+    </div>
+  </div>
+
+  <p class="note">가설은 축과 축 사이에 걸립니다. 지표는 거기서 파생된 것이라
+  연결이 아니라 점선으로 매답니다. 지표마다 <b>Goal · Support · Guardrail</b> 하나씩이고,
+  Goal 을 올리면 대가로 나빠질 수 있는 것이 Guardrail 입니다.</p>
+  <p class="note">이 스냅샷은 구조만 싣습니다 — 각 가설의 예측·판정은 빠져 있습니다.</p>
+</div>
+
+<script>
+const G = {"nodes": [{"id": "c_trial", "kind": "column", "text": "trial", "note": "학습 시도 — 피처 축이 아니라 모델 축"}, {"id": "m_n_trial_total", "kind": "metric", "text": "n_trial_total", "note": "count", "role": "Support", "fit": "danger", "fit_label": "부적절 — 위험규칙 2건 이상", "risks": ["S-R03", "S-R04"]}, {"id": "m_mae_med", "kind": "metric", "text": "mae_med", "note": "probability", "role": "Goal", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_mae_iqr", "kind": "metric", "text": "mae_iqr", "note": "probability", "role": "Guardrail", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "d_omics_size_motif_batch_corrected", "kind": "data", "text": "omics · size·motif · batch-corrected", "note": "region 을 합친 판", "axes": ["size", "motif"]}, {"id": "c_size", "kind": "column", "text": "size", "note": "insert size 121 단계"}, {"id": "c_motif", "kind": "column", "text": "motif", "note": "말단 motif 16 종"}, {"id": "m_n_pair", "kind": "metric", "text": "n_pair", "note": "count", "role": "Support", "fit": "danger", "fit_label": "부적절 — 위험규칙 2건 이상", "risks": ["S-R03", "S-R04"]}, {"id": "m_batch_sys", "kind": "metric", "text": "batch_sys", "note": "probability", "role": "Goal", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_icc21", "kind": "metric", "text": "icc21", "note": "proportion", "role": "Guardrail", "fit": "danger", "fit_label": "부적절 — 위험규칙 2건 이상", "risks": ["S-R01", "S-R02"]}, {"id": "d_omics_arm39_normalized", "kind": "data", "text": "omics · arm39 · normalized", "note": "검체 총합으로 나눈 뒤", "axes": ["size", "motif", "arm39"]}, {"id": "d_omics_arm39_batch_corrected", "kind": "data", "text": "omics · arm39 · batch-corrected", "note": "배치보정을 건 뒤", "axes": ["size", "motif", "arm39"]}, {"id": "c_arm39", "kind": "column", "text": "arm39", "note": "region 을 12개씩 묶은 39 구획"}, {"id": "m_rmae_tsn_med", "kind": "metric", "text": "rmae_tsn_med", "note": "probability", "role": "Guardrail", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_rmae_bc_med", "kind": "metric", "text": "rmae_bc_med", "note": "probability", "role": "Goal", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_ratio", "kind": "metric", "text": "ratio", "note": "percent", "role": "Goal", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R07"]}, {"id": "m_ratio_hi", "kind": "metric", "text": "ratio_hi", "note": "percent", "role": "Guardrail", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R07"]}, {"id": "d_omics_arm39_raw", "kind": "data", "text": "omics · arm39 · raw", "note": "size × motif × arm 39", "axes": ["size", "motif", "arm39"]}, {"id": "d_omics_reference_size_motif_raw", "kind": "data", "text": "omics (reference) · size·motif · raw", "note": "비교 기준으로 쓴 기존 피처셋", "axes": ["size", "motif"]}, {"id": "m_n_feature", "kind": "metric", "text": "n_feature", "note": "count", "role": "Support", "fit": "danger", "fit_label": "부적절 — 위험규칙 2건 이상", "risks": ["S-R03", "S-R04"]}, {"id": "m_norm_rel_med", "kind": "metric", "text": "norm_rel_med", "note": "probability", "role": "Goal", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "d_omics_region473_raw", "kind": "data", "text": "omics · region473 · raw", "note": "size × motif × region 473", "axes": ["size", "motif", "region473"]}, {"id": "c_region473", "kind": "column", "text": "region473", "note": "region 473 구획 — 가장 잘게"}, {"id": "m_shot_pred", "kind": "metric", "text": "shot_pred", "note": "probability", "role": "Guardrail", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_excess", "kind": "metric", "text": "excess", "note": "percent", "role": "Goal", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R07"]}, {"id": "m_n", "kind": "metric", "text": "n", "note": "count", "role": "Support", "fit": "danger", "fit_label": "부적절 — 위험규칙 2건 이상", "risks": ["S-R03", "S-R04"]}, {"id": "m_spearman_abs", "kind": "metric", "text": "spearman_abs", "note": "continuous", "role": "Goal", "fit": "ok", "fit_label": "문제없음", "risks": []}, {"id": "m_p", "kind": "metric", "text": "p", "note": "probability", "role": "Guardrail", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_n_cell", "kind": "metric", "text": "n_cell", "note": "count", "role": "Support", "fit": "danger", "fit_label": "부적절 — 위험규칙 2건 이상", "risks": ["S-R03", "S-R04"]}, {"id": "m_frag_per_cell_med", "kind": "metric", "text": "frag_per_cell_med", "note": "continuous", "role": "Goal", "fit": "ok", "fit_label": "문제없음", "risks": []}, {"id": "m_poisson_cv_pct", "kind": "metric", "text": "poisson_cv_pct", "note": "percent", "role": "Guardrail", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R07"]}, {"id": "m_rel_batch_sys_med", "kind": "metric", "text": "rel_batch_sys_med", "note": "probability", "role": "Goal", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_rel_mae_med", "kind": "metric", "text": "rel_mae_med", "note": "probability", "role": "Guardrail", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_icc21_med", "kind": "metric", "text": "icc21_med", "note": "probability", "role": "Support", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_batch_eta2_med", "kind": "metric", "text": "batch_eta2_med", "note": "probability", "role": "Goal", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_absd_med", "kind": "metric", "text": "absd_med", "note": "probability", "role": "Guardrail", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_cell_rmae_med", "kind": "metric", "text": "cell_rmae_med", "note": "probability", "role": "Goal", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R05"]}, {"id": "m_vs_none", "kind": "metric", "text": "vs_none", "note": "percent", "role": "Guardrail", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R07"]}, {"id": "m_ab_mae_over_sd_med", "kind": "metric", "text": "ab_mae_over_sd_med", "note": "percent", "role": "Guardrail", "fit": "warn", "fit_label": "주의 — 위험규칙 1건", "risks": ["S-R07"]}, {"id": "m_spearman", "kind": "metric", "text": "spearman", "note": "continuous", "role": "Goal", "fit": "ok", "fit_label": "문제없음", "risks": []}], "edges": [{"s": "m_mae_med", "t": "c_trial", "kind": "hyp", "no": "03", "q": "Q-12"}, {"s": "c_trial", "t": "m_n_trial_total", "kind": "derives", "no": "03", "q": "Q-12"}, {"s": "c_trial", "t": "m_mae_med", "kind": "derives", "no": "03", "q": "Q-12"}, {"s": "c_trial", "t": "m_mae_iqr", "kind": "derives", "no": "03", "q": "Q-12"}, {"s": "d_omics_size_motif_batch_corrected", "t": "c_size", "kind": "holds", "no": "09", "q": "Q-05"}, {"s": "d_omics_size_motif_batch_corrected", "t": "c_motif", "kind": "holds", "no": "09", "q": "Q-05"}, {"s": "c_size", "t": "c_motif", "kind": "hyp", "no": "09", "q": "Q-05"}, {"s": "c_size", "t": "m_n_pair", "kind": "derives", "no": "09", "q": "Q-05"}, {"s": "c_size", "t": "m_batch_sys", "kind": "derives", "no": "09", "q": "Q-05"}, {"s": "c_size", "t": "m_icc21", "kind": "derives", "no": "09", "q": "Q-05"}, {"s": "c_motif", "t": "m_n_pair", "kind": "derives", "no": "09", "q": "Q-05"}, {"s": "c_motif", "t": "m_batch_sys", "kind": "derives", "no": "09", "q": "Q-05"}, {"s": "c_motif", "t": "m_icc21", "kind": "derives", "no": "09", "q": "Q-05"}, {"s": "d_omics_arm39_normalized", "t": "c_size", "kind": "holds", "no": "04", "q": "Q-06"}, {"s": "d_omics_arm39_normalized", "t": "c_motif", "kind": "holds", "no": "04", "q": "Q-06"}, {"s": "d_omics_arm39_normalized", "t": "c_arm39", "kind": "holds", "no": "04", "q": "Q-06"}, {"s": "d_omics_arm39_batch_corrected", "t": "c_size", "kind": "holds", "no": "04", "q": "Q-06"}, {"s": "d_omics_arm39_batch_corrected", "t": "c_motif", "kind": "holds", "no": "04", "q": "Q-06"}, {"s": "d_omics_arm39_batch_corrected", "t": "c_arm39", "kind": "holds", "no": "04", "q": "Q-06"}, {"s": "c_size", "t": "c_motif", "kind": "hyp", "no": "04", "q": "Q-06"}, {"s": "c_size", "t": "c_arm39", "kind": "hyp", "no": "04", "q": "Q-06"}, {"s": "c_motif", "t": "c_arm39", "kind": "hyp", "no": "04", "q": "Q-06"}, {"s": "c_size", "t": "m_n_pair", "kind": "derives", "no": "04", "q": "Q-06"}, {"s": "c_size", "t": "m_rmae_tsn_med", "kind": "derives", "no": "04", "q": "Q-06"}, {"s": "c_size", "t": "m_rmae_bc_med", "kind": "derives", "no": "04", "q": "Q-06"}, {"s": "c_motif", "t": "m_n_pair", "kind": "derives", "no": "04", "q": "Q-06"}, {"s": "c_motif", "t": "m_rmae_tsn_med", "kind": "derives", "no": "04", "q": "Q-06"}, {"s": "c_motif", "t": "m_rmae_bc_med", "kind": "derives", "no": "04", "q": "Q-06"}, {"s": "c_arm39", "t": "m_n_pair", "kind": "derives", "no": "04", "q": "Q-06"}, {"s": "c_arm39", "t": "m_rmae_tsn_med", "kind": "derives", "no": "04", "q": "Q-06"}, {"s": "c_arm39", "t": "m_rmae_bc_med", "kind": "derives", "no": "04", "q": "Q-06"}, {"s": "d_omics_arm39_normalized", "t": "c_size", "kind": "holds", "no": "05", "q": "Q-06"}, {"s": "d_omics_arm39_normalized", "t": "c_motif", "kind": "holds", "no": "05", "q": "Q-06"}, {"s": "d_omics_arm39_normalized", "t": "c_arm39", "kind": "holds", "no": "05", "q": "Q-06"}, {"s": "d_omics_arm39_batch_corrected", "t": "c_size", "kind": "holds", "no": "05", "q": "Q-06"}, {"s": "d_omics_arm39_batch_corrected", "t": "c_motif", "kind": "holds", "no": "05", "q": "Q-06"}, {"s": "d_omics_arm39_batch_corrected", "t": "c_arm39", "kind": "holds", "no": "05", "q": "Q-06"}, {"s": "c_size", "t": "c_motif", "kind": "hyp", "no": "05", "q": "Q-06"}, {"s": "c_size", "t": "c_arm39", "kind": "hyp", "no": "05", "q": "Q-06"}, {"s": "c_motif", "t": "c_arm39", "kind": "hyp", "no": "05", "q": "Q-06"}, {"s": "c_size", "t": "m_n_pair", "kind": "derives", "no": "05", "q": "Q-06"}, {"s": "c_size", "t": "m_ratio", "kind": "derives", "no": "05", "q": "Q-06"}, {"s": "c_size", "t": "m_ratio_hi", "kind": "derives", "no": "05", "q": "Q-06"}, {"s": "c_motif", "t": "m_n_pair", "kind": "derives", "no": "05", "q": "Q-06"}, {"s": "c_motif", "t": "m_ratio", "kind": "derives", "no": "05", "q": "Q-06"}, {"s": "c_motif", "t": "m_ratio_hi", "kind": "derives", "no": "05", "q": "Q-06"}, {"s": "c_arm39", "t": "m_n_pair", "kind": "derives", "no": "05", "q": "Q-06"}, {"s": "c_arm39", "t": "m_ratio", "kind": "derives", "no": "05", "q": "Q-06"}, {"s": "c_arm39", "t": "m_ratio_hi", "kind": "derives", "no": "05", "q": "Q-06"}, {"s": "d_omics_arm39_raw", "t": "c_size", "kind": "holds", "no": "01", "q": "Q-06"}, {"s": "d_omics_arm39_raw", "t": "c_motif", "kind": "holds", "no": "01", "q": "Q-06"}, {"s": "d_omics_arm39_raw", "t": "c_arm39", "kind": "holds", "no": "01", "q": "Q-06"}, {"s": "d_omics_reference_size_motif_raw", "t": "c_size", "kind": "holds", "no": "01", "q": "Q-06"}, {"s": "d_omics_reference_size_motif_raw", "t": "c_motif", "kind": "holds", "no": "01", "q": "Q-06"}, {"s": "c_size", "t": "c_motif", "kind": "hyp", "no": "01", "q": "Q-06"}, {"s": "c_size", "t": "c_arm39", "kind": "hyp", "no": "01", "q": "Q-06"}, {"s": "c_motif", "t": "c_arm39", "kind": "hyp", "no": "01", "q": "Q-06"}, {"s": "c_size", "t": "m_n_feature", "kind": "derives", "no": "01", "q": "Q-06"}, {"s": "c_size", "t": "m_norm_rel_med", "kind": "derives", "no": "01", "q": "Q-06"}, {"s": "c_motif", "t": "m_n_feature", "kind": "derives", "no": "01", "q": "Q-06"}, {"s": "c_motif", "t": "m_norm_rel_med", "kind": "derives", "no": "01", "q": "Q-06"}, {"s": "c_arm39", "t": "m_n_feature", "kind": "derives", "no": "01", "q": "Q-06"}, {"s": "c_arm39", "t": "m_norm_rel_med", "kind": "derives", "no": "01", "q": "Q-06"}, {"s": "d_omics_region473_raw", "t": "c_region473", "kind": "holds", "no": "06", "q": "Q-06"}, {"s": "d_omics_region473_raw", "t": "c_region473", "kind": "hyp", "no": "06", "q": "Q-06"}, {"s": "c_region473", "t": "m_n_pair", "kind": "derives", "no": "06", "q": "Q-06"}, {"s": "c_region473", "t": "m_shot_pred", "kind": "derives", "no": "06", "q": "Q-06"}, {"s": "c_region473", "t": "m_excess", "kind": "derives", "no": "06", "q": "Q-06"}, {"s": "d_omics_size_motif_batch_corrected", "t": "c_size", "kind": "holds", "no": "10", "q": "Q-03"}, {"s": "d_omics_size_motif_batch_corrected", "t": "c_size", "kind": "hyp", "no": "10", "q": "Q-03"}, {"s": "c_size", "t": "m_n", "kind": "derives", "no": "10", "q": "Q-03"}, {"s": "c_size", "t": "m_spearman_abs", "kind": "derives", "no": "10", "q": "Q-03"}, {"s": "c_size", "t": "m_p", "kind": "derives", "no": "10", "q": "Q-03"}, {"s": "d_omics_arm39_raw", "t": "c_size", "kind": "holds", "no": "02", "q": "Q-12"}, {"s": "d_omics_arm39_raw", "t": "c_motif", "kind": "holds", "no": "02", "q": "Q-12"}, {"s": "d_omics_arm39_raw", "t": "c_arm39", "kind": "holds", "no": "02", "q": "Q-12"}, {"s": "c_size", "t": "c_motif", "kind": "hyp", "no": "02", "q": "Q-12"}, {"s": "c_size", "t": "c_arm39", "kind": "hyp", "no": "02", "q": "Q-12"}, {"s": "c_size", "t": "c_region473", "kind": "hyp", "no": "02", "q": "Q-12"}, {"s": "c_motif", "t": "c_arm39", "kind": "hyp", "no": "02", "q": "Q-12"}, {"s": "c_motif", "t": "c_region473", "kind": "hyp", "no": "02", "q": "Q-12"}, {"s": "c_arm39", "t": "c_region473", "kind": "hyp", "no": "02", "q": "Q-12"}, {"s": "c_size", "t": "m_n_cell", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "c_size", "t": "m_frag_per_cell_med", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "c_size", "t": "m_poisson_cv_pct", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "c_motif", "t": "m_n_cell", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "c_motif", "t": "m_frag_per_cell_med", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "c_motif", "t": "m_poisson_cv_pct", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "c_arm39", "t": "m_n_cell", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "c_arm39", "t": "m_frag_per_cell_med", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "c_arm39", "t": "m_poisson_cv_pct", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "c_region473", "t": "m_n_cell", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "c_region473", "t": "m_frag_per_cell_med", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "c_region473", "t": "m_poisson_cv_pct", "kind": "derives", "no": "02", "q": "Q-12"}, {"s": "d_omics_size_motif_batch_corrected", "t": "c_size", "kind": "holds", "no": "08", "q": "Q-10"}, {"s": "d_omics_size_motif_batch_corrected", "t": "c_motif", "kind": "holds", "no": "08", "q": "Q-10"}, {"s": "c_size", "t": "c_motif", "kind": "hyp", "no": "08", "q": "Q-10"}, {"s": "c_size", "t": "m_rel_batch_sys_med", "kind": "derives", "no": "08", "q": "Q-10"}, {"s": "c_size", "t": "m_rel_mae_med", "kind": "derives", "no": "08", "q": "Q-10"}, {"s": "c_size", "t": "m_icc21_med", "kind": "derives", "no": "08", "q": "Q-10"}, {"s": "c_motif", "t": "m_rel_batch_sys_med", "kind": "derives", "no": "08", "q": "Q-10"}, {"s": "c_motif", "t": "m_rel_mae_med", "kind": "derives", "no": "08", "q": "Q-10"}, {"s": "c_motif", "t": "m_icc21_med", "kind": "derives", "no": "08", "q": "Q-10"}, {"s": "d_omics_arm39_normalized", "t": "c_size", "kind": "holds", "no": "11", "q": "Q-11"}, {"s": "d_omics_arm39_normalized", "t": "c_motif", "kind": "holds", "no": "11", "q": "Q-11"}, {"s": "d_omics_arm39_normalized", "t": "c_arm39", "kind": "holds", "no": "11", "q": "Q-11"}, {"s": "d_omics_arm39_batch_corrected", "t": "c_size", "kind": "holds", "no": "11", "q": "Q-11"}, {"s": "d_omics_arm39_batch_corrected", "t": "c_motif", "kind": "holds", "no": "11", "q": "Q-11"}, {"s": "d_omics_arm39_batch_corrected", "t": "c_arm39", "kind": "holds", "no": "11", "q": "Q-11"}, {"s": "c_size", "t": "c_motif", "kind": "hyp", "no": "11", "q": "Q-11"}, {"s": "c_size", "t": "c_arm39", "kind": "hyp", "no": "11", "q": "Q-11"}, {"s": "c_motif", "t": "c_arm39", "kind": "hyp", "no": "11", "q": "Q-11"}, {"s": "c_size", "t": "m_batch_eta2_med", "kind": "derives", "no": "11", "q": "Q-11"}, {"s": "c_size", "t": "m_absd_med", "kind": "derives", "no": "11", "q": "Q-11"}, {"s": "c_motif", "t": "m_batch_eta2_med", "kind": "derives", "no": "11", "q": "Q-11"}, {"s": "c_motif", "t": "m_absd_med", "kind": "derives", "no": "11", "q": "Q-11"}, {"s": "c_arm39", "t": "m_batch_eta2_med", "kind": "derives", "no": "11", "q": "Q-11"}, {"s": "c_arm39", "t": "m_absd_med", "kind": "derives", "no": "11", "q": "Q-11"}, {"s": "d_omics_region473_raw", "t": "c_region473", "kind": "holds", "no": "07", "q": "Q-05"}, {"s": "d_omics_region473_raw", "t": "c_size", "kind": "holds", "no": "07", "q": "Q-05"}, {"s": "d_omics_region473_raw", "t": "c_motif", "kind": "holds", "no": "07", "q": "Q-05"}, {"s": "d_omics_size_motif_batch_corrected", "t": "c_size", "kind": "holds", "no": "07", "q": "Q-05"}, {"s": "d_omics_size_motif_batch_corrected", "t": "c_motif", "kind": "holds", "no": "07", "q": "Q-05"}, {"s": "c_region473", "t": "c_size", "kind": "hyp", "no": "07", "q": "Q-05"}, {"s": "c_region473", "t": "c_motif", "kind": "hyp", "no": "07", "q": "Q-05"}, {"s": "c_size", "t": "c_motif", "kind": "hyp", "no": "07", "q": "Q-05"}, {"s": "c_region473", "t": "m_n_pair", "kind": "derives", "no": "07", "q": "Q-05"}, {"s": "c_region473", "t": "m_cell_rmae_med", "kind": "derives", "no": "07", "q": "Q-05"}, {"s": "c_region473", "t": "m_vs_none", "kind": "derives", "no": "07", "q": "Q-05"}, {"s": "c_size", "t": "m_n_pair", "kind": "derives", "no": "07", "q": "Q-05"}, {"s": "c_size", "t": "m_cell_rmae_med", "kind": "derives", "no": "07", "q": "Q-05"}, {"s": "c_size", "t": "m_vs_none", "kind": "derives", "no": "07", "q": "Q-05"}, {"s": "c_motif", "t": "m_n_pair", "kind": "derives", "no": "07", "q": "Q-05"}, {"s": "c_motif", "t": "m_cell_rmae_med", "kind": "derives", "no": "07", "q": "Q-05"}, {"s": "c_motif", "t": "m_vs_none", "kind": "derives", "no": "07", "q": "Q-05"}, {"s": "d_omics_region473_raw", "t": "c_region473", "kind": "holds", "no": "13", "q": "Q-11"}, {"s": "d_omics_region473_raw", "t": "c_size", "kind": "holds", "no": "13", "q": "Q-11"}, {"s": "d_omics_region473_raw", "t": "c_motif", "kind": "holds", "no": "13", "q": "Q-11"}, {"s": "d_omics_size_motif_batch_corrected", "t": "c_size", "kind": "holds", "no": "13", "q": "Q-11"}, {"s": "d_omics_size_motif_batch_corrected", "t": "c_motif", "kind": "holds", "no": "13", "q": "Q-11"}, {"s": "c_region473", "t": "c_size", "kind": "hyp", "no": "13", "q": "Q-11"}, {"s": "c_region473", "t": "c_motif", "kind": "hyp", "no": "13", "q": "Q-11"}, {"s": "c_size", "t": "c_motif", "kind": "hyp", "no": "13", "q": "Q-11"}, {"s": "c_region473", "t": "m_n_pair", "kind": "derives", "no": "13", "q": "Q-11"}, {"s": "c_region473", "t": "m_batch_eta2_med", "kind": "derives", "no": "13", "q": "Q-11"}, {"s": "c_region473", "t": "m_ab_mae_over_sd_med", "kind": "derives", "no": "13", "q": "Q-11"}, {"s": "c_size", "t": "m_n_pair", "kind": "derives", "no": "13", "q": "Q-11"}, {"s": "c_size", "t": "m_batch_eta2_med", "kind": "derives", "no": "13", "q": "Q-11"}, {"s": "c_size", "t": "m_ab_mae_over_sd_med", "kind": "derives", "no": "13", "q": "Q-11"}, {"s": "c_motif", "t": "m_n_pair", "kind": "derives", "no": "13", "q": "Q-11"}, {"s": "c_motif", "t": "m_batch_eta2_med", "kind": "derives", "no": "13", "q": "Q-11"}, {"s": "c_motif", "t": "m_ab_mae_over_sd_med", "kind": "derives", "no": "13", "q": "Q-11"}, {"s": "m_spearman", "t": "c_trial", "kind": "hyp", "no": "12", "q": "Q-03"}, {"s": "c_trial", "t": "m_n", "kind": "derives", "no": "12", "q": "Q-03"}, {"s": "c_trial", "t": "m_spearman", "kind": "derives", "no": "12", "q": "Q-03"}, {"s": "c_trial", "t": "m_p", "kind": "derives", "no": "12", "q": "Q-03"}], "sessions": [{"no": "03", "q": "Q-12", "q_name": "표본크기·대표성", "question": "같은 조건으로 다시 돌리면 얼마나 흔들리는가 — 이보다 작은 차이는 판정 불가", "goal": ["mae_med"], "support": ["n_trial_total"], "guardrail": ["mae_iqr"]}, {"no": "09", "q": "Q-05", "q_name": "경향·추세", "question": "배치 계수를 1 쪽으로 당기면(수축) 편향이 더 지워지는가 — 지금은 과보정인가", "goal": ["batch_sys"], "support": ["n_pair"], "guardrail": ["icc21"]}, {"no": "04", "q": "Q-06", "q_name": "일치도·재현성", "question": "배치보정(BC)을 걸면 같은 검체의 두 flowcell 값이 더 비슷해지는가", "goal": ["rmae_bc_med"], "support": ["n_pair"], "guardrail": ["rmae_tsn_med"]}, {"no": "05", "q": "Q-06", "q_name": "일치도·재현성", "question": "04 의 차이가 흔들림 범위를 넘는가 — 신뢰구간으로", "goal": ["ratio"], "support": ["n_pair"], "guardrail": ["ratio_hi"]}, {"no": "01", "q": "Q-06", "q_name": "일치도·재현성", "question": "omics 를 arm 39 로 접으면 기존 omics (reference) 와 같은 값이 되는가", "goal": ["norm_rel_med"], "support": ["n_feature"], "guardrail": ["total_ratio_med"]}, {"no": "06", "q": "Q-06", "q_name": "일치도·재현성", "question": "region 을 더 잘게(bin 473) 보면 배치 차이가 드러나는가", "goal": ["excess"], "support": ["n_pair"], "guardrail": ["shot_pred"]}, {"no": "10", "q": "Q-03", "q_name": "연관", "question": "보정 후에도 남는 차이는 배치 탓인가, 검체·런 탓인가", "goal": ["spearman_abs"], "support": ["n"], "guardrail": ["p"]}, {"no": "02", "q": "Q-12", "q_name": "표본크기·대표성", "question": "해상도를 올리면 칸 하나에 조각이 몇 개로 줄어드는가 — 산탄잡음의 크기", "goal": ["frag_per_cell_med"], "support": ["n_cell"], "guardrail": ["poisson_cv_pct"]}, {"no": "08", "q": "Q-10", "q_name": "조성", "question": "region 을 합쳐 칸을 깊게 하면, 배치보정이 부호 있는 편향을 얼마나 지우는가", "goal": ["rel_batch_sys_med"], "support": ["icc21_med"], "guardrail": ["rel_mae_med"]}, {"no": "11", "q": "Q-11", "q_name": "사전지정 대비", "question": "배치보정과 Tucker 분해 중 무엇을 먼저 해야 하는가", "goal": ["batch_eta2_med"], "support": ["n_pair"], "guardrail": ["absd_med"]}, {"no": "07", "q": "Q-05", "q_name": "경향·추세", "question": "배치보정을 어느 축에 걸어야 하는가 — region 인가 size·motif 인가", "goal": ["cell_rmae_med"], "support": ["n_pair"], "guardrail": ["vs_none"]}, {"no": "13", "q": "Q-11", "q_name": "사전지정 대비", "question": "11 의 결론이 다른 보정법(bin 473 · 대조 축)에서도 같은가", "goal": ["batch_eta2_med"], "support": ["n_pair"], "guardrail": ["ab_mae_over_sd_med"]}, {"no": "12", "q": "Q-03", "q_name": "연관", "question": "학습 설정이나 학습 방향이 보정법 간 격차를 만들었는가", "goal": ["spearman"], "support": ["n"], "guardrail": ["p"]}], "qtype": {"Q-01": "차이", "Q-02": "비율·빈도", "Q-03": "연관", "Q-04": "상호작용", "Q-05": "경향·추세", "Q-06": "일치도·재현성", "Q-07": "분포 비교", "Q-08": "예측·회귀", "Q-09": "생존", "Q-10": "조성", "Q-11": "사전지정 대비", "Q-12": "표본크기·대표성"}};
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const side=document.getElementById('side');
+const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+const byId=Object.fromEntries(G.nodes.map(n=>[n.id,n]));
+G.edges.forEach(e=>{e.a=byId[e.s]; e.b=byId[e.t];});
+const sess=Object.fromEntries(G.sessions.map(s=>[s.no,s]));
+const USED=new Set(G.sessions.map(s=>s.q));
+const ROLES=['Goal','Support','Guardrail'];
+const degree={}, nbr={};
+G.nodes.forEach(n=>{nbr[n.id]=new Set();});
+G.edges.forEach(e=>{degree[e.s]=(degree[e.s]||0)+1; degree[e.t]=(degree[e.t]||0)+1;
+                    nbr[e.s].add(e.t); nbr[e.t].add(e.s);});
+const HOME={x:0,y:0,k:1};
+let qSel=null, off=new Set(), view={...HOME}, drag=null, pan=null, pick=null,
+    hover=null, hoverEdge=null, cool=1, W=760, H=560;
+
+function chips(){
+  const q=document.getElementById('qs'); q.innerHTML='';
+  for(const [code,name] of Object.entries(G.qtype)){
+    const b=document.createElement('button');
+    b.textContent=code.replace('Q-0','Q').replace('Q-','Q')+' '+name;
+    b.setAttribute('aria-pressed', String(qSel===code));
+    if(!USED.has(code)){ b.disabled=true; b.title='이 연구에는 해당 분석 없음'; }
+    else b.onclick=()=>{ qSel = qSel===code ? null : code; cool=1; chips(); };
+    q.appendChild(b);
+  }
+  const r=document.getElementById('rs'); r.innerHTML='';
+  for(const t of ROLES){
+    const b=document.createElement('button'); b.className='r'; b.textContent=t;
+    b.setAttribute('aria-pressed', String(!off.has(t)));
+    b.onclick=()=>{ off.has(t)?off.delete(t):off.add(t); cool=1; chips(); };
+    r.appendChild(b);
+  }
+}
+document.getElementById('reset').onclick=()=>{
+  qSel=null; off=new Set(); pick=null; hover=null; view={...HOME}; cool=1;
+  side.innerHTML='<h2>노드나 선을 클릭</h2>'; chips();
+};
+const vis=n=>!(n.kind==='metric' && off.has(n.role));
+const dimEdge=e=>qSel && e.q!==qSel;
+const dimNode=n=>qSel && !G.edges.some(e=>e.q===qSel&&(e.s===n.id||e.t===n.id));
+
+function size(){ const r=cv.getBoundingClientRect();
+  cv.width=r.width*devicePixelRatio; cv.height=560*devicePixelRatio;
+  cv.style.height='560px'; ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  W=r.width; H=560; }
+size();
+const RING={data:90,column:190,metric:290};
+G.nodes.forEach((n,i)=>{ const a=i/G.nodes.length*6.283;
+  n.x=W/2+RING[n.kind]*Math.cos(a); n.y=H/2+RING[n.kind]*0.8*Math.sin(a);
+  n.vx=0; n.vy=0; });
+function step(){
+  cool=Math.max(.12, cool*0.997);
+  const live=G.nodes.filter(vis);
+  for(const n of live){ n.vx*=0.90; n.vy*=0.90; }
+  for(let i=0;i<live.length;i++) for(let j=i+1;j<live.length;j++){
+    const a=live[i], b=live[j];
+    let dx=b.x-a.x, dy=b.y-a.y, d2=dx*dx+dy*dy||1;
+    if(d2>80000) continue;
+    const d=Math.sqrt(d2), f=1300/d2;
+    a.vx-=f*dx/d; a.vy-=f*dy/d; b.vx+=f*dx/d; b.vy+=f*dy/d;
+  }
+  for(const e of G.edges){
+    if(!vis(e.a)||!vis(e.b)) continue;
+    const want=e.kind==='hyp'?130:185;
+    const dx=e.b.x-e.a.x, dy=e.b.y-e.a.y, d=Math.hypot(dx,dy)||1, f=(d-want)*0.008;
+    e.a.vx+=f*dx/d; e.a.vy+=f*dy/d; e.b.vx-=f*dx/d; e.b.vy-=f*dy/d;
+  }
+  for(const n of live){
+    if(n===drag) continue;
+    n.vx+=(W/2-n.x)*0.0014; n.vy+=(H/2-n.y)*0.0014;
+    n.x+=Math.max(-4,Math.min(4,n.vx))*cool; n.y+=Math.max(-4,Math.min(4,n.vy))*cool;
+  }
+}
+const rad=n=>({data:14,column:9,metric:5})[n.kind]+Math.min(4,(degree[n.id]||0)*0.25);
+const fillOf=n=> n.kind==='data'?css('--brand')
+               : n.kind==='column'?css('--text-muted')
+               : css('--'+(n.fit==='none'?'none':n.fit));
+function focusSet(){ const n=hover||(pick&&pick.id?pick:null);
+  if(!n) return null;
+  const s=new Set([n.id]); nbr[n.id].forEach(x=>s.add(x)); return s; }
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  ctx.save(); ctx.translate(view.x,view.y); ctx.scale(view.k,view.k);
+  const fs=focusSet();
+  for(const e of G.edges){
+    if(!vis(e.a)||!vis(e.b)) continue;
+    const sel=(pick&&pick.no!==undefined&&pick.no===e.no&&e.kind==='hyp')||e===hoverEdge;
+    const on=sel||(fs&&fs.has(e.s)&&fs.has(e.t));
+    ctx.beginPath(); ctx.moveTo(e.a.x,e.a.y); ctx.lineTo(e.b.x,e.b.y);
+    ctx.strokeStyle=on?css('--text'):css('--border-strong');
+    ctx.lineWidth=e.kind==='hyp'?(on?2.2:1.4):(on?1.4:0.6);
+    if(e.kind==='derives') ctx.setLineDash([3,3]);
+    ctx.globalAlpha=dimEdge(e)?0.05:(on?0.9:(fs?0.08:(e.kind==='hyp'?0.55:0.22)));
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+  ctx.globalAlpha=1;
+  for(const n of G.nodes){
+    if(!vis(n)) continue;
+    const dim=(fs&&!fs.has(n.id))||dimNode(n), r=rad(n);
+    ctx.globalAlpha=dim?0.12:1; ctx.fillStyle=fillOf(n);
+    ctx.beginPath();
+    if(n.kind==='data'){ ctx.roundRect(n.x-r,n.y-r,r*2,r*2,3); }
+    else if(n.kind==='column'){ ctx.moveTo(n.x,n.y-r); ctx.lineTo(n.x+r,n.y);
+      ctx.lineTo(n.x,n.y+r); ctx.lineTo(n.x-r,n.y); ctx.closePath(); }
+    else { ctx.arc(n.x,n.y,r,0,6.284); }
+    ctx.fill();
+    if(n===pick||n===hover){ ctx.globalAlpha=1; ctx.strokeStyle=css('--text');
+      ctx.lineWidth=1.8; ctx.beginPath(); ctx.arc(n.x,n.y,r+4,0,6.284); ctx.stroke(); }
+    if(n===hover||n===pick||(fs&&fs.has(n.id))||n.kind!=='metric'||view.k>1.3){
+      ctx.globalAlpha=dim?0.25:1; ctx.fillStyle=css('--text');
+      ctx.font='11px '+css('--font-sans'); ctx.textAlign='center';
+      ctx.fillText(n.text,n.x,n.y-r-5); }
+    ctx.globalAlpha=1;
+  }
+  ctx.restore();
+}
+function loop(){ step(); draw(); requestAnimationFrame(loop); }
+const esc=s=>(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const pt=ev=>{const r=cv.getBoundingClientRect();
+  return {x:(ev.clientX-r.left-view.x)/view.k,y:(ev.clientY-r.top-view.y)/view.k};};
+const hitNode=p=>G.nodes.find(n=>vis(n)&&Math.hypot(n.x-p.x,n.y-p.y)<=rad(n)+4)||null;
+function hitEdge(p){ let best=null,bd=12/view.k;
+  for(const e of G.edges){ if(e.kind!=='hyp'||!vis(e.a)||!vis(e.b)) continue;
+    const dx=e.b.x-e.a.x,dy=e.b.y-e.a.y,L=dx*dx+dy*dy||1;
+    let t=((p.x-e.a.x)*dx+(p.y-e.a.y)*dy)/L; t=Math.max(0,Math.min(1,t));
+    const d=Math.hypot(p.x-(e.a.x+t*dx),p.y-(e.a.y+t*dy));
+    if(d<bd){bd=d;best=e;} }
+  return best; }
+const hypLine=s=>'가설: ('+esc(s.q_name)+') '+esc(s.question);
+function center(n){ view.x=W/2-n.x*view.k; view.y=H/2-n.y*view.k; cool=Math.max(cool,.4); }
+function wire(){
+  side.querySelectorAll('.pickn').forEach(b=>b.onclick=()=>{
+    const n=byId[b.dataset.id]; if(!n) return;
+    pick=n; hover=null; center(n); showNode(n); });
+  side.querySelectorAll('.picke').forEach(b=>b.onclick=()=>{
+    const e=G.edges.find(x=>x.no===b.dataset.no&&x.kind==='hyp')
+          ||G.edges.find(x=>x.no===b.dataset.no);
+    if(e){ pick=e; hover=null; showEdge(e); } });
+}
+function showNode(n){
+  let h='<h2>'+esc(n.text)+'</h2>';
+  if(n.kind==='metric'){
+    h+='<span class="badge">'+esc(n.role)+'</span>';
+    h+='<span class="badge '+(n.fit==='none'?'':n.fit)+'">'+esc(n.fit_label)+'</span>';
+    if(n.risks&&n.risks.length) h+='<p class="mono">'+esc(n.risks.join(' '))+'</p>';
+    h+='<div class="k">의미 타입</div><p>'+esc(n.note)+'</p>';
+  } else {
+    h+='<span class="badge">'+(n.kind==='data'?'데이터':'축')+'</span>';
+    h+='<div class="k">무엇인가</div><p>'+esc(n.note)+'</p>';
+  }
+  const cols=[...new Set(G.edges.filter(e=>e.s===n.id&&e.kind==='holds').map(e=>e.t))]
+             .map(i=>byId[i]).filter(Boolean);
+  if(cols.length){ h+='<div class="k">축 '+cols.length+'</div><div class="list">';
+    cols.forEach(c=>{h+='<button class="pickn" data-id="'+c.id+'">'+esc(c.text)+'</button>';});
+    h+='</div>'; }
+  const hs=[...new Set(G.edges.filter(e=>e.s===n.id||e.t===n.id).map(e=>e.no))].sort();
+  if(hs.length){ h+='<div class="k">가설 '+hs.length+'</div><div class="list">';
+    hs.forEach(no=>{h+='<button class="picke" data-no="'+no+'">'
+      +esc(sess[no].q)+' · '+esc(sess[no].q_name)+'</button>';});
+    h+='</div>'; }
+  side.innerHTML=h; wire();
+}
+function showEdge(e){
+  const s=sess[e.no];
+  let h='<span class="badge">'+esc(s.q)+' '+esc(s.q_name)+'</span>';
+  h+='<p style="margin-top:8px">'+hypLine(s)+'</p>';
+  h+='<div class="k">goal</div><p class="mono">'+esc(s.goal.join(' '))+'</p>';
+  h+='<div class="k">support</div><p class="mono">'+esc(s.support.join(' '))+'</p>';
+  h+='<div class="k">guardrail</div><p class="mono">'+esc(s.guardrail.join(' '))+'</p>';
+  h+='<div class="k">이 선</div><div class="list">'
+    +'<button class="pickn" data-id="'+e.s+'">'+esc(e.a.text)+'</button>'
+    +'<button class="pickn" data-id="'+e.t+'">'+esc(e.b.text)+'</button></div>';
+  side.innerHTML=h; wire();
+}
+cv.addEventListener('mousedown',ev=>{
+  const p=pt(ev), n=hitNode(p);
+  if(n){ drag=n; pick=n; showNode(n); return; }
+  const e=hitEdge(p); if(e){ pick=e; showEdge(e); return; }
+  pick=null; pan={x:ev.clientX-view.x,y:ev.clientY-view.y};
+});
+addEventListener('mousemove',ev=>{
+  if(drag){ const p=pt(ev); drag.x=p.x; drag.y=p.y; drag.vx=drag.vy=0;
+            cool=Math.max(cool,.5); }
+  else if(pan){ view.x=ev.clientX-pan.x; view.y=ev.clientY-pan.y; }
+  else { const p=pt(ev), h=hitNode(p); if(h!==hover) hover=h;
+         hoverEdge=h?null:hitEdge(p);
+         cv.style.cursor=(h||hoverEdge)?'pointer':'grab'; }
+});
+addEventListener('mouseup',()=>{drag=null;pan=null;});
+addEventListener('keydown',ev=>{ if(ev.key==='Escape')
+  document.getElementById('reset').click(); });
+cv.addEventListener('wheel',ev=>{ev.preventDefault();
+  const r=cv.getBoundingClientRect(),mx=ev.clientX-r.left,my=ev.clientY-r.top;
+  const k=Math.max(.4,Math.min(3,view.k*(ev.deltaY<0?1.1:.9)));
+  view.x=mx-(mx-view.x)*k/view.k; view.y=my-(my-view.y)*k/view.k; view.k=k;},
+  {passive:false});
+addEventListener('resize',size);
+chips(); loop();
+</script>
